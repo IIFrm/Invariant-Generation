@@ -1,0 +1,241 @@
+%
+% >>> csp.sty <<< 
+%
+% (c) Jim Davies, January 1995
+
+% You may copy and distribute this file freely.  Any queries and
+% complaints should be forwarded to Jim.Davies@comlab.ox.ac.uk.
+
+% If you make any changes to this file, please do not distribute
+% the results under the name `csp.sty'.  
+
+% >>> information <<<
+
+% This is a LaTeX2e package for typesetting Z and CSP notation.  It
+% employs the standard (JMS) set of macros, but uses the AMS fonts in
+% place of `oxsy'.  You will need the tfm and fd files for the `A' and
+% `B' symbol fonts installed.  This requires (1) the AMSFONTS package
+% and (2) the MFNFSS package for LaTeX2e.  
+
+% If you have the Lucida Bright font set from Y&Y, then you can use
+% that instead.  In this case, you have only to load `lucbr' (from the
+% PSNFSS package) before `csp'.  
+
+% >>> changes <<<
+
+% version 0  (Sep 94): first attempt
+% version 0a (Oct 94): fixed error in definition of \cat
+% version 0b (Nov 94): added composite for \uminus 
+% version 0c (Jan 95): removed definition of \emptyset 
+% version 1 (Aug 96): removed fuzz and symbol stuff BPM
+
+% >>> date and version <<<
+
+\def\fileversion{1}
+\def\filedate{96/08/29} 
+\def\docdate {96/08/29}
+
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{oz}
+\RequirePackage{ams-chars}
+
+\ProvidesPackage{csp}[{%
+  \filedate\space\fileversion\space csp package}]
+
+
+% >>> csp <<< 
+
+% We require the following mathematical symbols and aliases when
+% specifying and reasoning about the behaviour of CSP processes. 
+
+\let \Inter     \bigcap                   
+\let \Land      \bigwedge                 
+\let \Lor       \bigvee                   
+\let \Union     \bigcup                   
+\let \inter     \cap                          
+\def \nin       {\not\in}
+\let \union     \cup                          
+\def \rat       {{\bbold Q}}
+\def \real      {{\bbold R}}
+\def \cnt       {\mathrel{\downarrow}}
+\def \data      {\mathrel{\Downarrow}}
+\def \during    {\mathrel{\uparrow}}
+\def \nil       {\trace{}}                       
+\def \clause    {\Bigm{|}}      
+\def \contig    {\mathrel{\mathbf{in}}}
+\def \trace#1{\langle #1\rangle}          
+\def \set#1{\{#1\}}                       
+\let \ge        \geqslant
+\let \le        \leqslant
+\@ifpackageloaded{lucbr}{%
+  \DeclareMathSymbol{\tick}{0}{arrows}{"AC}
+  }{
+  \DeclareMathSymbol{\tick}{0}{AMSa}{"58}
+  }
+
+\let \subseq    \preccurlyeq
+
+% We define a number of useful macros for projecting information from
+% a timed or untimed observation. 
+
+\def \Begin     {\@myop{\mathrm{begin}}}
+\def \End       {\@myop{\mathrm{end}}}
+\def \Head      {\@myop{\mathrm{head}}}
+\def \First     {\@myop{\mathrm{first}}}
+\def \Tail      {\@myop{\mathrm{tail}}}
+\def \Front     {\@myop{\mathrm{front}}}
+\def \Last      {\@myop{\mathrm{last}}}
+\def \Times     {\@myop{\mathrm{times}}}
+\def \Events    {\@myop{\mathrm{events}}}
+\def \Reverse   {\@myop{\mathrm{reverse}}}
+
+% We define a number of useful macros for specification purposes. 
+
+\def\@PreMacro#1{\mathop{\mbox{\sffamily #1}}}
+\def\@InMacro#1{\mathrel{\mbox{\sffamily #1}}}
+\def\@@InMacro#1^#2{\;\mbox{\sffamily #1}^{#2}\;}
+\def\@SupInMacro#1{\@ifnextchar^{\@@InMacro{#1}}{\@InMacro{#1}}}
+
+\def \mInternal         {\@PreMacro{internal}}
+\def \mRef              {\@InMacro{ref}}
+\def \mAt               {\@SupInMacro{at}}
+\def \mLive             {\@SupInMacro{live}}
+\def \mOpen             {\@SupInMacro{open}}
+\def \mFrom             {\@InMacro{from}}
+\def \mUntil            {\@InMacro{until}}
+\def \mLiveFrom         {\@InMacro{live from}}
+\def \mOpenFrom         {\@InMacro{open from}}
+\def \mNameOfLast       {\@InMacro{name of last}}
+\def \mBefore           {\@InMacro{before}}
+\def \mAfter            {\@InMacro{after}}
+\def \mTimeOfLast       {\@InMacro{time of last}}
+
+% We define a conditional syntax for processes.  This is an expression
+% conditional, and should not be confused with the command conditional
+% of programming languages.  That is, if the boolean condition is
+% true, then the expression under consideration is equal to the
+% expression in the first branch. 
+
+%\def \If        {\mathrel{\hbox{if}}}
+\def \Then      {\mathrel{\hbox{then}}}
+\def \Otherwise {\mathrel{\hbox{otherwise}}}
+%\def \Else      {\mathrel{\hbox{else}}}
+\def \Fi        {\mathrel{\hbox{fi}}}
+
+% In defining macros to set the syntax of real-time CSP, some symbols
+% are used more than once.  For ease of understanding, we define these
+% symbols as internal macros. 
+
+\def \csp@at    {\hbox{\it @}}
+\def \csp@bar   {\mathord{\mid}}
+\def \csp@chain {\mathord{\gg}}
+\def \csp@ext   {\mathord{\Box}}
+\def \csp@int   {\mathord{\sqcap}}
+\def \csp@par   {\mathord{\xparallel}}
+
+\def \csp@interrupt {\mathord{\triangle}}
+\def \csp@timeout   {\mathord{\triangleright}}
+
+\@ifpackageloaded{lucbr}{%
+  \def \csp@leftpar   {\csp@bar\mkern -3mu{[}}
+  \def \csp@rightpar  {{]}\mkern -3mu\csp@bar}
+  \def \csp@interleave {\csp@bar\mkern-2mu\csp@bar\mkern-2mu\csp@bar}
+  \DeclareMathSymbol{\csp@transfer}{0}{arrows}{"93}
+  }{
+  \def \csp@leftpar   {\csp@bar{[}}
+  \def \csp@rightpar  {{]}\csp@bar}
+  \def \csp@interleave {\csp@bar\csp@bar\csp@bar}  
+  \def \csp@transfer {\mathord{\swarrow}}
+  }
+
+% We define a quick hack to magnify the indexed forms of the choice
+% and parallel composition operators.  It seems to work okay. 
+
+\def\indexed@op#1{%
+  \mathop{\vcenter{\hbox{\Large$\mathstrut#1$}}}\nolimits}
+
+% We are now ready to define the macros used for setting the syntax of
+% real-time CSP.  Notice that the LaTeX version of \parallel *must* be
+% saved as \xparallel at this point. 
+
+\let\xparallel \parallel 
+
+\def \Bottom    {\mathord{\perp}}
+\def\Init{I\!\mbox{\footnotesize\emph{NIT}}}
+
+\def \Chaos     {C\!\mbox{\footnotesize\emph{HOAS}}}
+\def \Stop      {S\!\mbox{\footnotesize\emph{TOP}}}
+\def \Skip      {S\!\mbox{\footnotesize\emph{KIP}}}
+\def \Div       {D\!\mbox{\footnotesize\emph{IV}}}
+\def \Wait      {\@myop{W\!\mbox{\footnotesize\emph{AIT}}}}
+\def \at        {\mathord{\csp@at}}
+\def \then      {\@ifnextchar[{\@then}{\mathrel{\rightarrow}}}
+\def \@then[#1]{\buildrel #1\over\rightarrow}
+\def \barchoice {\mathrel{\csp@bar}}
+\def \intchoice {\mathrel{\csp@int}}
+\def \extchoice {\mathrel{\csp@ext}}
+\def \interrupt {\mathrel{\csp@interrupt}}
+\def \timeout   {\@ifnextchar[{\@timeout}{\mathrel{\csp@timeout}}}
+\def \@timeout[#1]{\mathrel{\csp@timeout\{#1\}}}
+\def \transfer  {\@ifnextchar[{\@transfer}{\mathrel{\csp@transfer}}}
+\def \@transfer[#1]{\mathrel{\csp@transfer\{#1\}}}
+\def \parallel  {\@ifnextchar[{\@parallel}{\mathrel{\csp@par}}}
+\def \@parallel[#1]{\@ifnextchar[{\@@parallel[#1]}{%
+                {\mathrel{\,\csp@leftpar\,{#1}\,\csp@rightpar\,}}}}
+\def \@@parallel[#1][#2]{\mathrel{\,\csp@leftpar\,{#1}\,
+                \csp@bar\,{#2}\,\csp@rightpar\,}}
+\def \interleave{\mathrel{\csp@interleave}}
+\def \chain     {\mathrel{\csp@chain}}
+\def \Intchoice {\indexed@op{\csp@int}}
+\def \Extchoice {\indexed@op{\csp@ext}}
+\def \Parallel  {\indexed@op{\csp@par}}
+\def \Interleave{\indexed@op{\csp@interleave}}
+
+\def \@semapp[#1]{\,\lbag #1 \rbag}
+\def \sem@fun#1{{#1}\@ifnextchar[{\@semapp}{}}
+\def \Semantics         {\sem@fun{semantics}}
+\def \Traces            {\sem@fun{traces}}
+\def \Failures          {\sem@fun{failures}}
+\def \TimedTraces       {\sem@fun{timed\,traces}}
+\def \TimedFailures     {\sem@fun{timed\,failures}}
+\def \Divergences       {\sem@fun{divergences}}
+\def \Infinites         {\sem@fun{infinites}}
+
+\def \lessdet{\@ifnextchar[{\@lessdet}{\mathrel\sqsubseteq}}
+\def \@lessdet[#1]{\@ifnextchar[{\lessdet@two[#1]}{\lessdet@one[#1]}}
+\def \lessdet@one[#1]{\mathrel{\sqsubseteq_{#1}}}
+\def \lessdet@two[#1][#2]{%
+        \mathrel{{\vphantom{\sqsubseteq}}_{#1}{\sqsubseteq}_{#2}}}
+
+\let \refinedby \lessdet
+
+\def \sat       {\mathrel{\mbox{\bf sat}}}
+\def \semb#1{{\lbag #1 \rbag}}
+
+% The following symbols have been used by researchers at Oxford to
+% denote the various semantic models, spaces, and functions.  
+
+\def\UT{UT}     \def\TE{TE}     \def\TT{TT}     
+\def\RT{RT}     \def\TR{TR}     \def\TI{TI}                
+\def\TTi{\TT^i} \def\TTw{\TT^\omega} \def\TRu{\TR^u}            
+
+\def\@obsmodel#1{{\cal{O}}_{#1}}
+\def\@obsspace#1{{\cal{S}}_{#1}}
+\def\@semmodel#1{{\cal{M}}_{#1}}
+\def\@semfunct#1{{\cal{F}}_{#1}\@ifnextchar[{\@semapp}{}}
+
+\def\Out    {\@obsmodel{UT}}    \def\Sut    {\@obsspace{UT}}
+\def\Ouf    {\@obsmodel{UF}}    \def\Suf    {\@obsspace{UF}}
+\def\Oufd   {\@obsmodel{UFD}}   \def\Sufd   {\@obsspace{UFD}}
+\def\Otf    {\@obsmodel{TF}}    \def\Stf    {\@obsspace{TF}}
+\def\Otfs   {\@obsmodel{TFS}}   \def\Stfs   {\@obsspace{TFS}}
+\def\Oti    {\@obsmodel{TI}}    \def\Sti    {\@obsspace{TI}}
+
+\def\Mut    {\@semmodel{UT}}    \def\Fut    {\@semfunct{UT}}
+\def\Muf    {\@semmodel{UF}}    \def\Fuf    {\@semfunct{UF}}
+\def\Mufd   {\@semmodel{UFD}}   \def\Fufd   {\@semfunct{UFD}}
+\def\Mtf    {\@semmodel{TF}}    \def\Ftf    {\@semfunct{TF}}
+\def\Mtfs   {\@semmodel{TFS}}   \def\Ftfs   {\@semfunct{TFS}}
+\def\Mti    {\@semmodel{TI}}    \def\Fti    {\@semfunct{TI}}
+
+\endinput

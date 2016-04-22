@@ -1,0 +1,43 @@
+ \documentclass{llncs}
+\usepackage{times}
+\usepackage{csp}
+\usepackage[boxruled,linesnumbered]{algorithm2e}
+\usepackage{algpseudocode}
+\usepackage{float, graphicx, epstopdf, lipsum, fancyhdr}
+\usepackage{wrapfig}
+\usepackage{subfigure}
+\begin{document}
+
+\title{Loop Invariant Generation through Active Learning}
+\author{
+Jiaying Li, Li Li, Le Guang Loc, Jun Sun\\
+\institute{
+Singapore University of Technology and Design \\
+\email{\{jiaying\_li,li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
+}
+
+\maketitle
+
+\begin{abstract}
+    In this work, we propose an automatic generation method for loop invariants 
+    through iterations of runtime sampling, machine learning and constraint solving. 
+    In each iteration, our method first collects real data from the program execution. 
+    Then, based on the satisfaction of the pre-condition and the post-condition in the program, 
+    our method generates a classification constraint 
+    using machine learning techniques. 
+    
+\end{abstract}
+
+\input{introduction.tex}
+\input{example.tex}
+\input{sampling.tex}
+\input{classification.tex}
+\input{selective.tex}
+\input{evaluation.tex}
+\input{related.tex}
+\input{conclusion.tex}
+
+\bibliographystyle{abbrv}
+\bibliography{learning}
+
+\end{document}
