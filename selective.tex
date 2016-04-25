@@ -4,8 +4,22 @@
 Given a learned predicate $Inv$, we verify whether constraint (1), (2) and (3) are satisfied using symbolic execution and constraint solving.
 First we separate the given loop program with the leaned predicate into three loop-free programs,
 which corresponds to constraints (1), (2) and (3). 
-After compiling these programs, we apply KLEE on each of them to get all the path condition.
-KLEE 
+After compiling these programs, we apply KLEE on each of them to get all the path conditions.
+
+
+
+In our implementation, we use KLEE\cite{cadar2008klee} as an invariant verifier to help us validate hypothesis invariants from the learner.
+Generally speaking, KLEE is a symbolic virtual machine built on top of the LLVM compiler infrastructure
+which can enumerate all the possible paths based on target configuration.
+After we compile the source file, we can use KLEE to do symbolic execution on the generated object file.
+KLEE will enumerate all the possible paths and then pass their path condition to a solver to get concrete values for all the symbolic variables.
+Note that, for any program ran by KLEE, if all the possible paths pass the assertion, 
+we can ensure the correctness of the program.
+In other words, we have proved the correctness of the program.
+
+
+
+
 If all of them are satisfied, we successfully verify the program. 
 Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, (named as counter-example sampling in section 3)
  which is then tested, categorized, used for active learning accordingly. 
