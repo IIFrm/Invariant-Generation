@@ -14,13 +14,13 @@ $N_T$ which stands for traces with negative labels
 and $U_T$ which stands for traces with unknown labels.
 They can be judged by the following rules: 
 \begin{itemize}
-    \item Set $C_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \nin Post\}$;
+    \item Set $C_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \notin Post\}$;
     \item Set $P_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \in Post\}$;
-    \item Set $N_T$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \nin Post\}$;
-    \item Set $U_T$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \in Post\}$;
+    \item Set $N_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \notin Post\}$;
+    \item Set $U_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \in Post\}$;
 \end{itemize}
 We remark that anytime a program state in $C_T$ is identified, a counter-example is found and \textsc{Zilu} reports that verification is failed immediately. 
-Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \inter Inv = \emptyset$. 
+Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. 
 The program states in $U_T$ may or not may be in $Inv$. 
 If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
 
@@ -85,8 +85,8 @@ let $T$ be a set of random samples\;
         \Return $s$ as a counterexample;
     }
     let $P$, $N$ and $NP$ be the respective sets accordingly\;
-    let $Inv_u = activeLearning(P, N \union NP)$\;
-    let $Inv_o = activeLearning(P \union NP, N)$\;
+    let $Inv_u = activeLearning(P, N \cup NP)$\;
+    let $Inv_o = activeLearning(P \cup NP, N)$\;
     let $Inv_s = activeLearning(P, N)$\;
     \For {each $Inv$ in $\{Inv_u, Inv_o, Inv_s\}$} {
         \If {(1) or (2) or (3) is not satisfied} {
