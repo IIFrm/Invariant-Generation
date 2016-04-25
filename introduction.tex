@@ -44,28 +44,30 @@ we need to find a loop invariant $\mathit{Inv}$ satisfying the following three c
 The goal of this work is developing a method to automatically learn 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
 
+% \begin{figure}[t]
+%     \begin{center}
+%         \begin{subfigure}[b]{0.4\textwidth}
+%     \subfloat[A Running Example.]{\scriptsize\begin{verbatim}
+%     void P(int x, int y) {
+%         assume(x < y);
+%         while (x < y) {
+%             x = x + 100;
+%         }
+%         assert(x >= y
+%             && x <= y + 99);
+%     }\end{verbatim}}
+%     \hfill
+%     \subfloat[Sampling Areas.]{\includegraphics[scale=0.45]{figures/running-sampling.pdf}}
+%     \end{center}
+%     \caption{A Running Example}
+%     \label{fig:running:example}
+% \end{figure}
+
 \begin{figure}[t]
     \centering
-    \begin{minipage}{.49\textwidth}
-        \centering
-        {\scriptsize\begin{verbatim}
-        void P(int x, int y) {
-            assume(x < y);
-            while (x < y) {
-                x = x + 100;
-            }
-            assert(x >= y && x <= y + 99);
-        }\end{verbatim}}
-        \includegraphics[scale=0.35]{figures/running-sampling.pdf}
-        \caption{A Running Example}
-        \label{fig:running:example}
-    \end{minipage}
-    \begin{minipage}{.49\textwidth}
-        \centering
-        \includegraphics[scale=0.42]{figures/overview.pdf}
-        \caption{Loop Invariant Inference Overview}
-        \label{fig:overview}
-    \end{minipage}
+    \includegraphics[scale=0.45]{figures/overview.pdf}
+    \caption{Loop Invariant Inference Overview}
+    \label{fig:overview}
 \end{figure}
 
 \medskip\noindent
@@ -82,6 +84,8 @@ The correctness of the program specification in Figure~\ref{fig:running:example}
 can be proven by checking the three conditions 
 (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) above 
 with a loop invariant $\mathit{Inv} = x \le y + 99$. 
+We use this running example in the following 
+to illustrate different stages of our invariant reference method. 
 
 \medskip\noindent
 \textbf{Overview.}
@@ -100,11 +104,14 @@ as shown in the Figure~\ref{fig:overview}.
         The `green' (`yellow' and `red' resp.) areas 
         represent `positive' (`uncertain' and `negative' resp.) samples. 
     } as the areas of different colors in Figure~\ref{fig:running:example}. 
+    When an program input can be found such that 
+    $\mathit{Pre}$ is $\mathit{true}$ and $\mathit{Post}$ is $\mathit{false}$, 
+    we output it as a proof of the program specification error. 
     \item 
     % (2) 
     Based on $S$ and their labels collected in the \emph{sampling} stage, 
-    we search for the loop invariant using machine learning algorithms, 
-    e.g., SVM with different kernels, in the \textbf{Classification} stage 
+    we \emph{actively} learn the loop invariant using machine learning algorithms, 
+    e.g., different SVM derivatives, in the \textbf{Classification} stage 
     (see Section~\ref{sec:classification}). 
     When the recently learnt invariant converges to the previously learnt ones, 
     we treat it as a invariant candidate and move to the verification step. 
@@ -118,10 +125,15 @@ as shown in the Figure~\ref{fig:overview}.
     First, we insert the candidate into the loop program and generate all the program execution traces 
     based on concolic testing using KLEE. 
     Then, we verify three loop invariant conditions 
-    with all of the program execution traces (i.e., different $\mathit{Body}$) using Z3. 
+    with respect to all of the program execution traces (i.e., different $\mathit{Body}$) 
+    using a SMT solver (e.g., Z3 in this work). 
     If the verification is successful, we claim the correctness of $P$ and output the loop invariant. 
     Otherwise, we add the counter-example from Z3 as a new sample 
-    and restart from the first stage. 
+    and restart from the \emph{sampling} stage. 
 \end{itemize}
+
+\medskip\noindent
+\textbf{Contributions.}
+
 
 % section introduction (end)

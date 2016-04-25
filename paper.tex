@@ -1,4 +1,4 @@
-\documentclass{llncs}
+\documentclass{sig-alternate-05-2015}
 
 \usepackage{etex}
 % \usepackage{csp}
@@ -23,10 +23,13 @@
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usetikzlibrary{arrows,shapes,snakes,automata,backgrounds,petri,positioning}
 \usepackage[utf8]{inputenc}
-\usepackage{wrapfig}
+% \usepackage{wrapfig}
 \usepackage{url}
+% \usepackage{caption}
+% \usepackage{subcaption}
+% \usepackage{subfig}
 % \usepackage{float}
-\usepackage{float}
+% \usepackage{float}
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{adjustbox}
@@ -35,20 +38,61 @@
 \usepackage{setspace}
 \usepackage[colorlinks,linkcolor=black,anchorcolor=black,
     citecolor=blue,urlcolor=black,bookmarks=true]{hyperref}
-\usepackage{times}
+% \usepackage{times}
 
 \newcommand\JY[1]{\textcolor{green}{#1}}
 \newcommand\LL[1]{\textcolor{blue}{#1}}
 \newcommand\SJ[1]{\textcolor{red}{#1}}
 
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{proposition}{Proposition}
+
 \begin{document}
 
 \title{Loop Invariant Generation through Active Learning}
+% \author{
+% Jiaying Li, Li Li, Le Guang Loc, Jun Sun\\
+% \institute{
+% Singapore University of Technology and Design \\
+% \email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
+% }
+
+
 \author{
-Jiaying Li, Li Li, Le Guang Loc, Jun Sun\\
-\institute{
-Singapore University of Technology and Design \\
-\email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Jiaying Li\\
+       \affaddr{Singapore University of Technology and Design}\\
+       \email{jiaying\_li@mymail.sutd.edu.sg}
+% 2nd. author
+\alignauthor
+Li Li\\
+       \affaddr{Singapore University of Technology and Design}\\
+       \email{li\_li@sutd.edu.sg}
+% 3rd. author
+\alignauthor 
+Le Guang Loc\\
+       \affaddr{Singapore University of Technology and Design}\\
+       \email{guangloc\_le@sutd.edu.sg}
+\and  % use '\and' if you need 'another row' of author names
+% 4th. author
+\alignauthor 
+Jun Sun\\
+       \affaddr{Singapore University of Technology and Design}\\
+       \email{sunjun@sutd.edu.sg}
 }
 
 \maketitle
@@ -69,7 +113,7 @@ Singapore University of Technology and Design \\
 \end{abstract}
 
 \input{introduction.tex}
-\input{example.tex}
+% \input{example.tex}
 \input{sampling.tex}
 \input{classification.tex}
 \input{selective.tex}
