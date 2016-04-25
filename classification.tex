@@ -1,132 +1,28 @@
 %!TEX root = paper.tex
 
 \section{Classification}
-After sampling, we obtain some program states must be in $inv$ and some must not. Thus, any candidate invariant must be able to perfectly classify these states. We apply classification techniques from the machine learning community to obtain classifiers as candidate invariants.
+After sampling and labeling, we obtain some program states must be in $inv$ and some must not. 
+Thus, any candidate invariant must be able to perfectly classify these states. 
+We apply classification techniques from the machine learning community to obtain classifiers as candidate invariants.
+Due to different technique can results in different forms of classifiers,
+we apply SVM and some of its derivatives on our training data. 
 
-In the following, we present how we obtain a classifier automatically using SVM. SVM is a supervised machine learning algorithm for classification and regression analysis. We use its binary classification functionality. Mathematically, the binary classification functionality of (linear) SVM works as follows. Given two sets of feature vectors $F^+$ and $F^-$, it generates, if there is any, a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, such that every state $s \in F^+$ satisfies the constraint and every state $s' \in F^-$ fails the constraint. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. This half space could be seen as the strongest witness why the two data states are different. In the following, we write $svm(F^+, F^-)$ to denote the function which returns a linear classifier
+\subsection{Linear SVM}
+\subsection{Polynomial SVM}
+\subsection{Conjunctive SVM}
+In the following, we present how we obtain a classifier automatically using SVM. 
+SVM is a supervised machine learning algorithm for classification and regression analysis. 
+We use its binary classification functionality. 
+Mathematically, the binary classification functionality of (linear) SVM works as follows. 
+Given two sets of feature vectors $F^+$ and $F^-$, it generates, if there is any, 
+a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
+such that every state $s \in F^+$ satisfies the constraint and every state $s' \in F^-$ fails the constraint. 
+In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
+This half space could be seen as the strongest witness why the two data states are different. 
+In the following, we write $svm(F^+, F^-)$ to denote the function which returns a linear classifier
 
-If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, a more complicated function $f$ must be adopted. For instance, if there is a classifier in the form of conjunctive of multiple half spaces, the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
-
-\subsection{Clustering}
-Based on the above assumption, the linear constraints $\phi_i$ 
-divide the space into at most $2^k$ convex regions. 
-One simple example is shown in Figure~\ref{fig:data1}. 
-All program states in the same region must have the same label, 
-i.e., whether it satisfies the invariant or not. 
-Every pair of regions $R_1$ and $R_2$ must be linearly separable, 
-i.e., there exists some linear constraint $\phi$ 
-such that $R_1 \subseteq \phi$ and $R_2 \cap \phi = \emptyset$. 
-Based on this observation, a naive algorithm for clustering the states 
-in $F^+$ and $F^-$ would work as follows: given a $k$ value such that $k \geq 2$, 
-we randomly assign every state $s$ in $F^+ \cup F^-$ to a region $R_i$ 
-as long as all states in the same region have the same label 
-and every pair of regions remain linearly separable. 
-We remark that if $k$ is 2, there is only one clustering. 
-In general, this algorithm is rather inefficient if you try all possible clustering. 
-Intuitively, however, \emph{`nearby'} states often belong to the same clustering 
-and thus in the following algorithm, 
-we first group near-by states and then identify the clustering.
-
-% \begin{figure}[t]
-% \begin{center}
-% \includegraphics[width=80mm]{originalData}
-% \vspace{-8mm}
-% \end{center}
-% \caption{Sample convex regions}
-% \label{fig:data1}
-% \end{figure}
-
-\begin{algorithm}[t]
-\SetAlgoVlined
-%\Indm
-\KwIn{$F^+$ and $F^-$}
-\KwOut{a set of clusters which are pairwise linearly separable}
-let $k = 1$\;
-\While {$k < K$} {
-     apply $k$-means algorithm to cluster $F^+$ into $k$ clusters $R^+_1, R^+_2, \cdots, R^+_k$\;
-     apply $k$-means algorithm to cluster $F^-$ into $k$ clusters $R^-_1, R^-_2, \cdots, R^-_k$\;
-     \If {every pair of $R^+_i$ and $R^-_j$ where $1 \leq i \leq k$ and $1 \leq j \leq k$ is linearly separable} {
-        break\;
-     }
-     $k = k+1$\;
-}
-let $merged$ be true\;
-\While {$merged$} {
-    let $merged$ be false\;
-    \For {each pair $R^+_i$ and $R^+_j$ where $i \neq j$} {
-        \If {$R^+_i \cup R^+_j$ is linearly separable from $R^-_i$ for all $i$} {
-            merge $R^+_i$ and $R^+_j$; set $merged$ be true\;
-        }
-    }
-    \For {each pair $R^-_i$ and $R^-_j$ where $i \neq j$} {
-        \If {$R^-_i \cup R^-_j$ is linearly separable from $R^+_i$ for all $i$} {
-            merge $R^-_i$ and $R^-_j$; set $merged$ be true\;
-        }
-    }
-}
-\Return the clusters\;
-\caption{Algorithm $cluster$}
-\label{alg:cluster}
-\end{algorithm}
-
-Algorithm~\ref{alg:cluster} works in two phases. In the first phase we apply k-means algorithm~\cite{} to group the data into linearly separable clusters. Notice that the states in $F^+$ and $F^+$ are clustered separably since all states in the same cluster must have the same label. In order to avoid too many clusters, in the second phase, we merge clusters into larger clusters.
-
-\begin{example}
-
-\end{example}
-
-\begin{proposition}
-$cluster(F^+, F^-)$ returns two sets of clusters $\{R^+_1, R^+_2, \cdots, R^+_m\}$ and $\{R^-_1, R^-_2, \cdots, R^-_n\}$ such that every pair of $R^+_i$ and $R^-_j$ where $1 \leq i \leq k$ and $1 \leq j \leq k$ is linearly separable. \hfill \qed
-\end{proposition}
-
-% \begin{figure}[t]
-% \begin{center}
-% \includegraphics[width=.32\textwidth]{learnedSeparator1}
-% \includegraphics[width=.32\textwidth]{learnedSeparator2}
-% \includegraphics[width=.32\textwidth]{learnedSeparator3}
-% \vspace{-5mm}
-% \end{center}
-% \caption{Relabeling for finding the classifiers}
-% \label{fig:learnedSeparator}
-% \end{figure}
-
-\subsection{Classification}
-After the last step, we obtain the clusters $R^+_1, R^+_2, \cdots, R^+_m$ and $R^-_1, R^-_2, \cdots, R^-_n$ (where $m \leq k$ and $n \leq k$). Next, we generate candidate classifiers. Our approach is based on the observation that for each actual classifier (i.e., a clause in $inv$), there exists at least one way of re-labeling the clusters such that the classifier would classify all states correctly. For instance, Figure~\ref{fig:learnedSeparator} shows the states can be re-labeled so that a linear constraint in Figure~\ref{fig:data1} becomes a classifier for all states. Based on the observation, we design Algorithm~\ref{classify} to identify candidate invariant.
-
-Firstly, we identify a set $X$ of candidate linear constraints. For each pair of clusters with different labels, for any possible re-labeling of the other clusters, if there is a linear classifier which perfectly classifies all states after relabeling, we add the linear classifier into $X$. Whenever any two clusters can be separated by a classifier in $X$, we return a candidate invariant based on $X$ which is in the following form.
-\[
-    \land \{ \phi \in X | R^+_1 \subseteq \phi \} \lor \\
-    \land \{ \phi \in X | R^+_2 \subseteq \phi \} \lor \\
-    \cdots \\
-    \land \{ \phi \in X | R^+_m \subseteq \phi \}
-\]
-In the worst case, the loop from line 2 to 8 would iteration for $m*n*2^{m+n-2}$ times.
-
-\begin{example}
-
-\end{example}
-
-\begin{proposition}
-Given two set of states $F^+$ and $F^-$ such that there is a classifier in the assumed form, $classify(F^+,F^-)$ always returns a perfect classifier. \hfill \qed
-\end{proposition}
-
-\begin{algorithm}[t]
-\SetAlgoVlined
-\KwIn{clusters $R^+_1, R^+_2, \cdots, R^+_m$ and $R^-_1, R^-_2, \cdots, R^-_n$}
-\KwOut{a candidate invariant}
-let $X$ be an empty sequence\;
-\For {each pair $R^+_i$ and $R^-_j$ where $1 \leq i \leq m$ and $1 \leq j \leq n$} {
-    \For {each possible labeling of the clusters other than $R^+_i$ and $R^-_j$} {
-        apply SVM to generate a linear classifier\;
-        \If {there is a perfect classifier $inv$} {
-            add $inv$ into $X$\;
-        }
-        \If {any two clusters with different labels can be separated by a classifier in $X$} {
-            \Return the candidate invariant based on $X$\;
-        }
-    }
-}
-\caption{Algorithm $classify$}
-\label{classify}
-\end{algorithm}
+If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, 
+a more complicated function $f$ must be adopted. 
+For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
+the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
 
