@@ -19,6 +19,44 @@ After compiling three separated programs, we apply our KLEE to get the path cons
 
  
 The overall algorithm is presented in Figure~\ref{alg:overall}.
+\begin{algorithm}[t]
+\SetAlgoVlined
+\Indm
+\KwIn{$Pre$, $Cond$, $Body$, $Post$}
+\KwOut{an invariant which completes the proof or a counterexample}
+\Indp
+let $S$ be a set of random samples\;
+\While{true} {
+    test the program for each sample in $S$\;
+    \If {a state $s$ in $C$ is identified} {
+        \Return $s$ as a counterexample;
+    }
+    let $P$, $N$ and $U$ be the respective sets accordingly\;
+    %let $Inv_u = activeLearning(P, N \cup NP)$\;
+    %let $Inv_o = activeLearning(P \cup NP, N)$\;
+    let $Inv$ = ClassificationAlgorithm($P$, $N$)\;
+    \If {$Inv$ not converged} {
+        add selectiveSampling($Inv$) into $S$\;
+        continue\;
+    }
+    %\For {each $Inv$ in $\{Inv_u, Inv_o, Inv_s\}$} {
+    Divide the loop program into three based on (1)(2)(3)\;
+    Run symbolic execution on each of them to get path constraints $PCs$\;
+    \For {each $pc$ in $PCs$} {
+        \If { $pc$ is not satisfied} {
+            add the counterexample into $S$\;
+            continue\;
+        }
+    }
+        %\Else {
+    \Return $Inv$ as the proof;
+        %}
+    
+}
+\caption{Algorithm $overall$}
+\label{alg:overall}
+\end{algorithm}
+
 
 %We remark that we learn three classifiers as candidates for the loop invariant: $U$, $OU$, $O$ such that
 %\begin{itemize}
