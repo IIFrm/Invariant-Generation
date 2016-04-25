@@ -28,26 +28,26 @@ a more complicated function $f$ must be adopted.
 For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
 the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
 
-\section{Active Learning}
-Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
-the guessed classifier obtained from previous iteration might be far from being correct. 
-In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
-it is very unlikely that we would find it. 
-Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
-This problem has been discussed and addressed in the machine learning community using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
+%\section{Active Learning}
+%Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
+%the guessed classifier obtained from previous iteration might be far from being correct. 
+%In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
+%it is very unlikely that we would find it. 
+%Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
+%This problem has been discussed and addressed in the machine learning community using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
 
-The concept of active learning or selective sampling refers to the approaches 
-that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
-SVM selective sampling techniques have been proven effective in achieving a high accuracy 
-with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
-The basic idea of selective sampling is that at each round, 
-we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
-Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
-this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
-In our setting, this means that we should sample a program state right by the classifier and test the program 
-with that state to label that feature vector so that the classifier would be improved.
+%The concept of active learning or selective sampling refers to the approaches 
+%that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
+%SVM selective sampling techniques have been proven effective in achieving a high accuracy 
+%with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
+%The basic idea of selective sampling is that at each round, 
+%we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
+%Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
+%this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
+%In our setting, this means that we should sample a program state right by the classifier and test the program 
+%with that state to label that feature vector so that the classifier would be improved.
 
-\begin{algorithm}[t]
+\begin{algorithm}[b]
 \SetAlgoVlined
 \Indm
 \KwIn{$F^+$ and $F^-$}
