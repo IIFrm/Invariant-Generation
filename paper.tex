@@ -19,8 +19,9 @@ Singapore University of Technology and Design \\
 \maketitle
 
 \begin{abstract}
-    In this work, we propose a machine learning approach for automatic inductive loop invariant inference 
-    through iterations of runtime sampling, active learning and invariant validating. 
+	Loop invariant generation is one of the fundamental problems in program analysis and verification. 
+    In this work, we propose an automatic generation method for inductive loop invariants 
+    through iterations of runtime sampling, machine learning and constraint solving. 
     In each iteration, our method first collects real data at runtime based on selective sampling. 
     Then, based on their satisfaction of the assumptions and assertions in the program, 
     our method uses support vector machine to learn a loop invariant candidate, 
@@ -29,7 +30,7 @@ Singapore University of Technology and Design \\
     our method returns it directly and ends the generation process. 
     Otherwise, the counter-example is used to refine the data sampling in the next iteration. 
     The experiment evaluation shows that our method can be used to learn loop invariants 
-    effectively and automatically that cannot be learnt by other loop invariant generation tools. 
+    effectively and automatically that cannot be learned by other loop invariant generation tools. 
 \end{abstract}
 
 \input{introduction.tex}
