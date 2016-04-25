@@ -1,16 +1,20 @@
 %!TEX root = paper.tex
 
 \section{Verification}
-Given a learned predicate $Inv$, we verify whether constraint (1), (2) and (3) are satisfied using symbolic execution. 
+Given a learned predicate $Inv$, we verify whether constraint (1), (2) and (3) are satisfied using symbolic execution and constraint solving.
+First we separate the given loop program with the leaned predicate into three loop-free programs,
+which corresponds to constraints (1), (2) and (3). 
+After compiling these programs, we apply KLEE on each of them to get all the path condition.
+KLEE 
 If all of them are satisfied, we successfully verify the program. 
-Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$,
+Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, (named as counter-example sampling in section 3)
  which is then tested, categorized, used for active learning accordingly. 
  The overall algorithm is presented in Figure~\ref{alg:overall}.
 
 We remark that we learn three classifiers as candidates for the loop invariant: $U$, $OU$, $O$ such that
 \begin{itemize}
-\item $U$ classifies states in $P$ and those in $N \union NP$.
-\item $O$ classifies states in $N$ and those in $P \union NP$.
+\item $U$ classifies states in $P$ and those in $N \cup NP$.
+\item $O$ classifies states in $N$ and those in $P \cup NP$.
 \item $OU$ classifies states in $P$ and $N$;
 \end{itemize}
 Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$); 

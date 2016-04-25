@@ -1,6 +1,12 @@
 %!TEX root = paper.tex
 
 \section{Sampling}
+Before learning procedure, we need to gather some data from program. 
+So in this step, we first sample
+%, either randomly or using tools based on the idea of concolic testing~\cite{}, 
+a set $S$ of program states in three ways, random sampling, selective sampling and counter-example sampling, 
+according to the learning phases.
+
 In this step, we sample, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 a set $T$ of program states and test the program starting with each program state $s$ in $T$. 
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$. 
@@ -14,24 +20,44 @@ $N_T$ which stands for traces with negative labels
 and $U_T$ which stands for traces with unknown labels.
 They can be judged by the following rules: 
 \begin{itemize}
-    \item Set $C_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \nin Post\}$;
+    \item Set $C_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \notin Post\}$;
     \item Set $P_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \in Post\}$;
-    \item Set $N_T$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \nin Post\}$;
-    \item Set $U_T$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \in Post\}$;
+    \item Set $N_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \notin Post\}$;
+    \item Set $U_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \in Post\}$;
 \end{itemize}
 We remark that anytime a program state in $C_T$ is identified, a counter-example is found and \textsc{Zilu} reports that verification is failed immediately. 
-Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \inter Inv = \emptyset$. 
+Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. 
 The program states in $U_T$ may or not may be in $Inv$. 
 If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
 
+\subsection{Random Sampling}
+Random Sampling is applied all along our learning process.
+It is a quite intuitive sampling approach, in which each sample is chosen randomly and entirely by chance, 
+such that each sample has the same probability of being chosen at any stage during the sampling process.
+At the begging of our framework, we use sampling mechanism completely as we have no idea of sample information then. 
+In the subsequent iterations, we also use this sampling method partially to avoid the bias resulted from previous sampling iteration.
 
 
+\subsection{Selective Sampling (Active Learning)}
+When we have a guess of loop invariants, we can apply selective sampling approach to find more useful samples.
+Actually we apply this sampling method all along the learning procedure except the first iteration.
 Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
-the classifier obtained above might be far from being correct. 
+the guessed classifier obtained from previous iteration might be far from being correct. 
 In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
 it is very unlikely that we would find it. 
 Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
 This problem has been discussed and addressed in the machine learning community using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
+
+The concept of active learning or selective sampling refers to the approaches 
+that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
+SVM selective sampling techniques have been proven effective in achieving a high accuracy 
+with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
+The basic idea of selective sampling is that at each round, 
+we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
+Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
+this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
+In our setting, this means that we should sample a program state right by the classifier and test the program 
+with that state to label that feature vector so that the classifier would be improved.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -53,17 +79,6 @@ let $old$ be $null$\;
 \label{alg:active}
 \end{algorithm}
 
-The concept of active learning or selective sampling refers to the approaches 
-that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
-SVM selective sampling techniques have been proven effective in achieving a high accuracy 
-with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
-The basic idea of selective sampling is that at each round, 
-we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
-Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
-this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
-In our setting, this means that we should sample a program state right by the classifier and test the program 
-with that state to label that feature vector so that the classifier would be improved.
-
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
@@ -71,6 +86,153 @@ otherwise we apply selective sampling so that we can generate additional labeled
 In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
 Notice that in our setting, the most informative samples are those which are exactly on the lines and therefore can be obtained by solving an equation system. 
 At line 8, we test the program with the newly generated samples so as to label them accordingly.
+
+In our implementation, after getting a classifier, which is usually a single polynomials or conjunction or disjunction of polynomials,
+we can get some solutions of these polynomials using \textbf{GSL} (GNU Scientific Library).
+Then we use these solutions or the points near these solutions as sampling points.
+
+
+\subsection{Counter-Example Sampling}
+Counter-Example sampling is applied after failure of invariant candidate verification (which is described in details in section 5).
+After getting an invariant candidate, we try to check it using concolic testing~\cite{} and constraint solving.
+When we fails to validate, the constraint solver could provide us with counter-examples, 
+which directly refute our invariant candidate.
+And as a result, it is quite useful for the invariant candidate refinement in next learning procedure.
+
+
+
+\section {Labeling}
+With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
+We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
+So if there is a trace $Trace\{s_0, s_1, ..., s_n\}$, then $s_i\in Body^*(s_0)\ for \all i \in [0...n]$.
+We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
+Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+
+\subsubsection*{Positive State, Negative State \& Implication State}
+
+These three concepts are introduced in \cite{sharma2014invariant}.\
+In this paper, we use predicates and sets of states interchangeably.
+%Here is just a revision.
+Let $C$ be a candidate invariant.
+
+From equation (1) we know, for an invariant $Inv$, 
+any state that satisfies $Pre$ also satisfies $Inv$. 
+% However, if $P \wedge \neg C$ has a satisfying assignment $g$, 
+% then $P(g)$ is true and $\mathcal{C}(g)$ is false 
+% and hence g proves $\mathit{C}$ is not an invariant. 
+We call any state that must be satisfied by an actual invariant a good state. 
+
+
+Now consider equation (2).
+A pair $(s, t)$ satisfies the property that $s$ satisfies $Cond$ and if the execution of $S$
+is started in state $s$ then $S$ can terminate in state $t$. 
+Since an actual invariant $Inv$ is inductive, it should satisfy $s \in {Inv} \Rightarrow t \in {Inv}$. 
+Hence, a pair $(s, t)$ satisfying $s \in C \land t \notin \mathcal{C}$ proves $C$ is not an invariant. 
+
+Finally, consider equation (3).
+The `existence of a state $s \in C \wedge \neg B \wedge \neg Post$ proves $C$ is inadequate to discharge the postcondition. 
+We call a state $s$ which satisfies $\not B \land \not Post$ a bad state. 
+% For an adequate invariant $\mathcal{I}$, $\mathcal{I}(b)$ should be false. 
+% We call a state that must not be satisfied by an adequate invariant, such as b, a bad state. 
+
+%Hence, given an incorrect candidate invariant and a decision procedure
+%that can produce counterexamples, 
+%the decision procedure can produce either a good state, a pair, or a bad state as a counterexample to refute the candidate.
+
+
+\subsubsection*{Positive Trace, Negative Trace \& Implication Trace}
+In our approach, we assume $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$ is a chain of states in the target program,
+where $s_0$ is the initial state before entering the loop, 
+and $s_i$ is a state just after the loop has iterated $i$ times in the program.
+We assume $s_n$ satisfies $\neg B$ so it is the state that can jump out the loop body.
+
+
+
+For a state chain $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$, 
+if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
+we say this is a good state chain,
+Because if state $s_0$ satisfy $Pre$,
+$s_0$ is a good state that must satisfy $Inv$, according to equation 1.
+Furthermore, according to equation 2,
+all of $\{s_1, s_2, ..., s_i, ... , s_n\}$ are good states.
+So now we can get a good state chain  $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$.
+
+
+On the contrary, for a state chain $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$, 
+if $s_0$ satisfies $\neg Pre$, and $s_n$ satisfies $\neg Post$,
+we say this is a bad state chain, 
+which means all the states in this chain should be bad states.  
+
+
+We categorize program states in $Body^*(S)$ into four sets:
+$C_{S}$ which stands for counter-example trace, 
+$P_{S}$ which stands for traces with positive labels, 
+$N_{S}$ which stands for traces with negative labels 
+and $U_{S}$ which stands for traces with unknown labels.
+
+They can be judged according to Table~\ref{LabelingTable}: 
+
+\begin{table}[htb]
+\label{LabelingTable}
+\centering
+\caption{Trace Labeling Table}
+\begin{tabular}[float]{|c|c|c|}
+\hline
+$Trace\{s_0, s_1, ..., s_n\}$         & $s_n \in Post$                     & $s_n \in \neg Post$\\
+\hline
+$s_o \in Pre$                 & $Trace \in P_{S}$                & $Trace \in C_{S}$\\
+\hline
+$s_0 \in \neg Pre$            & $Trace \in U_{S}$         & $Trace \in N_{S}$\\
+\hline
+\end{tabular}
+\end{table}
+
+
+%\begin{itemize}
+%    \item Set $C_{T}$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \nin Post\}$;
+%    \item Set $P_{T}$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \in Post\}$;
+%    \item Set $N_{T}$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \nin Post\}$;
+%    \item Set $U_{T}$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \in Post\}$;
+%\end{itemize}
+%We remark that anytime a program state in $C_T$ is identified, a counter-example is found and \textsc{Zilu} reports that verification is failed immediately. 
+%Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \inter Inv = \emptyset$. 
+%The program states in $U_T$ may or not may be in $Inv$. 
+%If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
+
+
+
+
+Actually for an arbitrary state chain there are also two other possibilities we have not mentioned yet.
+One is a chain begins with a state $s_0$ that satisfies $Pre$ but end with a state $s_n$ that satisfies $\neg Post$,
+this is a counterexample to disprove the program.
+That means there is something wrong with at least one of precondition, loop condition, loop body or postcondition.
+We need to find out what happens and update the program, 
+after which we can reapply our approach to learn loop invariants.
+The other case is a chain begin with a state $s_0$ that satisfies $\neg Pre$ but end with a state $s_n$ that satisfies $Post$.
+Under this condition, we could not justify whether $s_0$ and $s_n$ satisfy invariants or not,
+not to mention other states $\{s_1, s_2, ..., s_i, ... , s_{n-1}\}$.
+The only thing we can ensure is this is an implication chain.
+In total, we can have table.~\ref{StateChain-InvariantTable}.
+
+
+
+
+%\newline
+%\normal
+Among all these possibilities,
+we can get more samples than previous approaches can with executing program just once.
+So with the sample information, 
+the learner can learn an as good invariant as, if not better than, the previous approaches, 
+as it can utilize more information to do invariant learning task.
+This also implies our approach can get convergence faster than before.
+
+
+
+
+
+
+
+
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -81,12 +243,12 @@ At line 8, we test the program with the newly generated samples so as to label t
 let $T$ be a set of random samples\;
 \While{true} {
     test the program for each sample in $T$\;
-    \If {a state $s$ in $CT$ is identified} {
+    \If {a state $s$ in $C$ is identified} {
         \Return $s$ as a counterexample;
     }
     let $P$, $N$ and $NP$ be the respective sets accordingly\;
-    let $Inv_u = activeLearning(P, N \union NP)$\;
-    let $Inv_o = activeLearning(P \union NP, N)$\;
+    let $Inv_u = activeLearning(P, N \cup NP)$\;
+    let $Inv_o = activeLearning(P \cup NP, N)$\;
     let $Inv_s = activeLearning(P, N)$\;
     \For {each $Inv$ in $\{Inv_u, Inv_o, Inv_s\}$} {
         \If {(1) or (2) or (3) is not satisfied} {

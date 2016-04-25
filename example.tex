@@ -52,7 +52,7 @@ Inv \land \neg Cond \implies Post ~~~~~~~~~~~~~~~~~~~~~~~~~ (3)
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-{\scriptsize\begin{verbatim}
+    {\scriptsize\begin{verbatim}
     void ex2 () {
         lock=0;new=old+1;
         while (new!=old) {
@@ -88,7 +88,7 @@ and $inv$ contains no more than $k$ such statements.
 We remark that such invariant is in general not convex and thus existing approaches on learning convex invariants do not work~\cite{}.
 
 \paragraph{Overview of Our Approach} 
-Our approach to solve the problem is illustrated in Figure~\ref{overview}. 
+Our approach to solve the problem is illustrated in Figure~\ref{fig:overview}. 
 Firstly, we randomly generate a set of program states right before the loop and test the program. 
 Based on the testing results, we obtain program states which must or must not satisfy any invariant satisfying (1), (2) and (3). 
 Secondly, we develop an algorithm for generating candidate invariants based classification techniques from the machine learning community. 
