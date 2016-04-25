@@ -24,7 +24,7 @@ Furthermore, we write $Body(Pr)$ where $Pr$ to denote the set $\{s' | \exists s 
 The goal is thus to automatically obtain a loop invariant such that that the following conditions are satisfied.
 \[
 Pre \implies Inv ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~(1) \\
-Inv \implies Body(Inv \land Cond) ~~~~~~~~~~~~~~~~~ (2) \\
+Inv \implies Body(Inv \land Cond) ~~~~~~~~~~~~~~~~~~ (2) \\
 Inv \land \neg Cond \implies Post ~~~~~~~~~~~~~~~~~~~~~~~~~ (3)
 \]
 %where $Inv'$ is the predicate obtained by replacing every variable in $Inv$ with its primed version, denoting the set of program states after executing $Body$.
