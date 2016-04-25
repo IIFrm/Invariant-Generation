@@ -22,4 +22,5 @@
 *.out
 *.lb
 *.synctex.gz
+*.graffle
 paper.pdf

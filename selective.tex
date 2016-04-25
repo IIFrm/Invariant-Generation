@@ -1,6 +1,8 @@
 %!TEX root = paper.tex
 
-\section{Verification}
+\section{Verification} % (fold)
+\label{sec:verification}
+
 Given a learned predicate $Inv$, we verify whether constraint (1), (2) and (3) are satisfied using symbolic execution and constraint solving.
 First we separate the given loop program with the leaned predicate into three loop-free programs,
 which corresponds to constraints (1), (2) and (3). 
@@ -74,3 +76,6 @@ let $S$ be a set of random samples\;
 \begin{theorem}
 Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
 \end{theorem}
+
+
+% section verification (end)

@@ -1,6 +1,8 @@
 %!TEX root = paper.tex
 
-\section{Classification}
+\section{Classification} % (fold)
+\label{sec:classification}
+
 After sampling and labeling, we obtain some program states must be in $Inv$ and some must not. 
 Thus, any candidate invariant must be able to perfectly classify these states. 
 We apply classification techniques from the machine learning community to obtain classifiers as candidate invariants.
@@ -76,3 +78,4 @@ At line 8, we test the program with the newly generated samples so as to label t
 In our implementation, after getting a classifier, which is usually a single polynomials or conjunction or disjunction of polynomials,
 we can get some solutions of these polynomials using \textbf{GSL} (GNU Scientific Library).
 Then we use these solutions or the points near these solutions as sampling points.
+% section classification (end)
