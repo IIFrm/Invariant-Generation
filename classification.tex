@@ -8,7 +8,24 @@ In the following, we present how we obtain a classifier automatically using SVM.
 If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, a more complicated function $f$ must be adopted. For instance, if there is a classifier in the form of conjunctive of multiple half spaces, the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
 
 \subsection{Clustering}
-Based on the above assumption, the linear constraints $\phi_i$ divide the space into at most $2^k$ convex regions. One simple example is shown in Figure~\ref{fig:data1}. All program states in the same region must have the same label, i.e., whether it satisfies the invariant or not. Every pair of regions $R_1$ and $R_2$ must be linearly separable, i.e., there exists some linear constraint $\phi$ such that $R_1 \subseteq \phi$ and $R_2 \inter \phi = \emptyset$. Based on this observation, a naive algorithm for clustering the states in $F^+$ and $F^-$ would work as follows: given a $k$ value such that $k \geq 2$, we randomly assign every state $s$ in $F^+ \union F^-$ to a region $R_i$ as long as all states in the same region have the same label and every pair of regions remain linearly separable. We remark that if $k$ is 2, there is only one clustering. In general, this algorithm is rather inefficient if you try all possible clustering. Intuitively, however, \emph{`nearby'} states often belong to the same clustering and thus in the following algorithm, we first group near-by states and then identify the clustering.
+Based on the above assumption, the linear constraints $\phi_i$ 
+divide the space into at most $2^k$ convex regions. 
+One simple example is shown in Figure~\ref{fig:data1}. 
+All program states in the same region must have the same label, 
+i.e., whether it satisfies the invariant or not. 
+Every pair of regions $R_1$ and $R_2$ must be linearly separable, 
+i.e., there exists some linear constraint $\phi$ 
+such that $R_1 \subseteq \phi$ and $R_2 \cap \phi = \emptyset$. 
+Based on this observation, a naive algorithm for clustering the states 
+in $F^+$ and $F^-$ would work as follows: given a $k$ value such that $k \geq 2$, 
+we randomly assign every state $s$ in $F^+ \cup F^-$ to a region $R_i$ 
+as long as all states in the same region have the same label 
+and every pair of regions remain linearly separable. 
+We remark that if $k$ is 2, there is only one clustering. 
+In general, this algorithm is rather inefficient if you try all possible clustering. 
+Intuitively, however, \emph{`nearby'} states often belong to the same clustering 
+and thus in the following algorithm, 
+we first group near-by states and then identify the clustering.
 
 % \begin{figure}[t]
 % \begin{center}
@@ -37,12 +54,12 @@ let $merged$ be true\;
 \While {$merged$} {
     let $merged$ be false\;
     \For {each pair $R^+_i$ and $R^+_j$ where $i \neq j$} {
-        \If {$R^+_i \union R^+_j$ is linearly separable from $R^-_i$ for all $i$} {
+        \If {$R^+_i \cup R^+_j$ is linearly separable from $R^-_i$ for all $i$} {
             merge $R^+_i$ and $R^+_j$; set $merged$ be true\;
         }
     }
     \For {each pair $R^-_i$ and $R^-_j$ where $i \neq j$} {
-        \If {$R^-_i \union R^-_j$ is linearly separable from $R^+_i$ for all $i$} {
+        \If {$R^-_i \cup R^-_j$ is linearly separable from $R^+_i$ for all $i$} {
             merge $R^-_i$ and $R^-_j$; set $merged$ be true\;
         }
     }
@@ -78,10 +95,10 @@ After the last step, we obtain the clusters $R^+_1, R^+_2, \cdots, R^+_m$ and $R
 
 Firstly, we identify a set $X$ of candidate linear constraints. For each pair of clusters with different labels, for any possible re-labeling of the other clusters, if there is a linear classifier which perfectly classifies all states after relabeling, we add the linear classifier into $X$. Whenever any two clusters can be separated by a classifier in $X$, we return a candidate invariant based on $X$ which is in the following form.
 \[
-    \Land \{ \phi \in X | R^+_1 \subseteq \phi \} \lor \\
-    \Land \{ \phi \in X | R^+_2 \subseteq \phi \} \lor \\
+    \land \{ \phi \in X | R^+_1 \subseteq \phi \} \lor \\
+    \land \{ \phi \in X | R^+_2 \subseteq \phi \} \lor \\
     \cdots \\
-    \Land \{ \phi \in X | R^+_m \subseteq \phi \}
+    \land \{ \phi \in X | R^+_m \subseteq \phi \}
 \]
 In the worst case, the loop from line 2 to 8 would iteration for $m*n*2^{m+n-2}$ times.
 
