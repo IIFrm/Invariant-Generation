@@ -44,24 +44,33 @@ we need to find a loop invariant $\mathit{Inv}$ satisfying the following three c
 The goal of this work is developing a method to automatically learn 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
 
-% \begin{figure}[t]
-%     \begin{center}
-%         \begin{subfigure}[b]{0.4\textwidth}
-%     \subfloat[A Running Example.]{\scriptsize\begin{verbatim}
-%     void P(int x, int y) {
-%         assume(x < y);
-%         while (x < y) {
-%             x = x + 100;
-%         }
-%         assert(x >= y
-%             && x <= y + 99);
-%     }\end{verbatim}}
-%     \hfill
-%     \subfloat[Sampling Areas.]{\includegraphics[scale=0.45]{figures/running-sampling.pdf}}
-%     \end{center}
-%     \caption{A Running Example}
-%     \label{fig:running:example}
-% \end{figure}
+\begin{figure}[t]
+\begin{subfigure}{0.245\textwidth}
+    \centering
+    \vspace{1.5cm}
+    {\scriptsize\begin{verbatim}
+    void P(int x, int y) {
+        assume(x < y);
+        while (x < y) {
+            x = x + 100;
+        }
+        assert(x >= y
+            && x <= y + 99);
+    }
+    \end{verbatim}}
+    \vspace{0.5cm}
+    \caption{Loop Program}
+    \label{fig:loop:program}
+\end{subfigure}%
+\begin{subfigure}{.245\textwidth}
+      \centering
+      \includegraphics[scale=0.43]{figures/running-sampling.pdf}
+      \caption{Sampling}
+      \label{figure:running:example:sampling}
+\end{subfigure}
+\caption{A Running Example}
+\label{fig:running:example}
+\end{figure}
 
 \begin{figure}[t]
     \centering
@@ -73,7 +82,7 @@ the invariant $\mathit{Inv}$ from the loop program and thus prove its correctnes
 \medskip\noindent
 \textbf{A Running Example}
 is shown in Figure~\ref{fig:running:example}. 
-The loop program $P$ takes two integers $x$ and $y$ as inputs. 
+The loop program $P$ takes two integer variables $x$ and $y$ as inputs. 
 The assumption $\mathit{Pre}$ requires that $x < y$, 
 which is the same as the loop condition $\mathit{Cond}$. 
 When $\mathit{Cond}$ is met, 
@@ -110,14 +119,17 @@ as shown in the Figure~\ref{fig:overview}.
     \item 
     % (2) 
     Based on $S$ and their labels collected in the \emph{sampling} stage, 
-    we \emph{actively} learn the loop invariant using machine learning algorithms, 
-    e.g., different SVM derivatives, in the \textbf{Classification} stage 
-    (see Section~\ref{sec:classification}). 
+    we \emph{actively} learn the loop invariant as classification models 
+    using machine learning algorithms 
+    in the \textbf{Classification} stage (see Section~\ref{sec:classification}), 
+    e.g., different SVM derivatives. 
     When the recently learnt invariant converges to the previously learnt ones, 
     we treat it as a invariant candidate and move to the verification step. 
     Otherwise, we apply selective sampling on the recently learnt invariant 
     to add more samples in the sampling stage. 
-    \LL{We prove the termination of this process.}
+    When a sample cannot be classified using a certain classification model, 
+    we try other alternative models in a sequential order. 
+    \LL{We prove the termination of the \emph{classification} stage if such an invariant exists.}
     \item 
     % (3) 
     When an invariant candidate is found, 

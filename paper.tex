@@ -7,7 +7,9 @@
 \usepackage{lipsum}
 \usepackage{fancyhdr}
 \usepackage{wrapfig}
-\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
+% \usepackage{subfigure}
 \usepackage{graphicx}
 \usepackage{longtable}
 \usepackage{amssymb}
@@ -23,13 +25,8 @@
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usetikzlibrary{arrows,shapes,snakes,automata,backgrounds,petri,positioning}
 \usepackage[utf8]{inputenc}
-% \usepackage{wrapfig}
 \usepackage{url}
-% \usepackage{caption}
-% \usepackage{subcaption}
-% \usepackage{subfig}
-% \usepackage{float}
-% \usepackage{float}
+\usepackage{float}
 \usepackage{multirow}
 \usepackage{tabularx}
 \usepackage{adjustbox}
@@ -51,6 +48,8 @@
 \newtheorem{proposition}{Proposition}
 
 \begin{document}
+    
+\setcopyright{acmcopyright}
 
 \title{Loop Invariant Generation through Active Learning}
 % \author{
@@ -60,7 +59,7 @@
 % \email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
 % }
 
-
+\numberofauthors{4}
 \author{
 % You can go ahead and credit any number of authors here,
 % e.g. one 'row of three' or two rows (consisting of one row of three
@@ -83,11 +82,11 @@ Li Li\\
        \affaddr{Singapore University of Technology and Design}\\
        \email{li\_li@sutd.edu.sg}
 % 3rd. author
+\and  % use '\and' if you need 'another row' of author names
 \alignauthor 
 Le Guang Loc\\
        \affaddr{Singapore University of Technology and Design}\\
        \email{guangloc\_le@sutd.edu.sg}
-\and  % use '\and' if you need 'another row' of author names
 % 4th. author
 \alignauthor 
 Jun Sun\\
