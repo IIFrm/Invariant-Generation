@@ -35,11 +35,11 @@ To prove the correctness of the above program specification,
 we need to find a loop invariant $\mathit{Inv}$ satisfying the following three conditions. 
 \begin{align}
     &s \models \mathit{Pre} 
-        &&\Rightarrow && s \models \mathit{Inv} \label{inv:pre} \\
+        &&\Rightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
     &s \models \mathit{Inv} \land \mathit{Cond} 
-        &&\Rightarrow && \mathit{Body}(s) \models \mathit{Inv} \label{inv:loop} \\
+        &&\Rightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
     &s \models \mathit{Inv} \land \neg\mathit{Cond} 
-        &&\Rightarrow && s \models \mathit{Post} \label{inv:post}
+        &&\Rightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
 The goal of this work is developing a method to automatically learn 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
@@ -89,14 +89,14 @@ is shown in Figure~\ref{fig:running:example:program}.
 The loop program $P$ takes two integer variables $x$ and $y$ as inputs. 
 The assumption $\mathit{Pre}$ requires that $x < y$, 
 which is the same as the loop condition $\mathit{Cond}$. 
-When $\mathit{Cond}$ is met, 
-$x$ is increased by $100$ in each loop iteration. 
-Thus, $\mathit{Body}(\{ x \mapsto v \}) = \{ x \mapsto v + 100 \}$. 
-Finally, the assertion of $P$ specifies that $y \le x \le y + 99$. 
+When $\mathit{Cond}$ is met in each loop iteration, 
+$x$ is increased by $7$ if $x$ is negative, otherwise $x$ is increased by $10$; 
+$y$ is decreased by $10$ if $y$ is negative, otherwise $y$ is increased by $3$. 
+Finally, the assertion of $P$ specifies that $y \le x \le y + 16$. 
 The correctness of the program specification in Figure~\ref{fig:running:example} 
 can be proven by checking the three conditions 
 (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) above 
-with a loop invariant $\mathit{Inv} = x \le y + 99$. 
+with a loop invariant $\mathit{Inv} = x \le y + 16$ (or $2 \times x \le 2 \times y + 33$, etc). 
 We use this running example in the following 
 to illustrate different stages of our invariant reference method. 
 
