@@ -23,23 +23,23 @@ In practice, the pre-condition $\mathit{Pre}$ is often described by
 the specification documents and checking conditions of the program inputs, 
 and the post-condition $\mathit{Post}$ is usually specified 
 by assertions and exceptions leading to an error state in the program. 
-Let $S = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ represent 
+Let $s = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ represent 
 the evaluation function of the program variables $x_1, \ldots, x_n$
-and $\mathit{Body}(S)$ stand for their new evaluation after the execution of $\mathit{Body}$, 
-the above program means that (1) $\mathit{Pre}$ is the assumption of $S$; 
-(2) if the $\mathit{Cond}$ is satisfied by $S$ at an iteration, 
-$\mathit{Body}$ will be executed and $S$ will be updated to $\mathit{body}(S)$; 
-(3) if the $\mathit{Cond}$ is unsatisfied by $S$ at an iteration, 
-the while-loop ends and $S$ should satisfy $\mathit{Post}$. 
+and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$, 
+the above program means that (1) $\mathit{Pre}$ is the assumption of $s$; 
+(2) if the $\mathit{Cond}$ is satisfied by $s$ at an iteration, 
+$\mathit{Body}$ will be executed and $s$ will be updated to $\mathit{body}(s)$; 
+(3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration, 
+the while-loop ends and $s$ should satisfy $\mathit{Post}$. 
 To prove the correctness of the above program specification, 
 we need to find a loop invariant $\mathit{Inv}$ satisfying the following three conditions. 
 \begin{align}
-    &S \models \mathit{Pre} 
-        &&\Rightarrow && S \models \mathit{Inv} \label{inv:pre} \\
-    &S \models \mathit{Inv} \land \mathit{Cond} 
-        &&\Rightarrow && \mathit{Body}(S) \models \mathit{Inv} \label{inv:loop} \\
-    &S \models \mathit{Inv} \land \neg\mathit{Cond} 
-        &&\Rightarrow && S \models \mathit{Post} \label{inv:post}
+    &s \models \mathit{Pre} 
+        &&\Rightarrow && s \models \mathit{Inv} \label{inv:pre} \\
+    &s \models \mathit{Inv} \land \mathit{Cond} 
+        &&\Rightarrow && \mathit{Body}(s) \models \mathit{Inv} \label{inv:loop} \\
+    &s \models \mathit{Inv} \land \neg\mathit{Cond} 
+        &&\Rightarrow && s \models \mathit{Post} \label{inv:post}
 \end{align}
 The goal of this work is developing a method to automatically learn 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
