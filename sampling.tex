@@ -13,7 +13,7 @@ Actually, in our setting, we do sample a set $S$ of program states in three diff
 random sampling, selective sampling and counter-example sampling, 
 which are applied according to the information we gathered by that time.
 If compared sampling to asking question, random sampling is like asking random questions,
-and selective samping is like asking tentative questions, 
+and selective sampling is like asking tentative questions, 
 while counter-example sampling is like an eye-to-eye debate.
 The following paragraphs shows how these three sampling technique works and why we apply them in $\textsc{Zilu}$.
 
@@ -113,20 +113,17 @@ That is because appling concolic tesint and constraint solving is a more time co
 
 \subsection {Labeling}
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
+As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state s.
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
-So if there is a trace $Trace\{ s_0, s_1, \ldots, s_n\}$, then $s_i \in Body^*(s_0)\ \forall i \in [0 \ldots n]$.
-We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
+
+So if there is a trace $Trace\{ s_0, s_1, \ldots, s_n\}$, then 
+\begin{itemize}
+\item $s_{i+1} \in Body(s_i)\ \forall i \in [0, \ldots, n-1]$.
+\item $s_{i} \in Body^*(s_0)\ \forall i \in [0, \ldots, n]$.
+\end{itemize}
+%We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
 Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
 
-According to loop invariant definition, if a property is a loop invariant, it should satisfy three things:
-\begin{align}
-    &\mathit{Pre} 
-        &&\Rightarrow && \mathit{Inv} \label{inv:pre} \\
-    &Body(\mathit{Inv} \land \mathit{Cond}) 
-        &&\Rightarrow && \mathit{Inv} \label{inv:loop} \\
-    & \mathit{Inv} \land \neg\mathit{Cond} 
-        &&\Rightarrow &&  \mathit{Post} \label{inv:post}
-\end{align}
 
 \subsubsection*{Positive State, Negative State \& Implication State}
 These three concepts are introduced in \cite{sharma2014invariant}.\
