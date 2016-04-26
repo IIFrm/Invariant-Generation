@@ -1,3 +1,93 @@
 %!TEX root = paper.tex
 
-\section{Experiments} \label{evaluation}
+\section{Evaluations} % (fold)
+\label{sec:evaluations}
+
+In this work, we implement our invariant inference framework into a tool called \textsc{Zilu}, 
+written in C++ and shell code. 
+\textsc{Zilu} uses APIs provided by other projects, like GSL, LibSVM, KLEE and Z3, 
+for machine learning, concolic testing and constraint solving. 
+
+In our experimental evaluation, 
+we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks 
+in the following form, where $\mathit{Body}$ can have nested loops and conditional choices. 
+\[
+    \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+\]
+\LL{Introduce the sources of the benchmark.}
+All benchmarks are available from~\cite{zilu}. 
+
+Since our invariant reference process have random factor 
+introduced by the sampling sources, 
+we run each benchmark for 10 times and present their average in Table~\ref{tab:experiments}.  
+
+\begin{table*}[t]
+    \begin{center}
+    % \begin{minipage}{\textwidth}
+    % \begin{adjustwidth}{-1in}{-1in}
+    \begin{center}
+    \begin{adjustbox}{max width=1.0\textwidth}
+    \begin{tabular}{l | r | r | r | r | r | r | r}
+        \hline\hline
+        Benchmark 
+            & $\sharp$Samples & $\sharp$Invariants & $\sharp$Iterations 
+            & $\sharp$Traces & $\sharp$Variables
+            & Time & Invariant Type \\
+        \hline
+        Interproc 1
+            & 196 & 4 & 1 
+            & 1 & 1
+            & 3.323s & Linear \\
+        \hline
+        Interproc 2
+            & 3158 & 7 & 1 
+            & 1 & 2
+            & 9.897s & Linear \\
+        \hline
+        Interproc 3
+            & 11102 & 6 & 1
+            & 1 & 3
+            & 40.213s & Linear \\
+        \hline
+        Interproc 4
+            & 1143 & 10 & 1
+            & 9 & 2
+            & 12.675s & Linear \\
+        \hline
+        Interproc 5
+            & 918 & 8 & 2 
+            & 3 & 2
+            & 14.477s & Linear \\
+        \hline
+        Poly 1
+            & 64 & 7 & 2
+            & 1 & 1 
+            & 10.525s & Polynomial \\
+        \hline
+        Poly 2 
+            & N.T. \\
+        \hline
+        Poly 3 
+            & 272 & 17 & 4 
+            & 3 & 1 
+            & 15.851s & Polynomial \\
+        \hline
+        Poly 4 
+            & N.T. \\
+        \hline
+        Conjunction 1
+            & N.U. \\
+        \hline
+    \end{tabular}
+    \end{adjustbox}
+    \end{center}
+    % \end{adjustwidth}
+    % \end{minipage}
+    \end{center}
+    \caption{Experiment Results}
+    \label{tab:experiments}
+\end{table*}
+
+
+% section evaluations (end)
+
