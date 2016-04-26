@@ -45,26 +45,30 @@ The goal of this work is developing a method to automatically learn
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
 
 \begin{figure}[t]
-\begin{subfigure}{0.245\textwidth}
+\begin{subfigure}{0.2\textwidth}
     \centering
-    \vspace{1.5cm}
-    {\scriptsize\begin{verbatim}
-    void P(int x, int y) {
-        assume(x < y);
-        while (x < y) {
-            x = x + 100;
-        }
-        assert(x >= y
-            && x <= y + 99);
+    \vspace{0.5cm}
+{\scriptsize\begin{verbatim}
+void P(int x, int y) {
+    assume(x < y);
+    while (x < y) {
+        if (x < 0) x = x + 7;
+        else x = x + 10;
+        
+        if (y < 0) y = y - 10;
+        else y = y + 3; 
     }
-    \end{verbatim}}
+    assert(x >= y
+        && x <= y + 16);
+}
+\end{verbatim}}
     \vspace{0.5cm}
     \caption{Loop Program}
     \label{fig:running:example:program}
 \end{subfigure}%
-\begin{subfigure}{.245\textwidth}
+\begin{subfigure}{.3\textwidth}
       \centering
-      \includegraphics[scale=0.43]{figures/running-sampling.pdf}
+      \includegraphics[scale=0.42]{figures/running-sampling.pdf}
       \caption{Sampling}
       \label{fig:running:example:sampling}
 \end{subfigure}
