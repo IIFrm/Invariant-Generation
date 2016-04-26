@@ -9,13 +9,13 @@ checking the satisfiability of constraints (1), (2) and (3) using tools from sym
 
 In implementation, to verify constraint (1) and (3), 
 $\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
-For example, if we get a predicate $\mathcal{C} = \{199-2*x+2*y>=0\}$
+For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
-$$\{(x<y) \Rightarrow (199-2*x+2*y>=0)\}$$
+$$\{(x<y) \Rightarrow (33-2*x+2*y>=0)\}$$
 to check constraint (1), 
 and 
-$$\{\neg(x<y) \wedge (199-2*x+2*y>=0) \Rightarrow ((x >= y \wedge x <= y + 99))\}$$
+$$\{\neg(x<y) \wedge (33-2*x+2*y>=0) \Rightarrow ((x >= y \wedge x <= y + 16))\}$$
 to check constraint (3).
 
 For checking constraint (2), it might be a bit of complicated due to $Body$'s complexity.
@@ -33,71 +33,91 @@ That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} as a symbolic executio
 General speaking, KLEE\cite{cadar2008klee} is a symbolic virtual machine built on top of the LLVM compiler infrastructure
 that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
 In our setting, we are only interested in specific paths which can lead to assertion failure in the target program.
-So we have modified KLEE source code to satisfy our demands, which can emit path conditions at given program location.
+So we have to modify KLEE source code by adding a new method call to KLEE,
+which can trigger KLEE to emit all the paths constraints in which execution can be reached at given program location.
 
-For example, when we want to check constraint (2), 
-we first construct a loop free program based on the original program:
-\begin{figure}[t]
-\begin{subfigure}{0.245\textwidth}
+For example, when $\textsc{Zilu}$ check constraint (2), 
+we first construct a loop-free program based on the original program:
+\begin{figure}[!h]
+\begin{subfigure}{0.20\textwidth}
     \centering
-    \vspace{1.5cm}
+    %\vspace{-0.1cm}
     {\scriptsize\begin{verbatim}
-    void P(int x, int y) {
-        assume(x < y);
-        while (x < y) {
-            x = x + 100;
-        }
-        assert(x >= y
-            && x <= y + 99);
+void P(int x, int y) {
+    assume(x < y);
+    while (x < y) {
+        if (x < 0) x = x+7;
+        else x = x+10;
+    
+        if (y < 0) y = y-10;
+        else y = y+3; 
     }
+    assert(x >= y
+        && x <= y+16);
+}
     \end{verbatim}}
-    \vspace{0.5cm}
+    \vspace{-5mm}
     \caption{Loop Program}
     \label{fig:running:example:program}
 \end{subfigure}%
-\begin{subfigure}{.245\textwidth}
+\begin{subfigure}{.20\textwidth}
       \centering
-      \vspace{1.5cm}
+      \vspace{-0.1cm}
         {\scriptsize\begin{verbatim}
-        void P(int x, int y) {
-            assume(x < y);
-            assume(199-2*x+2*y>=0) 
-            {
-                x = x + 100;
-            }
-            assert(199-2*x+2*y>=0);
+    void P_loopfree(int x, int y) {
+        assume(x < y);
+        assume(33-2*x+2*y >= 0;
+        {
+            if (x < 0) x = x+7; //....1
+            else x = x+10; //.........2
+    
+            if (y < 0) y = y-10; //...3
+            else y = y+3; //..........4
         }
+        assert(33-2*x+2*y >= 0);
+    }
     \end{verbatim}}
-    \vspace{0.5cm}
-      \caption{Sampling}
-      \label{fig:running:example:sampling}
+    \vspace{-5mm}
+    \caption{Loop-free program}
+      \label{fig:running:example:verification}
 \end{subfigure}
-\caption{A Running Example}
+\caption{Converting program to check inductive property}
+%\vspace{-0.2cm}
 \label{fig:running:example}
 \end{figure}
 
+After handled by our modified KLEE,
+several path constraints are emitted as following, each of which corresponds to path 
+$\{branch2 \to branch4\}$, $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\}$:
 
 
+\begin{itemize}
+\item $33+2*(y-x-7)\ge0 \mathbf{\wedge} x<y \wedge 33+2*(y-x)\ge0 \wedge x\ge0$
+\item $33+2*(y-x-4)\ge0 \wedge x<y \wedge 33+2*(y-x)\ge0 \wedge x<0 \wedge y\ge0$
+\item $33+2*(y-x-7)\ge0 \wedge x<y \wedge 33+2*(y-x)\ge0 \wedge x<0 \wedge y<0$
+\end{itemize}
+As $\alpha \Rightarrow \beta \Longleftrightarrow \neg (\alpha \wedge \beta)\}$, 
+instead of checking the satisfiability of inference rule
+we prefer to check the unsatisfiability of constraints with conjunctive forms. 
+After getting these constraints, we can apply Z3 solver to check the satisfiability (or unsatisfiability).
 
 \subsection{Z3 Solver}
-Z3 is a high-performance theorem prover being developed at Microsoft Research, which is sound and complete.
-After compiling three separated programs, we apply our KLEE to get the path constraints and then submit to Z3 solver for solving.
+The state-of-the art Satisfiability Modulo Theories (SMT) solvers can be used to check the satisfiability of logical formulas over one or more theories. 
+Among these solvers, Z3 is a high-performance theorem prover, that is sound and complete, from Microsoft Research.
+In our project, $\textsc{Zilu}$ applies Z3 to do the constraint solving for invariant validation. 
 
-\subsection{Example}
-First we separate the given loop program with the leaned predicate into three loop-free programs,
-which corresponds to constraints (1), (2) and (3). 
-
-Then we can use symbolic execution to get path conditions and apply constraint solver to do solving.
-If all of them are satisfied, we successfully get a valid invariant and also verify the program. 
-Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, (named as counter-example sampling in section 3)
-which is then tested, categorized, used for active learning accordingly.
+So in the implementation, we submit the constraints got by inference rules (1), (3) or by KLEE to Z3 solver.
+If all of them passes,we successfully get a valid invariant and also verify the program. 
+Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, 
+(named as counter-example sampling in section Sampling)
+which is then tested, categorized, used for active learning accordingly in next iteration to help refine our invariant candidate.
 
 
 
 
  
 The overall algorithm is presented in Figure~\ref{alg:overall}.
-\begin{algorithm}[t]
+\begin{algorithm}[!h]
 \SetAlgoVlined
 \Indm
 \KwIn{$Pre$, $Cond$, $Body$, $Post$}
@@ -118,8 +138,7 @@ let $S$ be a set of random samples\;
         continue\;
     }
     %\For {each $Inv$ in $\{Inv_u, Inv_o, Inv_s\}$} {
-    Divide the loop program into three based on (1)(2)(3)\;
-    Run symbolic execution on each of them to get path constraints $PCs$\;
+    Extract path constraints$PCs$ based on (1)(2)(3)\;
     \For {each $pc$ in $PCs$} {
         \If { $pc$ is not satisfied} {
             add the counterexample into $S$\;
