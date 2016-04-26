@@ -4,7 +4,51 @@
 \label{sec:classification}
 
 After sampling and labeling, we obtain some program states must be in $Inv$ and some must not. 
-Thus, any candidate invariant must be able to perfectly classify these states. 
+If we view these program states as a data set, finding an invariant candidate becomes looking for a classifier to divide the data set according to their labels.
+Fortunately, this problem has been well solved by machine Learning community several years ago.
+In machine learning, several supervised classification techniques, i.e. SVM, have been developed to handle this problem.
+
+
+\subsection{Supported Vector Machines}
+Supported Vector Machines, known as SVM, is one of the most powerful approaches.
+%SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
+In most setting, given a set of training examples, each marked for belonging to one of two categories, 
+an SVM training algorithm builds a model, which is a representation of the examples as points in space,
+that can assign new examples into one category or the other, 
+making it a non-probabilistic binary linear classifier. 
+
+
+Although we have such a good machine learning technique to do the job,
+there are still at least two main differences:
+\begin{itemize}
+\item Machine learning cares more about prediction rather than understanding,
+although there is a research trend in machine learning to understand the model got by algorithms.
+On the contrary, in software engineering area, program verification cares about formalization and reasoning.
+As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
+And thus, SVM does not really calculate a hyperplane explicitly, 
+instead it emits some supported vectors (this is where SVM get its name) and some other parameters.
+This might not a big problem if we do not apply SVM with some kernel method (which is used to classify no linear separable data).
+But in our setting, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
+In other words, we need to convert the SVM model to a hyperplane by ourselves.
+This is also the reason we do not apply SVM with kernel methods,
+as converting SVM models with kernel methods to an explicit form would be too complicated, sometime even impossible.
+\item Machine learning algorithms think more of generalization ability than correctness on the training data.
+Sometimes they can sacrifice the correctness on the training data to exchange for higher generalization ability.
+But in our setting, the first thing we care about is the correctness on the training data,
+meaning we can not tolerate any slight classification error on the training set.
+On this basis, we hope the classification algorithm can have better generalization ability.
+Fortunately, we can tune SVM parameters (mainly $C$ which tells the SVM optimization how much you want to avoid misclassifying each training example,
+different from $\mathcal{C}$ used as loop invariant candidate in our context) 
+to get a classifier which does a better job of getting all the training points classified correctly.
+What's more, we need to check the classification correctness of the model on training data to ensure that is a perfect classifier. 
+
+\end{itemize} 
+An SVM model is a representation of the examples as points in space, 
+With SVM model, we can automatically turn it back to a hyperplane in the original space.
+
+
+Thus, any invariant candidate must be able to perfectly classify these states. 
+
 We apply classification techniques from the machine learning community to obtain classifiers as candidate invariants.
 Due to different technique can results in different forms of classifiers,
 we apply SVM and some of its derivatives on our training data. 

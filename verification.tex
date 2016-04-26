@@ -8,18 +8,20 @@ checking the satisfiability of constraints (1), (2) and (3) using tools from sym
 %In addition, we separated this part as a standalone tools for loop invariant verification.
 
 In implementation, to verify constraint (1) and (3), 
-$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
+$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \boldsymbol{\wedge} \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
 For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
 $$\{(x<y) \Rightarrow (33-2*x+2*y>=0)\}$$
 to check constraint (1), 
 and 
-$$\{\neg(x<y) \wedge (33-2*x+2*y>=0) \Rightarrow ((x >= y \wedge x <= y + 16))\}$$
+$$\{\neg(x<y) \boldsymbol{\wedge} (33-2*x+2*y>=0) \Rightarrow ((x >= y \boldsymbol{\wedge} x <= y + 16))\}$$
 to check constraint (3).
 
-For checking constraint (2), it might be a bit of complicated due to $Body$'s complexity.
-That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} as a symbolic execution tool to get path condition.
+However, it might be a bit of complicated due to $Body$'s computational complexity to check constraint (2).
+When the $Body$ contains many lines of code, especially with branches, it is very hard to encode them into a constraint manually.
+We need some tools to help us finding these constraints, otherwise our technique would limit its power to simple and trivial program. 
+That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic execution tool to get path condition.
 %and Z3 solver as a representative to verify the learned predicate.
 
 %\subsection{Program Recoding}
@@ -66,7 +68,7 @@ void P(int x, int y) {
         {\scriptsize\begin{verbatim}
     void P_loopfree(int x, int y) {
         assume(x < y);
-        assume(33-2*x+2*y >= 0;
+        assume(33-2*x+2*y >= 0);
         {
             if (x < 0) x = x+7; //....1
             else x = x+10; //.........2
@@ -87,16 +89,16 @@ void P(int x, int y) {
 \end{figure}
 
 After handled by our modified KLEE,
-several path constraints are emitted as following, each of which corresponds to path 
+several path constraints are emitted as following, each of them corresponding to paths 
 $\{branch2 \to branch4\}$, $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\}$:
 
 
 \begin{itemize}
-\item $33+2*(y-x-7)\ge0 \mathbf{\wedge} x<y \wedge 33+2*(y-x)\ge0 \wedge x\ge0$
-\item $33+2*(y-x-4)\ge0 \wedge x<y \wedge 33+2*(y-x)\ge0 \wedge x<0 \wedge y\ge0$
-\item $33+2*(y-x-7)\ge0 \wedge x<y \wedge 33+2*(y-x)\ge0 \wedge x<0 \wedge y<0$
+\item $33+2*(y-x-7)\ge0 \boldsymbol{\wedge} x<y \boldsymbol{\wedge} 33+2*(y-x)\ge0 \boldsymbol{\wedge} x\ge0$
+\item $33+2*(y-x-4)\ge0 \boldsymbol{\wedge} x<y \boldsymbol{\wedge} 33+2*(y-x)\ge0 \boldsymbol{\wedge} x<0 \boldsymbol{\wedge} y\ge0$
+\item $33+2*(y-x-7)\ge0 \boldsymbol{\wedge} x<y \boldsymbol{\wedge} 33+2*(y-x)\ge0 \boldsymbol{\wedge} x<0 \boldsymbol{\wedge} y<0$
 \end{itemize}
-As $\alpha \Rightarrow \beta \Longleftrightarrow \neg (\alpha \wedge \beta)\}$, 
+As $\alpha \Rightarrow \beta \Longleftrightarrow \neg (\alpha \boldsymbol{\wedge} \beta)\}$, 
 instead of checking the satisfiability of inference rule
 we prefer to check the unsatisfiability of constraints with conjunctive forms. 
 After getting these constraints, we can apply Z3 solver to check the satisfiability (or unsatisfiability).
@@ -112,7 +114,15 @@ Otherwise, if any of them is violated, the counterexample obtained is added to t
 (named as counter-example sampling in section Sampling)
 which is then tested, categorized, used for active learning accordingly in next iteration to help refine our invariant candidate.
 
+%For example, if an invariant candidate $\mathcal{C} = \{33-2*x+2*y >= 0\}$
+For the example, $\textsc{Zilu}$ uses Z3 solver to check all the constraints mentioned in the last subsection,
+and finds all of them passes, and thus we find a valid loop invariant and have proved the correctness of the loop program.
 
+If the learned predicate is not an actual invariant, i.e. $\mathcal{C} = \{11-2*x+2*y>=0\}$,
+after getting the constraints, similar as the constraints in the last part except substituting all the number 33 with number 11, 
+Z3 solver could provide a counter-example $s_{ce} = (x \mapsto 1, y \mapsto 0)$ after solving.
+We can see that $s_{ce}$ contradict the inductive property of loop invariants (constraints (2)).
+Then $\textsc{Zilu}$ use $s_{ce}$ to restart learning in the next iteration, until find a valid loop invariant or disprove the program.
 
 
  
@@ -164,8 +174,8 @@ let $S$ be a set of random samples\;
 %Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$); 
 %$O$ would be an over-approximation of $Inv$ (by assuming states in $NP$ does satisfy $Inv$); 
 %and $OU$ would be an safe-approximation of $Inv$ (by using states which we are certain whether they are in $Inv$ or not).
-\begin{example}
-\end{example}
+%\begin{example}
+%\end{example}
 
 
 \begin{theorem}
