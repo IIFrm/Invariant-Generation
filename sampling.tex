@@ -115,14 +115,20 @@ That is because appling concolic tesint and constraint solving is a more time co
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
 As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state s.
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
+Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
 
-So if there is a trace $Trace\{ s_0, s_1, \ldots, s_n\}$, then 
+So if there is a trace $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$, 
+where $s_0$ is the initial state before entering the loop, 
+$s_i$ is a state just after the loop has ran $i$ iteration in the program,
+and $s_n$ satisfies $\neg B$ and thus it is the state that can jump out the loop body,
+then 
 \begin{itemize}
-\item $s_{i+1} \in Body(s_i)\ \forall i \in [0, \ldots, n-1]$.
+\item $s_{i+1} = Body(s_i)\ \forall i \in [0, \ldots, n-1]$.
 \item $s_{i} \in Body^*(s_0)\ \forall i \in [0, \ldots, n]$.
+\item $s_{0} \Rightarrow\Rightarrow s_{n}$.
 \end{itemize}
 %We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
-Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+
 
 
 \subsubsection*{Positive State, Negative State \& Implication State}
@@ -136,54 +142,44 @@ We call any state that must be satisfied by an actual invariant a positive state
 
 
 Now consider equation (2).
-A pair $(s, t)$ satisfies the property that $s$ satisfies $Cond$ and if the execution of $S$
-is started in state $s$ then $S$ can terminate in state $t$. 
-Since an actual invariant $Inv$ is inductive, it should satisfy $s \in Inv \Rightarrow t \in {Inv}$. 
-Hence, a pair $(s, t)$ satisfying $s \in C \land t \notin C$ proves $C$ is not an invariant. 
+This is called inductive property, which means if there is a pair of states $(s, t)$ in which $t = Body(s)$, 
+and $s$ satisfies $Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
+Hence, for the invariant candidate $C$, 
+if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models C) \land (t \models \neg C)$ proves $C$ is not an invariant. 
 
 Finally, consider equation (3).
-The `existence of a state $s \in C \wedge \neg B \wedge \neg Post$ proves $C$ is inadequate to discharge the postcondition. 
+The `existence of a state $s \models C \wedge \neg B \wedge \neg Post$ proves $C$ is inadequate to discharge the postcondition. 
 We call a state $s$ which satisfies $\neg{B} \land \neg{Post}$ a negative state. 
 
 
 
 \subsubsection*{Positive Trace, Negative Trace \& Implication Trace}
-In our approach, we assume $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$ is a trace in the target program,
-where $s_0$ is the initial state before entering the loop, 
-and $s_i$ is a state just after the loop has iterated $i$ times in the program.
-We assume $s_n$ satisfies $\neg B$ so it is the state that can jump out the loop body.
-
-
-
-For a trace $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$, 
+For a trace $Trace\{s_0 \to s_1 \to s_2 \to ... \to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
 we say this is a positive trace,
 Because if state $s_0$ satisfy $Pre$,
 $s_0$ is a positive state that must satisfy $Inv$, according to equation 1.
 Furthermore, according to equation 2,
-all of $\{s_1, s_2, ..., s_i, ... , s_n\}$ are positive states.
-So now we can get a positive trace  $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$.
+all of $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i, ... \to s_n\}$ are positive states.
+So now we can get a positive trace  $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$.
 
-
-On the contrary, for a trace $\{s_0, s_1, s_2, ..., s_i, ... , s_n\}$, 
+On the contrary, for a trace $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $\neg Pre$, and $s_n$ satisfies $\neg Post$,
-we say this is a negative trace, 
+we can infer this is a negative trace, 
 which means all the states in this trace should be negative states.  
 
 Actually for an arbitrary trace there are also two other possibilities we have not mentioned yet.
-One is a trace begins with a state $s_0$ that satisfies $Pre$ but end with a state $s_n$ that satisfies $\neg Post$,
-this is a counterexample to disprove the program.
-That means there is something wrong with at least one of precondition, loop condition, loop body or postcondition.
-We need to find out what happens and update the program, 
-after which we can reapply our approach to learn loop invariants.
-The other case is a trace begin with a state $s_0$ that satisfies $\neg Pre$ but end with a state $s_n$ that satisfies $Post$.
-Under this condition, we could not justify whether $s_0$ and $s_n$ satisfy invariants or not,
-not to mention other states $\{s_1, s_2, ..., s_i, ... , s_{n-1}\}$.
-The only thing we can ensure is this is an implication trace.
-In total, we can have table.~\ref{LabelingTable}.
+One is a trace begins with a state $s_0$ that satisfies $Pre$ but ends with a state $s_n$ that satisfies $\neg Post$,
+this is a counter-example to disprove the program.
+That means there is something wrong with the program specification.
+The other case is a trace begin with a state $s_0$ that satisfies $\neg Pre$ but ends with a state $s_n$ that satisfies $Post$.
+Under this condition, we could not know whether $s_0$ and $s_n$ satisfy invariants or not,
+not to mention other states $\{s_1 \to s_2 \to ... \to s_i \to ... \to s_{n-1}\}$.
+The only thing we can ensure is this is an implication trace, meaning if $s_i \models Inv$, then $s_j \models Inv \forall j \ge i$.
+%In total, we can have table.~\ref{LabelingTable}.
 
 
-We categorize program states in $Body^*(S)$ into four sets:
+So now we categorize all the program states $Body^*(S)$ started from Set $S$ into four sets:
 $C_{S}$ which stands for counter-example trace, 
 $P_{S}$ which stands for traces with positive labels, 
 $N_{S}$ which stands for traces with negative labels 
@@ -207,47 +203,12 @@ $s_0 \models \neg Pre$            & $Body^*(s_0) \in U_{S}$       & $Body^*(s_0)
 
 
 
-%\begin{table}[htb]
-%\label{LabelingTable}
-%\centering
-%\caption{Trace Labeling Table}
-%\begin{tabular}[float]{|c|c|c|}
-%\hline
-%$Trace\{s_0, s_1, ..., s_n\}$ & $s_n \in Post$            & $s_n \in \neg Post$\\
-%\hline
-%$s_o \in Pre$                 & $Trace \in P_{S}$         & $Trace \in C_{S}$\\
-%\hline
-%$s_0 \in \neg Pre$            & $Trace \in U_{S}$         & $Trace \in N_{S}$\\
-%\hline
-%\end{tabular}
-%\end{table}
-
-
-%\begin{itemize}
-%    \item Set $C_{T}$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \nin Post\}$;
-%    \item Set $P_{T}$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \in Post\}$;
-%    \item Set $N_{T}$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \nin Post\}$;
-%    \item Set $U_{T}$ is $\{s \in Body^*(T) | s \nin Pre \land s \Rightarrow s' \land s' \in Post\}$;
-%\end{itemize}
-%We remark that anytime a program state in $C_T$ is identified, a counter-example is found and \textsc{Zilu} reports that verification is failed immediately. 
-%Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \inter Inv = \emptyset$. 
-%The program states in $U_T$ may or not may be in $Inv$. 
-%If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
-
-
-
-
-
 %Among all these possibilities,
 %we can get more samples than previous approaches can with executing program just once.
 %So with the sample information, 
 %the learner can learn an as good invariant as, if not better than, the previous approaches, 
 %as it can utilize more information to do invariant learning task.
 %This also implies our approach can get convergence faster than before.
-
-
-
-
 
 
 
