@@ -8,8 +8,11 @@ In a broader view, \textsc{Zilu} is a dynamic program verification technique,
 thus we are quite interested in program states during its execution.
 Sampling is a way to tell our preference on program states. 
 So in this step, we would like to gather more information through sampling.
+After sampling, we execute program to gather more samples and then label these data according to the satisfiability of $Pre$ and $Post$.
+
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
-Actually, in our setting, we do sample a set $S$ of program states in three different approaches: 
+\subsection{Sampling Approaches}
+In our setting, we do sample a set $S$ of program states in three different approaches: 
 random sampling, selective sampling and counter-example sampling, 
 which are applied according to the information we gathered by that time.
 If compared sampling to asking question, random sampling is like asking random questions,
@@ -40,7 +43,7 @@ The following paragraphs shows how these three sampling technique works and why 
 %The program states in $U_T$ may or not may be in $Inv$. 
 %If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
 
-\subsection{Random Sampling}
+\subsubsection{Random Sampling}
 Random sampling is well known in statistics, including simple random sampling and systematic random sampling.
 In this context, we refer to the former meaning, in which each sample is chosen randomly and entirely by chance, 
 such that each sample has the same probability of being chosen at any stage during the sampling process.
@@ -57,7 +60,7 @@ So in the subsequent iterations, we need to add little randomness to avoid, or a
 the impact of the bias resulted from previous sampling results.
 
 
-\subsection{Selective Sampling}
+\subsubsection{Selective Sampling}
 Selective sampling is a technique in active learning, which can generate samples which are more informative and instructive.
 It is an aggressive sampling technique that help $\textsc{Zilu}$ to learn the target much faster.
 
@@ -100,7 +103,7 @@ This technique is applied all along the learning process except the very beginin
 
 
 
-\subsection{Counter-Example Sampling}
+\subsubsection{Counter-Example Sampling}
 Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.  
 Having an invariant candidate, $\textsc{Zilu}$ tries to valid it using concolic testing~\cite{} and constraint solving,
 which is shown in detail in section verification.
@@ -117,7 +120,7 @@ As said in the introduction part, $Body(s)$ is the state which could be reached 
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
 Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
 
-So if there is a trace $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$, 
+So if there is a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
 where $s_0$ is the initial state before entering the loop, 
 $s_i$ is a state just after the loop has ran $i$ iteration in the program,
 and $s_n$ satisfies $\neg B$ and thus it is the state that can jump out the loop body,
@@ -131,10 +134,10 @@ then
 
 
 
-\subsubsection*{Positive State, Negative State \& Implication State}
+\subsubsection{Positive State, Negative State \& Implication Pair}
 These three concepts are introduced in \cite{sharma2014invariant}.\
 In this paper, we use predicates and sets of states interchangeably.
-Let $C$ be a candidate invariant.
+Let \mathcal{C} be a candidate invariant.
 
 From equation (1) we know, for an invariant $Inv$, 
 any state that satisfies $Pre$ also satisfies $Inv$. 
@@ -146,6 +149,7 @@ This is called inductive property, which means if there is a pair of states $(s,
 and $s$ satisfies $Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
 Hence, for the invariant candidate $C$, 
 if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models C) \land (t \models \neg C)$ proves $C$ is not an invariant. 
+We call this pair of states as implication pair.
 
 Finally, consider equation (3).
 The `existence of a state $s \models C \wedge \neg B \wedge \neg Post$ proves $C$ is inadequate to discharge the postcondition. 
@@ -153,17 +157,17 @@ We call a state $s$ which satisfies $\neg{B} \land \neg{Post}$ a negative state.
 
 
 
-\subsubsection*{Positive Trace, Negative Trace \& Implication Trace}
-For a trace $Trace\{s_0 \to s_1 \to s_2 \to ... \to s_i \to ... \to s_n\}$, 
+\subsubsection{Positive Trace, Negative Trace \& Implication Trace}
+For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
-we say this is a positive trace,
+then this is a positive trace, meaning $\forall s_i \models Inv$.
 Because if state $s_0$ satisfy $Pre$,
 $s_0$ is a positive state that must satisfy $Inv$, according to equation 1.
 Furthermore, according to equation 2,
-all of $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i, ... \to s_n\}$ are positive states.
-So now we can get a positive trace  $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$.
+all of $Trace\{s_0 \to s_1 \to ...\to s_i, ... \to s_n\}$ are positive states.
+So now we can get a positive trace  $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$.
 
-On the contrary, for a trace $Trace\{s_0 \to s_1 \to s_2 \to ...\to s_i \to ... \to s_n\}$, 
+On the contrary, for a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $\neg Pre$, and $s_n$ satisfies $\neg Post$,
 we can infer this is a negative trace, 
 which means all the states in this trace should be negative states.  
@@ -174,8 +178,8 @@ this is a counter-example to disprove the program.
 That means there is something wrong with the program specification.
 The other case is a trace begin with a state $s_0$ that satisfies $\neg Pre$ but ends with a state $s_n$ that satisfies $Post$.
 Under this condition, we could not know whether $s_0$ and $s_n$ satisfy invariants or not,
-not to mention other states $\{s_1 \to s_2 \to ... \to s_i \to ... \to s_{n-1}\}$.
-The only thing we can ensure is this is an implication trace, meaning if $s_i \models Inv$, then $s_j \models Inv \forall j \ge i$.
+not to mention other states $\{s_1, s_2, ..., s_{n-1}\}$.
+Then we name this trace as an implication trace, meaning if $s_i \models Inv$, then $s_j \models Inv$ $\forall j \ge i$.
 %In total, we can have table.~\ref{LabelingTable}.
 
 
@@ -217,15 +221,11 @@ $s_0 \models \neg Pre$            & $Body^*(s_0) \in U_{S}$       & $Body^*(s_0)
 
 
 \begin{example}
+\LL{to be added}
 \end{example}
 
 \begin{proposition}
 Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 \end{proposition}
-
-
-\begin{example}
-\end{example}
-
 
 % section sampling (end)

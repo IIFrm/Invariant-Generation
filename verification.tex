@@ -3,20 +3,34 @@
 \section{Verification} % (fold)
 \label{sec:verification}
 
-Given a learnt predicate $Inv$, we verify whether constraint (1), (2) and (3) are satisfied using symbolic execution and constraint solving.
+In this step, having a learned predicate $C$, we verify whether it is a valid loop invariant by
+checking the satisfiability of constraints (1), (2) and (3) using tools from symbolic execution and constraint solving community.
+%In addition, we separated this part as a standalone tools for loop invariant verification.
+
+In implementation, $\textsc{Zilu}$ first separates the given loop program with the learned predicate into three loop-free programs,
+which corresponds to constraints (1), (2) and (3).
+and then uses KLEE and Z3 solver as a representative to verify the learned predicate.
+
+\subsection{KLEE}
+General speaking, KLEE is a symbolic virtual machine built on top of the LLVM compiler infrastructure
+that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
+But in our setting, we only interested in specific paths which can lead to assertion failure in the target program. 
+So we have modified KLEE source code to satisfy our demands, which can emit path conditions at given program location.
+
+\subsection{Z3 Solver}
+Z3 is a high-performance theorem prover being developed at Microsoft Research, which is sound and complete.
+After compiling three separated programs, we apply our KLEE to get the path constraints and then submit to Z3 solver for solving.
+
+\subsection{Example}
 First we separate the given loop program with the leaned predicate into three loop-free programs,
 which corresponds to constraints (1), (2) and (3). 
+
 Then we can use symbolic execution to get path conditions and apply constraint solver to do solving.
 If all of them are satisfied, we successfully get a valid invariant and also verify the program. 
 Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, (named as counter-example sampling in section 3)
 which is then tested, categorized, used for active learning accordingly.
 
-In implementation, we use KLEE and Z3 solver to verify the learnt predicate.
-General speaking, KLEE is a symbolic virtual machine built on top of the LLVM compiler infrastructure
-that can enumerate all the possible paths based on target configuration, on each of them to get all the path conditions.
-We have modified KLEE source code to satisfy our demands, which can emit path conditions at given program location.
-Z3 is a high-performance theorem prover being developed at Microsoft Research, which is sound and complete.
-After compiling three separated programs, we apply our KLEE to get the path constraints and then submit to Z3 solver for solving.
+
 
 
  
