@@ -6,10 +6,10 @@
 Automatic loop invariant inference is a fundamental program analysis problem, 
 which is useful in software verification, test-case generation, 
 compiler optimization, program understanding, etc. 
-In this work, we propose a new approach using machine learning 
+In this work, we propose a new framework using machine learning 
 to actively learn the loop invariant based on the classification of runtime data. 
-By combining selective sampling, support vector machine, 
-concolic testing and satisfiability modulo theories, 
+By combining selective sampling, support vector machine learning, 
+concolic testing and model verification, 
 we refine the inferred loop invariant after each iteration 
 until it converges and proves the property preserved by the loop program. 
 
@@ -60,13 +60,13 @@ the invariant $\mathit{Inv}$ from the loop program and thus prove its correctnes
     \end{verbatim}}
     \vspace{0.5cm}
     \caption{Loop Program}
-    \label{fig:loop:program}
+    \label{fig:running:example:program}
 \end{subfigure}%
 \begin{subfigure}{.245\textwidth}
       \centering
       \includegraphics[scale=0.43]{figures/running-sampling.pdf}
       \caption{Sampling}
-      \label{figure:running:example:sampling}
+      \label{fig:running:example:sampling}
 \end{subfigure}
 \caption{A Running Example}
 \label{fig:running:example}
@@ -75,13 +75,13 @@ the invariant $\mathit{Inv}$ from the loop program and thus prove its correctnes
 \begin{figure}[t]
     \centering
     \includegraphics[scale=0.45]{figures/overview.pdf}
-    \caption{Loop Invariant Inference Overview}
+    \caption{Loop Invariant Inference Framework Overview}
     \label{fig:overview}
 \end{figure}
 
 \medskip\noindent
 \textbf{A Running Example}
-is shown in Figure~\ref{fig:running:example}. 
+is shown in Figure~\ref{fig:running:example:program}. 
 The loop program $P$ takes two integer variables $x$ and $y$ as inputs. 
 The assumption $\mathit{Pre}$ requires that $x < y$, 
 which is the same as the loop condition $\mathit{Cond}$. 
@@ -98,21 +98,22 @@ to illustrate different stages of our invariant reference method.
 
 \medskip\noindent
 \textbf{Overview.}
-Our approach take the invariant reference as a refinement process 
+Our framework takes the invariant reference as an active learning and refinement process 
 based on iterations of sampling, classification and verification 
 as shown in the Figure~\ref{fig:overview}. 
+Let $P$ be the loop program. 
 \begin{itemize}
     \item 
     % (1)
     In the \textbf{Sampling} stage (see Section~\ref{sec:sampling}), 
-    we execute the loop program $P$ based on three kinds of sampling sources: 
+    we obtain program inputs from three kinds of sampling sources: 
     random sampling, selective sampling and counter-example sampling. 
-    Then, we execute $P$ with different samples to record $S$ in every loop iteration 
+    Then, we execute $P$ with these inputs and record $S$ in every loop iteration 
     and label them based on the satisfaction of $\mathit{Pre}$ and $\mathit{Post}$. 
     The regions of different labels can be intuitively shown\footnote{
         The `green' (`yellow' and `red' resp.) areas 
         represent `positive' (`uncertain' and `negative' resp.) samples. 
-    } as the areas of different colors in Figure~\ref{fig:running:example}. 
+    } as the areas of different colors in Figure~\ref{fig:running:example:sampling}. 
     When an program input can be found such that 
     $\mathit{Pre}$ is $\mathit{true}$ and $\mathit{Post}$ is $\mathit{false}$, 
     we output it as a proof of the program specification error. 
@@ -146,6 +147,43 @@ as shown in the Figure~\ref{fig:overview}.
 
 \medskip\noindent
 \textbf{Contributions.}
+Our contributions are four-fold. 
+\begin{itemize}
+    \item 
+    We are the first to propose an active learning and refinement framework 
+    for automatic invariant inference based on machine learning. 
+    Since the samples are chosen for clear purpose 
+    to refine the invariant candidate in the \emph{sampling} stage, 
+    the invariant converges efficiently. 
+    Furthermore, because the counter-examples generated in the \emph{verification} stage 
+    give very accurate information to amend the invariant candidate, 
+    they become a useful supplementary to overcome the weakness of machine learning 
+    and fine-tune the invariant candidate. 
+    \item 
+    Our framework is highly adaptable to different invariant inference scenarios 
+    because the classification methods have a wide range of choices. 
+    In this work, we show that linear, polynomial as well as 
+    their conjunctive classification methods work effectively in our framework. 
+    More importantly, our framework can be easily and intuitively extended with other alternative methods. 
+    \item 
+    Our framework can be practically used to verify real programs with ease, 
+    as the samples are generated at runtime 
+    and our framework is language/platform independent based on other tools 
+    (e.g., GSL for selective sampling, LibSVM for SVM classification, 
+    Z3 for invariant verification and KLEE for concolic testing). 
+    \item 
+    We implement our framework as a tool called \textsc{Zilu} 
+    and compare it with other available state-of-the-art invariant inference tools, 
+    i.e., CPAChecker, Interproc. 
+    Our experiment results show that 
+    we are the only tool that can work with polynomial invariant inference. 
+    Notice that the polynomial invariant inference works in our framework 
+    naturally with very light additional programming. 
+    % Based on the design of different approaches,
+    % we also claim that our framework have better extensibility comparing with their method.
+\end{itemize}
 
+\medskip\noindent
+\textbf{Structure of this paper.}
 
 % section introduction (end)
