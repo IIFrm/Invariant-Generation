@@ -3,26 +3,36 @@
 \section{Classification} % (fold)
 \label{sec:classification}
 
-After sampling and labeling, we obtain some program states must be in $Inv$ and some must not. 
-If we view these program states as a data set, finding an invariant candidate becomes looking for a classifier to divide the data set according to their labels.
-Fortunately, this problem has been well solved by machine Learning community several years ago.
-In machine learning, several supervised classification techniques, i.e. SVM, have been developed to handle this problem.
+After sampling and labeling in the last step, we obtain some program states must be in $Inv$ and some must not. 
+Thinking as a data scientist, if we view these program states as a data set, 
+the problem to find an invariant candidate becomes a problem to find a classifier to divide the data set according to their labels.
+Fortunately, this problem has been fully studied by machine Learning community several years ago.
+Senior machine learning experts, some of who have a mathematical background, 
+have developed several supervised classification techniques, i.e. Supported Vector Machines, to handle this problem.
+
 
 
 \subsection{Supported Vector Machines}
-Supported Vector Machines, known as SVM, is one of the most powerful approaches.
+, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
-In most setting, given a set of training examples, each marked for belonging to one of two categories, 
-an SVM training algorithm builds a model, which is a representation of the examples as points in space,
-that can assign new examples into one category or the other, 
-making it a non-probabilistic binary linear classifier. 
+%In most setting, given a set of training examples, each marked for belonging to one of two categories, 
+%an SVM training algorithm builds a model, which is a representation of the examples as points in space,
+%that can assign new examples into one category or the other, 
+%making it a non-probabilistic binary linear classifier. 
 
+Supported Vector Machines, known as SVM, is a supervised machine learning algorithm for classification and regression analysis. 
+We use its binary classification functionality. 
+Mathematically speaking, the binary classification functionality of (linear) SVM works as follows. 
+Given two sets of feature vectors $S^+$ and $S^-$, it generates, if there is any, 
+a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
+such that every state $s \in S^+$ satisfies the constraint and every state $s' \in S^-$ fails the constraint. 
+In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier.
 
 Although we have such a good machine learning technique to do the job,
-there are still at least two main differences:
+there are still at least two main differences between traditional machine learning problems and the problem in our setting:
 \begin{itemize}
-\item Machine learning cares more about prediction rather than understanding,
-although there is a research trend in machine learning to understand the model got by algorithms.
+\item Most machine learning techniques cares more about prediction correctness rather than understanding the underlying problem,
+although there is a research trend in machine learning to understand ongoing during these years.
 On the contrary, in software engineering area, program verification cares about formalization and reasoning.
 As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
 And thus, SVM does not really calculate a hyperplane explicitly, 
@@ -43,54 +53,17 @@ to get a classifier which does a better job of getting all the training points c
 What's more, we need to check the classification correctness of the model on training data to ensure that is a perfect classifier. 
 
 \end{itemize} 
-An SVM model is a representation of the examples as points in space, 
-With SVM model, we can automatically turn it back to a hyperplane in the original space.
+%In the following, we present how we obtain a classifier automatically using SVM. 
+%In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
+%This half space could be seen as the strongest witness why the two data states are different. 
+%In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier
+
+With the learned SVM model,we check whether it can perfectly classify these states first.
+If yes, then we can automatically turn it back to a hyperplane form, which is regarded as our invariant candidate.
+Otherwise, we may apply other classification techniques for learning, which will be mentioned at ``SVM derivatives'' part in the end of this section.
 
 
-Thus, any invariant candidate must be able to perfectly classify these states. 
-
-We apply classification techniques from the machine learning community to obtain classifiers as candidate invariants.
-Due to different technique can results in different forms of classifiers,
-we apply SVM and some of its derivatives on our training data. 
-
-\subsection{Linear SVM}
-\subsection{Polynomial SVM}
-\subsection{Conjunctive SVM}
-In the following, we present how we obtain a classifier automatically using SVM. 
-SVM is a supervised machine learning algorithm for classification and regression analysis. 
-We use its binary classification functionality. 
-Mathematically, the binary classification functionality of (linear) SVM works as follows. 
-Given two sets of feature vectors $F^+$ and $F^-$, it generates, if there is any, 
-a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
-such that every state $s \in F^+$ satisfies the constraint and every state $s' \in F^-$ fails the constraint. 
-In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
-This half space could be seen as the strongest witness why the two data states are different. 
-In the following, we write $svm(F^+, F^-)$ to denote the function which returns a linear classifier
-
-If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, 
-a more complicated function $f$ must be adopted. 
-For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
-the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
-
-%\section{Active Learning}
-%Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
-%the guessed classifier obtained from previous iteration might be far from being correct. 
-%In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
-%it is very unlikely that we would find it. 
-%Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
-%This problem has been discussed and addressed in the machine learning community using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
-
-%The concept of active learning or selective sampling refers to the approaches 
-%that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
-%SVM selective sampling techniques have been proven effective in achieving a high accuracy 
-%with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
-%The basic idea of selective sampling is that at each round, 
-%we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
-%Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
-%this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
-%In our setting, this means that we should sample a program state right by the classifier and test the program 
-%with that state to label that feature vector so that the classifier would be improved.
-
+\subsection{Active Learning} 
 \begin{algorithm}[h]
 \SetAlgoVlined
 \Indm
@@ -122,4 +95,39 @@ At line 8, we test the program with the newly generated samples so as to label t
 In our implementation, after getting a classifier, which is usually a single polynomials or conjunction or disjunction of polynomials,
 we can get some solutions of these polynomials using \textbf{GSL} (GNU Scientific Library).
 Then we use these solutions or the points near these solutions as sampling points.
+
+
+
+\subsection{SVM derivatives}
+
+\subsubsection{Polynomial SVM}
+
+\subsubsection{Conjunctive SVM}
+
+
+If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, 
+a more complicated function $f$ must be adopted. 
+For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
+the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
+
+%\section{Active Learning}
+%Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
+%the guessed classifier obtained from previous iteration might be far from being correct. 
+%In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
+%it is very unlikely that we would find it. 
+%Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
+%This problem has been discussed and addressed in the machine learning community using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
+
+%The concept of active learning or selective sampling refers to the approaches 
+%that aim at reducing the labeling effort by selecting only the most informative samples to be labeled. 
+%SVM selective sampling techniques have been proven effective in achieving a high accuracy 
+%with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
+%The basic idea of selective sampling is that at each round, 
+%we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
+%Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
+%this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
+%In our setting, this means that we should sample a program state right by the classifier and test the program 
+%with that state to label that feature vector so that the classifier would be improved.
+
+
 % section classification (end)
