@@ -3,18 +3,36 @@
 \section{Verification} % (fold)
 \label{sec:verification}
 
-In this step, having a learned predicate $C$, we verify whether it is a valid loop invariant by
+In this step, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
 checking the satisfiability of constraints (1), (2) and (3) using tools from symbolic execution and constraint solving community.
 %In addition, we separated this part as a standalone tools for loop invariant verification.
 
-In implementation, $\textsc{Zilu}$ first separates the given loop program with the learned predicate into three loop-free programs,
-which corresponds to constraints (1), (2) and (3).
-and then uses KLEE and Z3 solver as a representative to verify the learned predicate.
+In implementation, to verify constraint (1) and (3), 
+$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
+For example, if we get a predicate $\mathcal{C} = \{199-2*x+2*y>=0\}$
+for the loop example in the introduction part, 
+we submit 
+$$\{(x<y) \Rightarrow (199-2*x+2*y>=0)\}$$
+to check constraint (1), 
+and 
+$$\{\neg(x<y) \wedge (199-2*x+2*y>=0) \Rightarrow ((x >= y \wedge x <= y + 99))\}$$
+to check constraint (3).
+
+For checking constraint (2), it might be a bit of complicated due to $Body$'s complexity.
+That is why $\textsc{Zilu}$ uses KLEE as a symbolic execution tool to get path condition.
+%and Z3 solver as a representative to verify the learned predicate.
+
+%\subsection{Program Recoding}
+%$\textsc{Zilu}$ first separates the given loop program with the learned predicate into three loop-free programs,
+%which corresponds to constraints (1), (2) and (3).
+
+
+
 
 \subsection{KLEE}
 General speaking, KLEE is a symbolic virtual machine built on top of the LLVM compiler infrastructure
 that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
-But in our setting, we only interested in specific paths which can lead to assertion failure in the target program. 
+But in our setting, we are only interested in specific paths which can lead to assertion failure in the target program. 
 So we have modified KLEE source code to satisfy our demands, which can emit path conditions at given program location.
 
 \subsection{Z3 Solver}

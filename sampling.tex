@@ -134,7 +134,7 @@ then
 
 
 
-\subsubsection{Positive State, Negative State \& Implication Pair}
+\subsubsection{Positive State, Negative State, Implication Pair}
 These three concepts are introduced in \cite{sharma2014invariant}.\
 In this paper, we use predicates and sets of states interchangeably.
 Let $\mathcal{C}$ be a candidate invariant.
@@ -147,17 +147,17 @@ We call any state that must be satisfied by an actual invariant a positive state
 Now consider equation (2).
 This is called inductive property, which means if there is a pair of states $(s, t)$ in which $t = Body(s)$, 
 and $s$ satisfies $Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
-Hence, for the invariant candidate $C$, 
-if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models C) \land (t \models \neg C)$ proves $C$ is not an invariant. 
+Hence, for the invariant candidate $\mathcal{C}$, 
+if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \mathcal{C}) \land (t \models \neg \mathcal{C})$ proves $\mathcal{C}$ is not an invariant. 
 We call this pair of states as implication pair.
 
 Finally, consider equation (3).
-The `existence of a state $s \models C \wedge \neg B \wedge \neg Post$ proves $C$ is inadequate to discharge the postcondition. 
+The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
 We call a state $s$ which satisfies $\neg{B} \land \neg{Post}$ a negative state. 
 
 
 
-\subsubsection{Positive Trace, Negative Trace \& Implication Trace}
+\subsubsection{Positive Trace, Negative Trace, Implication Trace}
 For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
 then this is a positive trace, meaning $\forall s_i \models Inv$.
@@ -184,10 +184,10 @@ Then we name this trace as an implication trace, meaning if $s_i \models Inv$, t
 
 
 So now we categorize all the program states $Body^*(S)$ started from Set $S$ into four sets:
-$C_{S}$ which stands for counter-example trace, 
-$P_{S}$ which stands for traces with positive labels, 
-$N_{S}$ which stands for traces with negative labels 
-and $U_{S}$ which stands for traces with unknown labels.
+$C_\mathcal{S}$ which stands for counter-example trace, 
+$P_\mathcal{S}$ which stands for positive traces, 
+$N_\mathcal{S}$ which stands for negative traces, 
+and $I_\mathcal{S}$ which stands for implication traces.
 
 They can be judged according to Table~\ref{LabelingTable}: 
 \begin{table}[htb]
@@ -198,9 +198,9 @@ They can be judged according to Table~\ref{LabelingTable}:
 \hline
 $s_0 \Rightarrow \Rightarrow s_n$ & $s_n \models Post$            & $s_n \models \neg Post$\\
 \hline
-$s_o \models Pre$                 & $Body^*(s_0) \in P_{S}$       & $Body^*(s_0) \in C_{S}$\\
+$s_o \models Pre$                 & $Body^*(s_0) \in P_\mathcal{S}$       & $Body^*(s_0) \in C_\mathcal{S}$\\
 \hline
-$s_0 \models \neg Pre$            & $Body^*(s_0) \in U_{S}$       & $Body^*(s_0) \in N_{S}$\\
+$s_0 \models \neg Pre$            & $Body^*(s_0) \in I_\mathcal{S}$       & $Body^*(s_0) \in N_\mathcal{S}$\\
 \hline
 \end{tabular}
 \end{table}
