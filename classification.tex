@@ -15,11 +15,11 @@ it should be noted that there are at least two main differences between traditio
 \item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem,
 although there is a research trend in machine learning to understand ongoing during these years.
 On the contrary, in software engineering area, program verification cares about formalization and reasoning.
-As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
-But in our setting, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
+As a result, a classification technique would be highly suggested as long as it can predict correctly on newly received data.
+But in our setting, we need an explicit classifier which is readable by human and can proceed by off-the-shelf constraints solvers.
 \item Machine learning algorithms think more of generalization ability than correctness on the training data.
-Sometimes they can sacrifice the correctness on the training data to exchange for higher generalization ability.
-But in our setting, the first thing we care about is the correctness on the training data,
+Sometimes they can sacrifice the prediction correctness on the training data to exchange for higher generalization ability.
+But in our setting, the first thing we care about is the prediction  correctness on the training data,
 meaning we can not tolerate any slight classification error on the training set.
 On this basis, we hope the classification algorithm can have better generalization ability.
 \end{itemize} 
@@ -63,9 +63,9 @@ on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
 And $\textsc{Zilu}$ also takes $\mathcal{S}^\rightarrow$ to check the classifier(as is shown in Section 2).
 \end{itemize} 
 
-So the whole classification algorithm is describe in ~\ref{alg:classify}.
+So the whole classification algorithm is described in ~\ref{alg:classify}.
 
-\begin{algorithm}[t]
+\begin{algorithm}[!h]
 \SetAlgoVlined
 \Indm
 \KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
@@ -73,10 +73,10 @@ So the whole classification algorithm is describe in ~\ref{alg:classify}.
 \Indp
     let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, $\mathcal{S}^-)$\;
     \If {$f$ violates any data in $\mathcal{S}^+$ or $\mathcal{S}^-$} {
-    	\Return $\textsc{Null}$\;
+        \Return $\textsc{Null}$\;
     }
-	\If {$f$ violates any inference rules in $\mathcal{S}^\rightarrow$} {
-	    \Return $\textsc{Null}$\;
+    \If {$f$ violates any inference rules in $\mathcal{S}^\rightarrow$} {
+        \Return $\textsc{Null}$\;
     }
     \Return $f$;
 \caption{Algorithm $classify$}
@@ -98,6 +98,13 @@ We will show this in ``$\textsc{Svm}$ derivatives'' part in the end of this sect
 
 
 \subsection{Active Learning} 
+Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
+At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
+We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
+otherwise we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
+In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
+Notice that in our setting, the most informative samples are those which are exactly on the lines and therefore can be obtained by solving an equation system. 
+At line 8, we test the program with the newly generated samples so as to label them accordingly.
 \begin{algorithm}[h]
 \SetAlgoVlined
 \Indm
@@ -108,11 +115,11 @@ let $old_f$ be $null$\;
 \While{true} {
     let $f$ = classify($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
     \If {$f$ is not equal to $\textsc{Null}$} {
-    	\If {$f$ is identical to $old_f$} {
-    		$\mathcal{C}$ = $f$\;
-        	\Return $\mathcal{C}$;
-    	}
-    	let $old_f = f$\;
+        \If {$f$ is identical to $old_f$} {
+            $\mathcal{C}$ = $f$\;
+            \Return $\mathcal{C}$;
+        }
+        let $old_f = f$\;
     }
   %\textsc{Re-sampling}:\\
     $sam$ = selectiveSampling($old_f$)\;
@@ -123,20 +130,6 @@ let $old_f$ be $null$\;
 \label{alg:active}
 \end{algorithm}
 
- 
-
-
-Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
-At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
-We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
-In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
-Notice that in our setting, the most informative samples are those which are exactly on the lines and therefore can be obtained by solving an equation system. 
-At line 8, we test the program with the newly generated samples so as to label them accordingly.
-
-In our implementation, after getting a classifier, which is usually a single polynomials or conjunction or disjunction of polynomials,
-we can get some solutions of these polynomials using \textbf{GSL} (GNU Scientific Library).
-Then we use these solutions or the points near these solutions as sampling points.
 
 \begin{example}
 \LL{to be added}
@@ -147,32 +140,32 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 \end{proposition}
 
 
-\subsection{SVM derivatives}
+\subsection{SVM Derivatives}
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
-If, however, $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half space only, 
+If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half space only, 
 a more complicated function $f$ must be adopted. 
 For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
 the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
 
 Also in algorithm~\ref{alg:classify}, we mentioned customers can substitute $\textsc{Svm}$ with other classification algorithms for learning.
 $\textsc{Zilu}$ has implemented two of them with native $\textsc{Svm}$: 
-$Polynomial \textsc{Svm}$, which can be used to learn invariants in the form of polynomials or the equivalent mixed conjunctives or disjunctives,
+$Polynomial \textsc{Svm}$, which can be used to learn invariants in the form of polynomials or the equivalent mixed conjunctive or disjunctives,
 and $Conjunctive \textsc{Svm}$, which can learn invariants in the form of conjunctive of polynomials.
 
 \subsubsection{Polynomial SVM}
 In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
-However there is still no efficient approach to learn these invariants.
-In our research, we found sometimes convert the conjunctives or disjunctives to a polynomial expression might be a nice try to this problem.
+However, there is still no efficient approach to learning these invariants.
+In our research, we found sometimes convert the conjunctive or disjunctives to a polynomial expression might be a nice try to this problem.
 For instance, if the target invariant 
-$$\mathcal{C} = (x \ge x_0 \bigwedge x \le x_1) where x_0 < x_1$$,
+$$\mathcal{C} = (x \ge x_0 \bigvee x \le x_1) \ where\ x_0 < x_1$$,
 we can find a polynomial expression 
-$$\mathcal{C}' = \big(x^2 - (x_0 + x_1)x + x_0x_1 <= 0\big)$$ 
+$$\mathcal{C}' = \big(x^2 - (x_0 + x_1)x + x_0x_1 \ge 0\big)$$ 
 as an equivalent invariant.
 
-Actually, polynomials are more powerful on this than they looks at the first glance, especially univariate polynomials. 
+Actually, polynomials are more powerful on this than they look at the first glance, especially univariate polynomials. 
 Some cubic univariate polynomials can represent disjunctive of a conjunctive expression and a linear expression.
 For example, the following two expressions are equivalent:
-$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big)  where x_0 < x_1 < x_2$$
+$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big) \ where\ x_0 < x_1 < x_2$$
 $$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$ 
 
 
@@ -181,14 +174,44 @@ In practice, we map raw data (program states) in $\mathcal{S}^+$, $\mathcal{S}^-
 and then apply $\textsc{Svm}$ on the mapped data to learn a polynomial classifier. 
 For now, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants.
 
-But for multivariate problem, multivariate polynomials can not handle in most cases.
+But for the multivariate invariant problem, multivariate polynomials can not handle in most cases.
 For example, $\mathcal{C} = (x \ge 0 \bigwedge y \ge 0)$,
 it can be proved that there is no such a polynomial which can be equivalent with it.
 So $\textsc{Zilu}$ apply Conjunctive SVM to solve this case.
 
-
 \subsubsection{Conjunctive SVM}
+In order to learn invariants in form of conjunctives, 
+Rahul Sharma and others have developed a algorithm called ``$\textsc{Svm\_i}$'' in ~\ref{sharma2012interpolants},
+but they failed to simplify the learned classifier.
+$\textsc{Zilu}$ applied a technique ~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm:
 
+\begin{algorithm}[!h]
+\SetAlgoVlined
+\Indm
+\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$}
+\KwOut{a set of perfect classifiers for $\mathcal{S}^+$ and $\mathcal{S}^-$}
+\Indp
+	let $\mathcal{C}$ = $\textsc{Null}$\;
+	let $\textsc{Misclassified}$ = $\mathcal{S}^-$\;
+	\While {$\textsc{Misclassified}$ is not empty} {
+		Random choose $s$ from $\textsc{Misclassified}$\;
+	    let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, s)\;
+	    add $f$ to $\mathcal{C}$\;
+	    \For {$s' \in \textsc{Misclassified}$} {\
+	    	\If {$f(s') \le 0$} {
+	    		remove $s'$ from $\textsc{Misclassified}$\;
+	    	}
+	    }
+	}
+	\For {$c \in \mathcal{C}$} {
+		\If {$\mathcal{C}\diagdown c \Rightarrow c$} {
+			remove $c$ from $\mathcal{C}$\;
+		}
+	}
+	\Return $\mathcal{C}$;
+\caption{Algorithm $conjunctiveSVM$}
+\label{alg:conjunctiveSVM}
+\end{algorithm}
 
 
 
