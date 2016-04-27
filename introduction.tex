@@ -35,11 +35,11 @@ To prove the correctness of the above program specification,
 we need to find a loop invariant $\mathit{Inv}$ satisfying the following three conditions. 
 \begin{align}
     &s \models \mathit{Pre} 
-        &&\Rightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
-    &s \models \mathit{Inv} \bigwedge \mathit{Cond} 
-        &&\Rightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
-    &s \models \mathit{Inv} \bigwedge \neg\mathit{Cond} 
-        &&\Rightarrow & s &\models \mathit{Post} \label{inv:post}
+        &&\Longrightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
+    &s \models \mathit{Inv} \wedge \mathit{Cond} 
+        &&\Longrightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
+    &s \models \mathit{Inv} \wedge \neg\mathit{Cond} 
+        &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
 The goal of this work is developing a method to automatically learn 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 

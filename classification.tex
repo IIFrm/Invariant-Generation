@@ -107,7 +107,7 @@ In particular, at line 9, we apply standard techniques~\cite{DBLP:conf/icml/Scho
 Notice that in our setting, as indicated in Section Sampling, the most informative samples are those which are exactly on the lines 
 and therefore can be obtained by solving an equation system using libraries. 
 At line 10 and line 11, we test the program with the newly generated samples so as to label them accordingly.
-\begin{algorithm}[!h]
+\begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
@@ -133,9 +133,9 @@ let $old_f$ be $null$\;
 \end{algorithm}
 
 
-\begin{example}
-\LL{to be added}
-\end{example}
+%\begin{example}
+%\LL{to be added}
+%\end{example}
 
 \begin{proposition}
 Algorithm $activeLearning$ always eventually terminates. \hfill \qed
@@ -196,10 +196,10 @@ In practice, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degr
 Along with polynomial invariants, we found there are also some invariant of conjunctive or disjunctive form which can be expressed in polynomials,
 which means our approach can also find these sort of invariants.
 For instance, if the target invariant is 
-$$(x \ge x_0 \bigvee x \le x_1) \ where\ x_0 < x_1$$
+$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
 we can find an equivalent polynomial expression in polynomial form:
-$$\mathcal{C}' = \big(x^2 - (x_0 + x_1)x + x_0x_1 \ge 0\big)$$ 
-So $polynomialSVM$ can find a classifier for any complex expression as long as it can be expressed in form of polynomials.
+$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
+So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in a form of polynomials.
 
 
 \subsubsection{Conjunctive SVM}

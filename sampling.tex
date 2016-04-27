@@ -15,33 +15,23 @@ Then we execute program from these samples to gather more data and label them ac
 In our setting, we do sample a set $S$ of program states in three different approaches: 
 random sampling, selective sampling and counter-example sampling, 
 which are applied according to the information we gathered by that time.
-If compared sampling to asking question, random sampling is like asking random questions,
-and selective sampling is like asking tentative questions, 
-while counter-example sampling is like an eye-to-eye debate.
+Figure ~\ref{fig:sampling} visually shows how they do sampling on a 2-D plane.
+From the perspective of the speed, random sampling runs very fast which ranks the first, 
+while counter-example sampling ranks the last.
+From the contribution to the final invariant,
+counter-example sampling and selective sampling are significantly better than random sampling.
+%If compared sampling to asking question, random sampling is like asking random questions,
+%and selective sampling is like asking tentative questions, 
+%while counter-example sampling is like an eye-to-eye debate.
 The following paragraphs show how these three sampling technique works and why we apply them in $\textsc{Zilu}$.
 
-%In this step, we sample, either randomly or using tools based on the idea of concolic testing~\cite{}, 
-%a set $T$ of program states and test the program starting with each program state $s$ in $T$. 
-%We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$. 
-%We write $Body^*(T)$ to denote $\{s' | \exists s \in T \cdot s' \in Body^*(s)\}$. 
-%Furthermore, we write $s \Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.45]{figures/general-sampling.pdf}
+    \caption{Sampling approaches}
+    \label{fig:sampling}
+\end{figure}
 
-%We categorize program states in $Body^*(T)$ into four sets:
-%$C_T$ which stands for counter-example trace, 
-%$P_T$ which stands for traces with positive labels, 
-%$N_T$ which stands for traces with negative labels 
-%and $U_T$ which stands for traces with unknown labels.
-%They can be judged by the following rules: 
-%\begin{itemize}
-%    \item Set $C_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \notin Post\}$;
-%    \item Set $P_T$ is $\{s \in Body^*(T) | s \in Pre \land s \Rightarrow s' \land s' \in Post\}$;
-%    \item Set $N_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \notin Post\}$;
-%    \item Set $U_T$ is $\{s \in Body^*(T) | s \notin Pre \land s \Rightarrow s' \land s' \in Post\}$;
-%\end{itemize}
-%We remark that anytime a program state in $C_T$ is identified, a counter-example is found and \textsc{Zilu} reports that verification is failed immediately. 
-%Otherwise, because $Inv$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. 
-%The program states in $U_T$ may or not may be in $Inv$. 
-%If we know that a program state $s \in U_T$ is in $Inv$, $Body^*(s) \subseteq Inv$.
 
 \subsubsection{Random Sampling}
 Random sampling is well known in statistics, including simple random sampling and systematic random sampling.
@@ -147,12 +137,12 @@ Now consider equation (2).
 This is called inductive property, which means if there is a pair of states $(s, t)$ in which $t = Body(s)$, 
 and $s$ satisfies $Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
 Hence, for the invariant candidate $\mathcal{C}$, 
-if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \mathcal{C}) \land (t \models \neg \mathcal{C})$ proves $\mathcal{C}$ is not an invariant. 
+if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \mathcal{C}) \wedge (t \models \neg \mathcal{C})$ proves $\mathcal{C}$ is not an invariant. 
 We call this pair of states as implication pair.
 
 Finally, consider equation (3).
-The `existence of a state $s \models \mathcal{C} \bigwedge \neg B \bigwedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
-We call a state $s$ which satisfies $\neg{B} \bigwedge \neg{Post}$ a negative state. 
+The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
+We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state. 
 
 
 
@@ -186,45 +176,34 @@ Then we name this trace as an implication trace, meaning if $s_i \models Inv$, t
 Implication traces can not be used to do classification directly, 
 however, they have strength in validating a candidate.
 For instance, $\mathcal{C} = x - y \ge 0$ and there is an implication trace 
-Trace $\{s_0 \to s_1 \to s_2\}$ where 
+$Trace\{s_0 \to s_1 \to s_2\}$ where 
 $$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big)$$.
-After using $\mathcal{C}$ to label this trace, we find out $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -$$, 
-which means the current $\mathcal{C}$ is not an actual invariant as it violates the above trace.
+After using $\mathcal{C}$ to label this trace, we find out $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -$$ 
+violates the above trace $Trace\{s_0 \to s_1 \to s_2\}$ which means the current $\mathcal{C}$ is not an actual invariant.
 In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.
 %In total, we can have table.~\ref{LabelingTable}.
 
 
 So now we categorize all the program states $Body^*(S)$ started from Set $S$ into four sets:
-$\mathcal{S}^x$ which stands for counter-example trace, 
+$\mathcal{S}^\chi$ which stands for counter-example trace, 
 $\mathcal{S}^+$ which stands for positive traces, 
 $\mathcal{S}^-$ which stands for negative traces, 
 and $\mathcal{S}^\rightarrow$ which stands for implication traces.
 
-They can be judged according to Table~\ref{LabelingTable}: 
+They can be judged according to Table ~\ref{tab:labeling}: 
 \begin{table}[htb]
-\label{LabelingTable}
+\label{tab:labeling}
 \centering
 \caption{Trace Labeling Table}
 \begin{tabular}[float]{|c|c|c|}
 \hline
 $s_0 \Rightarrow \Rightarrow s_n$ & $s_n \models Post$            & $s_n \models \neg Post$\\
 \hline
-$s_o \models Pre$                 & $Body^*(s_0) \in \mathcal{S}^+$       & $Body^*(s_0) \in \mathcal{S}^x$\\
+$s_o \models Pre$                 & $Body^*(s_0) \in \mathcal{S}^+$       & $Body^*(s_0) \in \mathcal{S}^\chi$\\
 \hline
 $s_0 \models \neg Pre$            & $Body^*(s_0) \in \mathcal{S}^\rightarrow$       & $Body^*(s_0) \in \mathcal{S}^-$\\
 \hline
 \end{tabular}
 \end{table}
-
-
-
-%Among all these possibilities,
-%we can get more samples than previous approaches can with executing program just once.
-%So with the sample information, 
-%the learner can learn an as good invariant as, if not better than, the previous approaches, 
-%as it can utilize more information to do invariant learning task.
-%This also implies our approach can get convergence faster than before.
-
-
 
 % section sampling (end)

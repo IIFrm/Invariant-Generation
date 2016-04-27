@@ -11,14 +11,14 @@ checking the satisfiability of constraints (1), (2) and (3) using state-of-art t
 %In addition, we separated this part as a standalone tool for loop invariant verification.
 
 In implementation, to verify constraint (1) and (3), 
-$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \bigwedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
+$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
 For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
 $$(x<y) \Rightarrow (33-2*x+2*y>=0)$$
 to check constraint (1), 
 and 
-$$\big(\neg(x<y) \bigwedge (33-2*x+2*y>=0)\big) \Rightarrow ((x >= y) \bigwedge (x <= y + 16))$$
+$$\big(\neg(x<y) \wedge (33-2\cdot x+2\cdot y>=0)\big) \Rightarrow ((x >= y) \wedge (x <= y + 16))$$
 to check constraint (3).
 
 However, it might be a bit of complicated due to $Body$'s computational complexity to check constraint (2).
@@ -97,11 +97,11 @@ $\{branch2 \to branch4\}$, $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\
 
 
 \begin{itemize}
-\item $\big(33+2*(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2*(y-x)\ge0\big) \bigwedge \big(x\ge0\big)$
-\item $\big(33+2*(y-x-4)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2*(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y\ge0\big)$
-\item $\big(33+2*(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2*(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y<0\big)$
+\item $\big(33+2\cdot(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x\ge0\big)$
+\item $\big(33+2\cdot(y-x-4)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y\ge0\big)$
+\item $\big(33+2\cdot(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y<0\big)$
 \end{itemize}
-As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \bigwedge \beta\big)$, 
+As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
 instead of checking the satisfiability of inference rule
 we prefer to check the unsatisfiability of constraints with conjunctive forms. 
 After getting these constraints, we can apply Z3 solver to check the satisfiability (or unsatisfiability).
