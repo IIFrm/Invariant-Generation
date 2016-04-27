@@ -12,7 +12,7 @@ and senior machine learning experts have developed several efficient supervised 
 Before coming to the specific technique $\textsc{Zilu}$ applies,
 it should be noted that there are at least two main differences between traditional machine learning problems and the problem in our setting:
 \begin{itemize}
-\item Most machine learning techniques cares more about prediction correctness rather than understanding the underlying problem,
+\item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem,
 although there is a research trend in machine learning to understand ongoing during these years.
 On the contrary, in software engineering area, program verification cares about formalization and reasoning.
 As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
@@ -42,7 +42,7 @@ a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ a
 such that every state $s \in S^+$ satisfies the constraint and every state $s' \in S^-$ fails the constraint. 
 In the following, we write $\textsc{Svm}(S^+, S^-)$ to denote the function which returns a linear classifier.
 
-SVM
+%SVM
 
 As there are difference between machine learning problem and our setting, which is discussed in the above subsection,
 $\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects in the implementation: 
@@ -53,10 +53,10 @@ but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and
 However in verification, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
 Thus, we need to convert the $\textsc{Svm}$ model to a hyperplane by ourselves.
 (This is also the reason we do not apply $\textsc{Svm}$ with kernel methods,
-as converting $\textsc{Svm}$ models with kernel methods, i.e. RBF kernel, would be too complicated, sometime even impossible.)
+as converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be too complicated, sometime even impossible.)
 \item As $\textsc{Zilu}$ thinks higher of the correctness on the training data than anything else,
-Before applying $\textsc{Svm}$ technique, the parameters (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example,
-different from $\mathcal{C}$ used as loop invariant candidate in our context) 
+Before applying $\textsc{Svm}$ technique, the parameters (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
+%different from $\mathcal{C}$ used as loop invariant candidate in our context) 
 should be tuned to get a classifier which does a better job of getting all the training points classified correctly.
 \item What's more, we need to check the classification correctness of the learned classifier 
 on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
@@ -148,16 +148,49 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 
 
 \subsection{SVM derivatives}
+%$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
+If, however, $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half space only, 
+a more complicated function $f$ must be adopted. 
+For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
+the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
+
+Also in algorithm~\ref{alg:classify}, we mentioned customers can substitute $\textsc{Svm}$ with other classification algorithms for learning.
+$\textsc{Zilu}$ has implemented two of them with native $\textsc{Svm}$: 
+$Polynomial \textsc{Svm}$, which can be used to learn invariants in the form of polynomials or the equivalent mixed conjunctives or disjunctives,
+and $Conjunctive \textsc{Svm}$, which can learn invariants in the form of conjunctive of polynomials.
 
 \subsubsection{Polynomial SVM}
+In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
+However there is still no efficient approach to learn these invariants.
+In our research, we found sometimes convert the conjunctives or disjunctives to a polynomial expression might be a nice try to this problem.
+For instance, if the target invariant 
+$$\mathcal{C} = (x \ge x_0 \bigwedge x \le x_1) where x_0 < x_1$$,
+we can find a polynomial expression 
+$$\mathcal{C}' = \big(x^2 - (x_0 + x_1)x + x_0x_1 <= 0\big)$$ 
+as an equivalent invariant.
+
+Actually, polynomials are more powerful on this than they looks at the first glance, especially univariate polynomials. 
+Some cubic univariate polynomials can represent disjunctive of a conjunctive expression and a linear expression.
+For example, the following two expressions are equivalent:
+$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big)  where x_0 < x_1 < x_2$$
+$$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$ 
+
+
+This leads us to develop a classification algorithm for learning polynomial divider.
+In practice, we map raw data (program states) in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to data in high dimensions, 
+and then apply $\textsc{Svm}$ on the mapped data to learn a polynomial classifier. 
+For now, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants.
+
+But for multivariate problem, multivariate polynomials can not handle in most cases.
+For example, $\mathcal{C} = (x \ge 0 \bigwedge y \ge 0)$,
+it can be proved that there is no such a polynomial which can be equivalent with it.
+So $\textsc{Zilu}$ apply Conjunctive SVM to solve this case.
+
 
 \subsubsection{Conjunctive SVM}
 
 
-If, however, $F^+$ and $F^-$ cannot be perfectly classified by one half space only, 
-a more complicated function $f$ must be adopted. 
-For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
-the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
+
 
 %\section{Active Learning}
 %Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 

@@ -152,8 +152,8 @@ if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \math
 We call this pair of states as implication pair.
 
 Finally, consider equation (3).
-The `existence of a state $s \models \mathcal{C} \boldsymbol{\wedge} \neg B \boldsymbol{\wedge} \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
-We call a state $s$ which satisfies $\neg{B} \boldsymbol{\wedge} \neg{Post}$ a negative state. 
+The `existence of a state $s \models \mathcal{C} \bigwedge \neg B \bigwedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
+We call a state $s$ which satisfies $\neg{B} \bigwedge \neg{Post}$ a negative state. 
 
 
 
@@ -188,7 +188,7 @@ Implication traces can not be used to do classification directly,
 however, they have strength in validating a candidate.
 For instance, $\mathcal{C} = x - y \ge 0$ and there is an implication trace 
 Trace $\{s_0 \to s_1 \to s_2\}$ where 
-$$s_0 = (x \mapsto 2, y \mapsto 1),  s_1 = (x \mapsto 2, y \mapsto 2),  s_2 = (x \mapsto 2, y \mapsto 3)$$.
+$$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big)$$.
 After using $\mathcal{C}$ to label this trace, we find out $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -$$, 
 which means the current $\mathcal{C}$ is not an actual invariant as it violates the above trace.
 In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.

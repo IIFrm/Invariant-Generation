@@ -36,9 +36,9 @@ we need to find a loop invariant $\mathit{Inv}$ satisfying the following three c
 \begin{align}
     &s \models \mathit{Pre} 
         &&\Rightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
-    &s \models \mathit{Inv} \land \mathit{Cond} 
+    &s \models \mathit{Inv} \bigwedge \mathit{Cond} 
         &&\Rightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
-    &s \models \mathit{Inv} \land \neg\mathit{Cond} 
+    &s \models \mathit{Inv} \bigwedge \neg\mathit{Cond} 
         &&\Rightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
 The goal of this work is developing a method to automatically learn 
