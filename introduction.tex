@@ -28,7 +28,7 @@ the evaluation function of the program variables $x_1, \ldots, x_n$
 and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$, 
 the above program means that (1) $\mathit{Pre}$ is the assumption of $s$; 
 (2) if the $\mathit{Cond}$ is satisfied by $s$ at an iteration, 
-$\mathit{Body}$ will be executed and $s$ will be updated to $\mathit{body}(s)$; 
+$\mathit{Body}$ will be executed and $s$ will be updated to $\mathit{Body}(s)$; 
 (3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration, 
 the while-loop ends and $s$ should satisfy $\mathit{Post}$. 
 To prove the correctness of the above program specification, 
@@ -36,9 +36,9 @@ we need to find a loop invariant $\mathit{Inv}$ satisfying the following three c
 \begin{align}
     &s \models \mathit{Pre} 
         &&\Rightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
-    &s \models \mathit{Inv} \bigwedge \mathit{Cond} 
+    &s \models \mathit{Inv} \wedge \mathit{Cond} 
         &&\Rightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
-    &s \models \mathit{Inv} \bigwedge \neg\mathit{Cond} 
+    &s \models \mathit{Inv} \wedge \neg\mathit{Cond} 
         &&\Rightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
 The goal of this work is developing a method to automatically learn 
@@ -92,7 +92,7 @@ which is the same as the loop condition $\mathit{Cond}$.
 When $\mathit{Cond}$ is met in each loop iteration, 
 $x$ is increased by $7$ if $x$ is negative, otherwise $x$ is increased by $10$; 
 $y$ is decreased by $10$ if $y$ is negative, otherwise $y$ is increased by $3$. 
-Finally, the assertion of $P$ specifies that $y \le x \le y + 16$. 
+Finally, the assertion of $P$ requires $y \le x \le y + 16$. 
 The correctness of the program specification in Figure~\ref{fig:running:example} 
 can be proven by checking the three conditions 
 (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) above 
@@ -171,10 +171,12 @@ Our contributions are four-fold.
     More importantly, our framework can be easily and intuitively extended with other alternative methods. 
     \item 
     Our framework can be practically used to verify real programs with ease, 
-    as the samples are generated at runtime 
-    and our framework is language/platform independent based on other tools 
-    (e.g., GSL for selective sampling, LibSVM for SVM classification, 
-    Z3 for invariant verification and KLEE for concolic testing). 
+    as our framework is language- as well as platform-independent 
+    based on the samples generated at runtime. 
+    In this work, we choose GSL for selective sampling, LibSVM for SVM classification, 
+    Z3 for invariant verification and KLEE for concolic testing. 
+    They can be replaced by any other COTS libraries and tools, 
+    whenever the desired functionalities are provided. 
     \item 
     We implement our framework as a tool called \textsc{Zilu} 
     and compare it with other available state-of-the-art invariant inference tools, 
