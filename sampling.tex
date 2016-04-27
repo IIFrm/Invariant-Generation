@@ -18,7 +18,7 @@ which are applied according to the information we gathered by that time.
 If compared sampling to asking question, random sampling is like asking random questions,
 and selective sampling is like asking tentative questions, 
 while counter-example sampling is like an eye-to-eye debate.
-The following paragraphs shows how these three sampling technique works and why we apply them in $\textsc{Zilu}$.
+The following paragraphs show how these three sampling technique works and why we apply them in $\textsc{Zilu}$.
 
 %In this step, we sample, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 %a set $T$ of program states and test the program starting with each program state $s$ in $T$. 
@@ -47,14 +47,13 @@ The following paragraphs shows how these three sampling technique works and why 
 Random sampling is well known in statistics, including simple random sampling and systematic random sampling.
 In this context, we refer to the former meaning, in which each sample is chosen randomly and entirely by chance, 
 such that each sample has the same probability of being chosen at any stage during the sampling process.
-In our setting, we generate samples by calling random functions supported by most programming language.
-
+In our setting, we generate samples by calling random functions.
 It is a quite intuitive but important sampling approach, especially when we do not know the system at the beginning. 
-It is proved that, simple random sampling is most effecient when no information is given.
+It is proved that simple random sampling is most efficient when no information is given.
 $\textsc{Zilu}$ applies this technique all along the inference procedure, not only the beginning. 
 That is because our assumption is there always much more data points than we could sample in a given time,
-otherwise we can verify the program by enumeration.
-Although our sampling technique is most effecient from statistical persperctive, 
+otherwise, we can verify the program by enumeration.
+Although our sampling technique is most efficient from statistical perspectives, 
 but there is no guarantee this sampling works every time.
 So in the subsequent iterations, we need to add little randomness to avoid, or at least reduce, 
 the impact of the bias resulted from previous sampling results.
@@ -62,9 +61,9 @@ the impact of the bias resulted from previous sampling results.
 
 \subsubsection{Selective Sampling}
 Selective sampling is a technique in active learning, which can generate samples which are more informative and instructive.
-It is an aggressive sampling technique that help $\textsc{Zilu}$ to learn the target much faster.
+It is an aggressive sampling technique that helps $\textsc{Zilu}$ to learn the target much faster.
 
-%When we have a guess of loop invariants, we can apply selective sampling approach to find more useful samples.
+%When we have a guess of loop invariants, we can apply selective sampling approach to finding more useful samples.
 %Actually we apply this sampling method all along the learning procedure except the first iteration.
 It is obvious that, due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
 the guessed classifier obtained from previous iteration might be far from being correct. 
@@ -94,12 +93,12 @@ with that state to label that feature vector so that the classifier would be imp
 %Notice that in our setting, the most informative samples are those which are exactly on the lines and 
 %therefore can be obtained by solving an equation system. 
 %At line 8, we test the program with the newly generated samples so as to label them accordingly.
-After the above discussion, apparently the prerequirement of selective sampling is there is a guess.
-Thus in our implementation, after learning an invariant candiate, 
+After the above discussion, apparently the pre-requirement of selective sampling is there is a guess.
+Thus in our implementation, after learning an invariant candidate, 
 which is usually a single polynomials or conjunction or disjunction of polynomials,
-we do sampling along this or these polynomials by using \textbf{GSL} (GNU Scientific Library) to solve them.
+we do sample along this or these polynomials by using \textbf{GSL} (GNU Scientific Library) to solve them.
 
-This technique is applied all along the learning process except the very begining.
+This technique is applied all along the learning process except the very beginning.
 
 
 
@@ -112,11 +111,11 @@ And as a result, it is quite useful for the invariant candidate refinement in th
 
 As counter-example sampling technique sounds good, it seems this technique should be applied almost all the time, 
 but the fact is it is applied only after failure of invariant candidate verification.
-That is because appling concolic tesint and constraint solving is a more time consuming job than the other two sampling methods.
+That is because applying concolic testing and constraint solving is a more time-consuming job than the other two sampling methods.
 
 \subsection {Labeling}
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
-As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state s.
+As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state $s$.
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
 Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
 
@@ -172,13 +171,13 @@ if $s_0$ satisfies $\neg Pre$, and $s_n$ satisfies $\neg Post$,
 we can infer this is a negative trace, 
 which means all the states in this trace should be negative states.  
 
-Actually for an arbitrary trace there are also two other possibilities we have not mentioned yet.
+Actually for an arbitrary trace, there are also two other possibilities we have not mentioned yet.
 
 One is a trace that begins with a state $s_0$ satisfying $Pre$ and ends with a state $s_n$ that satisfying $\neg Post$,
-obviously this is a counter-example to disprove the program,
+obviously, this is a counter-example to disprove the program,
 which means there is something wrong with the program specification.
 So if $\textsc{Zilu}$ meets any counter-example trace, 
-it exits immediately with message to tell the failure of program specification. 
+it exits immediately with the message to tell the failure of program specification. 
 
 The other case is a trace begin with a state $s_0$ satisfying $\neg Pre$ but ends with a state $s_n$ satisfying $Post$.
 Under this condition, we could not know whether $s_0$ and $s_n$ satisfy invariants or not,
@@ -225,12 +224,6 @@ $s_0 \models \neg Pre$            & $Body^*(s_0) \in \mathcal{S}^\rightarrow$   
 %the learner can learn an as good invariant as, if not better than, the previous approaches, 
 %as it can utilize more information to do invariant learning task.
 %This also implies our approach can get convergence faster than before.
-
-
-
-
-
-
 
 
 

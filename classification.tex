@@ -5,7 +5,7 @@
 
 After sampling and labeling in the last step, we obtain some program states must be in $Inv$ and some must not. 
 Thinking as a data scientist, if we view these program states as a data set, 
-the problem to find an invariant candidate becomes the problem to find a classifier to divide the data set according to their labels.
+the problem to find an invariant candidate becomes the problem to find a classifier to divide the dataset according to their labels.
 Fortunately, We can borrow the idea from machine learning area as the community has studied this problem has been fully studied several years ago.
 and senior machine learning experts have developed several efficient supervised classification algorithms to handle this problem.
 
@@ -29,7 +29,7 @@ Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vecto
 \subsection{Supported Vector Machines}
 %, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
-%In most setting, given a set of training examples, each marked for belonging to one of two categories, 
+%In most setting, given a set of training examples, each marked as belonging to one of two categories, 
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
@@ -44,16 +44,16 @@ In the following, we write $\textsc{Svm}(S^+, S^-)$ to denote the function which
 
 %SVM
 
-As there are difference between machine learning problem and our setting, which is discussed in the above subsection,
-$\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects in the implementation: 
+As differences between machine learning problem and our setting are discussed in the above subsection, in order for our approach to work,
+$\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects: 
 \begin{itemize}
 \item $\textsc{Svm}$ technique does not really calculate a hyperplane explicitly, 
 but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and some parameters.
 %This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
-However in verification, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
+However in verification, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
 Thus, we need to convert the $\textsc{Svm}$ model to a hyperplane by ourselves.
 (This is also the reason we do not apply $\textsc{Svm}$ with kernel methods,
-as converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be too complicated, sometime even impossible.)
+as converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be too complicated, sometimes even impossible.)
 \item As $\textsc{Zilu}$ thinks higher of the correctness on the training data than anything else,
 Before applying $\textsc{Svm}$ technique, the parameters (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
 %different from $\mathcal{C}$ used as loop invariant candidate in our context) 
@@ -101,7 +101,7 @@ We will show this in ``$\textsc{Svm}$ derivatives'' part in the end of this sect
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
+otherwise, we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
 In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
 Notice that in our setting, the most informative samples are those which are exactly on the lines and therefore can be obtained by solving an equation system. 
 At line 8, we test the program with the newly generated samples so as to label them accordingly.
@@ -142,7 +142,7 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 
 \subsection{SVM Derivatives}
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
-If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half space only, 
+If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half-space only, 
 a more complicated function $f$ must be adopted. 
 For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
 the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
@@ -191,24 +191,24 @@ $\textsc{Zilu}$ applied a technique ~\ref{alg:conjunctiveSVM} based on their $\t
 \KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$}
 \KwOut{a set of perfect classifiers for $\mathcal{S}^+$ and $\mathcal{S}^-$}
 \Indp
-	let $\mathcal{C}$ = $\textsc{Null}$\;
-	let $\textsc{Misclassified}$ = $\mathcal{S}^-$\;
-	\While {$\textsc{Misclassified}$ is not empty} {
-		Random choose $s$ from $\textsc{Misclassified}$\;
-	    let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, s)\;
-	    add $f$ to $\mathcal{C}$\;
-	    \For {$s' \in \textsc{Misclassified}$} {\
-	    	\If {$f(s') \le 0$} {
-	    		remove $s'$ from $\textsc{Misclassified}$\;
-	    	}
-	    }
-	}
-	\For {$c \in \mathcal{C}$} {
-		\If {$\mathcal{C}\diagdown c \Rightarrow c$} {
-			remove $c$ from $\mathcal{C}$\;
-		}
-	}
-	\Return $\mathcal{C}$;
+    let $\mathcal{C}$ = $\textsc{Null}$\;
+    let $\textsc{Misclassified}$ = $\mathcal{S}^-$\;
+    \While {$\textsc{Misclassified}$ is not empty} {
+        Random choose $s$ from $\textsc{Misclassified}$\;
+        let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, s)\;
+        add $f$ to $\mathcal{C}$\;
+        \For {$s' \in \textsc{Misclassified}$} {\
+            \If {$f(s') \le 0$} {
+                remove $s'$ from $\textsc{Misclassified}$\;
+            }
+        }
+    }
+    \For {$c \in \mathcal{C}$} {
+        \If {$\mathcal{C}\diagdown c \Rightarrow c$} {
+            remove $c$ from $\mathcal{C}$\;
+        }
+    }
+    \Return $\mathcal{C}$;
 \caption{Algorithm $conjunctiveSVM$}
 \label{alg:conjunctiveSVM}
 \end{algorithm}
@@ -217,7 +217,7 @@ $\textsc{Zilu}$ applied a technique ~\ref{alg:conjunctiveSVM} based on their $\t
 
 %\section{Active Learning}
 %Due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
-%the guessed classifier obtained from previous iteration might be far from being correct. 
+%the guessed classifier obtained from the previous iteration might be far from being correct. 
 %In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
 %it is very unlikely that we would find it. 
 %Intuitively, in order to get the `actual' classifier, we would require samples which would distinguish the actual one from any nearby one. 
@@ -228,7 +228,7 @@ $\textsc{Zilu}$ applied a technique ~\ref{alg:conjunctiveSVM} based on their $\t
 %SVM selective sampling techniques have been proven effective in achieving a high accuracy 
 %with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
 %The basic idea of selective sampling is that at each round, 
-%we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to label. 
+%we select the samples that are the closest to the classification boundary so that they are the most difficult to classify and the most informative to be labeled. 
 %Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
 %this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}. 
 %In our setting, this means that we should sample a program state right by the classifier and test the program 
