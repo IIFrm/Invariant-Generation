@@ -4,11 +4,11 @@
 \label{sec:sampling}
 %Before learning procedure, we need to gather some data from program. 
 %So 
-In a broader view, \textsc{Zilu} is a dynamic program verification technique, 
-thus we are quite interested in program states during its execution.
-Sampling is a way to tell our preference on program states. 
-So in this step, we would like to gather more information through sampling.
-After sampling, we execute program to gather more samples and then label these data according to the satisfiability of $Pre$ and $Post$.
+In a broader view, our framework is a kind of dynamic program verification approaches, 
+thus it is quite interested in program execution states.
+Sampling is a way to tell the preference of program states. 
+So in this step, we would like to sample a state with a high possibility if it is important for the learning afterwards.
+Then we execute program from these samples to gather more data and label them according to the satisfiability of $Pre$ and $Post$.
 
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 \subsection{Sampling Approaches}
