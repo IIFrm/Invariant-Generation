@@ -5,12 +5,26 @@
 
 After sampling and labeling in the last step, we obtain some program states must be in $Inv$ and some must not. 
 Thinking as a data scientist, if we view these program states as a data set, 
-the problem to find an invariant candidate becomes a problem to find a classifier to divide the data set according to their labels.
-Fortunately, this problem has been fully studied by machine Learning community several years ago.
-Senior machine learning experts, some of who have a mathematical background, 
-have developed several supervised classification techniques, i.e. Supported Vector Machines, to handle this problem.
+the problem to find an invariant candidate becomes the problem to find a classifier to divide the data set according to their labels.
+Fortunately, We can borrow the idea from machine learning area as the community has studied this problem has been fully studied several years ago.
+and senior machine learning experts have developed several efficient supervised classification algorithms to handle this problem.
 
+Before coming to the specific technique $\textsc{Zilu}$ applies,
+it should be noted that there are at least two main differences between traditional machine learning problems and the problem in our setting:
+\begin{itemize}
+\item Most machine learning techniques cares more about prediction correctness rather than understanding the underlying problem,
+although there is a research trend in machine learning to understand ongoing during these years.
+On the contrary, in software engineering area, program verification cares about formalization and reasoning.
+As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
+But in our setting, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
+\item Machine learning algorithms think more of generalization ability than correctness on the training data.
+Sometimes they can sacrifice the correctness on the training data to exchange for higher generalization ability.
+But in our setting, the first thing we care about is the correctness on the training data,
+meaning we can not tolerate any slight classification error on the training set.
+On this basis, we hope the classification algorithm can have better generalization ability.
+\end{itemize} 
 
+Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vector Machines as a primary approach.
 
 \subsection{Supported Vector Machines}
 %, is one of the most powerful approaches.
@@ -20,73 +34,97 @@ have developed several supervised classification techniques, i.e. Supported Vect
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
 
-Supported Vector Machines, known as SVM, is a supervised machine learning algorithm for classification and regression analysis. 
+Supported Vector Machines, known as $\textsc{Svm}$, is a supervised machine learning algorithm for classification and regression analysis. 
 We use its binary classification functionality. 
-Mathematically speaking, the binary classification functionality of (linear) SVM works as follows. 
+Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
 Given two sets of feature vectors $S^+$ and $S^-$, it generates, if there is any, 
 a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
 such that every state $s \in S^+$ satisfies the constraint and every state $s' \in S^-$ fails the constraint. 
-In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier.
+In the following, we write $\textsc{Svm}(S^+, S^-)$ to denote the function which returns a linear classifier.
 
-Although we have such a good machine learning technique to do the job,
-there are still at least two main differences between traditional machine learning problems and the problem in our setting:
+SVM
+
+As there are difference between machine learning problem and our setting, which is discussed in the above subsection,
+$\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects in the implementation: 
 \begin{itemize}
-\item Most machine learning techniques cares more about prediction correctness rather than understanding the underlying problem,
-although there is a research trend in machine learning to understand ongoing during these years.
-On the contrary, in software engineering area, program verification cares about formalization and reasoning.
-As a result, a classification technique would be highly suggested as long as it can predict correctly on new received data.
-And thus, SVM does not really calculate a hyperplane explicitly, 
-instead it emits some supported vectors (this is where SVM get its name) and some other parameters.
-This might not a big problem if we do not apply SVM with some kernel method (which is used to classify no linear separable data).
-But in our setting, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
-In other words, we need to convert the SVM model to a hyperplane by ourselves.
-This is also the reason we do not apply SVM with kernel methods,
-as converting SVM models with kernel methods to an explicit form would be too complicated, sometime even impossible.
-\item Machine learning algorithms think more of generalization ability than correctness on the training data.
-Sometimes they can sacrifice the correctness on the training data to exchange for higher generalization ability.
-But in our setting, the first thing we care about is the correctness on the training data,
-meaning we can not tolerate any slight classification error on the training set.
-On this basis, we hope the classification algorithm can have better generalization ability.
-Fortunately, we can tune SVM parameters (mainly $C$ which tells the SVM optimization how much you want to avoid misclassifying each training example,
+\item $\textsc{Svm}$ technique does not really calculate a hyperplane explicitly, 
+but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and some parameters.
+%This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
+However in verification, we need a explicit classifier which is readable by human and can be proceed by off-the-shelf constraints solvers.
+Thus, we need to convert the $\textsc{Svm}$ model to a hyperplane by ourselves.
+(This is also the reason we do not apply $\textsc{Svm}$ with kernel methods,
+as converting $\textsc{Svm}$ models with kernel methods, i.e. RBF kernel, would be too complicated, sometime even impossible.)
+\item As $\textsc{Zilu}$ thinks higher of the correctness on the training data than anything else,
+Before applying $\textsc{Svm}$ technique, the parameters (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example,
 different from $\mathcal{C}$ used as loop invariant candidate in our context) 
-to get a classifier which does a better job of getting all the training points classified correctly.
-What's more, we need to check the classification correctness of the model on training data to ensure that is a perfect classifier. 
-
+should be tuned to get a classifier which does a better job of getting all the training points classified correctly.
+\item What's more, we need to check the classification correctness of the learned classifier 
+on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
+And $\textsc{Zilu}$ also takes $\mathcal{S}^\rightarrow$ to check the classifier(as is shown in Section 2).
 \end{itemize} 
-%In the following, we present how we obtain a classifier automatically using SVM. 
+
+So the whole classification algorithm is describe in ~\ref{alg:classify}.
+
+\begin{algorithm}[t]
+\SetAlgoVlined
+\Indm
+\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
+\KwOut{$\textsc{Null}$ or a perfect classifier for $\mathcal{S}^+$ and $\mathcal{S}^-$ without violating $\mathcal{S}^\rightarrow$}
+\Indp
+    let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, $\mathcal{S}^-)$\;
+    \If {$f$ violates any data in $\mathcal{S}^+$ or $\mathcal{S}^-$} {
+    	\Return $\textsc{Null}$\;
+    }
+	\If {$f$ violates any inference rules in $\mathcal{S}^\rightarrow$} {
+	    \Return $\textsc{Null}$\;
+    }
+    \Return $f$;
+\caption{Algorithm $classify$}
+\label{alg:classify}
+\end{algorithm}
+
+It is noted that customers can substitute $\textsc{Svm}$ with other classification techniques for learning invariant. 
+We will show this in ``$\textsc{Svm}$ derivatives'' part in the end of this section.
+ 
+%In the following, we present how we obtain a classifier automatically using $\textsc{Svm}$. 
 %In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
 %This half space could be seen as the strongest witness why the two data states are different. 
 %In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier
 
-\subsection{Checking}
-With the learned SVM model,we check whether it can perfectly classify these states first.
-If yes, then we can automatically turn it back to a hyperplane form, which is regarded as our invariant candidate.
-Otherwise, we may apply other classification techniques for learning, which will be mentioned at ``SVM derivatives'' part in the end of this section.
+%\subsection{Checking}
+%With the learned $\textsc{Svm}$ model,we check whether it can perfectly classify these states first.
+%If yes, then we can automatically turn it back to a hyperplane form, which is regarded as our invariant candidate.
+%Otherwise, we may apply other classification techniques for learning, which will be mentioned at ``$\textsc{Svm}$ derivatives'' part in the end of this section.
 
 
 \subsection{Active Learning} 
 \begin{algorithm}[h]
 \SetAlgoVlined
 \Indm
-\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-, and \mathcal{S}^\rightarrow$}
-\KwOut{a classifier for $\mathcal{S}^+$ and $\mathcal{S}^-$ without refution with $\mathcal{S}^\rightarrow$}
+\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
+\KwOut{an invariant candidate $\mathcal{C}$}
 \Indp
-let $old$ be $null$\;
+let $old_f$ be $null$\;
 \While{true} {
-    let $f = classify(\mathcal{S}^+, \mathcal{S}^-)$\;
-    \If {$f$ disobey inference rules in $\mathcal{S}^\rightarrow$} {
-    	\ Continue;
+    let $f$ = classify($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
+    \If {$f$ is not equal to $\textsc{Null}$} {
+    	\If {$f$ is identical to $old_f$} {
+    		$\mathcal{C}$ = $f$\;
+        	\Return $\mathcal{C}$;
+    	}
+    	let $old_f = f$\;
     }
-    \If {$f$ is identical to $old$} {
-        \Return $f$;
-    }
-    let $old = f$\;
-    let $sam$ be a set of samples computed by selective sampling\;
-    test the program and update $F^+$ and $F^-$ accordingly\;
+  %\textsc{Re-sampling}:\\
+    $sam$ = selectiveSampling($old_f$)\;
+    test the target program with $sam$\;
+    update $\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$ accordingly\;
 }
 \caption{Algorithm $activeLearning$}
 \label{alg:active}
 \end{algorithm}
+
+ 
+
 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
@@ -100,6 +138,13 @@ In our implementation, after getting a classifier, which is usually a single pol
 we can get some solutions of these polynomials using \textbf{GSL} (GNU Scientific Library).
 Then we use these solutions or the points near these solutions as sampling points.
 
+\begin{example}
+\LL{to be added}
+\end{example}
+
+\begin{proposition}
+Algorithm $activeLearning$ always eventually terminates. \hfill \qed
+\end{proposition}
 
 
 \subsection{SVM derivatives}

@@ -173,13 +173,25 @@ we can infer this is a negative trace,
 which means all the states in this trace should be negative states.  
 
 Actually for an arbitrary trace there are also two other possibilities we have not mentioned yet.
-One is a trace begins with a state $s_0$ that satisfies $Pre$ but ends with a state $s_n$ that satisfies $\neg Post$,
-this is a counter-example to disprove the program.
-That means there is something wrong with the program specification.
-The other case is a trace begin with a state $s_0$ that satisfies $\neg Pre$ but ends with a state $s_n$ that satisfies $Post$.
+
+One is a trace that begins with a state $s_0$ satisfying $Pre$ and ends with a state $s_n$ that satisfying $\neg Post$,
+obviously this is a counter-example to disprove the program,
+which means there is something wrong with the program specification.
+So if $\textsc{Zilu}$ meets any counter-example trace, 
+it exits immediately with message to tell the failure of program specification. 
+
+The other case is a trace begin with a state $s_0$ satisfying $\neg Pre$ but ends with a state $s_n$ satisfying $Post$.
 Under this condition, we could not know whether $s_0$ and $s_n$ satisfy invariants or not,
 not to mention other states $\{s_1, s_2, ..., s_{n-1}\}$.
 Then we name this trace as an implication trace, meaning if $s_i \models Inv$, then $s_j \models Inv$ $\forall j \ge i$.
+Implication traces can not be used to do classification directly, 
+however, they have strength in validating a candidate.
+For instance, $\mathcal{C} = x - y \ge 0$ and there is an implication trace 
+Trace $\{s_0 \to s_1 \to s_2\}$ where 
+$$s_0 = (x \mapsto 2, y \mapsto 1),  s_1 = (x \mapsto 2, y \mapsto 2),  s_2 = (x \mapsto 2, y \mapsto 3)$$.
+After using $\mathcal{C}$ to label this trace, we find out $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -$$, 
+which means the current $\mathcal{C}$ is not an actual invariant as it violates the above trace.
+In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.
 %In total, we can have table.~\ref{LabelingTable}.
 
 
@@ -220,12 +232,6 @@ $s_0 \models \neg Pre$            & $Body^*(s_0) \in \mathcal{S}^\rightarrow$   
 
 
 
-\begin{example}
-\LL{to be added}
-\end{example}
 
-\begin{proposition}
-Algorithm $activeLearning$ always eventually terminates. \hfill \qed
-\end{proposition}
 
 % section sampling (end)
