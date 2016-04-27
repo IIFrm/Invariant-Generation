@@ -3,8 +3,9 @@
 \section{Verification} % (fold)
 \label{sec:verification}
 From the last step, $\textsc{Zilu}$ has got a predicate which does not only classify all the samples perfectly but get converged.
-But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared with the real states distribution of the given program.
-For example, if our samples do not cover all the possible branches in $Body$, that should be a problem.
+But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared to the real states distribution of the given program.
+For example, if there is a branch in loop body such as $$if (x == 100) \cdots$$, 
+our samples would not cover all the possible branches except we do sampling amazing right to $(x\mapsto 10)$, that should be a problem.
 The last security checkpoint on these ``bad guys'' is verification. 
 In this step, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
 checking the satisfiability of constraints (1), (2) and (3) using state-of-art tools from symbolic execution and constraint solving communities.
