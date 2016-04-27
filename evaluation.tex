@@ -3,42 +3,13 @@
 \section{Evaluations} % (fold)
 \label{sec:evaluations}
 
-In this work, we implement our invariant inference framework into a tool called \textsc{Zilu}, 
-written in C++ and shell code. 
-\textsc{Zilu} uses APIs provided by GSL for selective sampling, LibSVM for machine learning, 
-KLEE for concolic testing and Z3 for constraint solving. 
-In our experimental evaluation, 
-we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks 
-in the following form, where $\mathit{Body}$ can have nested loops and conditional choices. 
-\[
-    \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
-\]
-\LL{Introduce the sources of the benchmark.}
-All benchmarks are available from~\cite{zilu}. 
-
-The parameters chosen in our experimental evaluation can be elaborated as follows. 
-In the \emph{Sampling} stage, 
-the values of all of the program input variables in the random sampling 
-and the chosen variables in the selective sampling 
-follow the universal distribution over the range of $[-200, 200]$. 
-In the \emph{Classification} stage, 
-the accuracy of SVM linear learning are set to its maximum value 
-in order to generate a absolutely correct classifier if it exists. 
-In the \emph{Verification} stage, 
-Z3 solver uses `integer' as the type of program variables. 
-Since our invariant reference process have random factor 
-introduced by the sampling sources, 
-we run each benchmark for 10 times 
-and present the results using the median time in Table~\ref{tab:experiments}. 
-All of the experiments are conducted using x86\_64 Ubuntu 14.04 (kernel 3.13.0-85-generic) 
-with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3. 
 
 \begin{table*}[t]
     \begin{center}
-    \begin{minipage}{\textwidth}
-    \begin{adjustwidth}{-1in}{-1in}
+    % \begin{minipage}{\textwidth}
+    % \begin{adjustwidth}{-1in}{-1in}
     \begin{center}
-    \begin{adjustbox}{max width=1.0\textwidth}
+    \begin{adjustbox}{max width=1\textwidth}
     \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
         \hline\hline
         Benchmark 
@@ -108,12 +79,42 @@ with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3.
     \end{tabular}
     \end{adjustbox}
     \end{center}
-    \end{adjustwidth}
-    \end{minipage}
+    % \end{adjustwidth}
+    % \end{minipage}
     \end{center}
     \caption{Experiment Results}
     \label{tab:experiments}
 \end{table*}
+
+In this work, we implement our invariant inference framework into a tool called \textsc{Zilu}, 
+written in C++ and shell code. 
+\textsc{Zilu} uses APIs provided by GSL for selective sampling, LibSVM for machine learning, 
+KLEE for concolic testing and Z3 for constraint solving. 
+In our experimental evaluation, 
+we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks 
+in the following form, where $\mathit{Body}$ can have nested loops and conditional choices. 
+\[
+    \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+\]
+\LL{Introduce the sources of the benchmark.}
+All benchmarks are available from~\cite{zilu}. 
+
+The parameters chosen in our experimental evaluation can be elaborated as follows. 
+In the \emph{Sampling} stage, 
+the values of all of the program input variables in the random sampling 
+and the chosen variables in the selective sampling 
+follow the universal distribution over the range of $[-200, 200]$. 
+In the \emph{Classification} stage, 
+the accuracy of SVM linear learning are set to its maximum value 
+in order to generate a absolutely correct classifier if it exists. 
+In the \emph{Verification} stage, 
+Z3 solver uses `integer' as the type of program variables. 
+Since our invariant reference process have random factor 
+introduced by the sampling sources, 
+we run each benchmark for 10 times 
+and present the results using the median time in Table~\ref{tab:experiments}. 
+All of the experiments are conducted using x86\_64 Ubuntu 14.04 (kernel 3.13.0-85-generic) 
+with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3. 
 
 
 % section evaluations (end)
