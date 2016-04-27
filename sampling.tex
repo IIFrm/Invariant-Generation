@@ -184,10 +184,10 @@ Then we name this trace as an implication trace, meaning if $s_i \models Inv$, t
 
 
 So now we categorize all the program states $Body^*(S)$ started from Set $S$ into four sets:
-$C_\mathcal{S}$ which stands for counter-example trace, 
-$P_\mathcal{S}$ which stands for positive traces, 
-$N_\mathcal{S}$ which stands for negative traces, 
-and $I_\mathcal{S}$ which stands for implication traces.
+$\mathcal{S}^x$ which stands for counter-example trace, 
+$\mathcal{S}^+$ which stands for positive traces, 
+$\mathcal{S}^-$ which stands for negative traces, 
+and $\mathcal{S}^\rightarrow$ which stands for implication traces.
 
 They can be judged according to Table~\ref{LabelingTable}: 
 \begin{table}[htb]
@@ -198,9 +198,9 @@ They can be judged according to Table~\ref{LabelingTable}:
 \hline
 $s_0 \Rightarrow \Rightarrow s_n$ & $s_n \models Post$            & $s_n \models \neg Post$\\
 \hline
-$s_o \models Pre$                 & $Body^*(s_0) \in P_\mathcal{S}$       & $Body^*(s_0) \in C_\mathcal{S}$\\
+$s_o \models Pre$                 & $Body^*(s_0) \in \mathcal{S}^+$       & $Body^*(s_0) \in \mathcal{S}^x$\\
 \hline
-$s_0 \models \neg Pre$            & $Body^*(s_0) \in I_\mathcal{S}$       & $Body^*(s_0) \in N_\mathcal{S}$\\
+$s_0 \models \neg Pre$            & $Body^*(s_0) \in \mathcal{S}^\rightarrow$       & $Body^*(s_0) \in \mathcal{S}^-$\\
 \hline
 \end{tabular}
 \end{table}

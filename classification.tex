@@ -13,7 +13,7 @@ have developed several supervised classification techniques, i.e. Supported Vect
 
 
 \subsection{Supported Vector Machines}
-, is one of the most powerful approaches.
+%, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
 %In most setting, given a set of training examples, each marked for belonging to one of two categories, 
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
@@ -58,6 +58,7 @@ What's more, we need to check the classification correctness of the model on tra
 %This half space could be seen as the strongest witness why the two data states are different. 
 %In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier
 
+\subsection{Checking}
 With the learned SVM model,we check whether it can perfectly classify these states first.
 If yes, then we can automatically turn it back to a hyperplane form, which is regarded as our invariant candidate.
 Otherwise, we may apply other classification techniques for learning, which will be mentioned at ``SVM derivatives'' part in the end of this section.
@@ -67,12 +68,15 @@ Otherwise, we may apply other classification techniques for learning, which will
 \begin{algorithm}[h]
 \SetAlgoVlined
 \Indm
-\KwIn{$F^+$ and $F^-$}
-\KwOut{a classifier for $F^+$ and $F^-$}
+\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-, and \mathcal{S}^\rightarrow$}
+\KwOut{a classifier for $\mathcal{S}^+$ and $\mathcal{S}^-$ without refution with $\mathcal{S}^\rightarrow$}
 \Indp
 let $old$ be $null$\;
 \While{true} {
-    let $f = classify(F^+, F^-)$\;
+    let $f = classify(\mathcal{S}^+, \mathcal{S}^-)$\;
+    \If {$f$ disobey inference rules in $\mathcal{S}^\rightarrow$} {
+    	\ Continue;
+    }
     \If {$f$ is identical to $old$} {
         \Return $f$;
     }
