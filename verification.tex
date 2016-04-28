@@ -52,13 +52,17 @@ That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic ex
 \subsection{KLEE}
 \label{subsec:klee}
 KLEE\cite{cadar2008klee} is a symbolic virtual machine built on top of the LLVM compiler infrastructure
-that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
-In our setting, we are only interested in specific paths which can lead to the assertion failure in the target program.
-So we have to modify KLEE\cite{cadar2008klee} source code by adding a new method call to KLEE,
-which can trigger KLEE to emit all the paths constraints in which execution can be reached at the given program location.
+that can enumerate all the possible paths based on the target configuration.
+In our setting, only specific paths which can lead to the assertion failure are interested.
+So we get a modified version of KLEE\cite{cadar2008klee} by adding a new native method call
+which can trigger KLEE to emit all the execution paths that can be reached at the given program location.
 
-For example, when $\textsc{Zilu}$ check constraint (2), 
-we first construct a loop-free program based on the original program:
+For example, when \textsc{Zilu} checks constraint~\ref{inv:loop}, 
+it first takes $Body$ and substitute other elements in the original program with the elements in constraint~\ref{inv:loop}
+Figure~\ref{fig:klee:program} shows this procedure,
+with left part original program is shown in Figure.~\ref{fig:klee:program:in}.
+right part a converted loop-free program for being further proceeded by KLEE.
+
 \begin{figure}[!h]
 \begin{subfigure}{0.20\textwidth}
     \centering
@@ -79,7 +83,7 @@ void P(int x, int y) {
     \end{verbatim}}
     \vspace{-5mm}
     \caption{Loop Program}
-    \label{fig:running:example:before:verify}
+    \label{fig:klee:program:in}
 \end{subfigure}%
 \begin{subfigure}{.20\textwidth}
       \centering
@@ -100,50 +104,53 @@ void P(int x, int y) {
     \end{verbatim}}
     \vspace{-5mm}
     \caption{Loop-free program}
-      \label{fig:running:example:verification}
+      \label{fig:klee:program:out}
 \end{subfigure}
 \caption{Converting program to check inductive property}
 %\vspace{-0.2cm}
-\label{fig:running:example}
+\label{fig:klee:program}
 \end{figure}
 
-After handled by our modified KLEE,
-several path constraints are emitted as following, each of them corresponding to paths 
-$\{branch2 \to branch4\}$, $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\}$:
-
+After the modified KLEE interprets loop-free program,
+several path constraints are emitted as follows:
+(As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
+KLEE emits constraints with conjunctive forms, instead of inference rules.)
 
 \begin{itemize}
 \item $\big(33+2\cdot(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x\ge0\big)$
 \item $\big(33+2\cdot(y-x-4)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y\ge0\big)$
 \item $\big(33+2\cdot(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y<0\big)$
 \end{itemize}
-As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
-instead of checking the satisfiability of inference rule
-we prefer to check the unsatisfiability of constraints with conjunctive forms. 
-After getting these constraints, we can apply Z3~\cite{de2008z3} solver to check the satisfiability (or unsatisfiability).
+
+The constraints above corresponds to execution path in the program as expected.
+For example, the first item encodes the execution that takes $branch2 \to branch4$.
+% $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\}$.
+
+%After getting these constraints, we can apply Z3~\cite{de2008z3} solver to check the satisfiability (or unsatisfiability).
 
 \subsection{Z3}
 \label{subsec:z3}
 The state-of-the-art SMT (Satisfiability Modulo Theories)\cite{barrett2009satisfiability}  solvers can be used to 
 check the satisfiability of logical formulas over one or more theories. 
 Among all these solvers, Z3\cite{de2008z3}, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
-In our project, $\textsc{Zilu}$ applies Z3 solver to do the constraints solving for invariant validation. 
+$\textsc{Zilu}$ thus applies Z3 solver to do the constraints solving for the invariant validation task. 
 
-So in the implementation, we submit the constraints got by inference rules (\ref{inv:pre}) and (\ref{inv:post}) or by KLEE to Z3 solver.
+So in the implementation, we submit the constraints got from inference rules (\ref{inv:pre}) and (\ref{inv:post}) or KLEE to Z3.
 If all of them passes,we successfully get a valid invariant and also verify the program. 
-Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, 
-(named as counter-example sampling in Section ~\ref{sec:sampling})
-which is then tested, categorized, used for active learning accordingly in next iteration to help refine our invariant candidate.
+Otherwise, if any of them is violated, the counter-example obtained is added to the set of samples $\mathcal{S}$, 
+%then \textsc{Zilu} starts a new learning iteration from counter-example sampling (Section ~\ref{sec:sampling}).
+which is then tested, categorized, used (as counter-example sampling in Section ~\ref{sec:sampling}) for active learning accordingly 
+in next iteration to help refine our invariant candidate.
 
 %For example, if an invariant candidate $\mathcal{C} = \{33-2*x+2*y >= 0\}$
-For the example, $\textsc{Zilu}$ uses Z3 solver to check all the constraints mentioned in the last subsection,
+For the loop example, $\textsc{Zilu}$ uses Z3 solver to check all the constraints mentioned in the last subsection,
 and finds all of them passes, and thus we find a valid loop invariant and have proved the correctness of the loop program.
 
 If the learned predicate is not an actual invariant, i.e. $\mathcal{C} = \{11-2*x+2*y>=0\}$,
 after getting the constraints, similar as the constraints in the last part except substituting all the number 33 with number 11, 
-Z3 solver could provide a counter-example $s_{ce} = (x \mapsto 1, y \mapsto 0)$ after solving.
-We can see that $s_{ce}$ contradict the inductive property of loop invariants (constraints (2)).
-Then $\textsc{Zilu}$ use $s_{ce}$ to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
+Z3 solver provides a counter-example, i.e. $s_{ce} = (x \mapsto 1, y \mapsto 0)$, after solving.
+Apparently, $s_{ce}$ contradicts the inductive property of loop invariants (constraints~\ref{inv:loop}), 
+and then can be used to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
 
 
 \section {Overall Algorithm}
