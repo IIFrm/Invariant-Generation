@@ -81,24 +81,24 @@ the newly learnt invariant moves towards the real invariant quickly.
     \label{fig:sampling}
 \end{figure}
 
+\medskip\noindent
+\textbf{Random Sampling.}
+Random sampling acts as an initialization sampling method 
+as well as a supplementary sampling method in our framework. 
+Firstly, before any invariant is learnt in our framework, 
+we adopt simple random sampling solely to learn the initial invariant, 
+which can be refined later in the invariant inference process. 
+Secondly, the efficiency of other sampling methods, introduced in the following, 
+is largely based on the similarity of the invariant candidate and the correct invariant. 
+However, if the invariant candidate is very different from the correct invariant, 
+random sampling can make the invariant converge faster than other sampling methods. 
+Thirdly, since selective sampling can introduce biased samples distribution, 
+random sampling aims at reducing its impact that can lead to a biased invariant result. 
+As a result, the random sampling is applied to all the invariant inference iterations 
+rather than only the first iteration. 
 
-\subsubsection{Random Sampling}
-Random sampling is well known in statistics, including simple random sampling and systematic random sampling.
-In this context, we refer to the former meaning, in which each sample is chosen randomly and entirely by chance, 
-such that each sample has the same probability of being chosen at any stage during the sampling process.
-In our setting, we generate samples by calling random functions.
-It is a quite intuitive but important sampling approach, especially when we do not know the system at the beginning. 
-It is proved that simple random sampling is most efficient when no information is given.
-$\textsc{Zilu}$ applies this technique all along the inference procedure, not only the beginning. 
-That is because our assumption is there always much more data points than we could sample in a given time,
-otherwise, we can verify the program by enumeration.
-Although our sampling technique is most efficient from statistical perspectives, 
-but there is no guarantee this sampling works every time.
-So in the subsequent iterations, we need to add little randomness to avoid, or at least reduce, 
-the impact of the bias resulted from previous sampling results.
-
-
-\subsubsection{Selective Sampling}
+\medskip\noindent
+\textbf{Selective Sampling.}
 Selective sampling is a technique in active learning, which can generate samples which are more informative and instructive.
 It is an aggressive sampling technique that helps $\textsc{Zilu}$ to learn the target much faster.
 
@@ -139,9 +139,8 @@ we do sample along this or these polynomials by using \textbf{GSL}~\cite{gough20
 
 This technique is applied all along the learning process except the very beginning.
 
-
-
-\subsubsection{Counter-Example Sampling}
+\medskip\noindent
+\textbf{Counter-Example Sampling.}
 Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.  
 Having an invariant candidate, $\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
 (or known as concolic testing~\cite{sen2007concolic}) and constraint solving,
