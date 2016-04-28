@@ -98,7 +98,7 @@ with that state to label that feature vector so that the classifier would be imp
 After the above discussion, apparently the pre-requirement of selective sampling is there is a guess.
 Thus in our implementation, after learning an invariant candidate, 
 which is usually a single polynomials or conjunction or disjunction of polynomials,
-we do sample along this or these polynomials by using \textbf{GSL} (GNU Scientific Library) to solve them.
+we do sample along this or these polynomials by using \textbf{GSL}~\cite{gough2009gnu} to solve them.
 
 This technique is applied all along the learning process except the very beginning.
 
@@ -106,8 +106,9 @@ This technique is applied all along the learning process except the very beginni
 
 \subsubsection{Counter-Example Sampling}
 Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.  
-Having an invariant candidate, $\textsc{Zilu}$ tries to valid it using concolic testing~\cite{} and constraint solving,
-which is shown in detail in section verification.
+Having an invariant candidate, $\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
+(or known as concolic testing~\cite{sen2007concolic}) and constraint solving,
+which is shown in detail in Section ~\ref{sec:verification}.
 If it fails to validate, the constraint solver could provide us with counter-examples that can directly refute our invariant candidate.
 And as a result, it is quite useful for the invariant candidate refinement in the next learning procedure.
 

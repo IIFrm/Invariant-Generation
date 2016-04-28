@@ -147,10 +147,10 @@ Let $P$ be the loop program.
     When an invariant candidate is found, 
     we check its correctness in the \textbf{Verification} stage (see Section~\ref{sec:verification}). 
     First, we insert the candidate into the loop program and generate all the program execution traces 
-    based on concolic testing using KLEE. 
+    based on concolic testing using KLEE\cite{cadar2008klee}. 
     Then, we verify three loop invariant conditions 
     with respect to all of the program execution traces (i.e., different $\mathit{Body}$) 
-    using a SMT solver (e.g., Z3 in this work). 
+    using a SMT\cite{barrett2009satisfiability} solver (e.g., Z3\cite{de2008z3} in this work). 
     If the verification is successful, we claim the correctness of $P$ and output the loop invariant. 
     Otherwise, we add the counter-example from Z3 as a new sample 
     and restart from the \emph{sampling} stage. 
@@ -180,8 +180,8 @@ Our contributions are four-fold.
     Our framework can be practically used to verify real programs with ease, 
     as the samples are generated at runtime 
     and our framework is language/platform independent based on other tools 
-    (e.g., GSL for selective sampling, LibSVM for SVM classification, 
-    Z3 for invariant verification and KLEE for concolic testing). 
+    (e.g., GSL (GNU Scientific Library)\cite{gough2009gnu} for selective sampling, LibSVM\cite{chang2011libsvm} for SVM classification, 
+    Z3\cite{de2008z3} for invariant verification and KLEE\cite{cadar2008klee} for concolic testing). 
     \item 
     We implement our framework as a tool called \textsc{Zilu} 
     and compare it with other available state-of-the-art invariant inference tools, 
