@@ -27,7 +27,7 @@ based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in
 In our setting, we do sample a set $S$ of program states in three different approaches: 
 random sampling, selective sampling and counter-example sampling, 
 which are applied according to the information we gathered by that time.
-Figure ~\ref{fig:sampling} visually shows how they do sampling on a 2-D plane.
+Figure~\ref{fig:sampling} shows how they do sampling on a 2-D plane visually.
 From the perspective of the speed, random sampling runs very fast which ranks the first, 
 while counter-example sampling ranks the last.
 From the contribution to the final invariant,
@@ -138,23 +138,23 @@ then
 
 
 \subsubsection{Positive State, Negative State, Implication Pair}
-These three concepts are introduced in \cite{sharma2014invariant}.\
+These three concepts are previously introduced in \cite{sharma2014invariant}.
 In this paper, we use predicates and sets of states interchangeably.
 Let $\mathcal{C}$ be a candidate invariant.
 
-From equation (1) we know, for an invariant $Inv$, 
+From constraint~\ref{inv:pre} we know, for an invariant $Inv$, 
 any state that satisfies $Pre$ also satisfies $Inv$. 
 We call any state that must be satisfied by an actual invariant a positive state. 
 
 
-Now consider equation (2).
+Now consider constraint~\ref{inv:loop}.
 This is called inductive property, which means if there is a pair of states $(s, t)$ in which $t = Body(s)$, 
 and $s$ satisfies $Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
 Hence, for the invariant candidate $\mathcal{C}$, 
 if a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \mathcal{C}) \wedge (t \models \neg \mathcal{C})$ proves $\mathcal{C}$ is not an invariant. 
 We call this pair of states as implication pair.
 
-Finally, consider equation (3).
+Finally, consider constraint~\ref{inv:post}.
 The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
 We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state. 
 
@@ -204,11 +204,10 @@ $\mathcal{S}^+$ which stands for positive traces,
 $\mathcal{S}^-$ which stands for negative traces, 
 and $\mathcal{S}^\rightarrow$ which stands for implication traces.
 
-They can be judged according to Table ~\ref{tab:labeling}: 
+They can be judged according to Table~\ref{tab:labeling}: 
 \begin{table}[htb]
 \label{tab:labeling}
 \centering
-\caption{Trace Labeling Table}
 \begin{tabular}[float]{|c|c|c|}
 \hline
 $s_0 \Rightarrow \Rightarrow s_n$ & $s_n \models Post$            & $s_n \models \neg Post$\\
@@ -218,6 +217,7 @@ $s_o \models Pre$                 & $Body^*(s_0) \in \mathcal{S}^+$       & $Bod
 $s_0 \models \neg Pre$            & $Body^*(s_0) \in \mathcal{S}^\rightarrow$       & $Body^*(s_0) \in \mathcal{S}^-$\\
 \hline
 \end{tabular}
+\caption{Trace Labeling Table}
 \end{table}
 
 % section sampling (end)

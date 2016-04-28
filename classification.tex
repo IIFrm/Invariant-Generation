@@ -3,28 +3,29 @@
 \section{Classification} % (fold)
 \label{sec:classification}
 
-After sampling and labeling in the last step, we obtain some program states must be in $Inv$ and some must not. 
-Thinking as a data scientist, if we view these program states as a data set, 
-the problem to find an invariant candidate becomes the problem to find a classifier to divide the dataset according to their labels.
-Fortunately, We can borrow the idea from machine learning area as the community has studied this problem has been fully studied several years ago.
-and senior machine learning experts have developed several efficient supervised classification algorithms to handle this problem.
+After sampling and labeling in the last step, we obtain some program states must satisfy $Inv$ and some must not. 
+If we view these program states as a data set from the perspective of data scientists, 
+the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
+Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
+Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
+Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vector Machines as a primary approach.
 
 Before coming to the specific technique $\textsc{Zilu}$ applies,
-it should be noted that there are at least two main differences between traditional machine learning problems and the problem in our setting:
+it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
 \begin{itemize}
-\item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem,
-although there is a research trend in machine learning to understand ongoing during these years.
-On the contrary, in software engineering area, program verification cares about formalization and reasoning.
-As a result, a classification technique would be highly suggested as long as it can predict correctly on newly received data.
-But in our setting, we need an explicit classifier which is readable by human and can proceed by off-the-shelf constraints solvers.
-\item Machine learning algorithms think more of generalization ability than correctness on the training data.
-Sometimes they can sacrifice the prediction correctness on the training data to exchange for higher generalization ability.
-But in our setting, the first thing we care about is the prediction  correctness on the training data,
-meaning we can not tolerate any slight classification error on the training set.
+\item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem.
+%although there is a research trend in machine learning to understand ongoing during these years.
+On the contrary, in the software engineering area, program verification cares about formalization and reasoning.
+Therefore, a classification technique would be highly suggested as long as it can predict correctly on newly received data.
+But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
+
+\item Machine learning algorithms think more of generalization ability than classification correctness on the training data.
+Sometimes they would sacrifice the prediction correctness on the training data for exchanging the higher generalization ability.
+But in our context, the first thing we care about is the prediction  correctness on the training data,
+which means we can not tolerate any slight classification error on the training set.
 On this basis, we hope the classification algorithm can have better generalization ability.
 \end{itemize} 
 
-Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vector Machines as a primary approach.
 
 \subsection{Supported Vector Machines}
 %, is one of the most powerful approaches.
@@ -33,37 +34,38 @@ Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vecto
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
-
 Supported Vector Machines, known as $\textsc{Svm}$, is a supervised machine learning algorithm for classification and regression analysis. 
 We use its binary classification functionality. 
 Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
+
 Given two sets of feature vectors $S^+$ and $S^-$, it generates, if there is any, 
 a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
-such that every state $s \in S^+$ satisfies the constraint and every state $s' \in S^-$ fails the constraint. 
-In the following, we write $\textsc{Svm}(S^+, S^-)$ to denote the function which returns a linear classifier.
+such that every state $s \in \mathcal{S}^+$ satisfies the constraint and every state $s' \in \mathcal{S}^-$ fails the constraint. 
+In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denote the function which returns a linear classifier.
 
-%SVM
 
-As differences between machine learning problem and our setting are discussed in the above subsection, in order for our approach to work,
-$\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects: 
+Considering the differences between machine learning problem and our setting are discussed in the above subsection, 
+$\textsc{Zilu}$ tunes $\textsc{LibSvm}$ in the following three aspects in order to get a classifier: 
 \begin{itemize}
 \item $\textsc{Svm}$ technique does not really calculate a hyperplane explicitly, 
-but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and some parameters.
+but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and other parameters.
 %This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
-However in verification, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
-Thus, we need to convert the $\textsc{Svm}$ model to a hyperplane by ourselves.
-(This is also the reason we do not apply $\textsc{Svm}$ with kernel methods,
-as converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be too complicated, sometimes even impossible.)
-\item As $\textsc{Zilu}$ thinks higher of the correctness on the training data than anything else,
-Before applying $\textsc{Svm}$ technique, the parameters (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
+However, in software verification, we need to convert the $\textsc{Svm}$ model to an explicit classifier which can be understood and proceeded later.
+(This is also the reason why we do not apply $\textsc{Svm}$ with kernel methods,
+given converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
+
+\item As $\textsc{Zilu}$ thinks higher of the classification correctness on the training data than anything else,
+Before applying primitive $\textsc{Svm}$ technique, the parameters 
+(mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
 %different from $\mathcal{C}$ used as loop invariant candidate in our context) 
 should be tuned to get a classifier which does a better job of getting all the training points classified correctly.
+
 \item What's more, we need to check the classification correctness of the learned classifier 
 on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
-And $\textsc{Zilu}$ also takes $\mathcal{S}^\rightarrow$ to check the classifier(as is shown in Section 2).
+Moreover, $\textsc{Zilu}$ takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section 2).
 \end{itemize} 
 
-So the whole classification algorithm is described in ~\ref{alg:classify}.
+So the whole algorithm for classification can be described as Algorithm~\ref{alg:classify}.
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -83,8 +85,9 @@ So the whole classification algorithm is described in ~\ref{alg:classify}.
 \label{alg:classify}
 \end{algorithm}
 
-It is noted that customers can substitute $\textsc{Svm}$ with other classification techniques for learning invariant. 
-We will show this in ``$\textsc{Svm}$ derivatives'' part in the end of this section.
+Note that, in practice, 
+customers can substitute $\textsc{Svm}$ in the algorithm~\ref{alg:classify} with other classification techniques for learning invariant. 
+We will take two of them in ``$\textsc{Svm}$ derivatives'' part as examples.
  
 %In the following, we present how we obtain a classifier automatically using $\textsc{Svm}$. 
 %In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
@@ -98,8 +101,10 @@ We will show this in ``$\textsc{Svm}$ derivatives'' part in the end of this sect
 
 
 \subsection{Active Learning} 
-After getting a classifier for current dataset, active learning technique is used to refine the guess until convergence. 
+After getting a classifier for the current dataset, active learning technique is used to refine the candidate until it gets convergence
+(the candidate remains the same even when adding more data into then training set). 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
+
 At line 3, we obtain a classifier based on Algorithm~\ref{classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
 otherwise, we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
@@ -196,21 +201,34 @@ In practice, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degr
 Along with polynomial invariants, we found there are also some invariant of conjunctive or disjunctive form which can be expressed in polynomials,
 which means our approach can also find these sort of invariants.
 For instance, if the target invariant is 
-$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
-we can find an equivalent polynomial expression in polynomial form:
-$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
+$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big) \ where\ x_0 < x_1 < x_2$$
+which is really a challenge for current verification approaches to get,
+we can find an equivalent polynomial expression:
+$$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
+
+%\begin{align}
+%    x^3 + a\dot x^2 - b\dot x - c &>= &0 \\
+%    where a &= & x_0 \dot x_1 + x_0 \dot x_2 + x_1 \dot x_2 \\
+%\end{align}
+%For instance, if the target invariant is 
+%$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
+%we can find an equivalent polynomial expression:
+%$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
 So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in a form of polynomials.
 
 
 \subsubsection{Conjunctive SVM}
-Polynomials seems powerful in express abilities, 
-but there actually exists simple expressions that can not expressed in form of polynomials,
-For example, $\mathcal{C} = (x \ge 0 \bigwedge y \ge 0)$,
+As stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
+%seems powerful in expression abilities, 
+but there actually exists simple expressions that can not be expressed in form of polynomials.
+For example, $\mathcal{C} = (x \ge 0 \wedge y \ge 0)$,
 it can be proved that there is no such a polynomial which can be equivalent with it.
-So in this case, Rahul Sharma and others have developed a classification algorithm called ``$\textsc{Svm\_i}$'' in ~\ref{sharma2012interpolants},
-which can learn the conjunctive invariants.
-In their algorithm, they take $\textsc{Svm}$ as meta classification algorithm, and they failed to simplify the learned classifiers.
-So in $\textsc{Zilu}$, we apply a technique ~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
+
+So in this case, we need to learn the conjunctive invariant directly, avoiding the tries to convert them into a form of polynomials.
+The good news is Rahul Sharma and his partners have developed a conjunctive classification algorithm based on $\textsc{Svm}$
+which is named as `$\textsc{Svm\_i}$' in \ref{sharma2012interpolants}.
+In their algorithm, they take $\textsc{Svm}$ as meta linear classification engine, and they failed to simplify the learned classifiers.
+So in $\textsc{Zilu}$, we apply a technique shown in algorithm~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
 
 \begin{algorithm}[!h]
 \SetAlgoVlined

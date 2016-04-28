@@ -3,15 +3,23 @@
 \section{Verification} % (fold)
 \label{sec:verification}
 From the last step, $\textsc{Zilu}$ has got a predicate which does not only classify all the samples perfectly but get converged.
-But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared with the real states distribution of the given program.
-For example, if our samples do not cover all the possible branches in $Body$, that should be a problem.
-The last security checkpoint on these ``bad guys'' is verification. 
-In this step, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
-checking the satisfiability of constraints (1), (2) and (3) using state-of-art tools from symbolic execution and constraint solving communities.
+But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared to the real states distribution of the given program.
+For example, if there is a branch in loop body such as $$if (x == 159) \cdots$$, 
+our samples would hardly cover this branches except we do sampling amazing right to $(x\mapsto 159)$.
+%So we should check all the branches whether our test
+To handle this problem, we apply program verification as the last security checkpoint on these ``bad guys''.
+%he last security checkpoint on these ``bad guys'' is verification. 
+Therefore, in this step, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
+checking the satisfiability of constraints (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) using state-of-art tools 
+from symbolic execution and constraint solving communities.
 %In addition, we separated this part as a standalone tool for loop invariant verification.
 
-In implementation, to verify constraint (1) and (3), 
-$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
+In the implementation, to verify constraint (\ref{inv:pre}) and (\ref{inv:post}), 
+$\textsc{Zilu}$ submits constraints 
+$$Pre \Rightarrow \mathcal{C}$$ 
+and 
+$$\neg {Cond} \wedge \mathcal{C} \Rightarrow Post$$
+to Z3 solver for checking satisfiability.
 For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
@@ -21,9 +29,13 @@ and
 $$\big(\neg(x<y) \wedge (33-2\cdot x+2\cdot y>=0)\big) \Rightarrow ((x >= y) \wedge (x <= y + 16))$$
 to check constraint (3).
 
-However, it might be a bit of complicated due to $Body$'s computational complexity to check constraint (2).
-When the $Body$ contains many lines of code, especially with branches, it is very hard to encode them into a constraint manually.
-We need some tools to help us finding these constraints, otherwise, our technique would limit its power to simple and trivial program. 
+For checking the inductive property, which is formulated as constraint~\ref{inv:loop},
+its complexity depends on the $Body$'s computational complexity.
+When the $Body$ contains lots of lines of code, especially with branches, 
+it is very hard to encode them into a constraint manually,
+not to say verifying each of them.
+So we need some tools to help us finding these constraints, 
+Otherwise, our technique would limit its power to learn only simple and trivial programs. 
 That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic execution tool to get path condition.
 %and Z3 solver as a representative to verify the learned predicate.
 
@@ -63,7 +75,7 @@ void P(int x, int y) {
     \end{verbatim}}
     \vspace{-5mm}
     \caption{Loop Program}
-    \label{fig:running:example:program}
+    \label{fig:running:example:before:verify}
 \end{subfigure}%
 \begin{subfigure}{.20\textwidth}
       \centering
@@ -108,10 +120,10 @@ After getting these constraints, we can apply Z3 solver to check the satisfiabil
 
 \subsection{Z3 Solver}
 The state-of-the-art Satisfiability Modulo Theories (SMT) solvers can be used to check the satisfiability of logical formulas over one or more theories. 
-Among these solvers, Z3 is a high-performance theorem prover, that is sound and complete, from Microsoft Research.
-In our project, $\textsc{Zilu}$ applies Z3 to do the constraint solving for invariant validation. 
+Among these solvers, Z3, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
+In our project, $\textsc{Zilu}$ applies Z3 solver to do the constraints solving for invariant validation. 
 
-So in the implementation, we submit the constraints got by inference rules (1), (3) or by KLEE to Z3 solver.
+So in the implementation, we submit the constraints got by inference rules (\ref{inv:pre}) and (\ref{inv:post}) or by KLEE to Z3 solver.
 If all of them passes,we successfully get a valid invariant and also verify the program. 
 Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, 
 (named as counter-example sampling in section Sampling)
@@ -128,7 +140,7 @@ We can see that $s_{ce}$ contradict the inductive property of loop invariants (c
 Then $\textsc{Zilu}$ use $s_{ce}$ to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
 
 
- 
+\section {Overall Algorithm}
 The overall algorithm is presented in Figure~\ref{alg:overall}.
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -168,8 +180,7 @@ let $S$ be a set of random samples\;
 %Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$); 
 %$O$ would be an over-approximation of $Inv$ (by assuming states in $NP$ does satisfy $Inv$); 
 %and $OU$ would be an safe-approximation of $Inv$ (by using states which we are certain whether they are in $Inv$ or not).
-%\begin{example}
-%\end{example}
+
 
 
 \begin{theorem}
