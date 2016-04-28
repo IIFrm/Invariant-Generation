@@ -108,16 +108,18 @@ and Z3~\cite{de2008z3} solver for constraint solving and verification.
 In our experimental evaluation, 
 we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks 
 in the following form, where $\mathit{Body}$ can have nested loops and conditional choices. 
-%\[
-%    \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
-%\]
-\begin{align*}
-&Pre&\\
-&while (Cond) \{&\\
-&  \quad Body &\\
-&\} &\\
-&Post &
-\end{align*}
+\[
+   \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+\]
+% Do not apply this to `add' more content to the paper. 
+% It lefts lots of empty space which did the contrary thing. 
+% \begin{align*}
+% &Pre&\\
+% &while (Cond) \{&\\
+% &  \quad Body &\\
+% &\} &\\
+% &Post &
+% \end{align*}
 \LL{Introduce the sources of the benchmark.}
 All benchmarks are available from~\cite{zilu}. 
 
