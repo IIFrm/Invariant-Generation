@@ -101,7 +101,8 @@ We will take two of them in ``$\textsc{Svm}$ derivatives'' part as examples.
 
 
 \subsection{Active Learning} 
-After getting a classifier for the current dataset, active learning technique is used to refine the guess until it gets convergence. 
+After getting a classifier for the current dataset, active learning technique is used to refine the candidate until it gets convergence
+(the candidate remains the same even when adding more data into then training set). 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 
 At line 3, we obtain a classifier based on Algorithm~\ref{classify}. 
@@ -200,14 +201,25 @@ In practice, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degr
 Along with polynomial invariants, we found there are also some invariant of conjunctive or disjunctive form which can be expressed in polynomials,
 which means our approach can also find these sort of invariants.
 For instance, if the target invariant is 
-$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
-we can find an equivalent polynomial expression in polynomial form:
-$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
+$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big) \ where\ x_0 < x_1 < x_2$$
+which is really a challenge for current verification approaches to get,
+we can find an equivalent polynomial expression:
+$$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
+
+%\begin{align}
+%    x^3 + a\dot x^2 - b\dot x - c &>= &0 \\
+%    where a &= & x_0 \dot x_1 + x_0 \dot x_2 + x_1 \dot x_2 \\
+%\end{align}
+%For instance, if the target invariant is 
+%$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
+%we can find an equivalent polynomial expression:
+%$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
 So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in a form of polynomials.
 
 
 \subsubsection{Conjunctive SVM}
-Polynomials seems powerful in expression abilities, 
+As stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
+%seems powerful in expression abilities, 
 but there actually exists simple expressions that can not be expressed in form of polynomials.
 For example, $\mathcal{C} = (x \ge 0 \bigwedge y \ge 0)$,
 it can be proved that there is no such a polynomial which can be equivalent with it.
