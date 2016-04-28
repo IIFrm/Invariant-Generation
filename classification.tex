@@ -167,29 +167,37 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half-space only, 
 a more complicated function $f$ must be adopted. 
 For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
-the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
+the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
 
-Also in algorithm~\ref{alg:classify}, we mentioned the customers can substitute $\textsc{Svm}$ with other classification approaches for invariant learning.
+Also as noted in algorithm~\ref{alg:classify}, customers can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
 \textsc{Zilu} has implemented two algorithms besides native $\textsc{Svm}$: 
-$Polynomial \textsc{Svm}$, which can be used to learn invariants in the form of polynomials or any equivalent expressions,
-and $Conjunctive \textsc{Svm}$, which can learn invariants in the form of conjunctives.
+$Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
+and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctives.
 
 \subsubsection{Polynomial SVM}
 %In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
 %However, there is still no efficient approach to learning these invariants.
 %In our research, we found sometimes convert the conjunctive or disjunctives to a polynomial expression might be a nice try to this problem.
-In the real work, there are invariants of all kinds of form, one of which may be polynomial invariants, which have not been discussed by previous research.
-In this part, we would like to learn this kind of invariants.
-Apparently methods that use linear template or linear classification algorithm do not work.
+In the real work, there are not only linear invariants but invariants of many other forms, 
+such as, conjunctives~\cite{sharma2012interpolants}, octagonal~\cite{mine2006octagon}, polynomial, and tree form~\cite{krishna2015learning}\cite{garg2015learning}.
+In this part, we present our classification approach based on primitive \textsc{Svm} for learning polynomial invariants,
+which have not been discussed by previous research.
+%In this part, we would like to learn this kind of invariants.
+%Apparently methods that use linear template or linear classification algorithm do not work.
 %Actually, polynomials are more powerful on this than they look at the first glance, especially univariate polynomials. 
 %Some cubic univariate polynomials can represent disjunctive of a conjunctive expression and a linear expression.
 %For example, the following two expressions are equivalent:
 %$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big) \ where\ x_0 < x_1 < x_2$$
 %$$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$ 
-This leads us to develop a classification algorithm for learning polynomial divider.
-The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions, 
-we can apply primitive $\textsc{Svm}$ algorithm to learn a polynomial classifier. 
-In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
+%This leads us to develop a classification algorithm for learning polynomial divider.
+To develop a polynomial learner, 
+we first map all the raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ 
+to a high dimensional space.
+%The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions, 
+Then the primitive \textsc{Svm} algorithm is applied as shown in~\ref{subsec:svm}.
+Obviously, a linear classifier in the higher dimensional space is the same with a polynomial classifier in the original space.
+The whole procedure is shown in algorithm~\ref{alg:polynomialSVM}.
+%In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -213,8 +221,9 @@ In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree
 \label{alg:polynomialSVM}
 \end{algorithm}
 
-Along with polynomial invariants, we found there are also some invariant of conjunctive or disjunctive form which can be expressed in polynomials,
-which means our approach can also find these sort of invariants.
+Along with learning invariants in form of explicit polynomials,
+$polynomialSVM$ can also used to learn some conjunctive or disjunctive invariants.
+Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
 For instance, if the target invariant is 
 $$\big((x \ge x_0) \wedge (x \le x_1)\big) \vee (x \ge x_2) ~~~where\ x_0 < x_1 < x_2$$
 which is really a challenge for current verification approaches to get,
@@ -229,7 +238,7 @@ $$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
 %$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
 %we can find an equivalent polynomial expression:
 %$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
-So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in a form of polynomials.
+So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in form of polynomials.
 
 
 \subsubsection{Conjunctive SVM}
