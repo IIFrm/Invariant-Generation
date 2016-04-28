@@ -50,7 +50,7 @@ That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic ex
 General speaking, KLEE\cite{cadar2008klee} is a symbolic virtual machine built on top of the LLVM compiler infrastructure
 that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
 In our setting, we are only interested in specific paths which can lead to the assertion failure in the target program.
-So we have to modify KLEE source code by adding a new method call to KLEE,
+So we have to modify KLEE\cite{cadar2008klee} source code by adding a new method call to KLEE,
 which can trigger KLEE to emit all the paths constraints in which execution can be reached at the given program location.
 
 For example, when $\textsc{Zilu}$ check constraint (2), 
@@ -116,17 +116,18 @@ $\{branch2 \to branch4\}$, $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\
 As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
 instead of checking the satisfiability of inference rule
 we prefer to check the unsatisfiability of constraints with conjunctive forms. 
-After getting these constraints, we can apply Z3 solver to check the satisfiability (or unsatisfiability).
+After getting these constraints, we can apply Z3\cite{de2008z3} solver to check the satisfiability (or unsatisfiability).
 
-\subsection{Z3 Solver}
-The state-of-the-art Satisfiability Modulo Theories (SMT) solvers can be used to check the satisfiability of logical formulas over one or more theories. 
-Among these solvers, Z3, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
+\subsection{Z3}
+The state-of-the-art SMT (Satisfiability Modulo Theories)\cite{barrett2009satisfiability}  solvers can be used to 
+check the satisfiability of logical formulas over one or more theories. 
+Among all these solvers, Z3\cite{de2008z3}, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
 In our project, $\textsc{Zilu}$ applies Z3 solver to do the constraints solving for invariant validation. 
 
 So in the implementation, we submit the constraints got by inference rules (\ref{inv:pre}) and (\ref{inv:post}) or by KLEE to Z3 solver.
 If all of them passes,we successfully get a valid invariant and also verify the program. 
 Otherwise, if any of them is violated, the counterexample obtained is added to the set of sample $X$, 
-(named as counter-example sampling in section Sampling)
+(named as counter-example sampling in Section ~\ref{sec:sampling})
 which is then tested, categorized, used for active learning accordingly in next iteration to help refine our invariant candidate.
 
 %For example, if an invariant candidate $\mathcal{C} = \{33-2*x+2*y >= 0\}$
