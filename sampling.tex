@@ -22,7 +22,7 @@ based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 
 \subsection{Sampling Approaches} % (fold)
-\label{subsec:sampling:approaches}
+\label{sub:sampling_approaches}
 
 Sampling is non-trivial in automatic loop invariant inference, 
 because we need to obtain samples that are helpful for invariant generation and refinement. 
@@ -30,18 +30,6 @@ Meanwhile, we can only ask whether a certain sample is in the invariant or not,
 without knowing the exact shape of the invariant. 
 In this work, the program states, denoted by $S$, are sampled in three different approaches: 
 \emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
-%<<<<<<< HEAD
-
-%Figure~\ref{fig:sampling} shows how they do sampling on a 2-D plane visually.
-%From the perspective of the speed, random sampling runs very fast which ranks the first, 
-%while counter-example sampling ranks the last.
-%From the contribution to the final invariant,
-%counter-example sampling and selective sampling are significantly better than random sampling.
-%If compared sampling to asking question, random sampling is like asking random questions,
-%and selective sampling is like asking tentative questions, 
-%while counter-example sampling is like an eye-to-eye debate.
-%The following paragraphs present how these three sampling technique works and why we apply them in our invariant inference framework.
-%=======
 Figure~\ref{fig:sampling} visualizes these three approaches in a 2-D plane: 
 the green area is the correct invariant captured by the green line; 
 the red area is the learnt invariant captured by the red line; 
@@ -62,7 +50,6 @@ we select four samples on edges of the learnt invariant and
 compute one counter-example to help generating the real invariant. 
 As can been seen in Figure~\ref{fig:sampling:selective:invariant}, 
 the newly learnt invariant moves towards the real invariant quickly. 
-%>>>>>>> origin/master
 
 \begin{figure}[!h]
     \centering
@@ -107,17 +94,22 @@ However, if the invariant candidate is very different from the correct invariant
 random sampling can make the invariant converge faster than other sampling methods. 
 Thirdly, since selective sampling can introduce biased samples distribution, 
 random sampling aims at reducing its impact that can lead to a biased invariant result. 
-As a result, the random sampling is applied to all the invariant inference iterations 
-rather than only the first iteration. 
+As a result, the random sampling, as an important sampling approach, 
+is applied to all the invariant inference iterations. 
 
 \medskip\noindent
 \textbf{Selective Sampling.}
-Selective sampling is a technique in active learning, which can generate samples which are more informative and instructive.
-It is an aggressive sampling technique that helps $\textsc{Zilu}$ to learn the target much faster.
+Selective sampling is adopted in our framework to actively learn the samples 
+on the borders of the most recently learnt invariant. 
+These samples are very informative and instructive for invariant refinement, 
+as they give clear instructions on the amendment of the invariant. 
+It is a sampling technique that helps $\textsc{Zilu}$ 
+to amend the invariant candidiate at a fast pace.
 
 %When we have a guess of loop invariants, we can apply selective sampling approach to finding more useful samples.
 %Actually we apply this sampling method all along the learning procedure except the first iteration.
-It is obvious that, due to the limited set of samples we have (which is often referred to as labeled samples in the machine learning community), 
+\LL{I suggest do not use words like `obvious', nothing is obvious in a paper.}
+It is obvious that, due to the limited number of samples we have (which is often referred to as labeled samples in the machine learning community), 
 the guessed classifier obtained from previous iteration might be far from being correct. 
 In fact, without labeled samples which are right on the boundary of the `actual' classifier, 
 it is very unlikely that we would find it. 
@@ -147,8 +139,9 @@ with that state to label that feature vector so that the classifier would be imp
 %At line 8, we test the program with the newly generated samples so as to label them accordingly.
 After the above discussion, apparently the pre-requirement of selective sampling is there is a guess.
 Thus in our implementation, after learning an invariant candidate, 
-which is usually a single polynomials or conjunction or disjunction of polynomials,
+which is usually a single polynomials or conjunction or \LL{disjunction?} of polynomials,
 we do sample along this or these polynomials by using \textbf{GSL}~\cite{gough2009gnu} to solve them.
+\LL{this is however not clear how it is done.}
 
 This technique is applied all along the learning process except the very beginning.
 
@@ -161,6 +154,8 @@ which is shown in detail in Section ~\ref{sec:verification}.
 If it fails to validate, the constraint solver could provide us with counter-examples that can directly refute our invariant candidate.
 And as a result, it is quite useful for the invariant candidate refinement in the next learning procedure.
 
+\LL{This is oral language. 
+Meanwhile, I do not understand what you are trying to say here. }
 As counter-example sampling technique sounds good, it seems this technique should be applied almost all the time, 
 but the fact is it is applied only after failure of invariant candidate verification.
 That is because applying concolic testing and constraint solving is a more time-consuming job than the other two sampling methods.
@@ -168,7 +163,6 @@ That is because applying concolic testing and constraint solving is a more time-
 % subsection sampling_approaches (end)
 
 \subsection {Labeling}
-\label{subsec:labeling}
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
 As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state $s$.
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
@@ -189,7 +183,6 @@ then
 
 
 \subsubsection{Positive State, Negative State, Implication Pair}
-\label{subsec:state}
 These three concepts are previously introduced in \cite{sharma2014invariant}.
 In this paper, we use predicates and sets of states interchangeably.
 Let $\mathcal{C}$ be a candidate invariant.
@@ -213,7 +206,6 @@ We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state
 
 
 \subsubsection{Positive Trace, Negative Trace, Implication Trace}
-\label{subsec:trace}
 For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
 then this is a positive trace, meaning $\forall s_i \models Inv$.
