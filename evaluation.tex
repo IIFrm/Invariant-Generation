@@ -184,7 +184,7 @@ For instance, in the `Poly 1' case, the loop invariant is `$x^2 \le y^2$'.
 However, the general form of a 2-order polynomial with 2 variables 
 is written as 
 \[
-    a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \le 0. 
+    a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \le 0 
 \] 
 Hence, we need to infer $c = d = e = f = 0$ 
 which causes the difficulty of invariant inference. 
@@ -195,7 +195,7 @@ However, the invariant given by Interproc can be incorrect,
 which can be demonstrated by the running example 
 that we introduced in Section~\ref{sec:introduction}. 
 In the running example, since we have $x < y$ constrained by the while loop condition, 
-it is thus impossible to execute the trace where $x \ge 0 \land y < 0$. 
+it is thus impossible to execute the trace where $(x \ge 0) \land (y < 0)$. 
 However, Interproc outputs the loop invariant corresponding to this execution trace, 
 because the invariants in Interproc are global constraints 
 without considering their generation paths and conditions. 
