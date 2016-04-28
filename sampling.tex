@@ -2,16 +2,28 @@
 
 \section{Sampling} % (fold)
 \label{sec:sampling}
-%Before learning procedure, we need to gather some data from program. 
-%So 
-In a broader view, our framework is a kind of dynamic program verification approaches, 
-thus it is quite interested in program execution states.
-Sampling is a way to tell the preference of program states. 
-So in this step, we would like to sample a state with a high possibility if it is important for the learning afterwards.
-Then we execute program from these samples to gather more data and label them according to the satisfiability of $Pre$ and $Post$.
 
+In this section, we present our approach to sample and label data 
+collected from program execution at runtime. 
+Generally, the sampling stage aims at obtaining samples with a high possibility to 
+accurately generate the loop invariant so that the program specification can be verified. 
+In order to face different sampling scenarios, 
+we first provide three different sampling approaches. 
+Then, we propose a labelling method for collected samples 
+based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in the program. 
+% Before learning procedure, we need to gather some data from program. 
+% In a broader view, our framework is a kind of dynamic program verification approaches,
+% thus it is quite interested in program execution states.
+% Sampling is a way to tell the preference of program states.
+% So in this step, we would like to sample a state with a high possibility 
+% if it is important for the learning afterwards.
+% Then we execute program from these samples to gather more data 
+% and label them according to the satisfiability of $Pre$ and $Post$.
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
-\subsection{Sampling Approaches}
+
+\subsection{Sampling Approaches} % (fold)
+\label{sub:sampling_approaches}
+
 In our setting, we do sample a set $S$ of program states in three different approaches: 
 random sampling, selective sampling and counter-example sampling, 
 which are applied according to the information we gathered by that time.
@@ -102,6 +114,8 @@ And as a result, it is quite useful for the invariant candidate refinement in th
 As counter-example sampling technique sounds good, it seems this technique should be applied almost all the time, 
 but the fact is it is applied only after failure of invariant candidate verification.
 That is because applying concolic testing and constraint solving is a more time-consuming job than the other two sampling methods.
+
+% subsection sampling_approaches (end)
 
 \subsection {Labeling}
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
