@@ -16,9 +16,16 @@ until it converges and proves the property preserved by the loop program.
 Generally, a loop program $P$ can be written in the following form, 
 where $\mathit{Pre}$, $\mathit{Cond}$ and $\mathit{Post}$ are boolean conditions, 
 and $\mathit{Body}$ is the loop body. 
-\[
-    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
-\]
+%\[
+%    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+%\]
+\begin{align*}
+&Pre&\\
+&while (Cond) \{&\\
+&  \quad Body & \\
+&\} &\\
+&Post &
+\end{align*}
 In practice, the pre-condition $\mathit{Pre}$ is often described by 
 the specification documents and checking conditions of the program inputs, 
 and the post-condition $\mathit{Post}$ is usually specified 

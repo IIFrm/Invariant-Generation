@@ -221,13 +221,14 @@ So $polynomialSVM$ can find a polynomial classifier for any complex expression a
 As stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
 %seems powerful in expression abilities, 
 but there actually exists simple expressions that can not be expressed in form of polynomials.
-For example, $\mathcal{C} = (x \ge 0 \bigwedge y \ge 0)$,
+For example, $\mathcal{C} = (x \ge 0 \wedge y \ge 0)$,
 it can be proved that there is no such a polynomial which can be equivalent with it.
-So in this case, we need to learn the conjunctive invariant directly, avoiding convert them into a form of polynomials.
+
+So in this case, we need to learn the conjunctive invariant directly, avoiding the tries to convert them into a form of polynomials.
 The good news is Rahul Sharma and his partners have developed a conjunctive classification algorithm based on $\textsc{Svm}$
 which is named as ``$\textsc{Svm\_i}$'' in ~\ref{sharma2012interpolants}.
-In their algorithm, they take $\textsc{Svm}$ as meta linear classification algorithm, and they failed to simplify the learned classifiers.
-So in $\textsc{Zilu}$, we apply a technique ~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
+In their algorithm, they take $\textsc{Svm}$ as meta linear classification engine, and they failed to simplify the learned classifiers.
+So in $\textsc{Zilu}$, we apply a technique shown in algorithm~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
 
 \begin{algorithm}[!h]
 \SetAlgoVlined

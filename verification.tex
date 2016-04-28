@@ -4,16 +4,21 @@
 \label{sec:verification}
 From the last step, $\textsc{Zilu}$ has got a predicate which does not only classify all the samples perfectly but get converged.
 But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared to the real states distribution of the given program.
-For example, if there is a branch in loop body such as $$if (x == 100) \cdots$$, 
-our samples would hardly cover this branches except we do sampling amazing right to $(x\mapsto 10)$.
-To handle this problem, program verification, as the last security checkpoint on these ``bad guys'', stands out.
+For example, if there is a branch in loop body such as $$if (x == 159) \cdots$$, 
+our samples would hardly cover this branches except we do sampling amazing right to $(x\mapsto 159)$.
+%So we should check all the branches whether our test
+To handle this problem, we apply program verification as the last security checkpoint on these ``bad guys''.
 %he last security checkpoint on these ``bad guys'' is verification. 
 Therefore, in this step, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
 checking the satisfiability of constraints (1), (2) and (3) using state-of-art tools from symbolic execution and constraint solving communities.
 %In addition, we separated this part as a standalone tool for loop invariant verification.
 
 In implementation, to verify constraint (1) and (3), 
-$\textsc{Zilu}$ submits constraints $$\{Pre \Rightarrow \mathcal{C}\}$$ and $$\{\neg {Cond} \wedge \mathcal{C} \Rightarrow Post\}$$ to Z3 solver for checking satisfiability.
+$\textsc{Zilu}$ submits constraints 
+$$Pre \Rightarrow \mathcal{C}$$ 
+and 
+$$\neg {Cond} \wedge \mathcal{C} \Rightarrow Post$$
+to Z3 solver for checking satisfiability.
 For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
@@ -23,9 +28,13 @@ and
 $$\big(\neg(x<y) \wedge (33-2\cdot x+2\cdot y>=0)\big) \Rightarrow ((x >= y) \wedge (x <= y + 16))$$
 to check constraint (3).
 
-However, it might be a bit of complicated due to $Body$'s computational complexity to check constraint (2).
-When the $Body$ contains many lines of code, especially with branches, it is very hard to encode them into a constraint manually.
-We need some tools to help us finding these constraints, otherwise, our technique would limit its power to simple and trivial program. 
+For checking the inductive property, which is formulated as constraint (2),
+its complexity depends on the $Body$'s computational complexity.
+When the $Body$ contains lots of lines of code, especially with branches, 
+it is very hard to encode them into a constraint manually,
+not to say verifying each of them.
+So we need some tools to help us finding these constraints, 
+Otherwise, our technique would limit its power to learn only simple and trivial programs. 
 That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic execution tool to get path condition.
 %and Z3 solver as a representative to verify the learned predicate.
 
