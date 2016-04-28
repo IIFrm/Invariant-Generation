@@ -20,11 +20,11 @@ and $\mathit{Body}$ is the loop body.
 %    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
 %\]
 \begin{align*}
-&Pre&\\
-&while (Cond) \{&\\
-&  \quad Body & \\
-&\} &\\
-&Post &
+&Pre & \longrightarrow & \text{(Assumptions)} \\
+&while (Cond) \{ && \\
+&\quad Body & \longrightarrow & \text{(Loop Body)} \\
+&\} && \\
+&Post & \longrightarrow & \text{(Assertions)} 
 \end{align*}
 In practice, the pre-condition $\mathit{Pre}$ is often described by 
 the specification documents and checking conditions of the program inputs, 
