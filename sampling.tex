@@ -22,7 +22,7 @@ based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 
 \subsection{Sampling Approaches} % (fold)
-\label{sub:sampling_approaches}
+\label{subsec:sampling:approaches}
 
 In this work, the program states, denoted by $S$, are sampled in three different approaches: 
 \emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
@@ -35,7 +35,7 @@ counter-example sampling and selective sampling are significantly better than ra
 %If compared sampling to asking question, random sampling is like asking random questions,
 %and selective sampling is like asking tentative questions, 
 %while counter-example sampling is like an eye-to-eye debate.
-The following paragraphs show how these three sampling technique works and why we apply them in $\textsc{Zilu}$.
+The following paragraphs present how these three sampling technique works and why we apply them in our invariant inference framework.
 
 \begin{figure}[!h]
     \centering
@@ -142,6 +142,7 @@ That is because applying concolic testing and constraint solving is a more time-
 % subsection sampling_approaches (end)
 
 \subsection {Labeling}
+\label{subsec:labeling}
 With the sample set $S$ from the last step, we test the program starting with each program state $s$ in $S$. 
 As said in the introduction part, $Body(s)$ is the state which could be reached after executing $Body$ from state $s$.
 We write $Body^*(s)$ to denote the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
@@ -162,6 +163,7 @@ then
 
 
 \subsubsection{Positive State, Negative State, Implication Pair}
+\label{subsec:state}
 These three concepts are previously introduced in \cite{sharma2014invariant}.
 In this paper, we use predicates and sets of states interchangeably.
 Let $\mathcal{C}$ be a candidate invariant.
@@ -185,6 +187,7 @@ We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state
 
 
 \subsubsection{Positive Trace, Negative Trace, Implication Trace}
+\label{subsec:trace}
 For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
 if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
 then this is a positive trace, meaning $\forall s_i \models Inv$.

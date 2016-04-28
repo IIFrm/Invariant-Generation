@@ -47,6 +47,7 @@ That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic ex
 
 
 \subsection{KLEE}
+\label{subsec:klee}
 General speaking, KLEE\cite{cadar2008klee} is a symbolic virtual machine built on top of the LLVM compiler infrastructure
 that can enumerate all the possible paths based on target configuration on each of them to get all the path conditions.
 In our setting, we are only interested in specific paths which can lead to the assertion failure in the target program.
@@ -119,6 +120,7 @@ we prefer to check the unsatisfiability of constraints with conjunctive forms.
 After getting these constraints, we can apply Z3\cite{de2008z3} solver to check the satisfiability (or unsatisfiability).
 
 \subsection{Z3}
+\label{subsec:z3}
 The state-of-the-art SMT (Satisfiability Modulo Theories)\cite{barrett2009satisfiability}  solvers can be used to 
 check the satisfiability of logical formulas over one or more theories. 
 Among all these solvers, Z3\cite{de2008z3}, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
@@ -142,6 +144,7 @@ Then $\textsc{Zilu}$ use $s_{ce}$ to restart learning in the next iteration, unt
 
 
 \section {Overall Algorithm}
+\label{sec:overall}
 The overall algorithm is presented in Figure~\ref{alg:overall}.
 \begin{algorithm}[!h]
 \SetAlgoVlined

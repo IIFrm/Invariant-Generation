@@ -4,38 +4,47 @@
 \label{sec:classification}
 
 After sampling and labeling in the last step, we obtain some program states must satisfy $Inv$ and some must not. 
-If we view these program states as a data set from the perspective of data scientists, 
-the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
-Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
-Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
-Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
+%If we view these program states as a data set from the perspective of data scientists, 
+%the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
+In this section, we state our classification algorithm to find a classifier which can perfectly divide these collected data.
 
-Before coming to the specific technique \textsc{Zilu} applies,
-it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
+%Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
+%Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
+In fact, the classification problem has been studied by machine learning community for years,
+and several efficient approaches, i.e. perceptron, decision tree, svm etc., have been developed to handle this problem.
+%Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
+%Before demonstrating the specific technique applied in \textsc{Zilu},
+%it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
+But there are still differences between the problem in machine learning field and the one in our setting:
 \begin{itemize}
-\item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem.
+\item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem.
 %although there is a research trend in machine learning to understand ongoing during these years.
 On the contrary, in the software engineering area, program verification cares about formalization and reasoning.
-Therefore, a classification technique would be highly suggested as long as it can predict correctly on newly received data.
+Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
 But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
 
-\item Machine learning algorithms think more of generalization ability than classification correctness on the training data.
-Sometimes they would sacrifice the prediction correctness on the training data for exchanging the higher generalization ability.
-But in our context, the first thing we care about is the prediction  correctness on the training data,
-which means we can not tolerate any slight classification error on the training set.
-On this basis, we hope the classification algorithm can have better generalization ability.
+\item Machine learning algorithms consider more of generalization ability than classification correctness on the training data.
+Thus they would sacrifice the prediction correctness on the training data for exchanging the higher generalization ability.
+But in our context, the classification accuracy on the training data is of vital importance,
+and even a slight classification error can not be tolerated.
+On this basis, we hope the learned classifier can reflect the underlying logic of the given program.
+% classification algorithm can have better generalization ability.
 \end{itemize} 
+Considering these differences,
+in the following text, 
+we show our classification approaches based on machine learning algorithm.
 
 
-\subsection{Supported Vector Machines}
+\subsection{SVM}
+\label{subsec:svm}
 %, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
 %In most setting, given a set of training examples, each marked as belonging to one of two categories, 
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
-Supported Vector Machines, known as $\textsc{Svm}$, is a supervised machine learning algorithm for classification and regression analysis. 
-We use its binary classification functionality. 
+\textsc{Svm} (Supported Vector Machines) is a supervised machine learning algorithm for classification and regression analysis. 
+We use its binary classification functionality in our framework. 
 Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
 
 Given two sets of feature vectors $S^+$ and $S^-$, it generates, if there is any, 
@@ -44,28 +53,30 @@ such that every state $s \in \mathcal{S}^+$ satisfies the constraint and every s
 In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denote the function which returns a linear classifier.
 
 
-Considering the differences between machine learning problem and our setting are discussed in the above subsection, 
-\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a classifier: 
-\begin{itemize}
-\item $\textsc{Svm}$ technique does not really calculate a hyperplane explicitly, 
-but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and other parameters.
-%This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
-However, in software verification, we need to convert the $\textsc{Svm}$ model to an explicit classifier which can be understood and proceeded later.
-(This is also the reason why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
-given converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
+Considering the differences between machine learning problem and our setting, 
+\textsc{Zilu} tunes the primitive $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a perfect classifier.
+And the whole algorithm for classification can be described as Algorithm~\ref{alg:classify}.
 
-\item As \textsc{Zilu} thinks higher of the classification correctness on the training data than anything else,
+\begin{itemize}
+\item Convert \textsc{Svm} model to an explicit classifier.
+The original \textsc{Svm} technique does not calculate a hyperplane explicitly, but emits some supported vectors and other parameters,
+which can be used to do prediction on the given data.
+%This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
+However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
+(This is also why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
+considering converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
+
+\item As \textsc{Zilu} treasures classification accuracy on the training dataset than anything else,
 Before applying primitive $\textsc{Svm}$ technique, the parameters 
 (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
 %different from $\mathcal{C}$ used as loop invariant candidate in our context) 
-should be tuned to get a classifier which does a better job of getting all the training points classified correctly.
+should be tuned to learn a perfect classifier which perform well on the training points.
 
-\item What's more, we need to check the classification correctness of the learned classifier 
-on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
+\item Moreover, checking the classification correctness of the learned classifier 
+on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting need to ensure that is a perfect classifier.
 Moreover, \textsc{Zilu} takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
 \end{itemize} 
 
-So the whole algorithm for classification can be described as Algorithm~\ref{alg:classify}.
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -85,9 +96,9 @@ So the whole algorithm for classification can be described as Algorithm~\ref{alg
 \label{alg:classify}
 \end{algorithm}
 
-Note that, in practice, 
-customers can substitute $\textsc{Svm}$ in the algorithm~\ref{alg:classify} with other classification techniques for learning invariant. 
-We will take two of them in ``$\textsc{Svm}$ derivatives'' part as examples.
+Note that,
+$\textsc{Svm}$ in the algorithm~\ref{alg:classify} can be substitute with other classification techniques for other learning purpose. 
+We will take two classification algorithms as examples to demonstrate this promotion in ~\ref{subsec:svm:derivatives}.
  
 %In the following, we present how we obtain a classifier automatically using $\textsc{Svm}$. 
 %In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
@@ -101,17 +112,13 @@ We will take two of them in ``$\textsc{Svm}$ derivatives'' part as examples.
 
 
 \subsection{Active Learning} 
-After getting a classifier for the current dataset, active learning technique is used to refine the candidate until it gets convergence
-(the candidate remains the same even when adding more data into then training set). 
+\label{subsec:active:learning}
+Having a perfect classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
+active learning technique keeps refine the classifier until it gets converged.
+That means the classifier remains the same even adding more data into then training set. 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 
-At line 3, we obtain a classifier based on Algorithm~\ref{alg:classify}. 
-We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise, we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
-In particular, at line 9, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
-Notice that in our setting, as indicated in Section ~\ref{sec:sampling}, the most informative samples are those which are exactly on the lines 
-and therefore can be obtained by solving an equation system using libraries. 
-At line 10 and line 11, we test the program with the newly generated samples so as to label them accordingly.
+
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
@@ -137,6 +144,13 @@ let $old_f$ be $null$\;
 \label{alg:active}
 \end{algorithm}
 
+At line 3, we obtain a classifier based on Algorithm~\ref{alg:classify}. 
+We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
+otherwise, we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
+In particular, at line 9, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
+Notice that in our setting, as indicated in Section ~\ref{sec:sampling}, the most informative samples are those which are exactly on the lines 
+and therefore can be obtained by solving an equation system using libraries. 
+At line 10 and line 11, we test the program with the newly generated samples so as to label them accordingly.
 
 %\begin{example}
 %\LL{to be added}
@@ -148,6 +162,7 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 
 
 \subsection{SVM Derivatives}
+\label{subsec:svm:derivatives}
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
 If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half-space only, 
 a more complicated function $f$ must be adopted. 
