@@ -24,18 +24,45 @@ based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in
 \subsection{Sampling Approaches} % (fold)
 \label{subsec:sampling:approaches}
 
+Sampling is non-trivial in automatic loop invariant inference, 
+because we need to obtain samples that are helpful for invariant generation and refinement. 
+Meanwhile, we can only ask whether a certain sample is in the invariant or not, 
+without knowing the exact shape of the invariant. 
 In this work, the program states, denoted by $S$, are sampled in three different approaches: 
 \emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
-% which are applied according to the information we gathered by that time.
-Figure~\ref{fig:sampling} shows how they do sampling on a 2-D plane visually.
-From the perspective of the speed, random sampling runs very fast which ranks the first, 
-while counter-example sampling ranks the last.
-From the contribution to the final invariant,
-counter-example sampling and selective sampling are significantly better than random sampling.
+%<<<<<<< HEAD
+
+%Figure~\ref{fig:sampling} shows how they do sampling on a 2-D plane visually.
+%From the perspective of the speed, random sampling runs very fast which ranks the first, 
+%while counter-example sampling ranks the last.
+%From the contribution to the final invariant,
+%counter-example sampling and selective sampling are significantly better than random sampling.
 %If compared sampling to asking question, random sampling is like asking random questions,
 %and selective sampling is like asking tentative questions, 
 %while counter-example sampling is like an eye-to-eye debate.
-The following paragraphs present how these three sampling technique works and why we apply them in our invariant inference framework.
+%The following paragraphs present how these three sampling technique works and why we apply them in our invariant inference framework.
+%=======
+Figure~\ref{fig:sampling} visualizes these three approaches in a 2-D plane: 
+the green area is the correct invariant captured by the green line; 
+the red area is the learnt invariant captured by the red line; 
+the green nodes represent the samples inside of the correct invariant; 
+and the red nodes represent the samples outside of the correct invariant. 
+The random sampling is very useful in generating the initial invariant 
+as well as searching for samples that cannot be reached 
+by selective sampling and counter-example sampling. 
+For instance, in Figure~\ref{fig:sampling:random}, 
+we obtain four samples using random sampling 
+and learn the initial invariant in Figure~\ref{fig:sampling:random:invariant}. 
+When an invariant has been learnt, 
+we can accelerate the invariant convergence by obtaining samples that 
+land exactly on the edges of the learnt invariant (i.e., selective sampling) 
+or conflict the required properties (i.e., counter-example sampling). 
+For example, in Figure~\ref{fig:sampling:selective}, 
+we select four samples on edges of the learnt invariant and 
+compute one counter-example to help generating the real invariant. 
+As can been seen in Figure~\ref{fig:sampling:selective:invariant}, 
+the newly learnt invariant moves towards the real invariant quickly. 
+%>>>>>>> origin/master
 
 \begin{figure}[!h]
     \centering
@@ -48,20 +75,20 @@ The following paragraphs present how these three sampling technique works and wh
     \begin{subfigure}{0.23\textwidth}
         \centering
         \includegraphics[scale=0.3]{figures/general-sampling-1.pdf}
-        \caption{Learnt Classifier}
-        \label{fig:sampling:random:classifier}
+        \caption{Learnt Invariant}
+        \label{fig:sampling:random:invariant}
     \end{subfigure}
     \begin{subfigure}{0.23\textwidth}
         \centering
         \includegraphics[scale=0.3]{figures/general-sampling-2.pdf}
         \caption{Selective and Counter-Example Sampling}
-        \label{fig:sampling:random:classifier}
+        \label{fig:sampling:selective}
     \end{subfigure}
     \begin{subfigure}{0.23\textwidth}
         \centering
         \includegraphics[scale=0.3]{figures/general-sampling-3.pdf}
-        \caption{Refined Classifier}
-        \label{fig:sampling:random:classifier}
+        \caption{Refined Invariant}
+        \label{fig:sampling:selective:invariant}
     \end{subfigure}
     \caption{Sampling Approaches}
     \label{fig:sampling}
