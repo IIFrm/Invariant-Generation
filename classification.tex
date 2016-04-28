@@ -8,9 +8,9 @@ If we view these program states as a data set from the perspective of data scien
 the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
 Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
-Among plenty of classification approaches, $\textsc{Zilu}$ takes Supported Vector Machines as a primary approach.
+Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 
-Before coming to the specific technique $\textsc{Zilu}$ applies,
+Before coming to the specific technique \textsc{Zilu} applies,
 it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
 \begin{itemize}
 \item Most machine learning techniques care more about prediction correctness rather than understanding the underlying problem.
@@ -45,7 +45,7 @@ In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denot
 
 
 Considering the differences between machine learning problem and our setting are discussed in the above subsection, 
-$\textsc{Zilu}$ tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a classifier: 
+\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a classifier: 
 \begin{itemize}
 \item $\textsc{Svm}$ technique does not really calculate a hyperplane explicitly, 
 but emits some supported vectors (this is where $\textsc{Svm}$ get its name) and other parameters.
@@ -54,7 +54,7 @@ However, in software verification, we need to convert the $\textsc{Svm}$ model t
 (This is also the reason why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
 given converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
 
-\item As $\textsc{Zilu}$ thinks higher of the classification correctness on the training data than anything else,
+\item As \textsc{Zilu} thinks higher of the classification correctness on the training data than anything else,
 Before applying primitive $\textsc{Svm}$ technique, the parameters 
 (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
 %different from $\mathcal{C}$ used as loop invariant candidate in our context) 
@@ -62,7 +62,7 @@ should be tuned to get a classifier which does a better job of getting all the t
 
 \item What's more, we need to check the classification correctness of the learned classifier 
 on $\mathcal{S}^+$ and $\mathcal{S}^-$ to ensure that is a perfect classifier.
-Moreover, $\textsc{Zilu}$ takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
+Moreover, \textsc{Zilu} takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
 \end{itemize} 
 
 So the whole algorithm for classification can be described as Algorithm~\ref{alg:classify}.
@@ -155,7 +155,7 @@ For instance, if there is a classifier in the form of conjunctive of multiple ha
 the algorithm presented in~\cite{Sharma2012} can be used to identify such a classifier.
 
 Also in algorithm~\ref{alg:classify}, we mentioned the customers can substitute $\textsc{Svm}$ with other classification approaches for invariant learning.
-$\textsc{Zilu}$ has implemented two algorithms besides native $\textsc{Svm}$: 
+\textsc{Zilu} has implemented two algorithms besides native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$, which can be used to learn invariants in the form of polynomials or any equivalent expressions,
 and $Conjunctive \textsc{Svm}$, which can learn invariants in the form of conjunctives.
 
@@ -174,7 +174,7 @@ Apparently methods that use linear template or linear classification algorithm d
 This leads us to develop a classification algorithm for learning polynomial divider.
 The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions, 
 we can apply primitive $\textsc{Svm}$ algorithm to learn a polynomial classifier. 
-In practice, $\textsc{Zilu}$ provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
+In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -229,7 +229,7 @@ Rahul Sharma, A. V. Nori et al. have developed a classification algorithm, named
 based on $\textsc{Svm}$ to learn conjunctive invariants.
 In their algorithm, they take $\textsc{Svm}$ as meta linear classification engine, 
 and they fail to simplify the learned classifiers which can cause large number of conjunctive parts that can not be understood.
-So in $\textsc{Zilu}$, we apply a technique shown in algorithm~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
+So in \textsc{Zilu}, we apply a technique shown in algorithm~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ algorithm but overcome these defects:
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
