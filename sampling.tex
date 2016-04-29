@@ -1,6 +1,7 @@
 %!TEX root = paper.tex
 
-\section{Sampling} % (fold)
+%\section{Sampling} % (fold)
+\section{Data Collection} % (fold)
 \label{sec:sampling}
 
 In this section, we present our approach to sample and label data 
@@ -84,7 +85,7 @@ the newly learnt invariant moves towards the real invariant quickly.
 
 \medskip\noindent
 \textbf{Random Sampling.}
-This technique produce samples with the random distribution over a given range $\mathcal{R}$.
+This technique produce samples with the uniform distribution over a given range $\mathcal{R}$.
 It acts as an initialization sampling method 
 as well as a supplementary sampling method in our framework. 
 Firstly, before any classifier is learnt in our framework, 
@@ -146,16 +147,27 @@ this selective sampling effectively learns an accurate function with fewer label
 %therefore can be obtained by solving an equation system. 
 %At line 8, we test the program with the newly generated samples so as to label them accordingly.
 %After the above discussion, apparently the pre-requirement of selective sampling is there is a guess.
-In our setting, %after learning an candidate, 
+%In our setting, %after learning an candidate, 
 %which is usually a single polynomials or conjunction or \LL{disjunction?} of polynomials,
-we do selective sampling by solving the equation system defined by the candidate boundary using \textbf{GSL}~\cite{gough2009gnu}.
 As the solutions to boundary equation are the points lying on the boundary. 
+we do selective sampling by solving the equation system using \textbf{GSL}~\cite{gough2009gnu} in our setting.
+For example, if we get a candidate $\mathcal{C} = \{11-2*x^2+2*y>=0\}$,
+we do selective sampling in the following steps:
+\begin{itemize}
+\item[1)] Randomly choose the variable in the classifier. Here we take $x$ as picked variable.
+\item[2)] Generates values for any other variables based on uniform distribution over the range $\mathcal{R}$. For example, we assign $y$ to $12$.
+\item[3)] Solve the boundary equation after substituting the variables with their values. If there is no solution, go back to 1). For our example, we can get $x = \sqrt{35}/2 = 2.9580$.
+\item[4)] Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$. 
+\item[5)] Roundoff the values of all the variables to meet the type requirement in the given program. Here we have $\{(x,y) \mapsto (3, 12)\}$.
+\end{itemize}
+
+In step 4, we add a small variance to variables because sometimes the points just lies on the boundary are very hard to tell their labels. 
 %\LL{this is however not clear how it is done.}
-As a result, this technique is applied all along the learning process except the very beginning.
+%As a result, this technique is applied all along the learning process except the very beginning.
 
 \medskip\noindent
 \textbf{Counter-Example Sampling.}
-Counter-example sampling picks up samples in the difference zone between the invariant candidate and the actual invariant.
+Counter-example sampling chooses samples lying in the difference zone between the invariant candidate and the actual invariant.
 %Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.  
 In our framework, when a invariant candidate fails to be validated in the verification stage,
 a counter-example, that can directly refute our invariant candidate, would be provided by constraint solvers.
@@ -175,31 +187,52 @@ Therefore, this technique is only applied between two learning iterations.
 
 % subsection sampling_approaches (end)
 
+\subsection {Loop Execution}
+With the samples $\mathcal{S}$ obtained above, 
+we execute the program from the state $s$ in $\mathcal{S}$. 
+From program execution, 
+we can generate more program states and check their satisfiability to $Pre$ and $Post$.
+%In this step,
+%we execute the program from the initial state $s_0$, where $s_0 \in \mathcal{S}$ and $\mathcal{S}$ is obtained from the above technique.
+We record the following information during one execution:
+\begin{itemize}
+\item $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
+where $s_0$ is the initial state before entering the loop, 
+$s_i$ is the state just after executing loop $Body$ for $i$ times,
+and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$;
+\item $s_0 \models Pre$ or $s_0 \models \neg Pre$;
+\item $s_n \models Post$ or $s_n \models \neg Post$.
+\end{itemize}
+For example, if we start the program execution with the sample $\{(x,y) \mapsto (3, 12)\}$ from the last selective sampling,
+we could record a trace $Trace\{s_0 \to s_1 \to s_2\}$ where 
+$s_0=\{(x,y) \mapsto (3, 12)\}$, $s_1=\{(x,y) \mapsto (13, 15)$ and $s_2=\{(x,y) \mapsto (23, 18)\}$,
+and $s_0 \models Pre$ and $s_2 \models Post$.
+
+
 \subsection {Labeling}
-\LL{I feel the labeling and sampling described here are inaccurate.
-Sampling should include all of the samples rather than only the initial inputs. 
-We can discuss later. }
-With the samples $S$ obtained above, we execute the program with initial state $s$ in $S$. 
-\LL{Here, the initial state is unclear. what is program state. }
-From program execution, we can generate more program states and check their satisfiability to $Pre$ and $Post$.
-In this step, we present the technique how we label them according to these information. 
+%\LL{I feel the labeling and sampling described here are inaccurate.
+%Sampling should include all of the samples rather than only the initial inputs. 
+%We can discuss later. }
+%With the samples $S$ obtained above, we execute the program with initial state $s$ in $S$. 
+%\LL{Here, the initial state is unclear. what is program state. }
+%From program execution, we can generate more program states and check their satisfiability to $Pre$ and $Post$.
+%In this step, we present the technique how we label them according to these information. 
 
 To demonstrate the technique, a few symbols should be introduced first. 
 $Body(s)$, defined in Section~\ref{sec:introduction}, is the state which could be reached after executing $Body$ from state $s$.
 $Body^*(s)$ denotes the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
-Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
-\LL{I suggest use $\rightarrow$, $\rightarrow^*$ and $\multimap$. }
-
-\LL{What is Trace, defined?}
-So if there is a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
-where $s_0$ is the initial state before entering the loop, 
-$s_i$ is the state just after executing loop $Body$ for $i$ times,
-and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$,
-then 
+Furthermore, we write $s \multimap s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+%\LL{I suggest use $\rightarrow$, $\rightarrow^*$ and $\multimap$. }
+%\LL{What is Trace, defined?}
+So if there is an execution trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
+%where $s_0$ is the initial state before entering the loop, 
+%$s_i$ is the state just after executing loop $Body$ for $i$ times,
+%and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$,
+then we have
 \begin{itemize}
 \item $s_{i+1} = Body(s_i)~~~~\forall i \in [0, \ldots, n-1]$.
 \item $s_{i} \in Body^*(s_0)~~~~~~\forall i \in [0, \ldots, n]$.
-\item $s_{0} \Rightarrow\Rightarrow s_{n}$.
+\item $s_{0} \multimap s_{n}$.
 \end{itemize}
 %We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
 
