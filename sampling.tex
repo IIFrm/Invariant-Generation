@@ -256,14 +256,20 @@ According to the satisfactory of the loop invariant,
 we category program states into two classes:
 positive states, which means the states satisfy the loop invariant;
 and negative states, which means the states do not satisfy the loop invariant.
+\begin{definition}[Positive State]
+Positive state is a state of the loop execution that satisfy the loop invariant.
+\end{definition}
+\begin{definition}[Negative State]
+Negative state is a state of the loop execution that does not satisfy the loop invariant.
+\end{definition}
 
 \begin{theorem}
 If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models Pre$ and $s_n \models Post$,
-then all the states in $\mathcal{t}$ are positive states.
+then all the states in $\mathcal{T}$ are positive states.
 \end{theorem}
 \begin{theorem}
 If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models \neg Pre$ and $s_n \models \neg Post$,
-then all the states in $\mathcal{t}$ are negative states.
+then all the states in $\mathcal{T}$ are negative states.
 \end{theorem}
 \begin{theorem}
 If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models Pre$ and $s_n \models \neg Post$,
