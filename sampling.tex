@@ -47,7 +47,7 @@ we can accelerate the invariant convergence by obtaining samples that
 land exactly on the edges of the learnt invariant (i.e., selective sampling) 
 or conflict the required properties (i.e., counter-example sampling). 
 For example, in Figure~\ref{fig:sampling:selective}, 
-we select four samples on edges of the learnt invariant and 
+we select four samples on borders of the learnt invariant and 
 compute one counter-example to help generating the real invariant. 
 As can be seen in Figure~\ref{fig:sampling:selective:invariant}, 
 the newly learnt invariant moves towards the real invariant quickly. 
@@ -174,18 +174,24 @@ Therefore, this technique is only applied between two learning iterations.
 % subsection sampling_approaches (end)
 
 \subsection {Labeling}
-With the sample set $S$ from the last step, we execute the program with initial state $s$ in $S$.
+\LL{I feel the labeling and sampling described here are inaccurate.
+Sampling should include all of the samples rather than only the initial inputs. 
+We can discuss later. }
+With the samples $S$ obtained above, we execute the program with initial state $s$ in $S$. 
+\LL{Here, the initial state is unclear. what is program state. }
 From program execution, we can generate more program states and check their satisfiability to $Pre$ and $Post$.
-In this step, we present the technique how we label them according to these information.
+In this step, we present the technique how we label them according to these information. 
 
-To demonstrate the technique, a few symbols should be introduced first.
+To demonstrate the technique, a few symbols should be introduced first. 
 $Body(s)$, defined in Section~\ref{sec:introduction}, is the state which could be reached after executing $Body$ from state $s$.
 $Body^*(s)$ denotes the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
 Furthermore, we write $s \Rightarrow\Rightarrow s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+\LL{I suggest use $\rightarrow$, $\rightarrow^*$ and $\multimap$. }
 
+\LL{What is Trace, defined?}
 So if there is a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
 where $s_0$ is the initial state before entering the loop, 
-$s_i$ is the state just after executing loop $Body$ $i$ times,
+$s_i$ is the state just after executing loop $Body$ for $i$ times,
 and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$,
 then 
 \begin{itemize}
@@ -195,12 +201,10 @@ then
 \end{itemize}
 %We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
 
-
-
-\subsubsection*{Positive State, Negative State, Implication Pair}
-
+\medskip\noindent
+\textbf{Positive State, Negative State and Implication Pair}
 %defines the label to a state.
-These three concepts are originally introduced in \cite{sharma2014invariant}.
+are three concepts are originally introduced in \cite{sharma2014invariant}.
 They tell whether a state must satisfy the loop invariant or must not.
 A positive state is a state that must satisfy the actual loop invariant,
 while a negative state is a state that must not satisfy the invariant.
@@ -208,14 +212,18 @@ An implication pair is a pair of state, the latter one satisfying the invariant
 if the former one satisfies it. 
 In this part, we demonstrate the rules to category a state according to its execution information.
 %In this paper, we use predicates and sets of states interchangeably.
+\LL{I feel you do not need to put them as a section (I mean that it should not look like above). 
+Say the positive states and the positive trace together.}
 
 %Let $\mathcal{C}$ be a candidate invariant.
 
 From constraint~\ref{inv:pre} we know, for an invariant $Inv$, 
 any state satisfying $Pre$ should also satisfies $Inv$. 
-Therefore, the state satifying $Pre$ must be a positive state. 
+Therefore, the state satisfying $Pre$ must be a positive state. 
+\LL{Why do you want to say that it must be a positive state?}
 
-
+\LL{The following is extremely hard to understand (grammar error). 
+Give definition first, purpose later.}
 The adjacent states $(s, t)$ appeared in a trace a pair of states is an implication pair,
 because, according to the inductive property~\ref{inv:loop},
 $(s \models Inv) \Rightarrow (t \models {Inv})$
@@ -231,11 +239,9 @@ In this situation $s \models \neg Cond$, then we can infer $s \models \neg Inv$.
 %The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
 %We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state. 
 
-
-
-%\medskip\noindent
-%\textbf{
-\subsubsection*{Positive Trace, Negative Trace, Implication Trace}
+\medskip\noindent
+\textbf{Positive Trace, Negative Trace, Implication Trace.}
+\LL{Change above, do not put them as a section title.}
 As an execution trace contains more data than a single state,
 this part discusses the technique to label all the states in one trace at a time rather than just a single state.
 Similar to the state labeling, a positive trace defines a trace with all positive states,
@@ -257,11 +263,12 @@ On the contrary, for a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\
 if $s_0 \models \neg Pre$, and $s_n \models \neg Post$,
 we can infer this is a negative trace in the similar way. 
 %which means all the states in this trace should be negative states.  
+\LL{Make these two as theorems. Also define all the notations first. }
 
 %Actually for an arbitrary trace, there are also two other possibilities we have not mentioned yet.
 
 The third case is a trace that begins with a state $s_0 \models Pre$ and ends with a state $s_n \models \neg Post$,
-obviously, this is a counter-example to disprove the program and its specification.
+\LL{obviously}, this is a counter-example to disprove the program and its specification.
 As a result, if $\textsc{Zilu}$ meets any counter-example trace in the testing, 
 the execution exits immediately with a failure message indicating a bug in the program. 
 
@@ -280,6 +287,7 @@ we find this violates the above implication rules,
 indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
 %In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.
 %In total, we can have table.~\ref{LabelingTable}.
+\LL{The missing part here is how you used it in this work.}
 
 
 In total , we can categorize all the program states $Body^*(S)$ started from Set $S$ into four sets according to the following table.
