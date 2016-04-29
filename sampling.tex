@@ -106,7 +106,9 @@ is applied to all the invariant inference iterations.
 %These samples are very informative and instructive for invariant refinement, 
 %as they give clear instructions on the amendment of the candidate.
 Due to the limited number of samples, 
-the classifier obtained from these data might be far from being correct. 
+the invariant candidate obtained from these data might be far from being correct. 
+\LL{I think selective sampling is worse than random sampling 
+if the invariant is very different from the correct one. }
 The concept of active learning or selective sampling refers to the approaches 
 that aim at reducing the labeling effort by selecting only the most informative samples to be labeled.
 Given a classifier, this approach selects the samples that are the closest to the classification boundary 
