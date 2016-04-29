@@ -11,7 +11,7 @@ In this section, we state our classification algorithm to find a classifier whic
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
 In fact, the classification problem has been studied by machine learning community for years,
-and several efficient approaches, i.e. perceptron, decision tree, svm etc., have been developed to handle this problem.
+and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm} etc., have been developed to handle this problem.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
@@ -19,7 +19,7 @@ But there are still differences between the problem in machine learning field an
 \begin{itemize}
 \item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem.
 %although there is a research trend in machine learning to understand ongoing during these years.
-On the contrary, in the software engineering area, program verification cares about formalization and reasoning.
+However, in the software engineering area, program verification cares about formalization and reasoning.
 Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
 But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
 
@@ -32,7 +32,7 @@ On this basis, we hope the learned classifier can reflect the underlying logic o
 \end{itemize} 
 Considering these differences,
 in the following text, 
-we show our classification approaches based on machine learning algorithm.
+we show our classification approaches based on the classical machine learning algorithms.
 
 
 \subsection{SVM}
@@ -55,29 +55,31 @@ In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denot
 
 Considering the differences between machine learning problem and our setting, 
 \textsc{Zilu} tunes the primitive $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a perfect classifier.
-And the whole algorithm for classification can be described as Algorithm~\ref{alg:classify}.
-
 \begin{itemize}
 \item Convert \textsc{Svm} model to an explicit classifier.
-The original \textsc{Svm} technique does not calculate a hyperplane explicitly, but emits some supported vectors and other parameters,
+The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits some supported vectors and other parameters,
 which can be used to do prediction on the given data.
 %This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
 However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
 (This is also why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
 considering converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
 
-\item As \textsc{Zilu} treasures classification accuracy on the training dataset than anything else,
-Before applying primitive $\textsc{Svm}$ technique, the parameters 
+\item As \textsc{Zilu} treasures classification accuracy on the training dataset% than anything else,
+before applying primitive $\textsc{Svm}$ technique, the parameters 
 (mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
 %different from $\mathcal{C}$ used as loop invariant candidate in our context) 
-should be tuned to learn a perfect classifier which perform well on the training points.
+should be carefully tuned to learn a perfect classifier which perform well on the training points.
 
-\item Moreover, checking the classification correctness of the learned classifier 
-on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting need to ensure that is a perfect classifier.
-Moreover, \textsc{Zilu} takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
+\item Validating the learned classifier. 
+Checking the classification correctness of the learned classifier 
+on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting needs to ensure the learned classifier is a perfect one.
+\textsc{Zilu} also takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
 \end{itemize} 
 
-
+The whole classification algorithm is described in Algorithm~\ref{alg:classify}. 
+Note that,
+$\textsc{Svm}$ in this algorithm can be substitute with other classification techniques for different learning purposes. 
+We will take two classification algorithms as examples to demonstrate this promotion in ~\ref{subsec:svm:derivatives}.
 \begin{algorithm}[!h]
 \SetAlgoVlined
 \Indm
@@ -96,9 +98,7 @@ Moreover, \textsc{Zilu} takes $\mathcal{S}^\rightarrow$ to validate the learned 
 \label{alg:classify}
 \end{algorithm}
 
-Note that,
-$\textsc{Svm}$ in the algorithm~\ref{alg:classify} can be substitute with other classification techniques for other learning purpose. 
-We will take two classification algorithms as examples to demonstrate this promotion in ~\ref{subsec:svm:derivatives}.
+
  
 %In the following, we present how we obtain a classifier automatically using $\textsc{Svm}$. 
 %In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. 
@@ -114,12 +114,11 @@ We will take two classification algorithms as examples to demonstrate this promo
 \subsection{Active Learning} 
 \label{subsec:active:learning}
 Having a perfect classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
-active learning technique keeps refine the classifier until it gets converged.
-That means the classifier remains the same even adding more data into then training set. 
+active learning technique keeps refining the classifier until it gets converged.
+That means the classifier remains identical even adding more data points into the training set. 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
 
-
-\begin{algorithm}[t]
+\begin{algorithm}[!h]
 \SetAlgoVlined
 \Indm
 \KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
@@ -166,11 +165,14 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
 If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half-space only, 
 a more complicated function $f$ must be adopted. 
-For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
-the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
+For instance, there has been research on invariants in form of conjunctives~\cite{sharma2012interpolants}, 
+octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg2015learning} and so on.
 
-Also as noted in algorithm~\ref{alg:classify}, customers can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
-\textsc{Zilu} has implemented two algorithms besides native $\textsc{Svm}$: 
+%For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
+%the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
+
+Moreover, as is noted in algorithm~\ref{alg:classify}, customers can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
+\textsc{Zilu} has implemented two classification algorithms besides native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
 and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctives.
 
@@ -178,8 +180,8 @@ and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctiv
 %In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
 %However, there is still no efficient approach to learning these invariants.
 %In our research, we found sometimes convert the conjunctive or disjunctives to a polynomial expression might be a nice try to this problem.
-In the real work, there are not only linear invariants but invariants of many other forms, 
-such as, conjunctives~\cite{sharma2012interpolants}, octagonal~\cite{mine2006octagon}, polynomial, and tree form~\cite{krishna2015learning}\cite{garg2015learning}.
+%In the real work, there are not only linear invariants but invariants of many other forms, 
+%such as, conjunctives~\cite{sharma2012interpolants}, octagonal~\cite{mine2006octagon}, polynomial, and tree form~\cite{krishna2015learning}\cite{garg2015learning}.
 In this part, we present our classification approach based on primitive \textsc{Svm} for learning polynomial invariants,
 which have not been discussed by previous research.
 %In this part, we would like to learn this kind of invariants.
@@ -194,8 +196,9 @@ To develop a polynomial learner,
 we first map all the raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ 
 to a high dimensional space.
 %The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions, 
-Then the primitive \textsc{Svm} algorithm is applied as shown in~\ref{subsec:svm}.
-Obviously, a linear classifier in the higher dimensional space is the same with a polynomial classifier in the original space.
+The primitive \textsc{Svm} algorithm is then applied on the mapped data to learn a linear classifier on the projected space.% as is shown in~\ref{subsec:svm}.
+Mathematically, a linear classifier in the high dimensional space is the same with a polynomial classifier in the original space.
+In this way, we get a polynomial classifier as a result.
 The whole procedure is shown in algorithm~\ref{alg:polynomialSVM}.
 %In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
 
@@ -205,24 +208,24 @@ The whole procedure is shown in algorithm~\ref{alg:polynomialSVM}.
 \KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$}
 \KwOut{a perfect polynomial classifier for $\mathcal{S}^+$ and $\mathcal{S}^-$}
 \Indp
-    $max_dimension$ is pre-defined\;
+    $max\_dimension$ is pre-defined\;
     $dimension = 1$\;
-    \While {$dimension \le max_dimention$} {
+    \While {$dimension \le max\_dimention$} {
         $\mathcal{Q}^+$ = mapToDimension($\mathcal{S}^+$, dimension)\;
-        $\mathcal{Q}^-$ = mapToDimension($\mathcal{S}^+$, dimension)\;
-        let $f$ = $\textsc{Svm}$($\mathcal{Q}^+$, $\mathcal{Q}^-$)\;
+        $\mathcal{Q}^-$ = mapToDimension($\mathcal{S}^-$, dimension)\;
+        let $f$ = \textsc{Svm}($\mathcal{Q}^+$, $\mathcal{Q}^-$)\;
         \If {$f$ does not violate any raw data in $\mathcal{S}^+$ or $\mathcal{S}^-$} {
         	\Return $f$\;
     	}
     	$dimension = dimension + 1$\;
     }
     \Return $\textsc{Null}$;
-\caption{Algorithm $polynomialSVM$}
+\caption{Algorithm $polynomial$\textsc{Svm}}
 \label{alg:polynomialSVM}
 \end{algorithm}
 
-Along with learning invariants in form of explicit polynomials,
-$polynomialSVM$ can also used to learn some conjunctive or disjunctive invariants.
+Along with learning polynomial invariants,
+$polynomialSVM$ can also used to learn some invariants with conjunctive or disjunctive forms.
 Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
 For instance, if the target invariant is 
 $$\big((x \ge x_0) \wedge (x \le x_1)\big) \vee (x \ge x_2) ~~~where\ x_0 < x_1 < x_2$$
@@ -238,11 +241,11 @@ $$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
 %$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
 %we can find an equivalent polynomial expression:
 %$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
-So $polynomialSVM$ can find a polynomial classifier for any complex expression as long as it can be expressed in form of polynomials.
+So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
 
 
 \subsubsection{Conjunctive SVM}
-As stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
+As is stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
 %seems powerful in expression abilities, 
 but there actually exists simple expressions that can not be expressed in form of polynomials.
 For example, $\mathcal{C} = (x \ge 0 \wedge y \ge 0)$,
@@ -250,12 +253,14 @@ it can be proved that there is no such a polynomial which can be equivalent with
 
 So in this part, we introduce the algorithm to learn conjunctive invariants directly.
 %, avoiding the tries to convert them into a form of polynomials.
-Our algorithm derived from `$\textsc{Svm\_i}$' in ~\cite{sharma2012interpolants}
+Our algorithm is derived from `$\textsc{Svm\_i}$' in~\cite{sharma2012interpolants}.
 %Rahul Sharma, A. V. Nori et al. have developed a classification algorithm, named as `$\textsc{Svm\_i}$' in ~\cite{sharma2012interpolants},
 %based on $\textsc{Svm}$ to learn conjunctive invariants.
-In their algorithm, they take $\textsc{Svm}$ as meta linear classification engine which limits each part of conjunctives to be linear, 
+In their algorithm, they take $\textsc{Svm}$ as meta linear classification engine which limits each part of conjunctives to be the linear form, 
 and they fail to simplify the learned classifiers which can cause large number of conjunctive parts that can not be understood.
-So in \textsc{Zilu}, we apply a technique shown in algorithm~\ref{alg:conjunctiveSVM} based on their $\textsc{Svm\_i}$ but overcome these defects:
+So in \textsc{Zilu}, we apply a technique overcoming these defects by applying $polynomal$\text{Svm} as meta classification algorithm 
+and using Z3~\cite{de2008z3} to resolve the inference relationship between classifiers.
+The technique is shown in algorithm~\ref{alg:conjunctiveSVM}.% based on their $\textsc{Svm\_i}$ but overcome these defects:
 
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -282,7 +287,7 @@ So in \textsc{Zilu}, we apply a technique shown in algorithm~\ref{alg:conjunctiv
     }
     }
     \Return $\mathcal{C}$;
-\caption{Algorithm $conjunctiveSVM$}
+\caption{Algorithm $conjunctive$\textsc{Svm}}
 \label{alg:conjunctiveSVM}
 \end{algorithm}
 

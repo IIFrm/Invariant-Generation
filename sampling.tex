@@ -197,79 +197,99 @@ then
 
 
 
-\medskip\noindent
-\textbf{Positive State, Negative State, Implication Pair}
-tells the satisfiable of a state to the loop invariant.
+\subsubsection*{Positive State, Negative State, Implication Pair}
+
 %defines the label to a state.
 These three concepts are originally introduced in \cite{sharma2014invariant}.
-We present the idea and demonstrate the rules to category a state in the following.
+They tell whether a state must satisfy the loop invariant or must not.
+A positive state is a state that must satisfy the actual loop invariant,
+while a negative state is a state that must not satisfy the invariant.
+An implication pair is a pair of state, the latter one satisfying the invariant 
+if the former one satisfies it. 
+In this part, we demonstrate the rules to category a state according to its execution information.
 %In this paper, we use predicates and sets of states interchangeably.
 
-Let $\mathcal{C}$ be a candidate invariant.
+%Let $\mathcal{C}$ be a candidate invariant.
+
 From constraint~\ref{inv:pre} we know, for an invariant $Inv$, 
 any state satisfying $Pre$ should also satisfies $Inv$. 
-Therefore, the state that must be satisfied by loop invariants is a positive state. 
+Therefore, the state satifying $Pre$ must be a positive state. 
 
 
-Now consider inductive constraint~\ref{inv:loop}.
-A pair of states $(s, t)$ is called implication pair
-if $t = Body(s)$, and $s \models Cond$, then $(s \models Inv) \Rightarrow (t \models {Inv})$. 
-Hence, for an invariant candidate $\mathcal{C}$, 
-if there is a pair of states $(s, t)$ in which $t = Body(s)$ satisfying $(s \models \mathcal{C}) \wedge (t \models \neg \mathcal{C})$,
-$\mathcal{C}$ is proved to be not a real invariant. 
+The adjacent states $(s, t)$ appeared in a trace a pair of states is an implication pair,
+because, according to the inductive property~\ref{inv:loop},
+$(s \models Inv) \Rightarrow (t \models {Inv})$
+if $t = Body(s)$ and $s \models Cond$.
+On the contrary, for an invariant candidate $\mathcal{C}$, 
+if there is an implication $(s, t)$ in which $(s \models \mathcal{C}) \wedge (t \models \neg \mathcal{C})$,
+$\mathcal{C}$ is proved to be an invalid invariant.
 
-Finally, consider constraint~\ref{inv:post}.
-The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
-We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state. 
+Finally, a state satisfying $\neg{Cond} \wedge \neg{Post}$ must be a negative state.
+Considering constraint~\ref{inv:post}, if a state $s \models \neg{Post}$,
+then $s \models \neg(Inv \wedge \neg Cond)$.
+In this situation $s \models \neg Cond$, then we can infer $s \models \neg Inv$. 
+%The `existence of a state $s \models \mathcal{C} \wedge \neg B \wedge \neg Post$ proves $\mathcal{C}$ is inadequate to discharge the postcondition. 
+%We call a state $s$ which satisfies $\neg{B} \wedge \neg{Post}$ a negative state. 
 
 
 
-\medskip\noindent
-\textbf{Positive Trace, Negative Trace, Implication Trace.}
+%\medskip\noindent
+%\textbf{
+\subsubsection*{Positive Trace, Negative Trace, Implication Trace}
+As an execution trace contains more data than a single state,
+this part discusses the technique to label all the states in one trace at a time rather than just a single state.
+Similar to the state labeling, a positive trace defines a trace with all positive states,
+while a negative trace defines a trace with all negative states.
+An implication trace is a trace in which, if one state is the positive state, 
+all the states afterwards are positive states.
+We state the regulation to determine the class of any given trace as follows.
+
 For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
-if $s_0$ satisfies $Pre$, and $s_n$ satisfies $Post$,
+if $s_0 \models Pre$, and $s_n \models Post$,
 then this is a positive trace, meaning $\forall s_i \models Inv$.
 Because if state $s_0$ satisfy $Pre$,
-$s_0$ is a positive state that must satisfy $Inv$, according to equation 1.
-Furthermore, according to equation 2,
-all of $Trace\{s_0 \to s_1 \to ...\to s_i, ... \to s_n\}$ are positive states.
-So now we can get a positive trace  $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$.
+$s_0$ is a positive state that must satisfy $Inv$. %, according to equation 1.
+Considering constraint~\ref{inv:loop}, $s_1$ is also positive states.
+Then all the states in $Trace\{s_0 \to s_1 \to ...\to s_i, ... \to s_n\}$ are positive states inductively. 
+%So now we can get a positive trace  $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$.
 
 On the contrary, for a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
-if $s_0$ satisfies $\neg Pre$, and $s_n$ satisfies $\neg Post$,
-we can infer this is a negative trace, 
-which means all the states in this trace should be negative states.  
+if $s_0 \models \neg Pre$, and $s_n \models \neg Post$,
+we can infer this is a negative trace in the similar way. 
+%which means all the states in this trace should be negative states.  
 
-Actually for an arbitrary trace, there are also two other possibilities we have not mentioned yet.
+%Actually for an arbitrary trace, there are also two other possibilities we have not mentioned yet.
 
-One is a trace that begins with a state $s_0$ satisfying $Pre$ and ends with a state $s_n$ that satisfying $\neg Post$,
-obviously, this is a counter-example to disprove the program,
-which means there is something wrong with the program specification.
-So if $\textsc{Zilu}$ meets any counter-example trace, 
-it exits immediately with the message to tell the failure of program specification. 
+The third case is a trace that begins with a state $s_0 \models Pre$ and ends with a state $s_n \models \neg Post$,
+obviously, this is a counter-example to disprove the program and its specification.
+As a result, if $\textsc{Zilu}$ meets any counter-example trace in the testing, 
+the execution exits immediately with a failure message indicating a bug in the program. 
 
-The other case is a trace begin with a state $s_0$ satisfying $\neg Pre$ but ends with a state $s_n$ satisfying $Post$.
-Under this condition, we could not know whether $s_0$ and $s_n$ satisfy invariants or not,
+The last case is a trace begin with a state $s_0 \models \neg Pre$ but ends with a state $s_n \models Post$.
+Under this condition, we could not determine whether $s_0$ and $s_n$ satisfy invariants or not,
 not to mention other states $\{s_1, s_2, ..., s_{n-1}\}$.
-Then we name this trace as an implication trace, meaning if $s_i \models Inv$, then $s_j \models Inv$ $\forall j \ge i$.
-Implication traces can not be used to do classification directly, 
-however, they have strength in validating a candidate.
-For instance, $\mathcal{C} = x - y \ge 0$ and there is an implication trace 
+Then this trace belongs to the implication trace set, meaning if $s_i \models Inv$, then $s_j \models Inv$ $\forall j \ge i$.
+Implication traces can not be used to learn classifiers directly, 
+however, they have power in validating a candidate.
+For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace 
 $Trace\{s_0 \to s_1 \to s_2\}$ where 
-$$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big).$$
-After using $\mathcal{C}$ to label this trace, we find out $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -$$ 
-violates the above trace $Trace\{s_0 \to s_1 \to s_2\}$ which means the current $\mathcal{C}$ is not an actual invariant.
-In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.
+$$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big),$$
+we could refute this candidate instantly.
+For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$ 
+we find this violates the above implication rules,
+indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
+%In this case, $\textsc{Zilu}$ return to sampling stage to get more data for learning.
 %In total, we can have table.~\ref{LabelingTable}.
 
 
-So now we categorize all the program states $Body^*(S)$ started from Set $S$ into four sets:
-$\mathcal{S}^\chi$ which stands for counter-example trace, 
-$\mathcal{S}^+$ which stands for positive traces, 
-$\mathcal{S}^-$ which stands for negative traces, 
-and $\mathcal{S}^\rightarrow$ which stands for implication traces.
+In total , we can categorize all the program states $Body^*(S)$ started from Set $S$ into four sets according to the following table.
+In the Table~\ref{tab:labeling}
+$\mathcal{S}^\chi$ stands for counter-example trace;
+$\mathcal{S}^+$ stands for positive traces;
+$\mathcal{S}^-$ stands for negative traces; 
+and $\mathcal{S}^\rightarrow$ stands for implication traces.
 
-They can be judged according to Table~\ref{tab:labeling}: 
+%They can be judged according to Table~\ref{tab:labeling}: 
 \begin{table}[htb]
 \label{tab:labeling}
 \centering
