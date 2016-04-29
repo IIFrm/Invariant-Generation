@@ -3,7 +3,7 @@
 \section{Verification} % (fold)
 \label{sec:verification}
 In this section, we present the technique to verify the given program with the learned candidate.
-If the program cannot be verified with the candidate, a counter-example that can refute the candidate will be provided.
+If the program cannot be proved, a counter-example that can refute the candidate will be provided.
 % from which can drive the new learning attempt.
 %From the last step, $\textsc{Zilu}$ has got a predicate which does not only classify all the samples perfectly but get converged.
 %But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared to the real states distribution of the given program.
@@ -12,9 +12,9 @@ If the program cannot be verified with the candidate, a counter-example that can
 %So we should check all the branches whether our test
 %To handle this problem, we apply program verification as the last security checkpoint on these ``bad guys''.
 %he last security checkpoint on these ``bad guys'' is verification. 
-Mathematically, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant by
-checking the satisfiability of constraints (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) using state-of-art tools 
-from symbolic execution and constraint solving communities.
+Mathematically, having a learned predicate $\mathcal{C}$, we verify whether it is a valid loop invariant through
+checking the satisfiability of the three constraints (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) 
+using state-of-the-art tools from symbolic execution and constraint solving communities.
 %In addition, we separated this part as a standalone tool for loop invariant verification.
 
 In the implementation, to verify constraint (\ref{inv:pre}) and (\ref{inv:post}), 
@@ -27,19 +27,18 @@ For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
 for the loop example in the introduction part, 
 we submit 
 $$(x<y) \Rightarrow (33-2*x+2*y>=0)$$
-to check constraint (1), 
-and 
+to check constraint (1), and 
 $$\big(\neg(x<y) \wedge (33-2\cdot x+2\cdot y>=0)\big) \Rightarrow ((x >= y) \wedge (x <= y + 16))$$
 to check constraint (3).
 
 For checking the inductive property, which is formulated as constraint~\ref{inv:loop},
 its complexity depends on the $Body$'s computational complexity.
-When the $Body$ contains lots of lines of code, especially with branches, 
+When the $Body$ contains numbers of lines of code, especially with branches, 
 it is very hard to encode them into a constraint manually,
 not to say verifying each of them.
-So tools from symbolic execution community is needed to help us finding these constraints.
+So tools from symbolic execution community are needed to help us finding these constraints.
 Otherwise, our technique would limit its power to learn only simple and trivial programs. 
-That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic execution tool to get path condition.
+$\textsc{Zilu}$ uses KLEE~\cite{cadar2008klee} which is a symbolic execution tool to get path condition.
 %and Z3 solver as a representative to verify the learned predicate.
 
 %\subsection{Program Recoding}
@@ -51,11 +50,12 @@ That is why $\textsc{Zilu}$ uses KLEE\cite{cadar2008klee} which is a symbolic ex
 
 \subsection{KLEE}
 \label{subsec:klee}
-KLEE\cite{cadar2008klee} is a symbolic virtual machine built on top of the LLVM compiler infrastructure
+KLEE is a symbolic virtual machine built on top of the LLVM compiler infrastructure
 that can enumerate all the possible paths based on the target configuration.
 In our setting, only specific paths which can lead to the assertion failure are interested.
-So we get a modified version of KLEE\cite{cadar2008klee} by adding a new native method call
+So we get a modified version of KLEE by adding a new native method call
 which can trigger KLEE to emit all the execution paths that can be reached at the given program location.
+
 
 For example, when \textsc{Zilu} checks constraint~\ref{inv:loop}, 
 it first takes $Body$ and substitute other elements in the original program with the elements in constraint~\ref{inv:loop}
@@ -64,7 +64,7 @@ with left part original program is shown in Figure.~\ref{fig:klee:program:in}.
 right part a converted loop-free program for being further proceeded by KLEE.
 
 \begin{figure}[!h]
-\begin{subfigure}{0.20\textwidth}
+\begin{subfigure}{0.19\textwidth}
     \centering
     %\vspace{-0.1cm}
     {\scriptsize\begin{verbatim}
@@ -85,7 +85,7 @@ void P(int x, int y) {
     \caption{Loop Program}
     \label{fig:klee:program:in}
 \end{subfigure}%
-\begin{subfigure}{.20\textwidth}
+\begin{subfigure}{.19\textwidth}
       \centering
       \vspace{-0.1cm}
         {\scriptsize\begin{verbatim}
@@ -111,7 +111,7 @@ void P(int x, int y) {
 \label{fig:klee:program}
 \end{figure}
 
-After the modified KLEE interprets loop-free program,
+After KLEE executes the loop-free program,
 several path constraints are emitted as follows:
 (As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
 KLEE emits constraints with conjunctive forms, instead of inference rules.)
@@ -122,8 +122,10 @@ KLEE emits constraints with conjunctive forms, instead of inference rules.)
 \item $\big(33+2\cdot(y-x-7)\ge0\big) \bigwedge \big(x<y\big) \bigwedge \big(33+2\cdot(y-x)\ge0\big) \bigwedge \big(x<0\big) \bigwedge \big(y<0\big)$
 \end{itemize}
 
-The constraints above corresponds to execution path in the program as expected.
-For example, the first item encodes the execution that takes $branch2 \to branch4$.
+The constraints above corresponds to the execution path in the program as expected:
+the first item encodes the execution path that takes $branch2 \to branch4$;
+the second item encodes the execution path that takes $branch1 \to branch4$;
+the last item encodes the execution path that takes $branch1 \to branch3$.
 % $\{branch1 \to branch4\}$ and $\{branch1 \to branch3\}$.
 
 %After getting these constraints, we can apply Z3~\cite{de2008z3} solver to check the satisfiability (or unsatisfiability).
