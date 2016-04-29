@@ -269,6 +269,8 @@ Negative state is a state of the loop execution that does not satisfy the loop i
 If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models Pre$ and $s_n \models Post$,
 then all the states in $\mathcal{T}$ are positive states.
 \end{theorem}
+
+%\begin{proof}[Proof of the Main Theorem]
 From constraint~\ref{inv:pre}, for an invariant $Inv$, 
 any state satisfying $Pre$ should also satisfies $Inv$.
 Therefore, $s_0$ is a postive state.
@@ -278,6 +280,7 @@ and  $s_0 \models Cond$ (because $s_0 is not the last state in the trace$);
 then $s_i~~\forall i \in [0...n]$ is a positive state due to the induction.
 
 Therefore, all the states in $\mathcal{T}$ are positive states. \hfill \qed
+%\end{proof}
 
 
 

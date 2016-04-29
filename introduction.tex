@@ -6,7 +6,7 @@
 Automatic loop invariant inference is a fundamental program analysis problem, 
 which is useful in software verification, test-case generation, 
 compiler optimization, program understanding, etc. 
-Previous research on invariant inference mainly uses 
+Previous research on the invariant inference mainly uses 
 abstraction interpretation~\cite{cite}, 
 counterexample guided abstraction refinement~\cite{cite}, 
 interpolation-based approaches~\cite{cite}, 
@@ -14,8 +14,9 @@ and constraint-based inference~\cite{cite}.
 In this work, we propose a new invariant inference framework 
 that actively learns the loop invariant from the runtime data using machine learning. 
 By combining selective sampling~\cite{cite}, 
-support vector machine learning~\cite{cite}, 
-concolic testing~\cite{sen2007concolic} 
+classification algorithm in machine learning~\cite{cite}, 
+%concolic testing~\cite{sen2007concolic} 
+symbolic execution~\cite{khurshid2003generalized}
 and constraint solving~\cite{cite}, 
 we refine the inferred loop invariant after each iteration 
 until it converges and proves the property preserved by the loop program. 
