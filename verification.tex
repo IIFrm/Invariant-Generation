@@ -150,8 +150,8 @@ and finds all of them passes, and thus we find a valid loop invariant and have p
 
 If the learned predicate is not an actual invariant, i.e. $\mathcal{C} = \{11-2*x+2*y>=0\}$,
 after getting the constraints, similar as the constraints in the last part except substituting all the number 33 with number 11, 
-Z3 solver provides a counter-example, i.e. $s_{ce} = (x \mapsto 1, y \mapsto 0)$, after solving.
-Apparently, $s_{ce}$ contradicts the inductive property of loop invariants (constraints~\ref{inv:loop}), 
+Z3 solver provides a counter-example, i.e. $s^{\chi} = (x \mapsto 1, y \mapsto 0)$, after solving.
+Apparently, $s^{\chi}$ contradicts the inductive property of loop invariants (constraints~\ref{inv:loop}), 
 and then can be used to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
 
 
