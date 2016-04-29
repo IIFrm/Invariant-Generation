@@ -6,10 +6,17 @@
 Automatic loop invariant inference is a fundamental program analysis problem, 
 which is useful in software verification, test-case generation, 
 compiler optimization, program understanding, etc. 
-In this work, we propose a new framework using machine learning 
-to actively learn the loop invariant based on the classification of runtime data. 
-By combining selective sampling, support vector machine learning, 
-concolic testing~\cite{sen2007concolic} and model verification, 
+Previous research on invariant inference mainly uses 
+abstraction interpretation~\cite{cite}, 
+counterexample guided abstraction refinement~\cite{cite}, 
+interpolation-based approaches~\cite{cite}, 
+and constraint-based inference~\cite{cite}. 
+In this work, we propose a new invariant inference framework 
+that actively learns the loop invariant from the runtime data using machine learning. 
+By combining selective sampling~\cite{cite}, 
+support vector machine learning~\cite{cite}, 
+concolic testing~\cite{sen2007concolic} 
+and constraint solving~\cite{cite}, 
 we refine the inferred loop invariant after each iteration 
 until it converges and proves the property preserved by the loop program. 
 
@@ -20,11 +27,11 @@ and $\mathit{Body}$ is the loop body.
 %    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
 %\]
 \begin{align*}
-&Pre & \dashrightarrow & \text{\emph{(Assumptions)}} \\
-&while (Cond) \{ && \\
-&\quad Body & \dashrightarrow & \text{\emph{(Loop Body)}} \\
+&\mathit{assume}(\mathit{Pre}) & & /\star\text{\emph{Assumption}}\star/ \\
+&\mathit{while} (\mathit{Cond}) \{ && \\
+&\quad \mathit{Body} & & /\star\text{\emph{Loop Body}}\star/ \\
 &\} && \\
-&Post & \dashrightarrow & \text{\emph{(Assertions)}} 
+&\mathit{assert}(\mathit{Post}) & & /\star\text{\emph{Assertion}}\star/ 
 \end{align*}
 In practice, the pre-condition $\mathit{Pre}$ is often described by 
 the specification documents and checking conditions of the program inputs, 
@@ -33,13 +40,13 @@ by assertions and exceptions leading to an error state in the program.
 Let $s = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ represent 
 the evaluation function of the program variables $x_1, \ldots, x_n$
 and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$, 
-the above program means that (1) $\mathit{Pre}$ is the assumption of $s$; 
+the above program means that (1) $\mathit{Pre}$ is the assumption to the initial value of $s$; 
 (2) if the $\mathit{Cond}$ is satisfied by $s$ at an iteration, 
 $\mathit{Body}$ will be executed and $s$ will be updated to $\mathit{body}(s)$; 
 (3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration, 
 the while-loop ends and $s$ should satisfy $\mathit{Post}$. 
 To prove the correctness of the above program specification, 
-we need to find a loop invariant $\mathit{Inv}$ satisfying the following three conditions. 
+we need to find a loop invariant $\mathit{Inv}$ that meets the following three conditions. 
 \begin{align}
     &s \models \mathit{Pre} 
         &&\Longrightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
@@ -48,7 +55,7 @@ we need to find a loop invariant $\mathit{Inv}$ satisfying the following three c
     &s \models \mathit{Inv} \wedge \neg\mathit{Cond} 
         &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
-The goal of this work is developing a method to automatically learn 
+The goal of this work is to develop an  automatic learning method of 
 the invariant $\mathit{Inv}$ from the loop program and thus prove its correctness. 
 
 \begin{figure}[t]
@@ -99,7 +106,8 @@ which is the same as the loop condition $\mathit{Cond}$.
 When $\mathit{Cond}$ is met in each loop iteration, 
 $x$ is increased by $7$ if $x$ is negative, otherwise $x$ is increased by $10$; 
 $y$ is decreased by $10$ if $y$ is negative, otherwise $y$ is increased by $3$. 
-Finally, the assertion of $P$ specifies that $y \le x \le y + 16$. 
+Finally, the assertion of $P$ specifies that 
+$y \le x \le y + 16$ should be true when the loop ends. 
 The correctness of the program specification in Figure~\ref{fig:running:example} 
 can be proven by checking the three conditions 
 (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) above 
@@ -110,10 +118,8 @@ to illustrate different stages of our invariant reference method.
 \medskip\noindent
 \textbf{Overview.}
 Our framework regards the invariant reference as an active learning and refinement process 
-based on iterations of sampling, classification and verification 
+based on iterations of sampling, learning and verification 
 as shown in the Figure~\ref{fig:overview}. 
-As our framework treats the classifier learnt in the classification stage as the invariant candidate,
-we use `classifier' and `candidate' interchangeably in this paper.
 Let $P$ be the loop program. 
 \begin{itemize}
     \item 
@@ -133,17 +139,16 @@ Let $P$ be the loop program.
     \item 
     % (2) 
     Based on $S$ and their labels collected in the \emph{sampling} stage, 
-    we \emph{actively} learn the loop invariant as classification models 
-    using machine learning algorithms 
-    in the \textbf{Classification} stage (see Section~\ref{sec:classification}), 
-    e.g., different SVM derivatives. 
-    When the recently learnt invariant converges to the previously learnt ones, 
-    we treat it as a invariant candidate and move to the verification step. 
-    Otherwise, we apply selective sampling on the recently learnt invariant 
+    we \emph{actively} learn a classifier to classify the samples 
+    using machine learning algorithms, e.g., SVM derivatives, 
+    in the \textbf{Learning} stage (see Section~\ref{sec:classification}). 
+    When the recently learnt classifier converges to the previously learnt ones, 
+    we treat it as an invariant candidate and move to the verification step. 
+    Otherwise, we apply selective sampling on the recently learnt classifier 
     to add more samples in the sampling stage. 
     When a sample cannot be classified using a certain classification model, 
     we try other alternative models in a sequential order. 
-    \LL{We prove the termination of the \emph{classification} stage if such an invariant exists.}
+    \LL{We prove the termination of the \emph{learning} stage if such an invariant exists.}
     \item 
     % (3) 
     When an invariant candidate is found, 
