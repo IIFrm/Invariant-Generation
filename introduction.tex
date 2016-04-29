@@ -117,50 +117,54 @@ to illustrate different stages of our invariant reference method.
 
 \medskip\noindent
 \textbf{Overview.}
-Our framework regards the invariant reference as an active learning and refinement process 
-based on iterations of sampling, learning and verification 
+Our framework treats the invariant reference as an active learning and refinement process 
+based on iterations of data collection, active learning and invariant verification 
 as shown in the Figure~\ref{fig:overview}. 
 Let $P$ be the loop program. 
 \begin{itemize}
     \item 
     % (1)
-    In the \textbf{Sampling} stage (see Section~\ref{sec:sampling}), 
-    we obtain program inputs from three kinds of sampling sources: 
+    In the \textbf{Data Collection} stage (see Section~\ref{sec:sampling}), 
+    we first obtain program inputs $S_{\mathit{in}}$ from three kinds of sampling sources: 
     random sampling, selective sampling and counter-example sampling. 
-    Then, we execute $P$ with these inputs and record $S$ in every loop iteration 
-    and label them based on the satisfaction of $\mathit{Pre}$ and $\mathit{Post}$. 
-    The regions of different labels can be intuitively shown\footnote{
-        The `green' (`yellow' and `red' resp.) areas 
-        represent `positive' (`uncertain' and `negative' resp.) samples. 
-    } as the areas of different colors in Figure~\ref{fig:running:example:sampling}. 
-    When an program input can be found such that 
-    $\mathit{Pre}$ is $\mathit{true}$ and $\mathit{Post}$ is $\mathit{false}$, 
-    we output it as a proof of the program specification error. 
+    Then, given an input $s_0$ in $S_{\mathit{in}}$, we execute $P$ with $s_0$ 
+    and record the evaluations of variables for all of the loop iterations
+    as a trace $\langle s_0, s_1, \ldots, s_n \rangle$.  
+    All of the evaluations in the above trace (referred by its initial evaluation $s_0$) 
+    are labelled based on the pair boolean values 
+    $(s_0 \models \mathit{Pre}, s_n \models \mathit{Post})$\footnote{
+        $(\mathit{true}, \mathit{true}) \rightarrow +$, 
+        $(\mathit{false}, \mathit{false}) \rightarrow -$ 
+        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}. 
+    The regions of inputs with different labels are intuitively shown 
+    in Figure~\ref{fig:running:example:sampling} with different colors. 
+    Given the above evaluation trace with
+    $s_0 \models \mathit{Pre}$ and $s_n \not\models \mathit{Post}$, 
+    our framework returns it as a proof of the program specification error. 
     \item 
     % (2) 
-    Based on $S$ and their labels collected in the \emph{sampling} stage, 
-    we \emph{actively} learn a classifier to classify the samples 
+    Based on labelled evaluations from the \emph{data collection} stage, 
+    we \emph{actively} learn a classifier to divide the positive samples and the negative samples 
     using machine learning algorithms, e.g., SVM derivatives, 
-    in the \textbf{Learning} stage (see Section~\ref{sec:classification}). 
+    in the \textbf{Active Learning} stage (see Section~\ref{sec:learning}). 
     When the recently learnt classifier converges to the previously learnt ones, 
-    we treat it as an invariant candidate and move to the verification step. 
+    we treat it as an invariant candidate and move to the \emph{invariant verification} stage. 
     Otherwise, we apply selective sampling on the recently learnt classifier 
-    to add more samples in the sampling stage. 
+    to add more samples to the \emph{data collection} stage. 
     When a sample cannot be classified using a certain classification model, 
     we try other alternative models in a sequential order. 
-    \LL{We prove the termination of the \emph{learning} stage if such an invariant exists.}
+    \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
     \item 
     % (3) 
-    When an invariant candidate is found, 
-    we check its correctness in the \textbf{Verification} stage (see Section~\ref{sec:verification}). 
-    First, we insert the candidate into the loop program and generate all the program execution traces 
-    based on concolic testing~\cite{sen2007concolic} using KLEE~\cite{cadar2008klee}. 
-    Then, we verify three loop invariant conditions 
-    with respect to all of the program execution traces (i.e., different $\mathit{Body}$) 
-    using a SMT~\cite{barrett2009satisfiability} solver (e.g., Z3~\cite{de2008z3} in this work). 
-    If the verification is successful, we claim the correctness of $P$ and output the loop invariant. 
+    When an invariant candidate is found, we check its correctness 
+    in the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}). 
+    First, we check condition (\ref{inv:pre}) and condition (\ref{inv:post}) with the candidate. 
+    Then, we verify the condition (\ref{inv:loop}) 
+    based on all of the program execution traces of $\mathit{Body}$ using symbolic execution~\cite{}. 
+    The above conditions are checked by SMT~\cite{barrett2009satisfiability} solvers in this work. 
+    If the above verification is successful, we claim the correctness of $P$ and output the loop invariant. 
     Otherwise, we add the counter-example from Z3 as a new sample 
-    and restart from the \emph{sampling} stage. 
+    and restart from the \emph{data collection} stage with a counter-example from the SMT solving. 
 \end{itemize}
 
 
