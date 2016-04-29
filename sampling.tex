@@ -344,9 +344,11 @@ $s_0 \models \neg Pre$            & $\mathcal{T} \in \mathcal{S}^\rightarrow$   
 \end{table}
 
 In our framework, these traces are used in different ways:
-positive states and negative states can be used to learn classifiers directly;
-Counter example traces can be used to validate program specification;
-Implication traces can not be applied to validating a learned classifier.
+positive states and negative states can be used to learn classifiers directly,
+which will be shown in Section~\ref{sec:learning};
+Counter example traces can be used to validate program specification:
+our framework terminates execution immediately when it meets a counter example trace.
+Implication traces can be applied to validating a learned classifier,
 For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace 
 $\langle s_0, s_1, s_2\rangle$where 
 $$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big),$$
@@ -354,9 +356,6 @@ we could refute this candidate instantly.
 For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$ 
 we find this violates the above implication rules,
 indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
-
-
-
 
 
 
