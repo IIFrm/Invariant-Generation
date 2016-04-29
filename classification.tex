@@ -4,11 +4,11 @@
 \label{sec:classification}
 
 After sampling and labeling in the last step, 
-we obtain some program states must satisfy $Inv$ and \underline{some must not}. 
+we obtain a set of positive traces and negative traces with implication traces. 
 %If we view these program states as a data set from the perspective of data scientists, 
 %the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
 In this section, we state our classification algorithm to find a classifier 
-which can perfectly divide \underline{these collected data}.
+which can perfectly divide these data according to their labels.
 
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
@@ -60,10 +60,10 @@ In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denot
 
 
 Considering the differences between machine learning problem and our setting, 
-\textsc{Zilu} tunes the \underline{primitive} $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}. \LL{SVM rather than Svm}
+\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}. \LL{SVM rather than Svm}
 \begin{itemize}
 \item Convert \textsc{Svm} model to an explicit classifier.
-The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits \underline{some supported vectors and other parameters}, \LL{test cannot be understood}
+The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits its own model 
 which can be used to do prediction on the given data.
 %This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
 However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
@@ -151,8 +151,8 @@ let $old_f$ be $null$\;
 
 At line 3, we obtain a classifier based on Algorithm~\ref{alg:classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise, we apply selective sampling so that we can generate additional labeled samples for \underline{improving} the classifier. \LL{should be used to check the correctness?}
-In particular, at line 9, we apply \underline{standard techniques}~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. \LL{What?}
+otherwise, we apply selective sampling so that we can generate additional labeled samples for refining the classifier. \LL{should be used to check the correctness?}
+In particular, at line 9, we apply selective sampling~\cite{DBLP:conf/icml/SchohnC00} to generate most informative samples.
 Notice that in our setting, as indicated in Section ~\ref{sec:sampling}, the most informative samples are those which are exactly on the lines 
 and therefore can be obtained by solving an equation system using libraries. 
 At line 10 and line 11, we test the program with the newly generated samples so as to label them accordingly.
@@ -177,7 +177,7 @@ octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg
 %For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
 %the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
 
-Moreover, as is noted in algorithm~\ref{alg:classify}, \underline{customers} can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
+Moreover, as is noted Algorithm~\ref{alg:classify} can be easily extended by substituting $\textsc{Svm}$ with other classification approaches,
 \textsc{Zilu} has implemented two classification algorithms besides native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
 and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctives.
