@@ -8,7 +8,7 @@ In this section, we present our approach to collect data from program executions
 which is used to generate the loop invariant so that the program specification can be verified.
 
 \begin{definition}[State]
-A state of a loop program execution, denoted as $s$, is an evaluation of the program variables at loop condition checking position during that execution. 
+A state of a loop program execution, denoted as $s$, is an evaluation of the program variables at the loop condition checking position during that execution. 
 \end{definition}
 \begin{definition}[Trace]
 In one program's execution, the program states at several locations compose one program trace.
@@ -251,6 +251,33 @@ then we have
 \item $s_{0} \multimap s_{n}$.
 \end{itemize}
 %We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
+
+According to the satisfactory of the loop invariant,
+we category program states into two classes:
+positive states, which means the states satisfy the loop invariant;
+and negative states, which means the states do not satisfy the loop invariant.
+
+\begin{theorem}
+If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models Pre$ and $s_n \models Post$,
+then all the states in $\mathcal{t}$ are positive states.
+\end{theorem}
+\begin{theorem}
+If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models \neg Pre$ and $s_n \models \neg Post$,
+then all the states in $\mathcal{t}$ are negative states.
+\end{theorem}
+\begin{theorem}
+If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models Pre$ and $s_n \models \neg Post$,
+then $\mathcal{T}$ is a counter-example trace which can disprove the program specification.
+\end{theorem}
+
+\begin{definition}[Implication Trace]
+An implication trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies if $s_i \models \mathcal{I} \rightarrow s_{i+1} \models \mathcal{I} ~~\forall i \in [0, 1, ..., (n-1)]$.
+\end{definition}
+
+\begin{theorem}
+If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models \neg Pre$ and $s_n \models Post$,
+then $\mathcal{T}$ is an implication trace.
+\end{theorem}
 
 \medskip\noindent
 \textbf{Positive State, Negative State and Implication Pair}
