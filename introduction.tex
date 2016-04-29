@@ -143,10 +143,10 @@ Let $P$ be the loop program.
     our framework returns it as a proof of the program specification error. 
     \item 
     % (2) 
-    Based on the labelled evaluations from the \emph{data collection} stage, 
+    In the \textbf{Active Learning} stage (see Section~\ref{sec:learning}), 
+    based on the labelled evaluations from the \emph{data collection} stage, 
     we \emph{actively} learn a classifier to capture the positive ones from the negative ones 
-    using machine learning algorithms, e.g., SVM derivatives, 
-    in the \textbf{Active Learning} stage (see Section~\ref{sec:learning}). 
+    using machine learning algorithms, e.g., SVM derivatives. 
     When the recently learnt classifier converges to the previously learnt ones, 
     we treat it as an invariant candidate and move to the next stage. 
     Otherwise, we apply selective sampling on the recently learnt classifier 
@@ -156,8 +156,8 @@ Let $P$ be the loop program.
     \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
     \item 
     % (3) 
-    When an invariant candidate is found, we check its correctness 
-    in the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}). 
+    In the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}), 
+    we check the correctness of the invariant candidate. 
     First, we check condition (\ref{inv:pre}) and condition (\ref{inv:post}) with the candidate. 
     Then, we verify the condition (\ref{inv:loop}) 
     based on all of the program execution traces of $\mathit{Body}$ using symbolic execution~\cite{}. 
