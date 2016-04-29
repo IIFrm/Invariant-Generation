@@ -131,80 +131,80 @@ Let $P$ be the loop program.
     and record the evaluations of variables for all of the loop iterations
     as a trace $\langle s_0, s_1, \ldots, s_n \rangle$.  
     All of the evaluations in the above trace (referred by its initial evaluation $s_0$) 
-    are labelled based on the pair boolean values 
+    are labelled based on a pair of boolean values 
     $(s_0 \models \mathit{Pre}, s_n \models \mathit{Post})$\footnote{
         $(\mathit{true}, \mathit{true}) \rightarrow +$, 
         $(\mathit{false}, \mathit{false}) \rightarrow -$ 
         and $(\mathit{false}, \mathit{true}) \rightarrow ?$}. 
-    The regions of inputs with different labels are intuitively shown 
+    The regions of inputs with different labels for our running example can be intuitively shown 
     in Figure~\ref{fig:running:example:sampling} with different colors. 
     Given the above evaluation trace with
     $s_0 \models \mathit{Pre}$ and $s_n \not\models \mathit{Post}$, 
     our framework returns it as a proof of the program specification error. 
     \item 
     % (2) 
-    Based on labelled evaluations from the \emph{data collection} stage, 
-    we \emph{actively} learn a classifier to divide the positive samples and the negative samples 
-    using machine learning algorithms, e.g., SVM derivatives, 
-    in the \textbf{Active Learning} stage (see Section~\ref{sec:learning}). 
+    In the \textbf{Active Learning} stage (see Section~\ref{sec:learning}), 
+    based on the labelled evaluations from the \emph{data collection} stage, 
+    we \emph{actively} learn a classifier to capture the positive ones from the negative ones 
+    using machine learning algorithms, e.g., SVM derivatives. 
     When the recently learnt classifier converges to the previously learnt ones, 
-    we treat it as an invariant candidate and move to the \emph{invariant verification} stage. 
+    we treat it as an invariant candidate and move to the next stage. 
     Otherwise, we apply selective sampling on the recently learnt classifier 
-    to add more samples to the \emph{data collection} stage. 
+    to add more samples to $S_{\mathit{in}}$. 
     When a sample cannot be classified using a certain classification model, 
     we try other alternative models in a sequential order. 
     \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
     \item 
     % (3) 
-    When an invariant candidate is found, we check its correctness 
-    in the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}). 
+    In the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}), 
+    we check the correctness of the invariant candidate. 
     First, we check condition (\ref{inv:pre}) and condition (\ref{inv:post}) with the candidate. 
     Then, we verify the condition (\ref{inv:loop}) 
     based on all of the program execution traces of $\mathit{Body}$ using symbolic execution~\cite{}. 
     The above conditions are checked by SMT~\cite{barrett2009satisfiability} solvers in this work. 
-    If the above verification is successful, we claim the correctness of $P$ and output the loop invariant. 
-    Otherwise, we add the counter-example from Z3 as a new sample 
-    and restart from the \emph{data collection} stage with a counter-example from the SMT solving. 
+    If all of the above conditions are satisfied, 
+    we claim the correctness of $P$ with its loop invariant. 
+    Otherwise, we add the counter-example from SMT Solving to $S_{\mathit{in}}$ 
+    and restart from the \emph{data collection} stage. 
 \end{itemize}
 
 
 %The overall algorithm is shown in Algorithm~\ref{alg:overall}.
 %\section {Overall Algorithm}
 %\label{sec:overall}
-\LL{Do not put the algorithm here. It contains lots of notations undefined.}
-The overall algorithm is presented in Figure~\ref{alg:overall}.
-\begin{algorithm}[!h]
-\SetAlgoVlined
-\Indm
-\KwIn{$Pre$, $Cond$, $Body$, $Post$}
-\KwOut{an invariant which completes the proof or a counter-example}
-\Indp
-let $S$ be \textsc{Null}\;
-\While{true} {
-    add Samples into $S$\;
-    test the program for each sample in $S$\;
-    \If {a state $s$ in $\mathcal{S}^x$ is identified} {
-        \Return $s$ as a counterexample;
-    }
-    let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
-    let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
-    Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
-    \For {each $pc$ in $\textsc{Pc}$} {
-        \If { $pc$ is not satisfied} {
-            add the counter-example into $S$\;
-            continue\;
-        }
-    }
-    \Return $\mathcal{C}$ as the proof;
-}
-\caption{Algorithm $overall$}
-\label{alg:overall}
-\end{algorithm}
-
-
-\begin{theorem}
-Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
-\end{theorem}
+% \LL{Do not put the algorithm here. It contains lots of notations undefined.}
+% The overall algorithm is presented in Figure~\ref{alg:overall}.
+% \begin{algorithm}[!h]
+% \SetAlgoVlined
+% \Indm
+% \KwIn{$Pre$, $Cond$, $Body$, $Post$}
+% \KwOut{an invariant which completes the proof or a counter-example}
+% \Indp
+% let $S$ be \textsc{Null}\;
+% \While{true} {
+%     add Samples into $S$\;
+%     test the program for each sample in $S$\;
+%     \If {a state $s$ in $\mathcal{S}^x$ is identified} {
+%         \Return $s$ as a counterexample;
+%     }
+%     let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
+%     let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
+%     Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
+%     \For {each $pc$ in $\textsc{Pc}$} {
+%         \If { $pc$ is not satisfied} {
+%             add the counter-example into $S$\;
+%             continue\;
+%         }
+%     }
+%     \Return $\mathcal{C}$ as the proof;
+% }
+% \caption{Algorithm $overall$}
+% \label{alg:overall}
+% \end{algorithm}
+%
+% \begin{theorem}
+% Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
+% \end{theorem}
 
 
 \medskip\noindent
@@ -215,9 +215,9 @@ Our contributions are four-fold.
     We are the first to propose an active learning and refinement framework 
     for automatic invariant inference based on machine learning. 
     Since the samples are chosen for clear purpose 
-    to refine the invariant candidate in the \emph{sampling} stage, 
+    to refine the invariant candidate in the \emph{data collection} stage, 
     the invariant converges efficiently. 
-    Furthermore, because the counter-examples generated in the \emph{verification} stage 
+    Furthermore, because the counter-examples generated in the \emph{invariant verification} stage 
     give very accurate information to amend the invariant candidate, 
     they become a useful supplementary to overcome the weakness of machine learning 
     and fine-tune the invariant candidate. 
@@ -231,8 +231,10 @@ Our contributions are four-fold.
     Our framework can be practically used to verify real programs with ease, 
     as the samples are generated at runtime 
     and our framework is language/platform independent based on other tools 
-    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling, LibSVM~\cite{chang2011libsvm} for SVM classification, 
-    Z3~\cite{de2008z3} for invariant verification and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}). 
+    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling, 
+    LibSVM~\cite{chang2011libsvm} for SVM classification, 
+    Z3~\cite{de2008z3} for invariant verification 
+    and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}). 
     \item 
     We implement our framework as a tool called \textsc{Zilu} 
     and compare it with other available state-of-the-art invariant inference tools, 
