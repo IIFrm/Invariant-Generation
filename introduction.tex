@@ -109,9 +109,11 @@ to illustrate different stages of our invariant reference method.
 
 \medskip\noindent
 \textbf{Overview.}
-Our framework takes the invariant reference as an active learning and refinement process 
+Our framework regards the invariant reference as an active learning and refinement process 
 based on iterations of sampling, classification and verification 
 as shown in the Figure~\ref{fig:overview}. 
+As our framework treats the classifier learnt in the classification stage as the invariant candidate,
+we use `classifier' and `candidate' interchangeably in this paper.
 Let $P$ be the loop program. 
 \begin{itemize}
     \item 
@@ -155,6 +157,43 @@ Let $P$ be the loop program.
     Otherwise, we add the counter-example from Z3 as a new sample 
     and restart from the \emph{sampling} stage. 
 \end{itemize}
+%The overall algorithm is shown in Algorithm~\ref{alg:overall}.
+%\section {Overall Algorithm}
+%\label{sec:overall}
+The overall algorithm is presented in Figure~\ref{alg:overall}.
+\begin{algorithm}[!h]
+\SetAlgoVlined
+\Indm
+\KwIn{$Pre$, $Cond$, $Body$, $Post$}
+\KwOut{an invariant which completes the proof or a counter-example}
+\Indp
+let $S$ be \textsc{Null}\;
+\While{true} {
+    add Samples into $S$\;
+    test the program for each sample in $S$\;
+    \If {a state $s$ in $\mathcal{S}^x$ is identified} {
+        \Return $s$ as a counterexample;
+    }
+    let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
+    let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
+    Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
+    \For {each $pc$ in $\textsc{Pc}$} {
+        \If { $pc$ is not satisfied} {
+            add the counter-example into $S$\;
+            continue\;
+        }
+    }
+    \Return $\mathcal{C}$ as the proof;
+}
+\caption{Algorithm $overall$}
+\label{alg:overall}
+\end{algorithm}
+
+
+\begin{theorem}
+Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
+\end{theorem}
+
 
 \medskip\noindent
 \textbf{Contributions.}

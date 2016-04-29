@@ -155,35 +155,7 @@ Apparently, $s^{\chi}$ contradicts the inductive property of loop invariants (co
 and then can be used to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
 
 
-\section {Overall Algorithm}
-\label{sec:overall}
-The overall algorithm is presented in Figure~\ref{alg:overall}.
-\begin{algorithm}[!h]
-\SetAlgoVlined
-\Indm
-\KwIn{$Pre$, $Cond$, $Body$, $Post$}
-\KwOut{an invariant which completes the proof or a counter-example}
-\Indp
-let $S$ be a set of random samples\;
-\While{true} {
-    test the program for each sample in $S$\;
-    \If {a state $s$ in $\mathcal{S}^x$ is identified} {
-        \Return $s$ as a counterexample;
-    }
-    let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
-    let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
-    Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
-    \For {each $pc$ in $\textsc{Pc}$} {
-        \If { $pc$ is not satisfied} {
-            add the counter-example into $S$\;
-            continue\;
-        }
-    }
-    \Return $\mathcal{C}$ as the proof;
-}
-\caption{Algorithm $overall$}
-\label{alg:overall}
-\end{algorithm}
+
 
 %update $\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$ accordingly\;
 
@@ -196,12 +168,5 @@ let $S$ be a set of random samples\;
 %Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$); 
 %$O$ would be an over-approximation of $Inv$ (by assuming states in $NP$ does satisfy $Inv$); 
 %and $OU$ would be an safe-approximation of $Inv$ (by using states which we are certain whether they are in $Inv$ or not).
-
-
-
-\begin{theorem}
-Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
-\end{theorem}
-
 
 % section verification (end)

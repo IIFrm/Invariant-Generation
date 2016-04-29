@@ -28,7 +28,7 @@ Sampling is non-trivial in automatic loop invariant inference,
 because we need to obtain samples that are helpful for invariant generation and refinement. 
 Meanwhile, we can only ask whether a certain sample is in the invariant or not, 
 without knowing the exact shape of the invariant. 
-In this work, the program states, denoted by $S$, are sampled in three different approaches: 
+In this work, we sample the program initial states in three different approaches: 
 \emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
 
 Figure~\ref{fig:sampling} visualizes these three approaches in a 2-D plane: 
@@ -84,7 +84,7 @@ the newly learnt invariant moves towards the real invariant quickly.
 
 \medskip\noindent
 \textbf{Random Sampling.}
-Random sampling is a technique generating samples randomly.
+This technique produce samples with the random distribution over a given range $\mathcal{R}$.
 It acts as an initialization sampling method 
 as well as a supplementary sampling method in our framework. 
 Firstly, before any classifier is learnt in our framework, 
@@ -105,16 +105,18 @@ is applied to all the invariant inference iterations.
 %on the borders of the learnt invariant candidate. 
 %These samples are very informative and instructive for invariant refinement, 
 %as they give clear instructions on the amendment of the candidate.
-Due to the limited number of samples, 
-the invariant candidate obtained from these data might be far from being correct. 
-\LL{I think selective sampling is worse than random sampling 
-if the invariant is very different from the correct one. }
+Due to the limited number of samples we can gather in reality, 
+we prefer the technique which generates samples that can vary the classifier than which does not.
+%the invariant candidate obtained from these data might be far from being correct. 
+%\LL{I think selective sampling is worse than random sampling 
+%if the invariant is very different from the correct one. }
+%As we can not gather all the program states for learning in reality,
 The concept of active learning or selective sampling refers to the approaches 
 that aim at reducing the labeling effort by selecting only the most informative samples to be labeled.
 Given a classifier, this approach selects the samples that are the closest to the classification boundary 
 so that they are the most difficult to classify and the most informative to label,
 thus they can give clear instructions on the amendment of the candidate.
-SVM(supported vector machines) selective sampling techniques have been proven effective in achieving a high accuracy 
+For instance, SVM(supported vector machines) selective sampling techniques have been proven effective in achieving a high accuracy 
 with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
 Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
 this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}.
