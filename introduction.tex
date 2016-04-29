@@ -131,26 +131,26 @@ Let $P$ be the loop program.
     and record the evaluations of variables for all of the loop iterations
     as a trace $\langle s_0, s_1, \ldots, s_n \rangle$.  
     All of the evaluations in the above trace (referred by its initial evaluation $s_0$) 
-    are labelled based on the pair boolean values 
+    are labelled based on a pair of boolean values 
     $(s_0 \models \mathit{Pre}, s_n \models \mathit{Post})$\footnote{
         $(\mathit{true}, \mathit{true}) \rightarrow +$, 
         $(\mathit{false}, \mathit{false}) \rightarrow -$ 
         and $(\mathit{false}, \mathit{true}) \rightarrow ?$}. 
-    The regions of inputs with different labels are intuitively shown 
+    The regions of inputs with different labels for our running example can be intuitively shown 
     in Figure~\ref{fig:running:example:sampling} with different colors. 
     Given the above evaluation trace with
     $s_0 \models \mathit{Pre}$ and $s_n \not\models \mathit{Post}$, 
     our framework returns it as a proof of the program specification error. 
     \item 
     % (2) 
-    Based on labelled evaluations from the \emph{data collection} stage, 
-    we \emph{actively} learn a classifier to divide the positive samples and the negative samples 
+    Based on the labelled evaluations from the \emph{data collection} stage, 
+    we \emph{actively} learn a classifier to divide the positive ones and the negative ones 
     using machine learning algorithms, e.g., SVM derivatives, 
     in the \textbf{Active Learning} stage (see Section~\ref{sec:learning}). 
     When the recently learnt classifier converges to the previously learnt ones, 
-    we treat it as an invariant candidate and move to the \emph{invariant verification} stage. 
+    we treat it as an invariant candidate and move to the next stage. 
     Otherwise, we apply selective sampling on the recently learnt classifier 
-    to add more samples to the \emph{data collection} stage. 
+    to add more samples to $S_{\mathit{in}}$. 
     When a sample cannot be classified using a certain classification model, 
     we try other alternative models in a sequential order. 
     \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
@@ -162,9 +162,10 @@ Let $P$ be the loop program.
     Then, we verify the condition (\ref{inv:loop}) 
     based on all of the program execution traces of $\mathit{Body}$ using symbolic execution~\cite{}. 
     The above conditions are checked by SMT~\cite{barrett2009satisfiability} solvers in this work. 
-    If the above verification is successful, we claim the correctness of $P$ and output the loop invariant. 
-    Otherwise, we add the counter-example from Z3 as a new sample 
-    and restart from the \emph{data collection} stage with a counter-example from the SMT solving. 
+    If all of the above conditions are satisfied, 
+    we claim the correctness of $P$ with its loop invariant. 
+    Otherwise, we add the counter-example from SMT Solving to $S_{\mathit{in}}$ 
+    and restart from the \emph{data collection} stage. 
 \end{itemize}
 
 
