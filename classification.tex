@@ -9,30 +9,37 @@ we obtain sets of positive traces and negative states with a set of implication 
 %the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
 In this section, we prepare our active learning algorithm to find a classifier as the invariant candidate 
 which can perfectly divide these positive states with negative states according to their labels
-and does not violate the implication traces.
+and does not violate all the implication traces.
 
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
 \LL{After reading this, I cannot understand what we have done here. 
 Why you want to say perceptron, decision tree? Focus on our contributions. }
-In fact, machine learning community has studied classification problem for years.
+In fact, machine learning community has studied the classification problem for years.
 % \underline{the classification problem has been studied by machine learning community for years},
-%and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
+and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
 But there are still differences between the classification problem in machine learning field and the one in our framework:
 \begin{itemize}
-\item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem. \LL{What is the difference?}
+\item Our framwork need to learn an classifier with explicit form which is readable by human and can be proceeded by off-the-shelf constraints solvers.
+However, the current machine learning techniques always produce an implicit classifier that is used to do prediction.
+So we need to convert the implicit classifier to an explicit one, which will be used in later stage.
+%Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem. \LL{What is the difference?}
 %although there is a research trend in machine learning to understand ongoing during these years.
-However, in the software engineering area, program verification cares about formalization and reasoning.
-Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
-But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
-\item Machine learning algorithms consider more of generalization ability than classification correctness on the training data.
-Thus they would \LL{sacrifice the prediction correctness on the training data} for exchanging the higher generalization ability.  \LL{I feel our method is incorrect after reading this. Be precise. }
-But in our context, the classification accuracy on the training data is of vital importance,
+%However, in the software engineering area, program verification cares about formalization and reasoning.
+%Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
+%But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
+\item 
+%Machine learning algorithms consider more of generalization ability than classification correctness on the training data.
+%Thus they would \LL{sacrifice the prediction correctness on the training data} for exchanging the higher generalization ability.  \LL{I feel our method is incorrect after reading this. Be precise. }
+In our context, the classification accuracy on the training data is of vital importance,
 and even a slight classification error can not be tolerated.
-On this basis, we hope the learned classifier can reflect the underlying logic of the given program.
+But some machine learning algorithms would partially sacrifice the classificatio correctness on the training data 
+for exchanging a higher prediction accuracy on the unseen data,
+as they values the generalization ability most.
+%On this basis, we hope the learned classifier can reflect the underlying logic of the given program.
 % classification algorithm can have better generalization ability.
 \end{itemize} 
 Considering these differences,
@@ -42,7 +49,7 @@ we show our classification approaches based on the classical machine learning al
 Do not describe methods in a vague manner. }
 
 
-\subsection{Supported Vector Machine (SVM)}
+\subsection{Supported Vector Machines}
 \label{subsec:svm}
 %, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
@@ -50,16 +57,18 @@ Do not describe methods in a vague manner. }
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
-\textsc{SVM} is a supervised machine learning algorithm for classification and regression analysis. 
+Supported Vector Machines (\textsc{Svm}) is a supervised machine learning algorithm for classification and regression analysis. 
 We use its binary classification functionality in our framework. 
 Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
 
-Given two sets of feature vectors $S^+$ and $S^-$, it generates, 
-\underline{if there is any} \LL{What does this mean? }, 
-a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, \LL{$a, b, d$? missing something.}
+Given two sets of feature vectors $\mathcal{S}^+$ and $\mathcal{S}^-$, it generates, 
+%\underline{if there is any} \LL{What does this mean? }, 
+%a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, \LL{$a, b, d$? missing something.}
+%such that every state $s \in \mathcal{S}^+$ satisfies the constraint and every state $s' \in \mathcal{S}^-$ fails the constraint. 
+%In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denote the function which returns a linear classifier.
+if there is any, a linear classifier 
 such that every state $s \in \mathcal{S}^+$ satisfies the constraint and every state $s' \in \mathcal{S}^-$ fails the constraint. 
 In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denote the function which returns a linear classifier.
-
 
 Considering the differences between machine learning problem and our setting, 
 \textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
@@ -121,7 +130,7 @@ We will take two classification algorithms as examples to demonstrate this promo
 
 \subsection{Active Learning} 
 \label{subsec:active:learning}
-Having a \underline{perfect} classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
+Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
 active learning technique keeps refining the classifier until it gets converged.
 That means the classifier remains identical even adding more data points into the training set. 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
@@ -153,7 +162,8 @@ let $old_f$ be $null$\;
 
 At line 3, we obtain a classifier based on Algorithm~\ref{alg:classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise, we apply selective sampling so that we can generate additional labeled samples for refining the classifier. \LL{should be used to check the correctness?}
+otherwise, we apply selective sampling so that we can generate additional labeled samples for refining the classifier. 
+%\LL{should be used to check the correctness?}
 In particular, at line 9, we apply selective sampling~\cite{DBLP:conf/icml/SchohnC00} to generate most informative samples.
 Notice that in our setting, as indicated in Section ~\ref{sec:sampling}, the most informative samples are those which are exactly on the lines 
 and therefore can be obtained by solving an equation system using libraries. 
