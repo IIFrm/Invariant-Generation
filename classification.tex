@@ -1,25 +1,27 @@
 %!TEX root = paper.tex
 
-\section{Classification} % (fold)
-\label{sec:classification}
+\section{Learning} % (fold)
+\label{sec:learning}
 
-After sampling and labeling in the last step, 
-we obtain a set of positive traces and negative traces with implication traces. 
+After collecting data in the last step, 
+we obtain sets of positive traces and negative states with a set of implication traces. 
 %If we view these program states as a data set from the perspective of data scientists, 
 %the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
-In this section, we state our classification algorithm to find a classifier 
-which can perfectly divide these data according to their labels.
+In this section, we prepare our active learning algorithm to find a classifier as the invariant candidate 
+which can perfectly divide these positive states with negative states according to their labels
+and does not violate the implication traces.
 
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
 \LL{After reading this, I cannot understand what we have done here. 
 Why you want to say perceptron, decision tree? Focus on our contributions. }
-In fact, \underline{the classification problem has been studied by machine learning community for years},
-and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
+In fact, machine learning community has studied classification problem for years.
+% \underline{the classification problem has been studied by machine learning community for years},
+%and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
-But there are still differences between the problem in machine learning field and the one \underline{in our setting}:
+But there are still differences between the classification problem in machine learning field and the one in our framework:
 \begin{itemize}
 \item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem. \LL{What is the difference?}
 %although there is a research trend in machine learning to understand ongoing during these years.
