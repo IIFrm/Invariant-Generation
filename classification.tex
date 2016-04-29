@@ -3,28 +3,31 @@
 \section{Classification} % (fold)
 \label{sec:classification}
 
-After sampling and labeling in the last step, we obtain some program states must satisfy $Inv$ and some must not. 
+After sampling and labeling in the last step, 
+we obtain some program states must satisfy $Inv$ and \underline{some must not}. 
 %If we view these program states as a data set from the perspective of data scientists, 
 %the challenge to find an invariant candidate can be viewed as the problem to find a classifier to divide the dataset according to their labels.
-In this section, we state our classification algorithm to find a classifier which can perfectly divide these collected data.
+In this section, we state our classification algorithm to find a classifier 
+which can perfectly divide \underline{these collected data}.
 
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
-In fact, the classification problem has been studied by machine learning community for years,
-and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm} etc., have been developed to handle this problem.
+\LL{After reading this, I cannot understand what we have done here. 
+Why you want to say perceptron, decision tree? Focus on our contributions. }
+In fact, \underline{the classification problem has been studied by machine learning community for years},
+and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
-But there are still differences between the problem in machine learning field and the one in our setting:
+But there are still differences between the problem in machine learning field and the one \underline{in our setting}:
 \begin{itemize}
-\item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem.
+\item Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem. \LL{What is the difference?}
 %although there is a research trend in machine learning to understand ongoing during these years.
 However, in the software engineering area, program verification cares about formalization and reasoning.
 Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
 But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
-
 \item Machine learning algorithms consider more of generalization ability than classification correctness on the training data.
-Thus they would sacrifice the prediction correctness on the training data for exchanging the higher generalization ability.
+Thus they would \LL{sacrifice the prediction correctness on the training data} for exchanging the higher generalization ability.  \LL{I feel our method is incorrect after reading this. Be precise. }
 But in our context, the classification accuracy on the training data is of vital importance,
 and even a slight classification error can not be tolerated.
 On this basis, we hope the learned classifier can reflect the underlying logic of the given program.
@@ -32,10 +35,12 @@ On this basis, we hope the learned classifier can reflect the underlying logic o
 \end{itemize} 
 Considering these differences,
 in the following text, 
-we show our classification approaches based on the classical machine learning algorithms.
+we show our classification approaches based on the classical machine learning algorithms. 
+\LL{I understand your meaning, but maybe say, we thus extend svm to capture ... 
+Do not describe methods in a vague manner. }
 
 
-\subsection{SVM}
+\subsection{Supported Vector Machine (SVM)}
 \label{subsec:svm}
 %, is one of the most powerful approaches.
 %SVM is a supervised learning model with associated learning algorithms that analyze data used for classification. 
@@ -43,21 +48,22 @@ we show our classification approaches based on the classical machine learning al
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other, 
 %making it a non-probabilistic binary linear classifier. 
-\textsc{Svm} (Supported Vector Machines) is a supervised machine learning algorithm for classification and regression analysis. 
+\textsc{SVM} is a supervised machine learning algorithm for classification and regression analysis. 
 We use its binary classification functionality in our framework. 
 Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
 
-Given two sets of feature vectors $S^+$ and $S^-$, it generates, if there is any, 
-a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, 
+Given two sets of feature vectors $S^+$ and $S^-$, it generates, 
+\underline{if there is any} \LL{What does this mean? }, 
+a linear constraint in the form of $ax + by + \cdots \geq d$ where $x$ and $y$ are feature values and $a, b, d$ are constants, \LL{$a, b, d$? missing something.}
 such that every state $s \in \mathcal{S}^+$ satisfies the constraint and every state $s' \in \mathcal{S}^-$ fails the constraint. 
 In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denote the function which returns a linear classifier.
 
 
 Considering the differences between machine learning problem and our setting, 
-\textsc{Zilu} tunes the primitive $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a perfect classifier.
+\textsc{Zilu} tunes the \underline{primitive} $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}. \LL{SVM rather than Svm}
 \begin{itemize}
 \item Convert \textsc{Svm} model to an explicit classifier.
-The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits some supported vectors and other parameters,
+The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits \underline{some supported vectors and other parameters}, \LL{test cannot be understood}
 which can be used to do prediction on the given data.
 %This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
 However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
@@ -79,7 +85,7 @@ on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting needs to e
 The whole classification algorithm is described in Algorithm~\ref{alg:classify}. 
 Note that,
 $\textsc{Svm}$ in this algorithm can be substitute with other classification techniques for different learning purposes. 
-We will take two classification algorithms as examples to demonstrate this promotion in ~\ref{subsec:svm:derivatives}.
+We will take two classification algorithms as examples to demonstrate this promotion in \LL{?}~\ref{subsec:svm:derivatives}.
 \begin{algorithm}[!h]
 \SetAlgoVlined
 \Indm
@@ -113,7 +119,7 @@ We will take two classification algorithms as examples to demonstrate this promo
 
 \subsection{Active Learning} 
 \label{subsec:active:learning}
-Having a perfect classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
+Having a \underline{perfect} classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$), 
 active learning technique keeps refining the classifier until it gets converged.
 That means the classifier remains identical even adding more data points into the training set. 
 Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
