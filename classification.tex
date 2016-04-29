@@ -60,7 +60,7 @@ In the following, we write $\textsc{Svm}(\mathcal{S}^+, \mathcal{S}^-)$ to denot
 
 
 Considering the differences between machine learning problem and our setting, 
-\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}. \LL{SVM rather than Svm}
+\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
 \begin{itemize}
 \item Convert \textsc{Svm} model to an explicit classifier.
 The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits its own model 
@@ -180,8 +180,7 @@ octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg
 Moreover, as is noted Algorithm~\ref{alg:classify} can be easily extended by substituting $\textsc{Svm}$ with other classification approaches,
 \textsc{Zilu} has implemented two classification algorithms besides native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
-and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctives.
-\LL{You can say it can be easily extended.}
+and $Conjunctive$\textsc{Svm} for learning invariants in the form of conjunctives.
 
 \medskip\noindent
 \textbf{Polynomial SVM.}

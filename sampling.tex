@@ -4,7 +4,7 @@
 \section{Data Collection} % (fold)
 \label{sec:sampling}
 
-In this section, we present our approach to collect data from program executions 
+In this section, we demonstrate our approach to collect data from program executions 
 which is used to generate the loop invariant so that the program specification can be verified.
 
 \begin{definition}[State]
@@ -15,9 +15,9 @@ In one program's execution, the program states at several locations compose one 
 A trace of a loop program execution, denoted as $\langle s_0, s_1, ..., s_n\rangle$, is all the states of that execution which was reached one by one. 
 \end{definition}
 
-Generally, in this step we first sample program initial states and 
-then execute the program to collect more states and gather the program execution information at runtime.
-Then, we propose a labeling method for the collected data
+Generally, our framework generates program initial states by sampling techniques and 
+then execute the program from these states to collect traces and gather the program execution information at runtime.
+Later we propose a labeling method for the collected trace
 based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ during the execution. 
 %Generally, the sampling stage aims at obtaining samples with a high possibility to 
 %accurately generate the loop invariant so that the program specification can be verified. 
@@ -36,14 +36,14 @@ based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ during the ex
 %, either randomly or using tools based on the idea of concolic testing~\cite{}, 
 
 \subsection{Sampling} % (fold)
-\label{sub:sampling_approaches}
+\label{sub:sampling}
 
 Sampling is non-trivial in automatic loop invariant inference, 
-because we need to obtain samples that are helpful for invariant generation and refinement. 
+because we need to obtain samples that are helpful for invariant candidate generation and refinement. 
 Meanwhile, we can only ask whether a certain sample is in the invariant or not, 
 without knowing the exact shape of the invariant. 
-In this work, In order to face different sampling scenarios, 
-we first provide three different sampling approaches:
+In order to face different sampling scenarios,
+we provide three different sampling approaches in this work:
 %we sample the program initial states in three different approaches: 
 \emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
 
@@ -166,7 +166,7 @@ this selective sampling effectively learns an accurate function with fewer label
 %which is usually a single polynomials or conjunction or \LL{disjunction?} of polynomials,
 As the solutions to boundary equation are the points lying on the boundary. 
 we do selective sampling by solving the equation system using \textbf{GSL}~\cite{gough2009gnu} in our setting.
-For example, if we get a candidate $\mathcal{C} = \{11-2*x^2+2*y>=0\}$,
+For example, if we get a candidate $\mathcal{C} = \{11-2\cdot x^2+2\cdot y>=0\}$,
 we do selective sampling in the following steps:
 \begin{itemize}
 \item[1)] Randomly choose the variable in the classifier. Here we take $x$ as picked variable.
