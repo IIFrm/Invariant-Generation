@@ -13,8 +13,8 @@ and does not violate all the implication traces.
 
 %Fortunately, the machine learning community has studied this problem for years, where we can borrow the idea from.
 %Specially, senior machine learning experts have developed several efficient supervised classification algorithms to handle this issue.
-\LL{After reading this, I cannot understand what we have done here. 
-Why you want to say perceptron, decision tree? Focus on our contributions. }
+%\LL{After reading this, I cannot understand what we have done here. 
+%Why you want to say perceptron, decision tree? Focus on our contributions. }
 In fact, machine learning community has studied the classification problem for years.
 % \underline{the classification problem has been studied by machine learning community for years},
 and several efficient approaches, i.e. perceptron, decision tree, \textsc{Svm}, etc., have been developed to handle this problem.
@@ -44,9 +44,9 @@ as they values the generalization ability most.
 \end{itemize} 
 Considering these differences,
 in the following text, 
-we show our classification approaches based on the classical machine learning algorithms. 
-\LL{I understand your meaning, but maybe say, we thus extend svm to capture ... 
-Do not describe methods in a vague manner. }
+we show our classification approaches which extend the native SVM to learning the invariant candidate.  
+%\LL{I understand your meaning, but maybe say, we thus extend svm to capture ... 
+%Do not describe methods in a vague manner. }
 
 
 \subsection{Supported Vector Machines}
@@ -181,7 +181,7 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 \subsection{SVM Derivatives}
 \label{subsec:svm:derivatives}
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
-If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be \underline{perfectly} classified by one half-space only, 
+If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be classified with 100\% accuary by one half-space only, 
 a more complicated function $f$ must be adopted. 
 For instance, there has been research on invariants in form of conjunctives~\cite{sharma2012interpolants}, 
 octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg2015learning} and so on.
@@ -190,7 +190,7 @@ octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg
 %the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
 
 Moreover, as is noted Algorithm~\ref{alg:classify} can be easily extended by substituting $\textsc{Svm}$ with other classification approaches,
-\textsc{Zilu} has implemented two classification algorithms besides native $\textsc{Svm}$: 
+\textsc{Zilu} has implemented two classification algorithms by extending the native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
 and $Conjunctive$\textsc{Svm} for learning invariants in the form of conjunctives.
 
