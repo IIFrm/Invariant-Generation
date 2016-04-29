@@ -144,7 +144,7 @@ Let $P$ be the loop program.
     \item 
     % (2) 
     Based on the labelled evaluations from the \emph{data collection} stage, 
-    we \emph{actively} learn a classifier to divide the positive ones and the negative ones 
+    we \emph{actively} learn a classifier to capture the positive ones from the negative ones 
     using machine learning algorithms, e.g., SVM derivatives, 
     in the \textbf{Active Learning} stage (see Section~\ref{sec:learning}). 
     When the recently learnt classifier converges to the previously learnt ones, 
@@ -172,40 +172,39 @@ Let $P$ be the loop program.
 %The overall algorithm is shown in Algorithm~\ref{alg:overall}.
 %\section {Overall Algorithm}
 %\label{sec:overall}
-\LL{Do not put the algorithm here. It contains lots of notations undefined.}
-The overall algorithm is presented in Figure~\ref{alg:overall}.
-\begin{algorithm}[!h]
-\SetAlgoVlined
-\Indm
-\KwIn{$Pre$, $Cond$, $Body$, $Post$}
-\KwOut{an invariant which completes the proof or a counter-example}
-\Indp
-let $S$ be \textsc{Null}\;
-\While{true} {
-    add Samples into $S$\;
-    test the program for each sample in $S$\;
-    \If {a state $s$ in $\mathcal{S}^x$ is identified} {
-        \Return $s$ as a counterexample;
-    }
-    let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
-    let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
-    Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
-    \For {each $pc$ in $\textsc{Pc}$} {
-        \If { $pc$ is not satisfied} {
-            add the counter-example into $S$\;
-            continue\;
-        }
-    }
-    \Return $\mathcal{C}$ as the proof;
-}
-\caption{Algorithm $overall$}
-\label{alg:overall}
-\end{algorithm}
-
-
-\begin{theorem}
-Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
-\end{theorem}
+% \LL{Do not put the algorithm here. It contains lots of notations undefined.}
+% The overall algorithm is presented in Figure~\ref{alg:overall}.
+% \begin{algorithm}[!h]
+% \SetAlgoVlined
+% \Indm
+% \KwIn{$Pre$, $Cond$, $Body$, $Post$}
+% \KwOut{an invariant which completes the proof or a counter-example}
+% \Indp
+% let $S$ be \textsc{Null}\;
+% \While{true} {
+%     add Samples into $S$\;
+%     test the program for each sample in $S$\;
+%     \If {a state $s$ in $\mathcal{S}^x$ is identified} {
+%         \Return $s$ as a counterexample;
+%     }
+%     let $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ be respective sets accordingly\;
+%     let $\mathcal{C}$ = activeLearning($\mathcal{S}^+$, $\mathcal{S}^-$, $\mathcal{S}^\rightarrow$)\;
+%     Extract path constraints $\textsc{Pc}$ based on (1)(2)(3)\;
+%     \For {each $pc$ in $\textsc{Pc}$} {
+%         \If { $pc$ is not satisfied} {
+%             add the counter-example into $S$\;
+%             continue\;
+%         }
+%     }
+%     \Return $\mathcal{C}$ as the proof;
+% }
+% \caption{Algorithm $overall$}
+% \label{alg:overall}
+% \end{algorithm}
+%
+% \begin{theorem}
+% Algorithm $overall$ always eventually terminates and it is correct. \hfill \qed
+% \end{theorem}
 
 
 \medskip\noindent
@@ -216,9 +215,9 @@ Our contributions are four-fold.
     We are the first to propose an active learning and refinement framework 
     for automatic invariant inference based on machine learning. 
     Since the samples are chosen for clear purpose 
-    to refine the invariant candidate in the \emph{sampling} stage, 
+    to refine the invariant candidate in the \emph{data collection} stage, 
     the invariant converges efficiently. 
-    Furthermore, because the counter-examples generated in the \emph{verification} stage 
+    Furthermore, because the counter-examples generated in the \emph{invariant verification} stage 
     give very accurate information to amend the invariant candidate, 
     they become a useful supplementary to overcome the weakness of machine learning 
     and fine-tune the invariant candidate. 
@@ -232,8 +231,10 @@ Our contributions are four-fold.
     Our framework can be practically used to verify real programs with ease, 
     as the samples are generated at runtime 
     and our framework is language/platform independent based on other tools 
-    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling, LibSVM~\cite{chang2011libsvm} for SVM classification, 
-    Z3~\cite{de2008z3} for invariant verification and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}). 
+    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling, 
+    LibSVM~\cite{chang2011libsvm} for SVM classification, 
+    Z3~\cite{de2008z3} for invariant verification 
+    and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}). 
     \item 
     We implement our framework as a tool called \textsc{Zilu} 
     and compare it with other available state-of-the-art invariant inference tools, 
