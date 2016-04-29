@@ -151,8 +151,8 @@ let $old_f$ be $null$\;
 
 At line 3, we obtain a classifier based on Algorithm~\ref{alg:classify}. 
 We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-otherwise, we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
-In particular, at line 9, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
+otherwise, we apply selective sampling so that we can generate additional labeled samples for \underline{improving} the classifier. \LL{should be used to check the correctness?}
+In particular, at line 9, we apply \underline{standard techniques}~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. \LL{What?}
 Notice that in our setting, as indicated in Section ~\ref{sec:sampling}, the most informative samples are those which are exactly on the lines 
 and therefore can be obtained by solving an equation system using libraries. 
 At line 10 and line 11, we test the program with the newly generated samples so as to label them accordingly.
@@ -169,7 +169,7 @@ Algorithm $activeLearning$ always eventually terminates. \hfill \qed
 \subsection{SVM Derivatives}
 \label{subsec:svm:derivatives}
 %$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
-If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be perfectly classified by one half-space only, 
+If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be \underline{perfectly} classified by one half-space only, 
 a more complicated function $f$ must be adopted. 
 For instance, there has been research on invariants in form of conjunctives~\cite{sharma2012interpolants}, 
 octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg2015learning} and so on.
@@ -177,12 +177,14 @@ octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg
 %For instance, if there is a classifier in the form of conjunctive of multiple half spaces, 
 %the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
 
-Moreover, as is noted in algorithm~\ref{alg:classify}, customers can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
+Moreover, as is noted in algorithm~\ref{alg:classify}, \underline{customers} can replace $\textsc{Svm}$ with other classification approaches for invariant learning,
 \textsc{Zilu} has implemented two classification algorithms besides native $\textsc{Svm}$: 
 $Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
 and $Conjunctive \textsc{Svm}$ for learning invariants in the form of conjunctives.
+\LL{You can say it can be easily extended.}
 
-\subsubsection{Polynomial SVM}
+\medskip\noindent
+\textbf{Polynomial SVM.}
 %In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
 %However, there is still no efficient approach to learning these invariants.
 %In our research, we found sometimes convert the conjunctive or disjunctives to a polynomial expression might be a nice try to this problem.
@@ -249,8 +251,8 @@ $$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
 %$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$ 
 So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
 
-
-\subsubsection{Conjunctive SVM}
+\medskip\noindent
+\textbf{Conjunctive SVM.}
 As is stated in the last paragraph, polynomials can be equivalent with complex conjunctive or disjunctive of linear expressions.
 %seems powerful in expression abilities, 
 but there actually exists simple expressions that can not be expressed in form of polynomials.
