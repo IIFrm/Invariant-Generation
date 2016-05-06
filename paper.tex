@@ -1,55 +1,27 @@
-\documentclass{sig-alternate-05-2015}
-
-\usepackage{etex}
-% \usepackage{csp}
-\usepackage{algpseudocode}
-\usepackage{epstopdf}
-\usepackage{lipsum}
-\usepackage{fancyhdr}
-\usepackage{wrapfig}
-\usepackage{caption}
+\documentclass{llncs}
+\usepackage{times}
 \usepackage{subcaption}
-% \usepackage{subfigure}
-\usepackage{graphicx}
-\usepackage{longtable}
 \usepackage{amssymb}
-\usepackage{dsfont}
-\usepackage{bbold}
 \usepackage{amsmath}
-\usepackage{bbm}
-\usepackage{epstopdf}
-\usepackage{listings}
-\usepackage{color}
-\usepackage{pgf}
 \usepackage{tikz}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
-\usetikzlibrary{arrows,shapes,snakes,automata,backgrounds,petri,positioning}
-\usepackage[utf8]{inputenc}
-\usepackage{url}
-\usepackage{float}
-\usepackage{multirow}
-\usepackage{tabularx}
 \usepackage{adjustbox}
-\usepackage{pdflscape}
-\usepackage{chngpage}
-\usepackage{setspace}
 \usepackage[colorlinks,linkcolor=black,anchorcolor=black,
     citecolor=blue,urlcolor=black,bookmarks=true]{hyperref}
-% \usepackage{times}
 
 \newcommand\JY[1]{\textcolor{green}{#1}}
 \newcommand\LL[1]{\textcolor{red}{#1}}
 \newcommand\SJ[1]{\textcolor{blue}{#1}}
 
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{example}{Example}
-\newtheorem{proposition}{Proposition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{theorem}{Theorem}
+%\newtheorem{lemma}{Lemma}
+%\newtheorem{example}{Example}
+%\newtheorem{proposition}{Proposition}
 
 \begin{document}
-    
-\setcopyright{acmcopyright}
+
+%\setcopyright{acmcopyright}
 
 \title{Loop Invariant Generation through Active Learning}
 % \author{
@@ -59,56 +31,63 @@
 % \email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
 % }
 
-\numberofauthors{4}
 \author{
-% You can go ahead and credit any number of authors here,
-% e.g. one 'row of three' or two rows (consisting of one row of three
-% and a second row of one, two or three).
-%
-% The command \alignauthor (no curly braces needed) should
-% precede each author name, affiliation/snail-mail address and
-% e-mail address. Additionally, tag each line of
-% affiliation/address with \affaddr, and tag the
-% e-mail address with \email.
-%
-% 1st. author
-\alignauthor
-Jiaying Li\\
-       \affaddr{Singapore University of Technology and Design}\\
-       \email{jiaying\_li@mymail.sutd.edu.sg}
-% 2nd. author
-\alignauthor
-Li Li\\
-       \affaddr{Singapore University of Technology and Design}\\
-       \email{li\_li@sutd.edu.sg}
-% 3rd. author
-\and  % use '\and' if you need 'another row' of author names
-\alignauthor 
-Le Guang Loc\\
-       \affaddr{Singapore University of Technology and Design}\\
-       \email{guangloc\_le@sutd.edu.sg}
-% 4th. author
-\alignauthor 
-Jun Sun\\
-       \affaddr{Singapore University of Technology and Design}\\
-       \email{sunjun@sutd.edu.sg}
+Jiaying Li, Li Li, Le Guang Loc, Jun Sun\\
+\institute{
+Singapore University of Technology and Design \\
+\email{\{jiaying\_li,li\_li,guangloc\_le,sunjun\}@sutd.edu.sg}}
 }
+
+%%\numberofauthors{4}
+%\author{
+%% You can go ahead and credit any number of authors here,
+%% e.g. one 'row of three' or two rows (consisting of one row of three
+%% and a second row of one, two or three).
+%%
+%% The command \alignauthor (no curly braces needed) should
+%% precede each author name, affiliation/snail-mail address and
+%% e-mail address. Additionally, tag each line of
+%% affiliation/address with \affaddr, and tag the
+%% e-mail address with \email.
+%%
+%% 1st. author
+%\alignauthor
+%Jiaying Li\\
+%       \affaddr{Singapore University of Technology and Design}\\
+%       \email{jiaying\_li@mymail.sutd.edu.sg}
+%% 2nd. author
+%\alignauthor
+%Li Li\\
+%       \affaddr{Singapore University of Technology and Design}\\
+%       \email{li\_li@sutd.edu.sg}
+%% 3rd. author
+%\and  % use '\and' if you need 'another row' of author names
+%\alignauthor
+%Le Guang Loc\\
+%       \affaddr{Singapore University of Technology and Design}\\
+%       \email{guangloc\_le@sutd.edu.sg}
+%% 4th. author
+%\alignauthor
+%Jun Sun\\
+%       \affaddr{Singapore University of Technology and Design}\\
+%       \email{sunjun@sutd.edu.sg}
+%}
 
 \maketitle
 
 \begin{abstract}
-	Loop invariant generation is one of the fundamental problems in program analysis and verification. 
-    In this work, we propose an automatic generation framework for inductive loop invariants 
-    through iterations of runtime sampling, machine learning and constraint solving. 
-    In each iteration, our method first collects real data at runtime based on various sampling methods. 
-    Then, based on their satisfaction of the assumptions and assertions in the program, 
-    our framework uses machine learning techniques (e.g., SVM derivatives) 
-    to actively learn a loop invariant candidate. 
-    Finally, if the candidate can be verified as the inductive loop invariant of the program, 
-    our framework returns it directly and ends the generation process. 
-    Otherwise, the counter-example is used to refine the data sampling in the next iteration. 
-    The experiment evaluation shows that our method can be used to learn loop invariants 
-    effectively and automatically that cannot be learned by other loop invariant generation tools. 
+	Loop invariant generation is one of the fundamental problems in program analysis and verification.
+    In this work, we propose an automatic generation framework for inductive loop invariants
+    through iterations of runtime sampling, machine learning and constraint solving.
+    In each iteration, our method first collects real data at runtime based on various sampling methods.
+    Then, based on their satisfaction of the assumptions and assertions in the program,
+    our framework uses machine learning techniques (e.g., SVM derivatives)
+    to actively learn a loop invariant candidate.
+    Finally, if the candidate can be verified as the inductive loop invariant of the program,
+    our framework returns it directly and ends the generation process.
+    Otherwise, the counter-example is used to refine the data sampling in the next iteration.
+    The experiment evaluation shows that our method can be used to learn loop invariants
+    effectively and automatically that cannot be learned by other loop invariant generation tools.
 \end{abstract}
 
 \input{introduction.tex}
