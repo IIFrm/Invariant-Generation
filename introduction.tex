@@ -5,10 +5,10 @@
 Automatic loop invariant generation is a fundamental program analysis. A loop invariant can be useful for software verification, test-case generation, compiler optimization, program understanding, etc.
 Many approaches have bee proposed for invariant generation, e.g., based on abstraction interpretation~\cite{cite}, based on counterexample guided abstraction refinement~\cite{cite}, using interpolation-based approaches~\cite{cite}, and based on constraint-based inference~\cite{cite}. In~\cite{sharma2012interpolants,DBLP:conf/sas/0001GHAN13,sharma2014invariant}, the authors propose to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}. The idea is to obtain sample program states in the loop and generalize the program states in certain way (e.g., through classification~\cite{sharma2012interpolants,DBLP:conf/sas/0001GHAN13}) to guess a candidate loop invariant (e.g., a classifier). The candidate loop invariant is then checked using program verification techniques) to see whether they are inductive and strong enough to prove the program property. If the checking fails, often with a counterexample, the guess-and-check iteration is repeated until a correct invariant is generated. One problem of the above approach is that its effectiveness is often limited by the sample program states obtained. In order to guess the correct invariant through classification, often program states right by the actual classifier must be sampled so that classification techniques would identify it. Otherwise, through random sampling, it is often unlikely that those specific program states would be sampled. As a result, many iterations of guess-and-check would be necessary so that the candidate candidate converges to the actual one.
 
-In this work, we propose a framework for loop invariant generation through iterations of active learning and checking. Through active learning, we aim to improve the quality of the generated candidate loop invariants every iteration prior to employing heavy techniques like program verification. As a result, we can reduce the number of guess-and-check iterations significantly. Furthermore, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as active learning techniques. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches. 
+In this work, we propose a framework for loop invariant generation through iterations of active learning and checking. Through active learning, we aim to improve the quality of the generated candidate loop invariants every iteration prior to employing heavy techniques like program verification. As a result, we can reduce the number of guess-and-check iterations significantly. Furthermore, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as active learning techniques. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
 In the following, we define our problem and briefly illustrate how our approach works. 
 
-For simplicity, we assume that we are given a Hoare triple in the following form: 
+\paragraph{Problem Definition} For simplicity, we assume that we are given a Hoare triple in the following form:
 %\[
 %    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
 %\]
@@ -41,11 +41,53 @@ Our problem is to either prove the Hoare triple or disprove it. In order to prov
     &s \models \mathit{Inv} \wedge \neg\mathit{Cond}
         &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
+For simplicity, we assume that the given program is always terminating. We refer the readers to~\cite{} for the extensive research on proving loop termination.
 Alternatively, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a state $s'$ such that $s' \models \mathit{Post}$ is not true. The goal of this work is to develop a way of automatically identifying an $\mathit{Inv}$ to prove the Hoare triple or finding a valuation $s$ to disprove it.
 
+\paragraph{Contributions.} In solving the above problem, we make the following contributions in this work.
+\begin{itemize}
+    \item
+    We are the first to propose an active learning and refinement framework
+    for automatic invariant inference based on machine learning.
+    Since the samples are chosen for clear purpose
+    to refine the invariant candidate in the \emph{data collection} stage,
+    the invariant converges efficiently.
+    Furthermore, because the counter-examples generated in the \emph{invariant verification} stage
+    give very accurate information to amend the invariant candidate,
+    they become a useful supplementary to overcome the weakness of machine learning
+    and fine-tune the invariant candidate.
+    \item
+    Our framework is highly adaptable to different invariant inference scenarios
+    because the classification methods have a wide range of choices.
+    In this work, we show that linear, polynomial as well as
+    their conjunctive classification methods work effectively in our framework.
+    More importantly, our framework can be easily and intuitively extended with other alternative methods.
+    \item
+    Our framework can be practically used to verify real programs with ease,
+    as the samples are generated at runtime
+    and our framework is language/platform independent based on other tools
+    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling,
+    LibSVM~\cite{chang2011libsvm} for SVM classification,
+    Z3~\cite{de2008z3} for invariant verification
+    and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}).
+    \item
+    We implement our framework as a tool called \textsc{Zilu}
+    and compare it with other available state-of-the-art invariant inference tools,
+    i.e., CPAChecker~\cite{beyer2011cpachecker}, Interproc.
+    Our experiment results show that
+    we are the only tool that can work with polynomial invariant inference.
+    Notice that the polynomial invariant inference works in our framework
+    naturally with very light additional programming.
+    % Based on the design of different approaches,
+    % we also claim that our framework have better extensibility comparing with their method.
+\end{itemize}
+
+
+\paragraph{Organization} The remainders of the paper are organized as follows. Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. Section~\ref{sec:sampling} to~\ref{sec:verification} present the details of our approach step-by-step. Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs including those from the software verification competition~\cite{}. Lastly, Section~\ref{sec:related} reviews related and concludes.
+
 \begin{figure}[t]
-\begin{subfigure}{0.2\textwidth}
-    \centering
+\begin{subfigure}{0.5\textwidth}
+    \raggedright 
     \vspace{0.5cm}
 {\scriptsize\begin{verbatim}
 void P(int x, int y) {
@@ -65,7 +107,7 @@ void P(int x, int y) {
     \caption{Loop Program}
     \label{fig:running:example:program}
 \end{subfigure}%
-\begin{subfigure}{.3\textwidth}
+\begin{subfigure}{.5\textwidth}
       \centering
       \includegraphics[scale=0.42]{figures/running-sampling.pdf}
       \caption{Sampling}
@@ -82,39 +124,14 @@ void P(int x, int y) {
     \label{fig:overview}
 \end{figure}
 
-\medskip\noindent
-\textbf{A Running Example}
-is shown in Figure~\ref{fig:running:example:program}.
-The loop program $P$ takes two integer variables $x$ and $y$ as inputs.
-The assumption $\mathit{Pre}$ requires that $x < y$,
-which is the same as the loop condition $\mathit{Cond}$.
-When $\mathit{Cond}$ is met in each loop iteration,
-$x$ is increased by $7$ if $x$ is negative, otherwise $x$ is increased by $10$;
-$y$ is decreased by $10$ if $y$ is negative, otherwise $y$ is increased by $3$.
-Finally, the assertion of $P$ specifies that
-$y \le x \le y + 16$ should be true when the loop ends.
-The correctness of the program specification in Figure~\ref{fig:running:example}
-can be proven by checking the three conditions
-(\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) above
-with a loop invariant $\mathit{Inv} = x \le y + 16$ (or $2 \times x \le 2 \times y + 33$, etc).
-We use this running example in the following
-to illustrate different stages of our invariant reference method.
+\section{Overview} \label{sec:overview}
+In the following, we use a simple example to illustrate how our approach works. The Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an $assume$ statement captures the pre-condition and an $assert$ statement captures the post-condition). The set of variables $V$ contains two integer type variables $X$ and $Y$. For simplicity, in this work, we interpret integers in the programs as mathematical integers (which do not overflow). The pre-condition $\mathit{Pre}$ is $x < y$, which is the same as the loop condition $\mathit{Cond}$.
+During each loop iteration, $x$ is increased by $7$ if it is negative; otherwise it is increased by $10$. $y$ is decreased by $10$ if it is negative; otherwise it is increased by $3$. The postcondition is that $y \le x \le y + 16$.
+The Hoare triple can be proven using a loop invariant like $\mathit{Inv} = x \le y + 16$. In the following, we show how our framework works to learn a similar loop invariant which would allow us to prove the Hoare triple.
 
-\medskip\noindent
-\textbf{Overview.}
-Our framework treats the invariant reference as an active learning and refinement process
-based on iterations of data collection, active learning and invariant verification
-as shown in the Figure~\ref{fig:overview}.
-Let $P$ be the loop program.
-\begin{itemize}
-    \item
-    % (1)
-    In the \textbf{Data Collection} stage (see Section~\ref{sec:sampling}),
-    we first obtain program inputs $S_{\mathit{in}}$ from three kinds of sampling sources:
-    random sampling, selective sampling and counter-example sampling.
-    Then, given an input $s_0$ in $S_{\mathit{in}}$, we execute $P$ with $s_0$
-    and record the evaluations of variables for all of the loop iterations
-    as a trace $\langle s_0, s_1, \ldots, s_n \rangle$.
+In our framework, loop invariant generation is an active learning and refinement process based on iterations of data collection, active learning and invariant verification. The overall workflow is shown in the Figure~\ref{fig:overview}. There are three main stages: data collection, active learning and invariant verification.
+
+We start with the data collection stage. Given the Hoare triple, we first randomly sample variable valuations based on $\mathit{Pre}$, e.g., using a constraint solver to obtain variable valuations which satisfy or dissatisfy $\mathit{Pre}$. For each sampled valuation $s_0$, we execute the given program with initial variable valuation $s_0$ and record the variable evaluations for all of the loop iterations as a trace $\langle s_0, s_1, \ldots, s_n \rangle$.
     All of the evaluations in the above trace (referred by its initial evaluation $s_0$)
     are labelled based on a pair of boolean values
     $(s_0 \models \mathit{Pre}, s_n \models \mathit{Post})$\footnote{
@@ -126,8 +143,7 @@ Let $P$ be the loop program.
     Given the above evaluation trace with
     $s_0 \models \mathit{Pre}$ and $s_n \not\models \mathit{Post}$,
     our framework returns it as a proof of the program specification error.
-    \item
-    % (2)
+
     In the \textbf{Active Learning} stage (see Section~\ref{sec:learning}),
     based on the labelled evaluations from the \emph{data collection} stage,
     we \emph{actively} learn a classifier to capture the positive ones from the negative ones
@@ -139,8 +155,7 @@ Let $P$ be the loop program.
     When a sample cannot be classified using a certain classification model,
     we try other alternative models in a sequential order.
     \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
-    \item
-    % (3)
+
     In the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}),
     we check the correctness of the invariant candidate.
     First, we check condition (\ref{inv:pre}) and condition (\ref{inv:post}) with the candidate.
@@ -151,8 +166,6 @@ Let $P$ be the loop program.
     we claim the correctness of $P$ with its loop invariant.
     Otherwise, we add the counter-example from SMT Solving to $S_{\mathit{in}}$
     and restart from the \emph{data collection} stage.
-\end{itemize}
-
 
 %The overall algorithm is shown in Algorithm~\ref{alg:overall}.
 %\section {Overall Algorithm}
@@ -192,47 +205,3 @@ Let $P$ be the loop program.
 % \end{theorem}
 
 
-\medskip\noindent
-\textbf{Contributions.}
-Our contributions are four-fold.
-\begin{itemize}
-    \item
-    We are the first to propose an active learning and refinement framework
-    for automatic invariant inference based on machine learning.
-    Since the samples are chosen for clear purpose
-    to refine the invariant candidate in the \emph{data collection} stage,
-    the invariant converges efficiently.
-    Furthermore, because the counter-examples generated in the \emph{invariant verification} stage
-    give very accurate information to amend the invariant candidate,
-    they become a useful supplementary to overcome the weakness of machine learning
-    and fine-tune the invariant candidate.
-    \item
-    Our framework is highly adaptable to different invariant inference scenarios
-    because the classification methods have a wide range of choices.
-    In this work, we show that linear, polynomial as well as
-    their conjunctive classification methods work effectively in our framework.
-    More importantly, our framework can be easily and intuitively extended with other alternative methods.
-    \item
-    Our framework can be practically used to verify real programs with ease,
-    as the samples are generated at runtime
-    and our framework is language/platform independent based on other tools
-    (e.g., GSL (GNU Scientific Library)~\cite{gough2009gnu} for selective sampling,
-    LibSVM~\cite{chang2011libsvm} for SVM classification,
-    Z3~\cite{de2008z3} for invariant verification
-    and KLEE~\cite{cadar2008klee} for concolic testing~\cite{sen2007concolic}).
-    \item
-    We implement our framework as a tool called \textsc{Zilu}
-    and compare it with other available state-of-the-art invariant inference tools,
-    i.e., CPAChecker~\cite{beyer2011cpachecker}, Interproc.
-    Our experiment results show that
-    we are the only tool that can work with polynomial invariant inference.
-    Notice that the polynomial invariant inference works in our framework
-    naturally with very light additional programming.
-    % Based on the design of different approaches,
-    % we also claim that our framework have better extensibility comparing with their method.
-\end{itemize}
-
-\medskip\noindent
-\textbf{Structure of this paper.}
-
-% section introduction (end)
