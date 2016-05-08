@@ -84,13 +84,14 @@ Alternatively, we would like to find a valuation $s$ such that $s \models \mathi
 \paragraph{Organization} The remainders of the paper are organized as follows. Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. Section~\ref{sec:sampling} to~\ref{sec:verification} present the details of our approach step-by-step. Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs including those from the software verification competition~\cite{}. Lastly, Section~\ref{sec:related} reviews related and concludes.
 
 \section{Overview} \label{sec:overview}
-In the following, we use a simple example to illustrate how our approach works. The Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an $assume$ statement captures the pre-condition and an $assert$ statement captures the post-condition). The set of variables $V$ contains two integer type variables $X$ and $Y$. For simplicity, in this work, we interpret integers in the programs as mathematical integers (which do not overflow). The pre-condition $Pre$ is $x < y$, which is the same as the loop condition $Cond$.
+In our framework, loop invariant generation is an active learning and refinement process based on iterations of data collection, active learning and invariant verification. The overall workflow is shown in the Figure~\ref{fig:overview}. There are three main stages: data collection, active learning and invariant verification. In the following, we illustrate how each stage works with a running example.
+
+\begin{example}
+ The example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an $assume$ statement captures the pre-condition and an $assert$ statement captures the post-condition). The set of variables $V$ contains two integer type variables $X$ and $Y$. For simplicity, in this work, we interpret integers in the programs as mathematical integers (which do not overflow). The pre-condition $Pre$ is $x < y$, which is the same as the loop condition $Cond$.
 During each loop iteration, $x$ is increased by $7$ if it is negative; otherwise it is increased by $10$. $y$ is decreased by $10$ if it is negative; otherwise it is increased by $3$. The postcondition is that $y \le x \le y + 16$.
 The Hoare triple can be proven using a loop invariant like $Inv = x \le y + 16$. In the following, we show how our framework works to learn a similar loop invariant which would allow us to prove the Hoare triple.
-
-In our framework, loop invariant generation is an active learning and refinement process based on iterations of data collection, active learning and invariant verification. The overall workflow is shown in the Figure~\ref{fig:overview}. There are three main stages: data collection, active learning and invariant verification.
-
-We start with the data collection stage. Given the Hoare triple, we first randomly sample variable valuations based on $\mathit{Pre}$, e.g., using a constraint solver to obtain variable valuations which satisfy or dissatisfy $\mathit{Pre}$. For each sampled valuation $s_0$, we execute the given program with initial variable valuation $s_0$ and record the variable evaluations after each iteration of the loop as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models \mathit{Post}$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
+\end{example}
+We start with the \emph{data collection} stage. Given the Hoare triple, we first randomly sample variable valuations based on $\mathit{Pre}$, e.g., using a constraint solver to obtain variable valuations which satisfy or dissatisfy $\mathit{Pre}$. For each sampled valuation $s_0$, we execute the given program with initial variable valuation $s_0$ and record the variable evaluations after each iteration of the loop as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models \mathit{Post}$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
 All variable valuations in the traces are then divided into four categories.
 \begin{itemize}
     \item Set $Counterexample = \{s | s \models Pre \land s \Rightarrow_T s' \land s' \not \models Post\}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a program state in $Counterexample$ is identified, a counterexample is found and the Hoare triple is disproved.
@@ -108,7 +109,7 @@ All variable valuations in the traces are then divided into four categories.
 %        $(\mathit{true}, \mathit{true}) \rightarrow +$,
 %        $(\mathit{false}, \mathit{false}) \rightarrow -$
 %        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}.
-Assume that the following two valuations are generation in our running example: $\{x \mapsto 1, y \mapsto 2\}$ and $\{x \mapsto 100, y \mapsto 0\}$. Two traces are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. As a result, the set $Positive$ contains $\{x \mapsto 1, y \mapsto 2\}$; $Negative$ is empty; and $NP$ contains $\{x \mapsto 100, y \mapsto 0\}$. 
+Assume that the following two valuations are generation in our running example: $\{x \mapsto 1, y \mapsto 2\}$ and $\{x \mapsto 100, y \mapsto 0\}$. Two traces are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. As a result, the set $Positive$ contains $\{x \mapsto 1, y \mapsto 2\}$; $Negative$ is empty; and $NP$ contains $\{x \mapsto 100, y \mapsto 0\}$.
 
 \begin{figure}[t]
 \begin{subfigure}{0.5\textwidth}
@@ -149,17 +150,27 @@ void P(int x, int y) {
     \label{fig:overview}
 \end{figure}
 
-In the \textbf{active learning} stage, with the three sets of valuations $Positive$, $Negative$ and $NP$, we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones
-    using machine learning algorithms, e.g., SVM derivatives.
-    When the recently learnt classifier converges to the previously learnt ones,
-    we treat it as an invariant candidate and move to the next stage.
-    Otherwise, we apply selective sampling on the recently learnt classifier
-    to add more samples to $S_{\mathit{in}}$.
-    When a sample cannot be classified using a certain classification model,
-    we try other alternative models in a sequential order.
-    \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
+Next, we move on to the \emph{active learning} stage. Intuitively, since we know that valuations in $Positive$ must satisfy $Inv$ and valuations in $Negative$ must not satisfy $Inv$, a predicate separating the two sets of valuations (a.k.a.~a classifier) could potentially be a candidate for $Inv$. 
+%Formally, a classifier between two sets $P$ and $N$ is a predicate $\phi$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$. 
+For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations in $Positive$, $Negative$ and $NP$ geographically in a plane for our running example, where valuations in $Positive$ are labeled with $+$ and color green; and valuation in $Negative$ are labeled with $-$ and color red; and valuations in $NP$ are labeled with ? and color yellow. It can be observed the classifier separating the red region from the rest (i.e., $x - y \leq 16$) is the loop invariant that we are searching for. In this work, we adopt existing classification techniques (like Support Vector Machine) to automatically identify the classifiers. There are however two issues to be solved. 
 
-Figure~\ref{fig:running:example:sampling} shows where the set of valuations in $Positive$, $Negative$ and $NP$ geographically in a plane for our running example, where valuations in $Positive$ are labeled with $+$ and color green; and valuation in $Negative$ are labeled with $-$ and color red; and valuations in $NP$ are labeled with ? and color yellow. Note that it can be observed the line separating the red region and the rest is correlated to the loop invariant that we are searching for.
+First, with the limited valuations in $Positive$ and $Negative$, it is unlikely that we can obtain an ``accurate'' classifier. For instance, given the above-mentioned $Positive$ and $Negative$, a classifier could be $x+y \leq 50$, which is obviously not useful. Fortunately, this problem has been investigated extensively in the machine learning community. In particular, active learning~\cite{} is designed to overcome the problem. Intuitively, one can understand the idea as to repeatedly generate valuations nearby a classifier obtained based on the current $Positive$ and $Negative$ and then keep obtaining an improved classifier with the enriched sets. For instance, continue the above example, given the current classifier $x+y \leq 50$, we generate a new random valuation $\{x \mapsto 1, y \mapsto 49\}$ by solving the equation $x+y=50$ (and using an existing $x$ value). Next, we obtain a trace with the initial valuation $\{x \mapsto 1, y \mapsto 49\}$ and update $Positive$, $Negative$ and $NP$ accordingly. It is easy to see that with the additional valuations, a better classifier would be learned. We repeat the process until the classifier converges. 
+
+Secondly, valuations in $NP$ may or may not satisfy $Inv$. If we choose to simply ignore them, there may be a gap between $Positive$ and $Negative$ and as a result, the learned classifier through active learning may not converge to the invariant we want. This is illustrated in Figure~\ref{fig:running:example:sampling}. Without considering the valuations in $NP$, any classifier in the form of a half space (i.e., a predicate of the form $ax + by \geq c$) located in the $NP$ region would separate all valuations in $Positive$ and $Negative$. Furthermore, identifying more valuations in $Postive$ and $Negative$ may not help improving the classifier either. In this work, we make use of $NP$ by learning three classifiers as candidate invariant, one separating $Positive$ and $Negative$, one separating $Positive$ from $Negative$ and $NP$ (i.e., assuming valuations in $NP$ fail $Inv$), and lastly one separating $Negative$ from $Positve$ and $NP$ (i.e., assuming valuations in $NP$ satisfy $Inv$). 
+
+After the three candidates converge, we enter the invariant verification stage. We check whether the learned candidate invariants satisfy condition (1), (2) and (3). If any of them does, we successfully prove the Hoare triple. If any of the three conditions is not satisfied, a counterexample is generated in the form of an initial variable valuation. We then repeat the process from the data collection stage, i.e., we enrich the four categories of valuations accordingly and move on to the active learning stage and so on. 
+
+For the example shown in Figure~\ref{fig:running:example:sampling}, if during random sampling, we only sample valuations in $Positve$ or $NP$ but never any in $Negative$, through active learning, we would converge to the half space separating $Positive$ and $NP$ (i.e., $x-y \geq 0$) but not discover the half space $x - y \leq 16$.
+
+%, with the three sets of valuations $Positive$, $Negative$ and $NP$, we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones   using machine learning algorithms, e.g., SVM derivatives.
+%    When the recently learnt classifier converges to the previously learnt ones,
+%    we treat it as an invariant candidate and move to the next stage.
+%    Otherwise, we apply selective sampling on the recently learnt classifier
+%   to add more samples to $S_{\mathit{in}}$.
+%    When a sample cannot be classified using a certain classification model,
+%    we try other alternative models in a sequential order.
+%    \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
+
 
 
     In the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}),
