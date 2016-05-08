@@ -3,72 +3,68 @@
 %\section{Sampling} % (fold)
 \section{Data Collection} % (fold)
 \label{sec:sampling}
+In this section, we present details on each of the stages. The goal of the data collection stage is to collect sample variable valuations form which we can learn the invariant. In general, the more samples we have, the more likely we would learn the right invariant. However, if we simply randomly generate variable valuation and learn based on those, it may take many samples to find the right invariant. In this work, we collect samples in three different ways: random sampling, selective sampling based on active learning and sampling based verification results.
 
-In this section, we demonstrate our approach to collect data from program executions 
-which is used to generate the loop invariant so that the program specification can be verified.
+%Sampling is non-trivial in automatic loop invariant inference,
+%because we need to obtain samples that are helpful for invariant candidate generation and refinement.
+%Meanwhile, we can only ask whether a certain sample is in the invariant or not,
+%without knowing the exact shape of the invariant.
+%In order to face different sampling scenarios,
+%we provide three different sampling approaches in this work:
+%%we sample the program initial states in three different approaches:
+%\emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}.
 
-\begin{definition}[State]
-A state of a loop program execution, denoted as $s$, is an evaluation of the program variables at the loop condition checking position during that execution.
-\end{definition} 
-\begin{definition}[Trace]
-In one program's execution, the program states at several locations compose one program trace.
-A trace of a loop program execution, denoted as $\langle s_0, s_1, ..., s_n\rangle$, is all the states of that execution which was reached one by one. 
-\end{definition}
-
-Generally, our framework generates program initial states by sampling techniques and 
-then execute the program from these states to collect traces and gather the program execution information at runtime.
-Later we propose a labeling method for the collected trace
-based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ during the execution. 
-%Generally, the sampling stage aims at obtaining samples with a high possibility to 
-%accurately generate the loop invariant so that the program specification can be verified. 
-%In order to face different sampling scenarios, 
-%we first provide three different sampling approaches. 
-%Then, we propose a labeling method for collected samples 
-%based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in the program. 
-% Before learning procedure, we need to gather some data from program. 
+%\begin{definition}[State]
+%A state of a loop program execution, denoted as $s$, is an evaluation of the program variables at the loop condition checking position during that execution.
+%\end{definition}
+%\begin{definition}[Trace]
+%In one program's execution, the program states at several locations compose one program trace.
+%A trace of a loop program execution, denoted as $\langle s_0, s_1, ..., s_n\rangle$, is all the states of that execution which was reached one by one.
+%\end{definition}
+%
+%Generally, our framework generates program initial states by sampling techniques and
+%then execute the program from these states to collect traces and gather the program execution information at runtime.
+%Later we propose a labeling method for the collected trace
+%based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ during the execution.
+%Generally, the sampling stage aims at obtaining samples with a high possibility to
+%accurately generate the loop invariant so that the program specification can be verified.
+%In order to face different sampling scenarios,
+%we first provide three different sampling approaches.
+%Then, we propose a labeling method for collected samples
+%based on their satisfactions of $\mathit{Pre}$ and $\mathit{Post}$ conditions in the program.
+% Before learning procedure, we need to gather some data from program.
 % In a broader view, our framework is a kind of dynamic program verification approaches,
 % thus it is quite interested in program execution states.
 % Sampling is a way to tell the preference of program states.
-% So in this step, we would like to sample a state with a high possibility 
+% So in this step, we would like to sample a state with a high possibility
 % if it is important for the learning afterwards.
-% Then we execute program from these samples to gather more data 
+% Then we execute program from these samples to gather more data
 % and label them according to the satisfiability of $Pre$ and $Post$.
-%, either randomly or using tools based on the idea of concolic testing~\cite{}, 
+%, either randomly or using tools based on the idea of concolic testing~\cite{},
 
-\subsection{Sampling} % (fold)
-\label{sub:sampling}
+\paragraph{Random Sampling} 
+Figure~\ref{fig:sampling} visualizes these three approaches in a 2-D plane:
+the green area is the correct invariant captured by the green line;
+the red area is the learnt invariant captured by the red line;
+the green nodes represent the samples inside of the correct invariant;
+and the red nodes represent the samples outside of the correct invariant.
+The random sampling is very useful in generating the initial invariant
+as well as searching for samples that cannot be reached
+by selective sampling and counter-example sampling.
+For instance, in Figure~\ref{fig:sampling:random},
+we obtain four samples using random sampling
+and learn the initial invariant in Figure~\ref{fig:sampling:random:invariant}.
+When an invariant has been learnt,
+we can accelerate the invariant convergence by obtaining samples that
+land exactly on the edges of the learnt invariant (i.e., selective sampling)
+or conflict the required properties (i.e., counter-example sampling).
+For example, in Figure~\ref{fig:sampling:selective},
+we select four samples on borders of the learnt invariant and
+compute one counter-example to help generating the real invariant.
+As can be seen in Figure~\ref{fig:sampling:selective:invariant},
+the newly learnt invariant moves towards the real invariant quickly.
 
-Sampling is non-trivial in automatic loop invariant inference, 
-because we need to obtain samples that are helpful for invariant candidate generation and refinement. 
-Meanwhile, we can only ask whether a certain sample is in the invariant or not, 
-without knowing the exact shape of the invariant. 
-In order to face different sampling scenarios,
-we provide three different sampling approaches in this work:
-%we sample the program initial states in three different approaches: 
-\emph{random sampling}, \emph{selective sampling} and \emph{counter-example sampling}. 
-
-Figure~\ref{fig:sampling} visualizes these three approaches in a 2-D plane: 
-the green area is the correct invariant captured by the green line; 
-the red area is the learnt invariant captured by the red line; 
-the green nodes represent the samples inside of the correct invariant; 
-and the red nodes represent the samples outside of the correct invariant. 
-The random sampling is very useful in generating the initial invariant 
-as well as searching for samples that cannot be reached 
-by selective sampling and counter-example sampling. 
-For instance, in Figure~\ref{fig:sampling:random}, 
-we obtain four samples using random sampling 
-and learn the initial invariant in Figure~\ref{fig:sampling:random:invariant}. 
-When an invariant has been learnt, 
-we can accelerate the invariant convergence by obtaining samples that 
-land exactly on the edges of the learnt invariant (i.e., selective sampling) 
-or conflict the required properties (i.e., counter-example sampling). 
-For example, in Figure~\ref{fig:sampling:selective}, 
-we select four samples on borders of the learnt invariant and 
-compute one counter-example to help generating the real invariant. 
-As can be seen in Figure~\ref{fig:sampling:selective:invariant}, 
-the newly learnt invariant moves towards the real invariant quickly. 
-
-\begin{figure}[!h]
+\begin{figure}[t]
     \centering
     \begin{subfigure}{0.23\textwidth}
         \centering
@@ -99,72 +95,73 @@ the newly learnt invariant moves towards the real invariant quickly.
 \end{figure}
 
 \medskip\noindent
-\textbf{Random Sampling.}
+\textbf{Random Sampling} 
+
 This technique produce samples with the uniform distribution over a given range $\mathcal{R}$.
-It acts as an initialization sampling method 
-as well as a supplementary sampling method in our framework. 
-Firstly, before any classifier is learnt in our framework, 
-we adopt simple random sampling solely to learn the initial candidate, 
-which can be refined later in the invariant inference process. 
-Secondly, the efficiency of other sampling methods, introduced in the following, 
-depends largely on the similarity of the invariant candidate and the actual invariant. 
-However, if the invariant candidate is very different from the correct invariant, 
-random sampling can make the candidate converge faster than other sampling methods. 
-Thirdly, since selective sampling can introduce biased samples distribution, 
-random sampling aims at reducing its impact that can lead to a biased candidate result. 
-As a result, the random sampling, as an important sampling approach, 
-is applied to all the invariant inference iterations. 
+It acts as an initialization sampling method
+as well as a supplementary sampling method in our framework.
+Firstly, before any classifier is learnt in our framework,
+we adopt simple random sampling solely to learn the initial candidate,
+which can be refined later in the invariant inference process.
+Secondly, the efficiency of other sampling methods, introduced in the following,
+depends largely on the similarity of the invariant candidate and the actual invariant.
+However, if the invariant candidate is very different from the correct invariant,
+random sampling can make the candidate converge faster than other sampling methods.
+Thirdly, since selective sampling can introduce biased samples distribution,
+random sampling aims at reducing its impact that can lead to a biased candidate result.
+As a result, the random sampling, as an important sampling approach,
+is applied to all the invariant inference iterations.
 
 \medskip\noindent
 \textbf{Selective Sampling.}
-%Selective sampling is adopted in our framework to actively generate the samples 
-%on the borders of the learnt invariant candidate. 
-%These samples are very informative and instructive for invariant refinement, 
+%Selective sampling is adopted in our framework to actively generate the samples
+%on the borders of the learnt invariant candidate.
+%These samples are very informative and instructive for invariant refinement,
 %as they give clear instructions on the amendment of the candidate.
-Due to the limited number of samples we can gather in reality, 
+Due to the limited number of samples we can gather in reality,
 we prefer the technique which generates samples that can vary the classifier than which does not.
-%the invariant candidate obtained from these data might be far from being correct. 
-%\LL{I think selective sampling is worse than random sampling 
+%the invariant candidate obtained from these data might be far from being correct.
+%\LL{I think selective sampling is worse than random sampling
 %if the invariant is very different from the correct one. }
 %As we can not gather all the program states for learning in reality,
-The concept of active learning or selective sampling refers to the approaches 
+The concept of active learning or selective sampling refers to the approaches
 that aim at reducing the labeling effort by selecting only the most informative samples to be labeled.
-Given a classifier, this approach selects the samples that are the closest to the classification boundary 
+Given a classifier, this approach selects the samples that are the closest to the classification boundary
 so that they are the most difficult to classify and the most informative to label,
 thus they can give clear instructions on the amendment of the candidate.
-For instance, SVM(supported vector machines) selective sampling techniques have been proven effective in achieving a high accuracy 
-with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. 
-Since an SVM classification function is represented by support vectors which are the samples closest to the boundary, 
+For instance, SVM(supported vector machines) selective sampling techniques have been proven effective in achieving a high accuracy
+with fewer examples in many applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}.
+Since an SVM classification function is represented by support vectors which are the samples closest to the boundary,
 this selective sampling effectively learns an accurate function with fewer labeled data~\cite{DBLP:conf/icml/SchohnC00}.
 
 %When we have a guess of loop invariants, we can apply selective sampling approach to finding more useful samples.
 %Actually we apply this sampling method all along the learning procedure except the first iteration.
 %\LL{I suggest do not use words like `obvious', nothing is obvious in a paper.}
 
-%In fact, without labeled samples which are right on the boundary of the actual classifier, 
-%it is very unlikely that we would find it. 
-%Intuitively and intelligently, in order to get the `actual' classifier, 
-%we would require samples which would distinguish the actual one from any nearby one, 
+%In fact, without labeled samples which are right on the boundary of the actual classifier,
+%it is very unlikely that we would find it.
+%Intuitively and intelligently, in order to get the `actual' classifier,
+%we would require samples which would distinguish the actual one from any nearby one,
 %This problem has been discussed and addressed in machine learning using active learning and selective sampling~\cite{DBLP:conf/icml/SchohnC00}.
 
- 
 
-%In our setting, this means that we should sample a program state right by the classifier and test the program 
+
+%In our setting, this means that we should sample a program state right by the classifier and test the program
 %with that state to label that feature vector so that the classifier would be improved.
 
 
-%Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}. 
-%At line 2, we obtain a classifier based on Algorithm~\ref{classify}. 
-%We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier; 
-%otherwise we apply selective sampling so that we can generate additional labeled samples for improving the classifier. 
-%In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample. 
-%Notice that in our setting, the most informative samples are those which are exactly on the lines and 
-%therefore can be obtained by solving an equation system. 
+%Algorithm~\ref{alg:active} presents details on how active learning is implemented in \textsc{Zilu}.
+%At line 2, we obtain a classifier based on Algorithm~\ref{classify}.
+%We compare the newly obtained classifier with the previous one at line 4, if they are identical, we return the classifier;
+%otherwise we apply selective sampling so that we can generate additional labeled samples for improving the classifier.
+%In particular, at line 5, we apply standard techniques~\cite{DBLP:conf/icml/SchohnC00} to select the most informative sample.
+%Notice that in our setting, the most informative samples are those which are exactly on the lines and
+%therefore can be obtained by solving an equation system.
 %At line 8, we test the program with the newly generated samples so as to label them accordingly.
 %After the above discussion, apparently the pre-requirement of selective sampling is there is a guess.
-%In our setting, %after learning an candidate, 
+%In our setting, %after learning an candidate,
 %which is usually a single polynomials or conjunction or \LL{disjunction?} of polynomials,
-As the solutions to boundary equation are the points lying on the boundary. 
+As the solutions to boundary equation are the points lying on the boundary.
 we do selective sampling by solving the equation system using \textbf{GSL}~\cite{gough2009gnu} in our setting.
 For example, if we get a candidate $\mathcal{C} = \{11-2\cdot x^2+2\cdot y>=0\}$,
 we do selective sampling in the following steps:
@@ -172,18 +169,18 @@ we do selective sampling in the following steps:
 \item[1)] Randomly choose the variable in the classifier. Here we take $x$ as picked variable.
 \item[2)] Generates values for any other variables based on uniform distribution over the range $\mathcal{R}$. For example, we assign $y$ to $12$.
 \item[3)] Solve the boundary equation after substituting the variables with their values. If there is no solution, go back to 1). For our example, we can get $x = \sqrt{35}/2 = 2.9580$.
-\item[4)] Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$. 
+\item[4)] Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item[5)] Roundoff the values of all the variables to meet the type requirement in the given program. Here we have $\{(x,y) \mapsto (3, 12)\}$.
 \end{itemize}
 
-In step 4, we add a small variance to variables because sometimes the points just lies on the boundary are very hard to tell their labels. 
+In step 4, we add a small variance to variables because sometimes the points just lies on the boundary are very hard to tell their labels.
 %\LL{this is however not clear how it is done.}
 %As a result, this technique is applied all along the learning process except the very beginning.
 
 \medskip\noindent
 \textbf{Counter-Example Sampling.}
 Counter-example sampling chooses samples lying in the difference zone between the invariant candidate and the actual invariant.
-%Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.  
+%Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.
 In our framework, when a invariant candidate fails to be validated in the verification stage,
 a counter-example, that can directly refute our invariant candidate, would be provided by constraint solvers.
 We pick the counter-example as samples to feed the given program in the next learning iteration.
@@ -194,27 +191,29 @@ Therefore, this technique is only applied between two learning iterations.
 %If it fails to validate, the constraint solver could provide us with counter-examples that can directly refute our invariant candidate.
 %And as a result, it is quite useful for the invariant candidate refinement in the next learning procedure.
 
-%\LL{This is oral language. 
+%\LL{This is oral language.
 %Meanwhile, I do not understand what you are trying to say here. }
-%As counter-example sampling technique sounds good, it seems this technique should be applied almost all the time, 
+%As counter-example sampling technique sounds good, it seems this technique should be applied almost all the time,
 %but the fact is it is applied only after failure of invariant candidate verification.
 %That is because applying concolic testing and constraint solving is a more time-consuming job than the other two sampling methods.
 
 % subsection sampling_approaches (end)
 
+For the example shown in Figure~\ref{fig:running:example:sampling}, if during random sampling, we only sample valuations in $Positve$ or $NP$ but never any in $Negative$, through active learning, we would converge to the half space separating $Positive$ and $NP$ (i.e., $x-y \geq 0$) but not discover the half space $x - y \leq 16$.
+
 \subsection {Loop Execution}
-With the initial states $\mathcal{S}$ obtained above, 
-we execute the program from the state $s$ in $\mathcal{S}$. 
-From program execution, 
+With the initial states $\mathcal{S}$ obtained above,
+we execute the program from the state $s$ in $\mathcal{S}$.
+From program execution,
 we can generate more program states and check their satisfiability to $Pre$ and $Post$.
 %In this step,
 %we execute the program from the initial state $s_0$, where $s_0 \in \mathcal{S}$ and $\mathcal{S}$ is obtained from the above technique.
-A trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$ in a loop program is called a loop trace, 
-if $s_0$ is the initial state before entering the loop, 
+A trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$ in a loop program is called a loop trace,
+if $s_0$ is the initial state before entering the loop,
 $s_i$ is the state just after executing loop $Body$ for $i$ times,
 and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$.
 
-We record the execution trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$ with the satisfaction to $Pre$ and $Post$.  
+We record the execution trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$ with the satisfaction to $Pre$ and $Post$.
 %\begin{itemize}
 %\item Trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$
 %\item $s_0 \models Pre$ or $s_0 \models \neg Pre$;
@@ -228,22 +227,22 @@ we could record a trace $\mathcal(t) = \langle (3, 12), (13, 15), (23, 18)\rangl
 \label{sub:labeling}
 
 %\LL{I feel the labeling and sampling described here are inaccurate.
-%Sampling should include all of the samples rather than only the initial inputs. 
+%Sampling should include all of the samples rather than only the initial inputs.
 %We can discuss later. }
-%With the samples $S$ obtained above, we execute the program with initial state $s$ in $S$. 
+%With the samples $S$ obtained above, we execute the program with initial state $s$ in $S$.
 %\LL{Here, the initial state is unclear. what is program state. }
 %From program execution, we can generate more program states and check their satisfiability to $Pre$ and $Post$.
-%In this step, we present the technique how we label them according to these information. 
+%In this step, we present the technique how we label them according to these information.
 
-To demonstrate the technique, a few symbols should be introduced first. 
+To demonstrate the technique, a few symbols should be introduced first.
 $Body(s)$, defined in Section~\ref{sec:introduction}, is the state which could be reached after executing $Body$ from state $s$.
 $Body^*(s)$ denotes the set of program states which could be reached after executing zero or more iterations of the loop starting from $s$.
-Furthermore, we write $s \multimap s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates. 
+Furthermore, we write $s \multimap s'$ to denote that starting with a program state $s$ would result in state $s'$ when the loop terminates.
 %\LL{I suggest use $\rightarrow$, $\rightarrow^*$ and $\multimap$. }
 %\LL{What is Trace, defined?}
 So if there is an execution trace $\langle s_0, s_1, ..., s_i, ..., s_n\rangle$
-%$Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
-%where $s_0$ is the initial state before entering the loop, 
+%$Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$,
+%where $s_0$ is the initial state before entering the loop,
 %$s_i$ is the state just after executing loop $Body$ for $i$ times,
 %and $s_n$ is the state satisfying $\neg B$ and thus the execution jumps out the loop $Body$,
 then we have
@@ -252,7 +251,7 @@ then we have
 \item $s_{i} \in Body^*(s_0)~~~~~~\forall i \in [0, \ldots, n]$.
 \item $s_{0} \multimap s_{n}$.
 \end{itemize}
-%We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$. 
+%We write $Body^*(S)$ to denote $\{s' | \exists s \in S \cdot s' \in Body^*(s)\}$.
 
 According to the satisfactory of the loop invariant,
 we category program states into two classes:
@@ -271,11 +270,11 @@ then all the states in $\mathcal{T}$ are positive states.
 \end{theorem}
 
 %\begin{proof}[Proof of the Main Theorem]
-From constraint~\ref{inv:pre}, for an invariant $Inv$, 
+From constraint~\ref{inv:pre}, for an invariant $Inv$,
 any state satisfying $Pre$ should also satisfies $Inv$.
 Therefore, $s_0$ is a postive state.
 
-From constraint~\ref{inv:loop}, $s_1$ is a positive state, as $s_0 \models Inv$ 
+From constraint~\ref{inv:loop}, $s_1$ is a positive state, as $s_0 \models Inv$
 and  $s_0 \models Cond$ (because $s_0 is not the last state in the trace$);
 then $s_i~~\forall i \in [0...n]$ is a positive state due to the induction.
 
@@ -288,7 +287,7 @@ Therefore, all the states in $\mathcal{T}$ are positive states. \hfill \qed
 If an execution trace $\mathcal{T} = \langle s_0, s_1, ..., s_n\rangle$ satisfies $s_0 \models \neg Pre$ and $s_n \models \neg Post$,
 then all the states in $\mathcal{T}$ are negative states.
 \end{theorem}
-From constraint~\ref{inv:post}, for an invariant $Inv$, 
+From constraint~\ref{inv:post}, for an invariant $Inv$,
 $s_n$ not satisfying $Post$ can infer $s_n \models \neg(Inv \wedge \neg Cond)$.
 As $s_n$ is the last state in trace $\mathcal{T}$, $s_n \models \neg Cond$, and thus $s_n \models \neg Inv$.
 Therefore, $s_n$ is a negative state.
@@ -324,15 +323,15 @@ From constraint~\ref{inv:loop}, we know this is true. \hfill \qed
 
 
 In total , we can categorize all the program traces
-% $Body^*(S)$ 
+% $Body^*(S)$
 started from Set $S$ into four sets according to the following table.
 In the Table~\ref{tab:labeling}
 $\mathcal{S}^\chi$ stands for counter-example trace;
 $\mathcal{S}^+$ stands for traces with all the positive states;
-$\mathcal{S}^-$ stands for traces with all the negative states; 
+$\mathcal{S}^-$ stands for traces with all the negative states;
 and $\mathcal{S}^\rightarrow$ stands for implication traces.
 
-%They can be judged according to Table~\ref{tab:labeling}: 
+%They can be judged according to Table~\ref{tab:labeling}:
 \begin{table}[htb]
 \centering
 \begin{tabular}[float]{|c|c|c|}
@@ -354,11 +353,11 @@ which will be shown in Section~\ref{sec:learning};
 Counter example traces can be used to validate program specification:
 our framework terminates execution immediately when it meets a counter example trace.
 Implication traces can be applied to validating a learned classifier,
-For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace 
-$\langle s_0, s_1, s_2\rangle$where 
+For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace
+$\langle s_0, s_1, s_2\rangle$where
 $$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big),$$
 we could refute this candidate instantly.
-For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$ 
+For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$
 we find this violates the above implication rules,
 indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
 
@@ -376,32 +375,32 @@ indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
 %They tell whether a state must satisfy the loop invariant or must not.
 %A positive state is a state that must satisfy the actual loop invariant,
 %while a negative state is a state that must not satisfy the invariant.
-%An implication pair is a pair of state, the latter one satisfying the invariant 
-%if the former one satisfies it. 
+%An implication pair is a pair of state, the latter one satisfying the invariant
+%if the former one satisfies it.
 %In this part, we demonstrate the rules to category a state according to its execution information.
-%\LL{I feel you do not need to put them as a section (I mean that it should not look like above). 
+%\LL{I feel you do not need to put them as a section (I mean that it should not look like above).
 %Say the positive states and the positive trace together.}
 
 
-%From constraint~\ref{inv:pre} we know, for an invariant $Inv$, 
-%any state satisfying $Pre$ should also satisfies $Inv$. 
-%Therefore, the state satisfying $Pre$ must be a positive state. 
+%From constraint~\ref{inv:pre} we know, for an invariant $Inv$,
+%any state satisfying $Pre$ should also satisfies $Inv$.
+%Therefore, the state satisfying $Pre$ must be a positive state.
 %\LL{Why do you want to say that it must be a positive state?}
 
-%\LL{The following is extremely hard to understand (grammar error). 
+%\LL{The following is extremely hard to understand (grammar error).
 %Give definition first, purpose later.}
 %The adjacent states $(s, t)$ appeared in a trace a pair of states is an implication pair,
 %because, according to the inductive property~\ref{inv:loop},
 %$(s \models Inv) \Rightarrow (t \models {Inv})$
 %if $t = Body(s)$ and $s \models Cond$.
-%On the contrary, for an invariant candidate $\mathcal{C}$, 
+%On the contrary, for an invariant candidate $\mathcal{C}$,
 %if there is an implication $(s, t)$ in which $(s \models \mathcal{C}) \wedge (t \models \neg \mathcal{C})$,
 %$\mathcal{C}$ is proved to be an invalid invariant.
 
 %Finally, a state satisfying $\neg{Cond} \wedge \neg{Post}$ must be a negative state.
 %Considering constraint~\ref{inv:post}, if a state $s \models \neg{Post}$,
 %then $s \models \neg(Inv \wedge \neg Cond)$.
-%In this situation $s \models \neg Cond$, then we can infer $s \models \neg Inv$. 
+%In this situation $s \models \neg Cond$, then we can infer $s \models \neg Inv$.
 
 %\medskip\noindent
 %\textbf{Positive Trace, Negative Trace, Implication Trace.}
@@ -410,39 +409,39 @@ indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
 %this part discusses the technique to label all the states in one trace at a time rather than just a single state.
 %Similar to the state labeling, a positive trace defines a trace with all positive states,
 %while a negative trace defines a trace with all negative states.
-%An implication trace is a trace in which, if one state is the positive state, 
+%An implication trace is a trace in which, if one state is the positive state,
 %all the states afterwards are positive states.
 %We state the regulation to determine the class of any given trace as follows.
 
-%For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$, 
+%For a trace $Trace\{s_0 \to s_1 \to ... \to s_i \to ... \to s_n\}$,
 %if $s_0 \models Pre$, and $s_n \models Post$,
 %then this is a positive trace, meaning $\forall s_i \models Inv$.
 %Because if state $s_0$ satisfy $Pre$,
 %$s_0$ is a positive state that must satisfy $Inv$. %, according to equation 1.
 %Considering constraint~\ref{inv:loop}, $s_1$ is also positive states.
-%Then all the states in $Trace\{s_0 \to s_1 \to ...\to s_i, ... \to s_n\}$ are positive states inductively. 
+%Then all the states in $Trace\{s_0 \to s_1 \to ...\to s_i, ... \to s_n\}$ are positive states inductively.
 %So now we can get a positive trace  $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$.
 
-%On the contrary, for a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$, 
+%On the contrary, for a trace $Trace\{s_0 \to s_1 \to ...\to s_i \to ... \to s_n\}$,
 %if $s_0 \models \neg Pre$, and $s_n \models \neg Post$,
-%we can infer this is a negative trace in the similar way. 
+%we can infer this is a negative trace in the similar way.
 
 %The third case is a trace that begins with a state $s_0 \models Pre$ and ends with a state $s_n \models \neg Post$,
 %\LL{obviously}, this is a counter-example to disprove the program and its specification.
-%As a result, if $\textsc{Zilu}$ meets any counter-example trace in the testing, 
-%the execution exits immediately with a failure message indicating a bug in the program. 
+%As a result, if $\textsc{Zilu}$ meets any counter-example trace in the testing,
+%the execution exits immediately with a failure message indicating a bug in the program.
 
 %The last case is a trace begin with a state $s_0 \models \neg Pre$ but ends with a state $s_n \models Post$.
 %Under this condition, we could not determine whether $s_0$ and $s_n$ satisfy invariants or not,
 %not to mention other states $\{s_1, s_2, ..., s_{n-1}\}$.
 %Then this trace belongs to the implication trace set, meaning if $s_i \models Inv$, then $s_j \models Inv$ $\forall j \ge i$.
-%Implication traces can not be used to learn classifiers directly, 
+%Implication traces can not be used to learn classifiers directly,
 %however, they have power in validating a candidate.
-%For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace 
-%$\langle s_0, s_1, s_2\rangle$where 
+%For instance, providing a candidate $\mathcal{C} = x - y \ge 0$ and an implication trace
+%$\langle s_0, s_1, s_2\rangle$where
 %$$s_0 = \big(x \mapsto 2, y \mapsto 1\big),  s_1 = \big(x \mapsto 2, y \mapsto 2\big),  s_2 = \big(x \mapsto 2, y \mapsto 3\big),$$
 %we could refute this candidate instantly.
-%For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$ 
+%For using $\mathcal{C}$ to label this whole trace as $$s_0 \mapsto +,  s_1 \mapsto +,  s_2 \mapsto -,$$
 %we find this violates the above implication rules,
 %indicating the current candidate $\mathcal{C}$ must be not an actual invariant.
 
