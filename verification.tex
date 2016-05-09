@@ -69,28 +69,28 @@ with left part original program is shown in Figure.~\ref{fig:klee:program:in}.
 right part a converted loop-free program for being further proceeded by KLEE.
 
 \begin{figure}[!h]
-\begin{subfigure}{0.19\textwidth}
+\begin{subfigure}{0.48\textwidth}
     \centering
     %\vspace{-0.1cm}
     {\scriptsize\begin{verbatim}
-void P(int x, int y) {
-    assume(x < y);
-    while (x < y) {
-        if (x < 0) x = x+7;
-        else x = x+10;
+    void P(int x, int y) {
+        assume(x < y);
+        while (x < y) {
+            if (x < 0) x = x+7;
+            else x = x+10;
     
-        if (y < 0) y = y-10;
-        else y = y+3; 
+            if (y < 0) y = y-10;
+            else y = y+3; 
+        }
+        assert(x >= y
+            && x <= y+16);
     }
-    assert(x >= y
-        && x <= y+16);
-}
     \end{verbatim}}
     \vspace{-5mm}
     \caption{Loop Program}
     \label{fig:klee:program:in}
 \end{subfigure}%
-\begin{subfigure}{.19\textwidth}
+\begin{subfigure}{.48\textwidth}
       \centering
       \vspace{-0.1cm}
         {\scriptsize\begin{verbatim}
