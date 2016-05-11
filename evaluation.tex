@@ -2,210 +2,215 @@
 
 \section{Evaluations} % (fold)
 \label{sec:evaluations}
+We have implement our invariant inference framework in a tool called \textsc{Zilu}. \textsc{Zilu} is written using a combination of C++ as well as shell codes (for invoking external tools).
+\textsc{Zilu} uses GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and uses LibSVM~\cite{chang2011libsvm} as a primitive classification engine for learning classifier based on SVM. For invariant verification, we reuse a large part of the KLEE project~\cite{cadar2008klee} to generate verification conditions for C programs and use Z3~\cite{de2008z3} for checking satisfiability of formula (4), (5) and (6). We remark KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
+
+Our test subjects include a set of benchmark programs which we gather from previous publications on loop invariant generation~\cite{???} as well as benchmark programs from the software verification competition repository~\cite{???}. Note that these benchmark programs often contain non-deterministic choice in the loop, which by our assumption is not allowed. We thus transform the programs so that free boolean-type variables are introduced to replace the non-deterministic choice. We remark that the assumption of no non-determinism is less a problem for verification programs in practice as they are often deterministic. These benchmark programs are made non-deterministic often as a way of abstracting away certain complicated (e.g., an external function call) part of the program which is irrelevant to proving/disproving the Hoare triple.
+%In our experimental evaluation,
+%we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks
+%in the following form, where $\mathit{Body}$ can have nested loops and conditional choices.
+%\[
+%   \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+%\]
+%% Do not apply this to `add' more content to the paper.
+%% It lefts lots of empty space which did the contrary thing.
+%% \begin{align*}
+%% &Pre&\\
+%% &while (Cond) \{&\\
+%% &  \quad Body &\\
+%% &\} &\\
+%% &Post &
+%% \end{align*}
+%\LL{Introduce the sources of the benchmark.}
+All benchmarks are available from~\cite{zilu}.
+
+The parameters chosen in our experimental evaluation are as follows.
+For random sampling, we generate random values of all input variables of the program from their default ranges. Be default, we generate XXX random samples. 
+%which would be enlarged if we can not find samples in a few tries.
+%Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
+During classification, the parameter $C$ which is the preference between avoiding misclassifying each training example and enlarging decision boundary,
+and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers. Each invocation of the SVM classification engine is set to time out in XXX seconds. The maximum dimension for learning polynomial classifiers is set to be 3. For invariant verification, we encode integer-type variables in the programs as integers in Z3. 
 
 
-\begin{table*}[t]
-    \begin{center}
-    % \begin{minipage}{\textwidth}
-    % \begin{adjustwidth}{-1in}{-1in}
-    \begin{center}
-    \begin{adjustbox}{max width=1\textwidth}
-    \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
-        \hline\hline
-        Benchmark 
-            & $\sharp$Samples & $\sharp$Invariants & $\sharp$Iterations 
-            & $\sharp$Traces & $\sharp$Variables
-            & Time & Invariant Type 
-            & Interproc & CPAChecker 
-            \\
-        \hline
-        Linear 1
-            & 196 & 4 & 1 
-            & 1 & 1
-            & 3.31s & Linear 
-            & 0.01s & 3.42s
-            \\
-        \hline
-        Linear 2
-            & 3158 & 7 & 1 
-            & 1 & 2
-            & 9.86s & Linear 
-            & 0.01s & 3.29s
-            \\
-        \hline
-        Linear 3
-            & 11102 & 6 & 1
-            & 1 & 3
-            & 40.24s & Linear 
-            & 0.01s & 3.50s
-            \\
-        \hline
-        Linear 4
-            & 1143 & 10 & 1
-            & 9 & 2
-            & 12.54s & Linear 
-            & 0.01s & 3.76s
-            \\
-        \hline
-        Linear 5
-            & 918 & 8 & 2 
-            & 3 & 2
-            & 14.47s & Linear 
-            & Error & 3.66s
-            \\
-        \hline
-        Poly 1
-            & 64 & 7 & 2
-            & 1 & 1 
-            & 10.51s & Polynomial 
-            & Unknown & Unknown 
-            \\
-        \hline
-        Poly 2 
-            & 32711 & 85 & 7 
-            & 2 & 2
-            & 23m43.1s & Polynomial
-            & Unknown & Unknown 
-            \\
-        \hline
-        Poly 3 
-            & 272 & 17 & 4 
-            & 3 & 1 
-            & 15.82s & Polynomial 
-            & 0.01s & 3.31s 
-            \\
-        \hline
-        Poly 4 
-            & 2287 & 112 & 9
-            & 2 & 2
-            & 13m43.7s & Polynomial
-            & Unknown & Unknown 
-            \\
-        \hline
-        Conjunction 1
-            & 21247 & 81 & 1 
-            & 3 & 2 
-            & 20m41.35s & Conjunction
-            & 0.01s & 3.16s
-            \\
-        \hline
-    \end{tabular}
-    \end{adjustbox}
-    \end{center}
-    % \end{adjustwidth}
-    % \end{minipage}
-    \end{center}
-    \caption{Experiment Results}
-    \label{tab:experiments}
-\end{table*}
+%Considering the differences between machine learning problem and our setting,
+%\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
+%\begin{itemize}
+%\item Convert \textsc{Svm} model to an explicit classifier.
+%The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits its own model
+%which can be used to do prediction on the given data.
+%%This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
+%However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
+%(This is also why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
+%considering converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
+%
+%\item As \textsc{Zilu} treasures classification accuracy on the training dataset% than anything else,
+%before applying primitive $\textsc{Svm}$ technique, the parameters
+%(mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
+%%different from $\mathcal{C}$ used as loop invariant candidate in our context)
+%should be carefully tuned to learn a perfect classifier which perform well on the training points.
+%
+%\item Validating the learned classifier.
+%Checking the classification correctness of the learned classifier
+%on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting needs to ensure the learned classifier is a perfect one.
+%\textsc{Zilu} also takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
+%\end{itemize}
 
-In this work, we implement our invariant inference framework into a tool called \textsc{Zilu}, 
-written in C++ and shell code. 
-\textsc{Zilu} uses GSL~\cite{gough2009gnu} to solve equation system which is used in selective sampling, 
-LibSVM~\cite{chang2011libsvm}, which source code is embeded, as primitive classification engine for learning classifier, 
-KLEE~\cite{cadar2008klee} as a symbolic execution tool to emit path constraints 
-and Z3~\cite{de2008z3} solver for constraint solving and verification. 
-In our experimental evaluation, 
-we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks 
-in the following form, where $\mathit{Body}$ can have nested loops and conditional choices. 
+\begin{table}[t]
+\scriptsize
+\centering
+\caption{Statistics on TLV abstracting the classes, where N.A. stands for not available}
+\begin{tabular}{l c | c c c c | c c c c | c c }
+\cline{3-10}
+& &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{4}{c|}{\textsc{Zilu} without Selective} & & \\
+\hline
+\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
+\hline % inserts single horizontal line
+\multicolumn{1}{|c|}{linear1}         & & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{linear2}         & &  &  &  &   &  & & &  & &  \\
+\hline
+\end{tabular}
+\label{tbl:stats}
+\end{table}
+
+%\begin{table*}[t]
+%    \begin{center}
+%    % \begin{minipage}{\textwidth}
+%    % \begin{adjustwidth}{-1in}{-1in}
+%    \begin{center}
+%    \begin{adjustbox}{max width=1\textwidth}
+%    \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
+%        \hline\hline
+%        Benchmark
+%            & $\sharp$Random Samples & $\sharp$Selective Samples & $\sharp$Iterations
+%            & $\sharp$Traces & $\sharp$Variables
+%            & Time & Invariant Type
+%            & Interproc & CPAChecker
+%            \\
+%        \hline
+%        Linear 1
+%            & 196 & 4 & 1
+%            & 1 & 1
+%            & 3.31s & Linear
+%            & 0.01s & 3.42s
+%            \\
+%        \hline
+%        Linear 2
+%            & 3158 & 7 & 1
+%            & 1 & 2
+%            & 9.86s & Linear
+%            & 0.01s & 3.29s
+%            \\
+%        \hline
+%        Linear 3
+%            & 11102 & 6 & 1
+%            & 1 & 3
+%            & 40.24s & Linear
+%            & 0.01s & 3.50s
+%            \\
+%        \hline
+%        Linear 4
+%            & 1143 & 10 & 1
+%            & 9 & 2
+%            & 12.54s & Linear
+%            & 0.01s & 3.76s
+%            \\
+%        \hline
+%        Linear 5
+%            & 918 & 8 & 2
+%            & 3 & 2
+%            & 14.47s & Linear
+%            & Error & 3.66s
+%            \\
+%        \hline
+%        Poly 1
+%            & 64 & 7 & 2
+%            & 1 & 1
+%            & 10.51s & Polynomial
+%            & Unknown & Unknown
+%            \\
+%        \hline
+%        Poly 2
+%            & 32711 & 85 & 7
+%            & 2 & 2
+%            & 23m43.1s & Polynomial
+%            & Unknown & Unknown
+%            \\
+%        \hline
+%        Poly 3
+%            & 272 & 17 & 4
+%            & 3 & 1
+%            & 15.82s & Polynomial
+%            & 0.01s & 3.31s
+%            \\
+%        \hline
+%        Poly 4
+%            & 2287 & 112 & 9
+%            & 2 & 2
+%            & 13m43.7s & Polynomial
+%            & Unknown & Unknown
+%            \\
+%        \hline
+%        Conjunction 1
+%            & 21247 & 81 & 1
+%            & 3 & 2
+%            & 20m41.35s & Conjunction
+%            & 0.01s & 3.16s
+%            \\
+%        \hline
+%    \end{tabular}
+%    \end{adjustbox}
+%    \end{center}
+%    % \end{adjustwidth}
+%    % \end{minipage}
+%    \end{center}
+%    \caption{Experiment Results}
+%    \label{tab:experiments}
+%\end{table*}
+
+We compared \textsc{Zilu} with two state-of-the-art invariant inference tools: Interproc~\cite{jeannet2010interproc} and CPAChecker~\cite{beyer2011cpachecker}. We remark many other tools have been reported~\cite{}, most of which are not maintained any more. The comparison between \textsc{Zilu} and Interproc or CPAChecker should be taken with a grain of salt as the methods for invariant generation are very different. Interproc is based on abstract interpretation. In the experiment, Interproc uses its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program. We thus can manually check their correctness and compare them with the invariants generated by \textsc{Zilu}. On the other hand, CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool based on the framework of configurable program analysis~\cite{beyer2007configurable}. In the experiment, CPAChecker is configured to generate loop invariants to prove the same Hoare triple. In addition, we compare the performance of \textsc{Zilu} with or without active learning in order to show the relevance of active learning and selective sampling.
+
+The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x86\_64 Ubuntu 14.04 (kernel 3.13.0-85-generic) with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3.
+The first column shows which a name of the benchmark program. The second shows the type of invariant required for proving the Hoare triple. The next four columns present details on \textsc{Zilu}, i.e., the number random samples, selective samples, samples through verification and the execution time. The next four present the corresponding statistics running \textsc{Zilu} without selective sampling. The last two columns show the execution time of the two comparing tools.  
+%%\LL{I need more information on the percentage of the samples. }
+%`$\sharp$Invariants' stands the numbers of invariants generated by SVM,
+%and `$\sharp$Iterations' represents the number of invariant candidates.
+%Notice that an invariant generated by SVM becomes an invariant candidate
+%when it converges to two previously generated invariants from SVM in one iteration process.
+%`$\sharp$Traces' represents the number of loop body traces produced by KLEE~\cite{cadar2008klee}.
+%and `$\sharp$Variables' represents the number of program variables.
+% In general, when numbers of traces and variables increase in a program,
+% the invariant inference difficulty increases.
+%The seventh column gives the time used for the invariant generation
+%and the eighth column gives the invariant type of the generated invariant.
+We remark that since \textsc{Zilu} relies on generating random numbers, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
+
+As can be seen from Table~\ref{tab:experiments},
+some of the experiments take much longer time comparing with others,
+with high numbers of samples, invariants, iterations.
+The reason behind this is
+that some variables are missing in the constraints of the loop invariant,
+e.g., `Poly 2', `Poly 4' and `Conjunction 1'.
+For instance, in the `Poly 1' case, the loop invariant is `$x^2 \le y^2$'.
+However, the general form of a 2-order polynomial with 2 variables
+is written as
 \[
-   \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
+    a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \le 0.
 \]
-% Do not apply this to `add' more content to the paper. 
-% It lefts lots of empty space which did the contrary thing. 
-% \begin{align*}
-% &Pre&\\
-% &while (Cond) \{&\\
-% &  \quad Body &\\
-% &\} &\\
-% &Post &
-% \end{align*}
-\LL{Introduce the sources of the benchmark.}
-All benchmarks are available from~\cite{zilu}. 
+Hence, we need to infer $c = d = e = f = 0$
+which causes the difficulty of invariant inference.
 
-The parameters chosen in our experimental evaluation can be elaborated as follows. 
-In the \emph{Sampling} stage, 
-the values of all of the program input variables in the random sampling 
-and the chosen variables in the selective sampling 
-follow the universal distribution over the range of $\mathcal{R} = [-200, 200]$ initially,
-which would be enlarged if we can not find samples in a few tries.
-Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-In the \emph{Classification} stage, 
-the parameter $C$, 
-which tells the preference between avoiding misclassifying each training example and enlarging decision boundary,
-and the inner iteration 
-for $\textsc{Svm}$ learning are set to their maximum value 
-in order to generate a perfect classifier which works well on the training set. 
-In the \emph{Verification} stage, 
-the Z3 solver uses `integer' as the type of the program variables. 
-
-To evaluate the effectiveness of \textsc{Zilu}, 
-we compared it with two available state-of-the-art invariant inference tools: 
-Interproc~\cite{jeannet2010interproc} and CPAChecker~\cite{beyer2011cpachecker}, 
-which correspond to two different invariant generation methods. 
-Interproc is based on abstract interpretation. 
-In the experiment, Interproc uses its most expressive abstract domain, i.e., 
-the reduced product of polyhedra and linear congruences abstraction. 
-Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program. 
-We thus can manually check their correctness
-and compare them with the invariants generated by our tool \textsc{Zilu}. 
-On the other hand, CPAChecker (formerly named after BLAST~\cite{henzinger2003software}) is a software verification tool 
-based on the framework of configurable program analysis~\cite{beyer2007configurable}. 
-In the experiment, we ask it to generate loop invariants for the program predicate abstraction. 
-Since CPAChecker functions by proving the program correctness, 
-we insert an error branch after each loop program and check for the reachability of the error. 
-
-We present the experiment results in Table~\ref{tab:experiments}. 
-Since our invariant reference method has random factors introduced by the sampling sources, 
-the presented results are those with median running time in $9$ times of invariant reference process. 
-All of the experiments are conducted using x86\_64 Ubuntu 14.04 (kernel 3.13.0-85-generic) 
-with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3. 
-In Table~\ref{tab:experiments}, the second column to the seventh column correspond to 
-invariant generation details from \textsc{Zilu}. 
-`$\sharp$Samples' represents the number of samples generated in the experiment, 
-including those from random sampling, selective sampling, and counter-example sampling. 
-In the first sampling stage, random sampling is the only approach applied.
-In the afterwards sampling, the ratio of number of samples generated by random sampling method to selective sampling method is 4:1.
-And counter-example sampling produce much fewer states and it is only applied after verification failure. 
-%\LL{I need more information on the percentage of the samples. }
-`$\sharp$Invariants' stands the numbers of invariants generated by SVM, 
-and `$\sharp$Iterations' represents the number of invariant candidates. 
-Notice that an invariant generated by SVM becomes an invariant candidate 
-when it converges to two previously generated invariants from SVM in one iteration process. 
-`$\sharp$Traces' represents the number of loop body traces produced by KLEE~\cite{cadar2008klee}. 
-and `$\sharp$Variables' represents the number of program variables. 
-% In general, when numbers of traces and variables increase in a program, 
-% the invariant inference difficulty increases. 
-The seventh column gives the time used for the invariant generation 
-and the eighth column gives the invariant type of the generated invariant. 
-
-As can be seen from Table~\ref{tab:experiments}, 
-some of the experiments take much longer time comparing with others, 
-with high numbers of samples, invariants, iterations. 
-The reason behind this is 
-that some variables are missing in the constraints of the loop invariant, 
-e.g., `Poly 2', `Poly 4' and `Conjunction 1'.  
-For instance, in the `Poly 1' case, the loop invariant is `$x^2 \le y^2$'. 
-However, the general form of a 2-order polynomial with 2 variables 
-is written as 
-\[
-    a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \le 0. 
-\] 
-Hence, we need to infer $c = d = e = f = 0$ 
-which causes the difficulty of invariant inference. 
-
-The last two columns show the analysis results from Interproc and CPAChecker. 
-As can be seen, Interproc is extremely fast. 
-However, the invariant given by Interproc can be incorrect, 
-which can be demonstrated by the running example 
-that we introduced in Section~\ref{sec:introduction}. 
-In the running example, since we have $x < y$ constrained by the while loop condition, 
-it is thus impossible to execute the trace where $(x \ge 0) \land (y < 0)$. 
-However, Interproc outputs the loop invariant corresponding to this execution trace, 
-because the invariants in Interproc are global constraints 
-without considering their generation paths and conditions. 
-Both of Interproc and CPAChecker are faster than our tool \textsc{Zilu}. 
-On the other hand, \textsc{Zilu} can automatically generate polynomial loop invariants 
-which cannot be handled by Interproc and CPAChecker. 
+The last two columns show the analysis results from Interproc and CPAChecker.
+As can be seen, Interproc is extremely fast.
+However, the invariant given by Interproc can be incorrect,
+which can be demonstrated by the running example
+that we introduced in Section~\ref{sec:introduction}.
+In the running example, since we have $x < y$ constrained by the while loop condition,
+it is thus impossible to execute the trace where $(x \ge 0) \land (y < 0)$.
+However, Interproc outputs the loop invariant corresponding to this execution trace,
+because the invariants in Interproc are global constraints
+without considering their generation paths and conditions.
+Both of Interproc and CPAChecker are faster than our tool \textsc{Zilu}.
+On the other hand, \textsc{Zilu} can automatically generate polynomial loop invariants
+which cannot be handled by Interproc and CPAChecker.
 
 % section evaluations (end)

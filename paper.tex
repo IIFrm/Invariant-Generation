@@ -76,14 +76,14 @@ Singapore University of Technology and Design \\
 \maketitle
 
 \begin{abstract}
-Loop invariant generation is one of the fundamental problems in program analysis and verification. In this work, we propose a framework for automatic loop invariant generation through iterations of active learning and checking. Given a Hoare triple of a program containing a loop, we start with random sampling of program states in the loop at runtime. We then categorize the program states based on whether they satisfy the pre-condition and/or post-condition. Next, machine learning techniques (e.g., SVM with kernel methods) are employed to generate candidate loop invariants. The quality of the generated candidates are however limited by the sampled program states. We automatically improve the candidates through active learning (e.g., selective sampling). Only after the candidate invariants cannot be further improved through active learning, we employ verification techniques to check whether the invariants can be used to prove the Hoare triple. If it is not, the counter-examples are used to enrich the sampled program states and we repeat the above process again. We develop a prototype implementation and apply it to verify benchmark programs including those from the software verification competition.
+Loop invariant generation is important in program analysis and verification. In this work, we propose a framework for automatic loop invariant generation through iterations of active learning and verification. Given a Hoare triple of a program containing a loop, we start with random sampling of program states in the loop at runtime. We then categorize the program states based on whether they satisfy the pre-condition and/or post-condition. Next, machine learning techniques are employed to generate candidate loop invariants. The quality of the generated candidates are however limited by the samples which we obtain. We automatically improve the candidates through active learning. Only after the candidate invariants cannot be further improved through active learning, we employ verification techniques to check whether the invariants can be used to prove the Hoare triple. If it is not, the counter-examples are used to enrich the samples and we repeat the above process again. We develop a prototype implementation and apply it to verify a set of benchmark programs.
 \end{abstract}
 
 \input{introduction.tex}
 % \input{example.tex}
 \input{sampling.tex}
 \input{classification.tex}
-\input{verification.tex}
+%\input{verification.tex}
 \input{evaluation.tex}
 \input{related.tex}
 \input{conclusion.tex}

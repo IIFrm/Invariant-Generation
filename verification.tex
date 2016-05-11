@@ -1,49 +1,50 @@
 %!TEX root = paper.tex
 
 \section{Verification} % (fold)
-\label{sec:verification}
+
+
 In this section, we present the technique to verify the given program with the learnt candidate
 and thus prove the candidate is a real loop invariant.
 Otherwise, a counter-example will be provided.
 % from which can drive the new learning attempt.
 %From the last step, $\textsc{Zilu}$ has got a predicate which does not only classify all the samples perfectly but get converged.
 %But this still can not guarantee that predicate is an actual invariant due to the sampling bias compared to the real states distribution of the given program.
-%For example, if there is a branch in loop body such as $$if (x == 159) \cdots.$$ 
+%For example, if there is a branch in loop body such as $$if (x == 159) \cdots.$$
 %our samples would hardly cover this branches except we do sampling amazing right to $(x\mapsto 159)$.
 %So we should check all the branches whether our test
 %To handle this problem, we apply program verification as the last security checkpoint on these ``bad guys''.
-%he last security checkpoint on these ``bad guys'' is verification. 
+%he last security checkpoint on these ``bad guys'' is verification.
 Mathematically, having a learnt predicate $\mathcal{C}$, we verify whether it is a valid loop invariant through
-checking the satisfiability of the three constraints (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post}) 
+checking the satisfiability of the three constraints (\ref{inv:pre}), (\ref{inv:loop}) and (\ref{inv:post})
 using state-of-the-art tools from symbolic execution and constraint solving communities.
 %In addition, we separated this part as a standalone tool for loop invariant verification.
 
 %\LL{Make clear references to the example, rather than ask the readers to think and guess.}
-In our framework, to verify constraint (\ref{inv:pre}) and (\ref{inv:post}), 
-we submit constraints $Pre \Rightarrow \mathcal{C}$ 
+In our framework, to verify constraint (\ref{inv:pre}) and (\ref{inv:post}),
+we submit constraints $Pre \Rightarrow \mathcal{C}$
 and $\neg {Cond} \wedge \mathcal{C} \Rightarrow Post$
 to Z3~\cite{de2008z3} solver for checking satisfiability.
 For example, if we get a predicate $\mathcal{C} = \{33-2*x+2*y>=0\}$
-for the loop example in the introduction part, 
-we submit 
+for the loop example in the introduction part,
+we submit
 $$(x<y) \Rightarrow (33-2*x+2*y>=0)$$
-to check constraint (1), and 
+to check constraint (1), and
 $$\big(\neg(x<y) \wedge (33-2\cdot x+2\cdot y>=0)\big) \Rightarrow ((x >= y) \wedge (x <= y + 16))$$
 to check constraint (3).
 
 For checking the inductive property, which is formulated as constraint~\ref{inv:loop},
 its complexity depends on the $Body$'s computational complexity.
-When the $Body$ contains numbers of lines of code, especially with branches, 
+When the $Body$ contains numbers of lines of code, especially with branches,
 it is very hard to encode them into a constraint manually.
 %not to say verifying each of them.
 %So tools from symbolic execution community are needed to help us finding these constraints.
-%\LL{Do not used `community'. 
-%Just say, 
-So we adopt symbolic execution tools to execute the program loop body 
-and check the satisfaction of the property. 
-%(I think symbolic testing is still different from concolic testing, 
+%\LL{Do not used `community'.
+%Just say,
+So we adopt symbolic execution tools to execute the program loop body
+and check the satisfaction of the property.
+%(I think symbolic testing is still different from concolic testing,
 %so you may consider say something about it.)}
-Otherwise, our technique would limit its power to learn only simple and trivial programs. 
+Otherwise, our technique would limit its power to learn only simple and trivial programs.
 In $\textsc{Zilu}$, it takes KLEE~\cite{cadar2008klee} as a symbolic execution tool to get path constraints.
 %and Z3 solver as a representative to verify the learned predicate.
 
@@ -62,7 +63,7 @@ In our setting, only specific paths which can lead to the assertion failure are 
 So we get a modified version of KLEE by adding a new native method call
 which can trigger KLEE to emit all the execution paths that can be reached at the given program location.
 
-For example, when \textsc{Zilu} checks constraint~\ref{inv:loop}, 
+For example, when \textsc{Zilu} checks constraint~\ref{inv:loop},
 it first takes $Body$ and substitute other elements in the original program with the elements in constraint~\ref{inv:loop}.
 Figure~\ref{fig:klee:program} shows this procedure,
 with left part original program is shown in Figure.~\ref{fig:klee:program:in}.
@@ -78,9 +79,9 @@ void P(int x, int y) {
     while (x < y) {
         if (x < 0) x = x+7;
         else x = x+10;
-    
+
         if (y < 0) y = y-10;
-        else y = y+3; 
+        else y = y+3;
     }
     assert(x >= y
         && x <= y+16);
@@ -100,7 +101,7 @@ void P(int x, int y) {
         {
             if (x < 0) x = x+7; //....1
             else x = x+10; //.........2
-    
+
             if (y < 0) y = y-10; //...3
             else y = y+3; //..........4
         }
@@ -118,7 +119,7 @@ void P(int x, int y) {
 
 \LL{Same here.}
 Several path constraints are provided as follows after the program is executed by KLEE.
-(As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$, 
+(As $\alpha \Rightarrow \beta \Longleftrightarrow \neg \big(\alpha \wedge \beta\big)$,
 KLEE returns constraints with conjunctive forms, instead of inference rules.)
 The listed constraints corresponds to the execution path in the program as expected:
 the first item encodes the execution path that takes $branch2 \to branch4$;
@@ -141,16 +142,16 @@ the last item encodes the execution path that takes $branch1 \to branch3$.
 
 %\LL{Say we adopt SMT solvers to solve our problem.}
 We adopt Satisfiability Modulo Theories(SMT) \cite{barrett2009satisfiability} solvers to solve the obtained constraints
-%The state-of-the-art SMT ()\cite{barrett2009satisfiability}  solvers can be used to 
-Generally, SMT solver check the satisfiability of logical formulas over one or more theories. 
+%The state-of-the-art SMT ()\cite{barrett2009satisfiability}  solvers can be used to
+Generally, SMT solver check the satisfiability of logical formulas over one or more theories.
 Among all these solvers, Z3\cite{de2008z3}, from Microsoft Research, is a high-performance theorem prover which is both sound and complete.
 
-So in the implementation, $\textsc{Zilu}$ applies Z3 solver to do the constraints solving for the invariant validation task. 
+So in the implementation, $\textsc{Zilu}$ applies Z3 solver to do the constraints solving for the invariant validation task.
 It submits the constraints got from inference rules (\ref{inv:pre}) and (\ref{inv:post}) or path contraints returned by KLEE to Z3 solver.
-If all of them passes, we successfully get a valid invariant and also verify the program. 
-Otherwise, if any of them is violated, the counter-example obtained is added to the set of samples $\mathcal{S}$, 
+If all of them passes, we successfully get a valid invariant and also verify the program.
+Otherwise, if any of them is violated, the counter-example obtained is added to the set of samples $\mathcal{S}$,
 %then \textsc{Zilu} starts a new learning iteration from counter-example sampling (Section ~\ref{sec:sampling}).
-which is then tested, categorized, used (as counter-example sampling in Section ~\ref{sec:sampling}) for active learning accordingly 
+which is then tested, categorized, used (as counter-example sampling in Section ~\ref{sec:sampling}) for active learning accordingly
 in next iteration to help refine our invariant candidate.
 
 %For example, if an invariant candidate $\mathcal{C} = \{33-2*x+2*y >= 0\}$
@@ -159,9 +160,9 @@ For the loop example, $\textsc{Zilu}$ uses Z3 solver to check all the constraint
 and finds all of them passes, and thus we find a valid loop invariant and have proved the correctness of the loop program.
 
 If the learned predicate is not an actual invariant, i.e. $\mathcal{C} = \{11-2*x+2*y>=0\}$,
-after getting the constraints, similar as the constraints in the last part except substituting all the number 33 with number 11, 
+after getting the constraints, similar as the constraints in the last part except substituting all the number 33 with number 11,
 Z3 solver provides a counter-example, i.e. $s^{\chi} = (x \mapsto 1, y \mapsto 0)$, after solving.
-Apparently, $s^{\chi}$ contradicts the inductive property of loop invariants (constraints~\ref{inv:loop}), 
+Apparently, $s^{\chi}$ contradicts the inductive property of loop invariants (constraints~\ref{inv:loop}),
 and then can be used to restart learning in the next iteration, until finding a valid loop invariant or disprove the program.
 
 
@@ -175,8 +176,8 @@ and then can be used to restart learning in the next iteration, until finding a 
 %\item $O$ classifies states in $N$ and those in $P \cup NP$.
 %\item $OU$ classifies states in $P$ and $N$;
 %\end{itemize}
-%Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$); 
-%$O$ would be an over-approximation of $Inv$ (by assuming states in $NP$ does satisfy $Inv$); 
+%Intuitively, $U$ would be an under-approximation of $Inv$ (by assuming states in $NP$ does not satisfy $Inv$);
+%$O$ would be an over-approximation of $Inv$ (by assuming states in $NP$ does satisfy $Inv$);
 %and $OU$ would be an safe-approximation of $Inv$ (by using states which we are certain whether they are in $Inv$ or not).
 
 % section verification (end)
