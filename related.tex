@@ -1,6 +1,6 @@
 %!TEX root = paper.tex
 
-\section{Related Work} % (fold)
+\section{Related Works} % (fold)
 \label{sec:related}
 
 % \begin{table}
@@ -39,11 +39,12 @@ Abductive Inference~\cite{isil2013inductive}.
 In this section, we compare them with our data-driven active learning approach. 
 
 On one hand, invariant inference methods based on Abstract Interpretation and Constraint Synthesis 
-tend to generate all possible invariants regardless of 
+tend to generate all possible invariants~\cite{mine2006octagon,vincent2009subpolyhedra,ashutosh2009invgen} regardless of 
 whether they are useful to prove the program correctness or not. 
-Hence, the invariants inferred by them can be complex and error-prone for proving the program correctness. 
+Hence, the invariants inferred by them can be too complex to generate 
+and thus they fail to prove the program correctness. 
 On the other hand, other methods based on CEGAR, Interpolation and Abduction 
-only generate those related to the program verification. 
+only generate those related to the program verification~\cite{isil2013inductive}. 
 Thus, they may miss some critical and necessary invariants for the program verification. 
 Our approach combines their strengths: 
 we treat the program as a black box 
@@ -57,9 +58,11 @@ our active learning approach adopts an iterative refinement scheme.
 After generating the invariant, we check its correctness and refine it 
 based on various new information (e.g., counter-examples, new samples) 
 if it cannot prove the program correctness. 
-Different from all existing refinement approaches, 
-our method is driven by data samples rather than syntactic or semantic clues. 
-Hence, it is more flexible and extensible to capture new types of invariants. 
+Different from most of the existing refinement approaches, 
+our method is driven by data samples 
+rather than syntactic~\cite{cormac2001houdini} or semantic~\cite{ashutosh2009invgen,isil2013inductive} clues. 
+Hence, it is more flexible and extensible to capture new types of invariants, 
+and it is platform- and language-independent. 
 Based on the needs in practice, under-approximation or over-approximation 
 can also be applied to the data samples with ease. 
 
