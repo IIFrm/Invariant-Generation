@@ -1,3 +1,66 @@
 %!TEX root = paper.tex
 
-\section{Related Work} \label{sec:related}
+\section{Related Work} % (fold)
+\label{sec:related}
+
+% \begin{table}
+%     \begin{center}
+%     \begin{tabular}{| l | c | c | l |}
+%         \hline
+%         Name & Inference Strategy & Inference Source \\
+%         \hline
+%         ABS & Eager & \\
+%         \hline
+%         CONS & Eager & \\
+%         \hline
+%         CEGAR & Lazy & Counterexample \\
+%         \hline
+%         INTER & Lazy & Counterexample \\
+%         \hline
+%         G\&C & Eager & Empirical \\
+%         \hline
+%         ABD & Lazy & Semantic \\
+%         \hline
+%         DAL & Eager & All Above \\
+%         \hline
+%     \end{tabular}
+%     \end{center}
+%     \caption{Existing Invariant Inference Approaches}
+%     \label{tab:related}
+% \end{table}
+
+Existing invariant inference approaches can be mainly categorized as: 
+Abstract Interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, 
+Constraint Synthesis~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}, 
+CounterExample Guided Abstraction Refinement (CEGAR)~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, 
+Program Interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy}, 
+Guess \& Check~\cite{cormac2001houdini,ernst2007daikon}, 
+Abductive Inference~\cite{isil2013inductive}. 
+In this section, we compare them with our data-driven active learning approach. 
+
+On one hand, invariant inference methods based on Abstract Interpretation and Constraint Synthesis 
+tend to generate all possible invariants regardless of 
+whether they are useful to prove the program correctness or not. 
+Hence, the invariants inferred by them can be complex and error-prone for proving the program correctness. 
+On the other hand, other methods based on CEGAR, Interpolation and Abduction 
+only generate those related to the program verification. 
+Thus, they may miss some critical and necessary invariants for the program verification. 
+Our approach combines their strengths: 
+we treat the program as a black box 
+and label samples based on the program verification target, 
+i.e., the pre-conditions and the post-conditions; 
+we then infer all possible invariants based on the labels 
+to prove the program correctness. 
+
+Additionally, similar to CEGAR, Guess \& Check, Interpolation and Abduction approaches, 
+our active learning approach adopts an iterative refinement scheme. 
+After generating the invariant, we check its correctness and refine it 
+based on various new information (e.g., counter-examples, new samples) 
+if it cannot prove the program correctness. 
+Different from all existing refinement approaches, 
+our method is driven by data samples rather than syntactic or semantic clues. 
+Hence, it is more flexible and extensible to capture new types of invariants. 
+Based on the needs in practice, under-approximation or over-approximation 
+can also be applied to the data samples with ease. 
+
+% section related (end)
