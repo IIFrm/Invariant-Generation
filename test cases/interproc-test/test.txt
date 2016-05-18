@@ -1,0 +1,11 @@
+var	xa:int, ya:int;
+
+begin
+	//xa + ya > 0
+
+	while xa > 0 do
+		xa--; 
+ya++;
+	done;	//ya >= 0
+
+end

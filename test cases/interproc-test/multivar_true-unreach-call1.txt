@@ -1,0 +1,10 @@
+var	x:int, y:int;
+
+begin
+	// y == x
+
+	while rand() do
+		 x++; y++;
+	done;	//x == y
+
+end

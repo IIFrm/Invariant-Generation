@@ -1,0 +1,10 @@
+var	x:int, y:int, n:int;
+
+begin
+	//n>=0 && x+y==n && x>=0
+
+	while x>0 do
+		x--;y++;
+	done;	//y==n
+
+end

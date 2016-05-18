@@ -1,0 +1,10 @@
+var	i:int, j:int, k:int;
+
+begin
+	//i<j && k> 0
+
+	while i<j do
+		 k=k+1;i=i+1;
+	done;	//k > j - i
+
+end

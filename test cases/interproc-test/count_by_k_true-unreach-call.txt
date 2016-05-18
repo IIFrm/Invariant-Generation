@@ -1,0 +1,10 @@
+var	i:int, k:int;
+
+begin
+	// 0<=k && k <= 10 && i == 0
+
+	while  i < 32 * k do
+		i += k;
+	done;	//i == 32 * k
+
+end

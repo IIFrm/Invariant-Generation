@@ -1,0 +1,10 @@
+var	j:int, k:int, n:int;
+
+begin
+	// (j==0) && (k==n) && (n>0)
+
+	while j<n && n>0 do
+		j++;k--;
+	done;	// (k == 0)
+
+end

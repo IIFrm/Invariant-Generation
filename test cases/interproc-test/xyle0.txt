@@ -1,0 +1,10 @@
+var	x:int, y:int;
+
+begin
+	//x*y>=0
+
+	while rand() do
+		if(x==0) {if (y>0) x++; else x--;} if(x>0) y++; else x--;
+	done;	//x*y>=0
+
+end

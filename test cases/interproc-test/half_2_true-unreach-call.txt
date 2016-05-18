@@ -1,0 +1,10 @@
+var	i:int, k:int, n:int;
+
+begin
+	//i==0 && k==n && n>=0
+
+	while i < n do
+		k--; i=i+2;
+	done;	// k==n-(n+1)/2
+
+end

@@ -1,0 +1,10 @@
+var	i:int, k:int;
+
+begin
+	//0 <= k && k <= 1 && i == 1
+
+	while rand() do
+		i = i + 1; k = k - 1;
+	done;	//1 <= i + k && i + k <= 2 && i >= 1
+
+end

@@ -1,0 +1,10 @@
+var	x:int;
+
+begin
+	//x<10
+
+	while x<10  do
+		 x=x+1;
+	done;	//x==10
+
+end

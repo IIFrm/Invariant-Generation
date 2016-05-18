@@ -1,0 +1,10 @@
+var	x:int;
+
+begin
+	//(x>=40) || (x<=0 && x>=-20)
+
+	while rand() do
+		if(x>=40) x++; else if (x<-20) x--; else if (x==39) x--; else if (x>0) x++;
+	done;	//(x>=40) || (x<=0 && x>=-20)
+
+end

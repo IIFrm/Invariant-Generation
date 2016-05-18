@@ -1,0 +1,10 @@
+var	a:int, b:int, i:int, j:int;
+
+begin
+	// a==0 && b==0 && i==0 && j==1
+
+	while rand() do
+		a++; b+=(j-i); i+=2; if (i%2==0) j+=2; else j++;
+	done;	//a==b
+
+end
