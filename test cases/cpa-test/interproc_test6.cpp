@@ -2,7 +2,7 @@ int main() {
 	int i;
 
 	if(!( i < 10 && i > -10)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while( i * i < 100) {

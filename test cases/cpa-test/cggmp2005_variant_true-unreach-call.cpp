@@ -4,7 +4,7 @@ int main() {
 	int high;
 
 	if(!(low == 0 && mid >= 1 && high == 2*mid)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(mid > 0) {

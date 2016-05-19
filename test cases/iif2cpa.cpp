@@ -21,7 +21,7 @@ class Config {
 
 		bool toCppStatement() {
 			//cout << "processing <" + key + ", " + value + ">......\n";
-			if (key == "precondition") { cppstatement = "if(!(" + value + ")) {\n\t goto ERROR;\n\t}\n";
+			if (key == "precondition") { cppstatement = "if(!(" + value + ")) {\n\t return 0;\n\t}\n";
 			} else if (key == "beforeloop") { cppstatement = value;
 			} else if (key == "beforeloopinit") { cppstatement = value;
 			} else if (key == "symbolic") { 
@@ -32,7 +32,7 @@ class Config {
 			} else if (key == "loop") { cppstatement = value;
 			} else if (key == "loopcondition") { 
 				if (value.compare("") == 0) 
-					cppstatement = "while(rand()) {";
+					cppstatement = "while(nondet()) {";
 				else
 					cppstatement = "while(" + value + ") {";
 			} else if (key == "loop") { cppstatement = "\t" + value;
@@ -192,10 +192,12 @@ int main(int argc, char** argv)
 {
 	if (argc < 2) return -1;
 	const char* cfgfilename = argv[1];
-	char* cppfilename = new char [strlen(cfgfilename)];
+	char* cppfilename = new char [strlen(cfgfilename)+1];
 	strcpy(cppfilename, cfgfilename);
+	cppfilename[strlen(cfgfilename)] = '\0';
 	cppfilename[strlen(cppfilename)-2] = 'p';
 	cppfilename[strlen(cppfilename)-1] = 'p';
+	cout << " -------------|" << cfgfilename << " >>>|" << cppfilename << "|\n";
 
 	FileHelper fh(cfgfilename, cppfilename);
 	//cout << "after construct...\n";

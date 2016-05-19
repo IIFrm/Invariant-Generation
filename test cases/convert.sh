@@ -37,7 +37,8 @@ if [ $option1 -eq 1 ]; then
 	echo -e -n $yellow"Converting IIF test file to CPAchecker test file "
 	for file in `find . -name '*.cfg'`
 	do
-		echo -e -n $blue"."
+		echo -e -n $blue"."$file
+		#echo -e -n $blue"."
 		../iif2cpa $file
 	done
 	echo -e $green" [DONE]"$normal
@@ -59,7 +60,8 @@ if [ $option2 -eq 1 ]; then
 	echo -e -n $yellow"Converting IIF test file to INTERPROC test file "
 	for file in `find . -name '*.cfg'`
 	do
-		echo -e -n $blue"."
+		echo -e -n $blue"."$file
+		#echo -e -n $blue"."
 		../iif2interproc $file
 	done
 	echo -e $green" [DONE]"$normal

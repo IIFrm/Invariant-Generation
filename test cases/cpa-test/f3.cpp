@@ -4,7 +4,7 @@ int main() {
 	int z;
 
 	if(!(x + y + z >= 0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(z > 0) {

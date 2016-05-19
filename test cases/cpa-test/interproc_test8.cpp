@@ -3,7 +3,7 @@ int main() {
 	int y;
 
 	if(!( x < 100 && y < 100)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while( x < 100 && y < 100 ) {

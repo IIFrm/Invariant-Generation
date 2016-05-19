@@ -3,7 +3,7 @@ int main() {
 	int ya;
 
 	if(!(xa + ya > 0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(xa > 0) {

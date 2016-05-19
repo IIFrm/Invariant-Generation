@@ -4,7 +4,7 @@ int main() {
 	int loop_times;
 	loop_times = 10;
 	if(!((x>=0) && (x<=50))) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(loop_times-->0) {

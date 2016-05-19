@@ -4,7 +4,7 @@ int main() {
 	int n;
 
 	if(!( (j==n) && (k==n) && (n>0))) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(j>0 && n>0) {

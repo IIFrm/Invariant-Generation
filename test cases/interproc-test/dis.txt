@@ -1,10 +1,22 @@
 var	x:int;
 
 begin
-	//(x>=40) || (x<=0 && x>=-20)
+	if (x>=40) || (x<=0 && x>=-20) then 
 
-	while rand() do
-		if(x>=40) x++; else if (x<-20) x--; else if (x==39) x--; else if (x>0) x++;
+	while nondet() do
+		if(x>=40) then
+		x++; 
+		else if (x<-20) 
+			x--; 
+			else if (x==39) 
+				x--; 
+				else if (x>0) 
+					x++;
+					endif;
+				endif;
+			endif;
+		endif;
 	done;	//(x>=40) || (x<=0 && x>=-20)
 
+	endif;
 end

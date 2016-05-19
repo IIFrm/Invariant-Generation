@@ -4,7 +4,7 @@ int main() {
 	int r;
 
 	if(!(r > i + j)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(i > 0) {

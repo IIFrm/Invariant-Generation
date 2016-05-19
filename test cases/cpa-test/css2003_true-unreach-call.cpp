@@ -3,10 +3,10 @@ int main() {
 	int k;
 
 	if(!(0 <= k && k <= 1 && i == 1)) {
-	 goto ERROR;
+	 return 0;
 	}
 
-	while(rand()) {
+	while(nondet()) {
 	i = i + 1; k = k - 1;
 	}
 

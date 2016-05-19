@@ -4,7 +4,7 @@ int main() {
 
 	 if (i < 0) i = -i; if (j < 0) j = -j; if (i == 0) i = 1; if (j == 0) j = 1;
 	if(!( i * i < j * j)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while( i < j) {

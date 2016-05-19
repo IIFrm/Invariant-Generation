@@ -3,7 +3,7 @@ int main() {
 	int y;
 
 	if(!(x == y && x >= 0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(x > 0) {

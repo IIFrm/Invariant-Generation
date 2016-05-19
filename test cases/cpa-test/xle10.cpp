@@ -2,7 +2,7 @@ int main() {
 	int x;
 
 	if(!(x>=0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while((x>=0) && (x<10) ) {

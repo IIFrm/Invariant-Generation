@@ -3,10 +3,10 @@ int main() {
 	int y;
 
 	if(!(x == 1 && y == 0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
-	while(rand()) {
+	while(nondet()) {
 	 x = x + y; y = y + 1;
 	}
 

@@ -1,7 +1,7 @@
 var	x:int, y:int, z:int;
 
 begin
-	//x + y + z >= 0
+	if x + y + z >= 0 then 
 
 	while z > 0 do
 		x++; 
@@ -9,4 +9,5 @@ y++;
 z-=2;
 	done;	//x + y >= 0
 
+	endif;
 end

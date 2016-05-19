@@ -3,7 +3,7 @@ int main() {
 	int y;
 
 	if(!(x + y >= 0)) {
-	 goto ERROR;
+	 return 0;
 	}
 
 	while(y > 0) {

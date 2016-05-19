@@ -4,10 +4,10 @@ int main() {
 	int z;
 
 	if(!(x==y)) {
-	 goto ERROR;
+	 return 0;
 	}
 
-	while(rand()) {
+	while(nondet()) {
 	x+=10; y+=1;
 	}
 
