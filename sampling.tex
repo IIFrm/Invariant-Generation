@@ -42,7 +42,7 @@ The goal of data collection is to collect sample variable valuations, based on w
 % and label them according to the satisfiability of $Pre$ and $Post$.
 %, either randomly or using tools based on the idea of concolic testing~\cite{},
 
-Random sampling provides us the initial set of samples so that we can learn some classifiers. In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain, based on a uniform probabilistic distribution over all value in its domain. The other is that we use an SMT solver~\cite{} to systematically generate valuations which satisfies $Pre$ as well as ones which dissatisfies $Pre$. We remark that these two ways are complementary. On one hand, without using a solver, we may not be able to generate valuations which satisfy $Pre$ if $Pre$ is very restrictive (or dissatisfy $Pre$ if the negation of $Pre$ is very restrictive). On the other hand, using a solver only would often generate biased valuations. We remark that the cost of generating a random sampling is often eligible.
+Random sampling provides us the initial set of samples to learn the first classifier. In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain, based on a uniform probabilistic distribution over all value in its domain. The other is that we use an SMT solver~\cite{cite} to systematically generate valuations that satisfies $Pre$ as well as those that dissatisfies $Pre$. We remark that these two ways are complementary. On one hand, without using a solver, we may not be able to generate valuations which satisfy $Pre$ if $Pre$ is very restrictive (or dissatisfy $Pre$ if the negation of $Pre$ is very restrictive). On the other hand, using a solver often generates biased valuations. We remark that the cost of generating a random sampling is often eligible.
 
 Anytime a classifier has been identified, we apply active learning and selective sampling to improve the classifier without applying heavy techniques like program verification.
 The concept of active learning and selective sampling refers to the approaches that aim at reducing the effort of collecting and labeling samples (i.e., marking a sample as either satisfying the invariant or not) by selecting
@@ -85,11 +85,11 @@ As a result, selective sampling can be reduced to solving an equation system bas
 %As a result, this technique is applied all along the learning process except the very beginning.
 %Counter-example sampling chooses samples lying in the difference zone between the invariant candidate and the actual invariant.
 %Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.
-The last way of sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the verification stage,
-a counter-example is provided by the verifier. We add the counter-example as new samples for the next learning iteration. To see how sampling through verification is necessary, assume that in the example shown in Figure~\ref{fig:running:example:sampling}, we only sample valuations in the $Positve$ and $\mathit{NP}$ region but never any in the $\mathit{Negative}$ region during random sampling. With selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{NP}$. As a result, we generate the candidate invariant $x-y \geq 0$. We would not however discover the half space $x - y \leq 16$. During invariant verification, formula (6) is as follows. \[
+The last method of sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the verification stage,
+a counter-example is provided by the verifier. We add the counter-example as new samples for the next learning iteration. Sampling through verification is necessary, which can be illustrated with the example shown in Figure~\ref{fig:running:example:sampling}. Using random sampling as presented previously, we only obtain valuations in the $\mathit{Positive}$ and $\mathit{NP}$ region but never any in the $\mathit{Negative}$ region. With selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{NP}$. As a result, we generate the candidate invariant $x - y \geq 0$. We would not however discover the half space $x - y \leq 16$. During invariant verification, formula (6) is as follows. \[
 x - y \geq 0 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)
 \] 
-The formula is satisfied and a counterexample would be: $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple.
+The formula is satisfied with a new valuation (a counter-example) $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple. 
 
 %$\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
 %(or known as concolic testing~\cite{sen2007concolic}) and constraint solving,
@@ -156,19 +156,19 @@ Figure~\ref{fig:sampling} visualizes how different sampling methods are related 
 \end{figure}
 
 \noindent 
-In the following, we define the four categorizes of samples formally. Let $Sample$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in Sample$, by executing the given program with initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = Body^i(s_0)$ and $s_n \not \models Cond$ and $s_k \models Cond$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that there exists a sample $s_0 \in Sample$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$. Next, we define the four disjoint sets of samples as follows.
+In the following, we define the four categorizes of samples formally. Let $\mathit{Sample}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{Sample}$, by executing the given program with initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $s_k \models \mathit{Cond}$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that there exists a sample $s_0 \in \mathit{Sample}$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$. Next, we define the four disjoint sets of samples as follows.
 \begin{align}
-    & CE(Sample) & = & \{s | s \models Pre \land s \Rightarrow s' \land s' \not \models Post\} \\
-    & Positive(Sample) & = & \{s | s \models Pre \land s \models Cond \land s \Rightarrow s' \land s' \models Post\}~~~~~~ \\
-    & Negative(Sample) & = & \{s | s \not \models Pre \land s \Rightarrow s' \land s' \not \models Post\} \\
-    & NP(Sample) & = & \{s | s \not \models Pre \land s \Rightarrow s' \land s' \models Post\}
+    & \mathit{CE}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models \mathit{Post}\} \\
+    & \mathit{Positive}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \models \mathit{Cond} \land s \Rightarrow s' \land s' \models \mathit{Post}\}~~~~~~ \\
+    & \mathit{Negative}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models Post\} \\
+    & \mathit{NP}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \models \mathit{Post}\}
 \end{align}
 The following can be established immediately.
 \begin{proposition}
-1. If $CE(Sample)$ is non-empty, the Hoare triple is disproved. \\
-2. For all $s \in Positive(Sample)$, $s \models Inv$ for all $Inv$ satisfying (1), (2) and (3). \\
-3. For all $s \in Negative(Sample)$, $s \not \models Inv$ for all $Inv$ satisfying (1), (2) and (3). \\
-4. If $s \models Inv$ and $s \Rightarrow s'$, $s' \models Inv$ for all $Inv$ satisfying (1), (2) and (3). \hfill \qed
+1. If $\mathit{CE}(\mathit{Sample})$ is non-empty, the Hoare triple is disproved. \\
+2. For all $s \in \mathit{Positive}(\mathit{Sample})$, $s \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying (1), (2) and (3). \\
+3. For all $s \in \mathit{Negative}(\mathit{Sample})$, $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying (1), (2) and (3). \\
+4. If $s \models \mathit{Inv}$ and $s \Rightarrow s'$, $s' \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying (1), (2) and (3). \hfill \qed
 \end{proposition}
 
 %\subsection {Loop Execution}
