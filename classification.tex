@@ -30,8 +30,8 @@ In the machine learning community, many classification algorithms have been prop
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
-In our framework, we are interested in classification algorithms which generate classifiers that perfectly separate two sets of samples. Formally, in our setting, a perfect classifier $\phi$ for two sets of samples $P$ and $N$ is a predicate constituted by variables in $V$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$. Furthermore, the classifiers must be human-interpretable or can be handled by existing program verification techniques. In the following, we present two example classification algorithms based on SVM.
-We remark our framework can be extended to support other classification algorithms.
+In our framework, we adopt the classification algorithms that can generate classifiers to perfectly separate two sets of samples. Formally, in our setting, a perfect classifier $\phi$ for two sets of samples $P$ and $N$ is a predicate constituted by variables in $V$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$. Furthermore, the classifiers must be human-interpretable or can be handled by existing program verification techniques. In the following, we present two example classification algorithms based on SVM.
+We remark that our framework can be extended with other classification algorithms.
 
 %But there are still differences between the classification problem in machine learning field and the one in our framework:
 %\begin{itemize}
@@ -69,7 +69,7 @@ We remark our framework can be extended to support other classification algorith
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other,
 %making it a non-probabilistic binary linear classifier.
-SVM is a supervised machine learning algorithm for classification and regression analysis. In this work, we use its binary classification functionality. Mathematically speaking, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. Given two sets of samples $P$ and $N$, SVM generates, if there is any, a perfect linear classifier. In the following, we write $svm(P, N)$ to denote the function which returns a perfect linear classifier based on $P$ and $N$ if there is any; or returns $null$ otherwise. We refer the readers to~\cite{svm} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. This half space could be seen as the strongest witness why $P$ and $N$ are different. SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space, e.g., $ax + by \geq c$). In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
+SVM is a supervised machine learning algorithm for classification and regression analysis. In this work, we use its binary classification functionality. In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if it exists. In the following, we write $svm(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\mathit{null}$ otherwise. We refer the readers to~\cite{svm} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. This half space could be seen as the strongest witness why $P$ and $N$ are different. SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space, e.g., $a x + b y \geq c$). In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -183,7 +183,7 @@ where $d_0 < d_1 < d_2$ are constants can be equivalent represented as follows.
 %So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
 
 \paragraph{Conjunctive Polynomial Classifiers}
-As discussed above, polynomial classifiers can be used to capture certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., there are simple expressions that can not be expressed in the form of polynomial classifiers. One simple example is: $x \ge 0 \land y \ge 0$.
+As discussed above, polynomial classifiers can be used to capture certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., some expressions cannot be expressed in the form of polynomial classifiers. A simple example is $x \ge 0 \land y \ge 0$.
 
 Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is designed to learned conjunctive polynomial classifiers.
 %So in this part, we introduce the algorithm to learn conjunctive invariants directly.
@@ -247,7 +247,7 @@ Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and lear
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is in general hard to predict how fast the classifiers converge. We show empirical evaluation in the next section instead.
+If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is in general hard to predict the speed of convergence. Hence, we present an empirical evaluation in the next section instead. 
 %Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$),
 %active learning technique keeps refining the classifier until it gets converged.
 %That means the classifier remains identical even adding more data points into the training set.
