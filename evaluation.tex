@@ -94,46 +94,50 @@ and the inner iteration for SVM learning are set to their maximum value so as to
 \scriptsize
 \centering
 \caption{Statistics on TLV abstracting the classes, where N.A. stands for not available}
-\begin{tabular}{l c | c c c c | c c c c | c c }
-\cline{3-10}
-& &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{4}{c|}{\textsc{Zilu} without Selective} & & \\
+%\begin{tabular}{l c | c c c c | c c c c | c c }
+%\cline{3-10}
+\begin{tabular}{l c | c c c | c c | c c }
+\cline{3-7}
+%& &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{4}{c|}{\textsc{Zilu} without Selective} & & \\
+& &\multicolumn{3}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{2}{c|}{\textsc{Zilu} w/o Selective} & & \\
 \hline
-\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
+%\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
+\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. samples & $\sharp$s. samples & time(s) & $\sharp$r. samples & time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
-\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{cav12foo1}         									&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{cav12foo2}         									&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{conj}         											&polynomial & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive	&1056 &4224 &259.38	&5160 &295.03  & &  \\
+\multicolumn{1}{|c|}{cav12foo1}         									&conjunctive 	&228 &912 &51.07	&1980 &168.97  & &  \\
+\multicolumn{1}{|c|}{cav12foo2}         									&conjunctive 	&36 &144 &16.09		&260 &15.98  & &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunctive 	&210 &840 &74045	&2220 &timeout  & &  \\
+\multicolumn{1}{|c|}{conj}         											&polynomial 	&18 &72 &18.42		&170 &58.87  & &  \\
 %\multicolumn{1}{|c|}{conj}         											&conjunctive/polynomial & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{dis}         											&polynomial & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{f2}         											&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{f3}         											&linear & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunctive 	&140 &560 &36.02	&1220 &83.29  & &  \\
+\multicolumn{1}{|c|}{dis}         											&polynomial 	& & &  &   &  & &  \\
+\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunctive 	&114 &256 &116.21  &2160   &timeout  & &  \\
+\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunctive 	&132 &528 &27.5  &360   &timeout  & &  \\
+\multicolumn{1}{|c|}{f2}         											&linear 		&20 &80 &4.95  &180   &5.13  & &  \\
+\multicolumn{1}{|c|}{f3}         											&linear 		&36 &144 &105.15  &330   &93.04  & &  \\
 %\multicolumn{1}{|c|}{fig1a\_1}         										&linear & & &  &   &  & & &  & &  \\
 %\multicolumn{1}{|c|}{fig1a\_2}         										&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test1}         								&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test2}         								&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test3}         								&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test4}         								&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test5}         								&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test8}         								&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test11}         							&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{lili2}         										&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{linear6}         										&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{test}         											&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{test2}         										&conjunctive & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{interproc\_test1}         								&linear 		&6 &24 &4.62  &50   &4.51  & &  \\
+\multicolumn{1}{|c|}{interproc\_test2}         								&linear 		&84 &96 &11.66  &240   &171.14  & &  \\
+\multicolumn{1}{|c|}{interproc\_test3}         								&linear 		&42 &168 &30.32  &420   &43.34  & &  \\
+\multicolumn{1}{|c|}{interproc\_test4}         								&linear 		&24 &96 &6.67  &240   &12.71  & &  \\
+\multicolumn{1}{|c|}{interproc\_test5}         								&linear 		&32 &128 &9.18  &180   &28.05  & &  \\
+\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial 	&6 &24 &11.83  &70   &18.27  & &  \\
+\multicolumn{1}{|c|}{interproc\_test8}         								&conjunctive 	&24 &96 &22.13  &220   &97.47  & &  \\
+\multicolumn{1}{|c|}{interproc\_test11}         							&linear 		&24 &96 &24.79  &180   &206.07  & &  \\
+\multicolumn{1}{|c|}{lili2}         										&linear 		&84 &336 &21.28  &720   &82.24  & &  \\
+\multicolumn{1}{|c|}{linear6}         										&linear 		&30 &120 &49.77  &390  &66.93  & &  \\
+\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunctive 	&84 &336 &6.02  &820   &7.65  & &  \\
+\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&12 &48 &4.01  &220   &4.57  & &  \\
+\multicolumn{1}{|c|}{test}         											&linear 		&28 &112 &10.19  &420  &24.51  & &  \\
+\multicolumn{1}{|c|}{test2}         										&conjunctive 	&44 &176 &79.45  &120   &timeout  & &  \\
 %\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_1}         		&conjunctive & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunctive & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunctive 	&240 &960 &84.02  &540   &89.77  & &  \\
 %\multicolumn{1}{|c|}{xeq10}         										&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{xle10}         										&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{xy10}         											&linear & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{xyle0}         										&polynomial & & &  &   &  & & &  & &  \\
+\multicolumn{1}{|c|}{xle10}         										&linear 		&6 &24 &4.62  &50   &4.68  & &  \\
+\multicolumn{1}{|c|}{xy10}         											&linear 		&132 &528 &10.92  &2850   &17.57  & &  \\
+\multicolumn{1}{|c|}{xyle0}         										&polynomial 	& & &  &   &  & &  \\
 \hline
 \end{tabular}
 \label{tbl:stats}
