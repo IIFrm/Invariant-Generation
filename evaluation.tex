@@ -102,12 +102,13 @@ and the inner iteration for SVM learning are set to their maximum value so as to
 & &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{3}{c|}{\textsc{Zilu} without Selective} & & \\
 \hline
 %\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
-\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. samples & $\sharp$s. samples & $\sharp$v. samples &time(s) & $\sharp$r. samples & $\sharp$v. samples &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
+\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sampls & $\sharp$v. sample &time(s) & $\sharp$r. sample & $\sharp$v. sample &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
 \multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive	&1056 &4224 & &259.38	&5160 & &295.03  & &  \\
 \multicolumn{1}{|c|}{cav12foo1}         									&conjunctive 	&228 &912 &20 &51.07	&1980 &48 &168.97  & &  \\
 \multicolumn{1}{|c|}{cav12foo2}         									&conjunctive 	&36 &144 &2 &16.09		&260 &6 &15.98  & &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunctive 	&210 &840 & &74045	&2220 & &timeout  & &  \\
+%\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunctive 	&210 &840 & &74045	&2220 & &timeout  & &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant\_true}   &conjunctive 	&210 &840 & &74045	&2220 & &timeout  & &  \\
 \multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &40 &2 &20.48		&70 &1 &28.48  & &  \\
 %\multicolumn{1}{|c|}{conj}         											&conjunctive/polynomial & & &  &   &  & & &  & &  \\
 \multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunctive 	&140 &560 & &36.02	&1220 & &83.29  & &  \\
