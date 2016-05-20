@@ -2,13 +2,13 @@
 
 \section{Active Learning} % (fold)
 \label{sec:learning}
-The goal of active learning is to generate candidate invariants through iterations of classification and selective sampling. Our overall algorithm for active learning is shown in Algorithm~\ref{alg:active}. The inputs of the algorithm include the set of samples $\mathit{Sample}$ we collect; a classification algorithm $\mathit{classify}(P,N)$ which takes two sets of samples $P$ and $N$ and generates a classifier separating $P$ and $N$; and an algorithm for selective sampling $\mathit{selectiveSampling}$ which is often coupled with the classification algorithm. During each iteration of the loop from line 2 to 10, we apply $\mathit{classify}$ three times at line 3, 4 and 5 to learn three classifiers. The reason has been discussed in Section~\ref{sec:overview}. At line 6, we check whether any of the classifiers is different from the ones obtained during the last iteration. If none of them is, we return the three classifiers as candidate invariants at line 7, which will be verified afterwards. Otherwise, at line 9, we apply selective sampling to add more samples into $\mathit{Sample}$ and then move on to the next iteration. We remark this algorithm is customizable in term of the classification algorithm and the corresponding selective sampling algorithm. In the following, we present two classification algorithms and selective sampling methods as examples.
+Active learning aims at generating candidate invariants through iterations of classification and selective sampling. Our overall algorithm for active learning is shown in Algorithm~\ref{alg:active}. The inputs of the algorithm include the set of samples $\mathit{Sample}$ we collect; a classification algorithm $\mathit{classify}(P,N)$ which takes two sets of samples $P$ and $N$ and generates a classifier separating $P$ and $N$; and an algorithm for selective sampling $\mathit{selectiveSampling}$ which is often coupled with the classification algorithm. During each iteration of the loop from line 2 to 10, we apply $\mathit{classify}$ three times at line 3, 4 and 5 to learn three classifiers. The reason has been discussed in Section~\ref{sec:overview}. At line 6, we check whether any of the classifiers is different from the ones obtained during the last iteration. If none of them is, we return the three classifiers as candidate invariants at line 7, which will be verified afterwards. Otherwise, at line 9, we apply selective sampling to add more samples into $\mathit{Sample}$ and then move on to the next iteration. We remark this algorithm is customizable in term of the classification algorithm and the corresponding selective sampling algorithm. In the following, we present two classification algorithms and selective sampling methods as examples.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
-let $\mathit{old_1}, \mathit{old_2}, \mathit{old_3}$ be $null$;\;
+let $\mathit{old_1}, \mathit{old_2}, \mathit{old_3}$ be $\textsc{null}$;\;
 \While{true} {
     let $f_1$ be $\mathit{classify}(\mathit{Positive}(\mathit{Sample}), \mathit{Negative}(\mathit{Sample}))$\;
     let $f_2$ be $\mathit{classify}(\mathit{Positive}(\mathit{Sample}), \mathit{Negative}(\mathit{Sample}) \cup \mathit{NP}(\mathit{Sample}))$\;
@@ -16,7 +16,7 @@ let $\mathit{old_1}, \mathit{old_2}, \mathit{old_3}$ be $null$;\;
     \If {for all $f_i$ where $i \in \{1,2,3\}$ such that $f_i = \mathit{old_i}$} {
         \Return $f_1$, $f_2$, $f_3$\;
     }
-    \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq null$ and $f_i \neq \mathit{old_i}$} {
+    \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq \textsc{null}$ and $f_i \neq \mathit{old_i}$} {
         add $\mathit{selectiveSamples}(f_i, \mathit{Sample})$ into $\mathit{Sample}$\;
         let $\mathit{old_i} = f_i$\;
     }
@@ -69,23 +69,23 @@ We remark that our framework can be extended with other classification algorithm
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other,
 %making it a non-probabilistic binary linear classifier.
-SVM is a supervised machine learning algorithm for classification and regression analysis. In this work, we use its binary classification functionality. In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if it exists. In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\mathit{null}$ otherwise. We refer the readers to~\cite{svm} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. This half space could be seen as the strongest witness why $P$ and $N$ are different. SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space, e.g., $a x + b y \geq c$). In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
+SVM is a supervised machine learning algorithm for classification and regression analysis. In this work, we use its binary classification functionality. In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if it exists. In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise. We refer the readers to~\cite{svm} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. This half space could be seen as the strongest witness why $P$ and $N$ are different. SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space, e.g., $a x + b y \geq c$). In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
     $dimension = 1$\;
-    \While {$dimension \le max\_dimention$} {
-        $P' = mapToDimension(P, dimension)$\;
-        $N' = mapToDimension(N, dimension)$\;
-        \If {$svm(P', N')$ is not $null$} {
-            \Return $svm(P', N')$\;
+    \While {$dimension \le \mathit{max\_dimention}$} {
+        $P' = \mathit{mapToDimension}(P, \mathit{dimension})$\;
+        $N' = \mathit{mapToDimension}(N, \mathit{dimension})$\;
+        \If {$\mathit{svm}(P', N')$ is not $\textsc{null}$} {
+            \Return $\mathit{svm}(P', N')$\;
         }
-    	$dimension = dimension + 1$\;
+    	$\mathit{dimension} = \mathit{dimension} + 1$\;
     }
     \Return $\textsc{null}$;
-\caption{Algorithm $polynomial(P,N)$}
+\caption{Algorithm $\mathit{polynomial}(P,N)$}
 \label{alg:polynomialSVM}
 \end{algorithm}
 
@@ -196,7 +196,7 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
 \SetAlgoVlined
 \Indm
 \Indp
-    let $C$ = $null$; let $\mathit{Misclassified}$ = $N$\;
+    let $C$ = $\textsc{null}$; let $\mathit{Misclassified}$ = $N$\;
     \While {$\mathit{Misclassified}$ is not empty} {
         Random choose $s$ from $\mathit{Misclassified}$\;
         let $f = \mathit{polynomial}(P, \{s\})$\;
