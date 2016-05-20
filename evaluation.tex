@@ -104,17 +104,18 @@ and the inner iteration for SVM learning are set to their maximum value so as to
 %\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sampls & $\sharp$v. sample &time(s) & $\sharp$r. sample & $\sharp$v. sample &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
-\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive	&1056 &4224 & &259.38	&5160 & &295.03  & &  \\
+\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive	&248 &993 &27 &39.33	&5160 &129 &timeout  & &  \\
+%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunctive	&248 &993 &27 &39.33	&5160 & &223.63  & &  \\
 \multicolumn{1}{|c|}{cav12foo1}         									&conjunctive 	&228 &912 &20 &51.07	&1980 &48 &168.97  & &  \\
 \multicolumn{1}{|c|}{cav12foo2}         									&conjunctive 	&36 &144 &2 &16.09		&260 &6 &15.98  & &  \\
 %\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunctive 	&210 &840 & &74045	&2220 & &timeout  & &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant\_true}   &conjunctive 	&210 &840 & &74045	&2220 & &timeout  & &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant\_true}   							&conjunctive 	&204 &816 &13 &108.57	&1620 &24 &timeout  & &  \\
 \multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &40 &2 &20.48		&70 &1 &28.48  & &  \\
 %\multicolumn{1}{|c|}{conj}         											&conjunctive/polynomial & & &  &   &  & & &  & &  \\
-\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunctive 	&140 &560 & &36.02	&1220 & &83.29  & &  \\
-\multicolumn{1}{|c|}{dis}         											&polynomial 	& & & &  &   & &  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunctive 	&114 &256 & &116.21  &2160  &  &timeout  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunctive 	&132 &528 & &27.5  &360 &   &timeout  & &  \\
+\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunctive 	&324 &1296 &33 &57.78	&5080 &125 &258.65  & &  \\
+\multicolumn{1}{|c|}{dis}         											&polynomial 	&22 &88 &1 &24.27  &70   &2 &41.62  & &  \\
+\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunctive 	&264 &1056 &15 &116.21  &1770  &27  &timeout  & &  \\
+\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunctive 	&222 &888 &14 &52.96  &720 &10   &44.99  & &  \\
 \multicolumn{1}{|c|}{f2}         											&linear 		&52 &208 &1 &10.15  &120 &1   &12.03  & &  \\
 \multicolumn{1}{|c|}{f3}         											&linear 		&36 &144 &1 &105.15  &330  &5  &93.04  & &  \\
 %\multicolumn{1}{|c|}{fig1a\_1}         										&linear & & &  &   &  & & &  & &  \\
@@ -132,13 +133,13 @@ and the inner iteration for SVM learning are set to their maximum value so as to
 \multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunctive 	&68 &272 &3 &16.84  &220 &4   &15.22  & &  \\
 \multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&6 &24 &1 &9.2  &90  &4  &13.06  & &  \\
 \multicolumn{1}{|c|}{test}         											&linear 		&28 &112 &1 &10.19  &420 &2  &24.51  & &  \\
-\multicolumn{1}{|c|}{test2}         										&conjunctive 	&44 &176 &3 &79.45  &120  &3  &timeout  & &  \\
+\multicolumn{1}{|c|}{test2}         										&conjunctive 	&56 &218 &3 &173.09  &280  &7  &timeout  & &  \\
 %\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_1}         		&conjunctive & & &  &   &  & & &  & &  \\
 \multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunctive 	&240 &960 &14 &84.02  &540 &7   &89.77  & &  \\
 %\multicolumn{1}{|c|}{xeq10}         										&linear & & &  &   &  & & &  & &  \\
 \multicolumn{1}{|c|}{xle10}         										&linear 		&6 &24 &1 &8.57  &60 &3   &12.58  & &  \\
 \multicolumn{1}{|c|}{xy10}         											&linear 		&162 &648 &4 &39.69  &840  &11  &40.51  & &  \\
-\multicolumn{1}{|c|}{xyle0}         										&polynomial 	& & & &  &   & &  & &  \\
+\multicolumn{1}{|c|}{xyle0}         										&polynomial 	&60 &240 &4 &85.61  &620   &12 &472.68  & &  \\
 \hline
 \end{tabular}
 \label{tbl:stats}
