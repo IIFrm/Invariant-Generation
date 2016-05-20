@@ -2,10 +2,45 @@
 
 \section{Evaluations} % (fold)
 \label{sec:evaluations}
-We have implement our invariant inference framework in a tool called \textsc{Zilu}. \textsc{Zilu} is written using a combination of C++ as well as shell codes (for invoking external tools).
-\textsc{Zilu} uses GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and uses LibSVM~\cite{chang2011libsvm} as a primitive classification engine for learning classifier based on SVM. For invariant verification, we reuse a large part of the KLEE project~\cite{cadar2008klee} to generate verification conditions for C programs and use Z3~\cite{de2008z3} for checking satisfiability of formula (4), (5) and (6). We remark KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
+We have implemented our invariant inference framework in a tool, called \textsc{Zilu}. \textsc{Zilu} is written using a combination of C++ as well as shell codes (for invoking external tools).
+\textsc{Zilu} makes use of GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and
+%% uses
+ LibSVM~\cite{chang2011libsvm} as a primitive classification engine for
+SVM-based learning classifier. %% based on SVM.
+For invariant verification, we %% reuse a large part of
+adopt the KLEE project~\cite{cadar2008klee} to
+symbolically execute
+%% generate verification conditions for
+ C programs %% and use
+prior to invoke Z3~\cite{de2008z3} for checking satisfiability of
+the formulas (4), (5) and (6).
+ We remark that KLEE is a concolic symbolic executor; it may
+concretely execute the programs and return 
+ under-approximated
+abstraction. This may affect the soundness of our system.
+To overcome this problem, we detect those path conditions produced from
+concrete executions
+and return sound abstraction, i.e. $true$, for them.
+ %% KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
 
-Our test subjects include a set of benchmark programs which we gather from previous publications on loop invariant generation~\cite{???} as well as benchmark programs from the software verification competition repository~\cite{???}. Note that these benchmark programs often contain non-deterministic choice in the loop, which by our assumption is not allowed. We thus transform the programs so that free boolean-type variables are introduced to replace the non-deterministic choice. We remark that the assumption of no non-determinism is less a problem for verification programs in practice as they are often deterministic. These benchmark programs are made non-deterministic often as a way of abstracting away certain complicated (e.g., an external function call) part of the program which is irrelevant to proving/disproving the Hoare triple.
+Our test subjects include a set of benchmark programs %% which we
+(i) gathered from
+ the previous publications on loop invariant generation~\cite{???}  as well as
+ (ii)
+%% benchmark programs
+taken  from
+ the software verification competition repository~\cite{Dirk:SVCOMP:2016}.
+All benchmarks are available from~\cite{zilu}.
+%% Note
+We notice that loops of these benchmark programs often contain non-deterministic choices
+%% in the loop
+which are used to model I/O environment (e.g., an external function call).
+As non-determinism is beyond the interest of this paper,
+we syntactically replace these non-deterministic commands by  free boolean-type variables.
+It would be interesting to investigate how
+ our active learning verification system can be extended
+to infer non-determinism-based invariants.
+ %% which by our assumption is not allowed. We thus transform the programs so that free boolean-type variables are introduced to replace the non-deterministic choice. We remark that the assumption of no non-determinism is less a problem for verification programs in practice as they are often deterministic. These benchmark programs are made non-deterministic often as a way of abstracting away certain complicated (e.g., an external function call) part of the program which is irrelevant to proving/disproving the Hoare triple.
 %In our experimental evaluation,
 %we test \textsc{Zilu} with \LL{Number} loop invariant benchmarks
 %in the following form, where $\mathit{Body}$ can have nested loops and conditional choices.
@@ -22,7 +57,7 @@ Our test subjects include a set of benchmark programs which we gather from previ
 %% &Post &
 %% \end{align*}
 %\LL{Introduce the sources of the benchmark.}
-All benchmarks are available from~\cite{zilu}.
+ %% All benchmarks are available from~\cite{zilu}.
 
 The parameters chosen in our experimental evaluation are as follows.
 For random sampling, we generate random values of all input variables of the program from their default ranges. Be default, we generate XXX random samples. 
