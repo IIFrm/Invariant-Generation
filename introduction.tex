@@ -154,9 +154,12 @@ The other issue is: how do we handle those valuations in $\mathit{NP}$, which ma
 After all three candidate invariants converge, we move on to \emph{invariant verification}. We check whether any of the candidate invariants satisfies condition (1), (2) and (3). In particular, for each candidate invariant $\phi$, we check whether any of the following formulae is satisfiable or not using an SMT solver~\cite{z3}.
 \begin{align}
     & \mathit{Pre} \land \neg \phi \label{check:inv:pre} \\
-    & (s \models \phi \land \mathit{Cond}) \land (\mathit{Body}(s) \not \models \phi) \label{check:inv:loop} \\
+    %% & (s \models \phi \land \mathit{Cond}) \land (\mathit{Body}(s) \not \models \phi) \label{check:inv:loop} \\
+     & sp(\phi \land \mathit{Cond}, \mathit{Body}) \land \neg \phi \label{check:inv:loop} \\
     & \phi \land \neg \mathit{Cond} \land \neg \mathit{Post} \label{check:inv:post}
 \end{align}
+where $sp(\phi,e)$ is the strongest postcondition obtained by executing command $e$
+starting from precondition $\phi$.
 If there is one candidate invariant which satisfies all the three conditions, we successfully prove the Hoare triple. For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example}(a). If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, which are then taken as new samples. We then repeat the process from the data collection stage, i.e., we execute the program with the counterexample variable valuations, collect and add the variable valuations after each iteration of the loop to the four categories accordingly, move on to active learning and so on. 
 
 We remark that with the help of active learning, we can often significantly reduce the number iterations of learn-and-check. As our experiment suggests, for our running example, with active learning, often one iteration of learn-and-check is sufficient to prove the Hoare triple. Without active learning, more iterations of learn-and-check are often required as shown in Section~\ref{sec:evaluations}. In the following sections, we present details on data collection in Section~\ref{sec:sampling} and active learning in Section~\ref{sec:learning}. For invariant verification, standard program verification technique is adopted and thus we directly present the implementation details in Section~\ref{sec:evaluations}.
