@@ -156,14 +156,18 @@ Figure~\ref{fig:sampling} visualizes how different sampling methods are related 
 \end{figure}
 
 \noindent 
-In the following, we define the four categorizes of samples formally. Let $\mathit{Sample}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{Sample}$, by executing the given program with initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $s_k \models \mathit{Cond}$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that there exists a sample $s_0 \in \mathit{Sample}$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$. Next, we define the four disjoint sets of samples as follows.
+In the following, we define the four categorizes of samples formally. Let $\mathit{Sample}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{Sample}$, by executing the given program with initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $s_k \models \mathit{Cond}$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that there exists a sample $s_0 \in \mathit{Sample}$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$ ($i \le j$). Next, we define the four disjoint sets of samples as follows.
 \begin{align}
-    & \mathit{CE}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models \mathit{Post}\} \\
-    %& \mathit{Positive}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \models \mathit{Cond} \land s \Rightarrow s' \land s' \models \mathit{Post}\}~~~~~~ \\
-    & \mathit{Positive}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \Rightarrow s' \land s' \models \mathit{Post}\}~~~~~~ \\
-    & \mathit{Negative}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models Post\} \\
-    & \mathit{NP}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \models \mathit{Post}\}
+    & \mathit{CE}(\mathit{Sample}) & = & \{s | s_0 \models \mathit{Pre} \land s_0 \Rightarrow s \Rightarrow s_n \land s_n \not \models \mathit{Post}\} \\
+    & \mathit{Positive}(\mathit{Sample}) & = & \{s | s_0 \models \mathit{Pre} \land s_0 \Rightarrow s \Rightarrow s_n \land s_n \models \mathit{Post}\}~~~~~~ \\
+    & \mathit{Negative}(\mathit{Sample}) & = & \{s | s_0 \not \models \mathit{Pre} \land s_0 \Rightarrow s \Rightarrow s_n \land s_n \not \models Post\} \\
+    & \mathit{NP}(\mathit{Sample}) & = & \{s | s_0 \not \models \mathit{Pre} \land s_0 \Rightarrow s \Rightarrow s_n \land s_n \models \mathit{Post}\}
 \end{align}
+    %& \mathit{CE}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models \mathit{Post}\} \\
+    %& \mathit{Positive}(\mathit{Sample}) & = & \{s | s \models \mathit{Pre} \land s \models \mathit{Cond} \land s \Rightarrow s' \land s' \models \mathit{Post}\}~~~~~~ \\
+    %& \mathit{Negative}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \not \models Post\} \\
+    %& \mathit{NP}(\mathit{Sample}) & = & \{s | s \not \models \mathit{Pre} \land s \Rightarrow s' \land s' \models \mathit{Post}\}
+
 The following can be established immediately.
 \begin{proposition}
 1. If $\mathit{CE}(\mathit{Sample})$ is non-empty, the Hoare triple is disproved. \\
