@@ -56,7 +56,7 @@ Compared to the existing approaches, we make the following contributions. Firstl
 Secondly, we design our framework so that it is extensible to different learning algorithms. For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
 Lastly, we implement our framework as a tool called \textsc{Zilu}
     and compare it with other available state-of-the-art invariant inference tools,
-    i.e., CPAChecker~\cite{beyer2011cpachecker} and Interproc~\cite{interproc}.
+    i.e., CPAChecker~\cite{beyer2011cpachecker} and Interproc~\cite{jeannet2010interproc}.
 %    Our experiment results show that
 %    we are the only tool that can work with polynomial invariant inference.
 %    Notice that the polynomial invariant inference works in our framework
@@ -66,7 +66,7 @@ Lastly, we implement our framework as a tool called \textsc{Zilu}
     \textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library (GSL)~\cite{gough2009gnu} for selective sampling,
     LibSVM~\cite{chang2011libsvm} for SVM classification,
     Z3~\cite{de2008z3} for invariant verification
-    and KLEE~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic}) and can be used as a language/platform independent tool to verify programs.
+    and KLEE~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}) and can be used as a language/platform independent tool to verify programs.
 
 \paragraph{Organization} The remainders of the paper are organized as follows. Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. Section~\ref{sec:sampling} and~\ref{sec:learning} then presents details on two main steps in our framework: data collection and active learning. Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. Section~\ref{sec:related} reviews related work and concludes.
 
@@ -150,7 +150,7 @@ In the above example, given the current classifier $x+y \leq 50$, we apply activ
 \end{example}
 The other issue is: how do we handle those valuations in $\mathit{NP}$, which may or may not satisfy $\mathit{Inv}$? If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ and as a result, the learned classifier may not converge to the invariant we want, even with the help of active learning. This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $x - y \geq 1$, or $x - y \geq 10$, or $x - y \geq 15$) may be learned to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help improving the classifier either. To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). We remark active learning is applied to all three candidates until they converge. In our example, the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ converges to $x - y \geq 0$; and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ converges to $x - y \geq 16$.
 
-After all three candidate invariants converge, we move on to \emph{invariant verification}. We check whether any of the candidate invariants satisfies condition (1), (2) and (3). In particular, for each candidate invariant $\phi$, we check whether any of the following formulae is satisfiable or not using an SMT solver~\cite{z3}.
+After all three candidate invariants converge, we move on to \emph{invariant verification}. We check whether any of the candidate invariants satisfies condition (1), (2) and (3). In particular, for each candidate invariant $\phi$, we check whether any of the following formulae is satisfiable or not using an SMT solver~\cite{barrett2009satisfiability,de2008z3}.
 \begin{align}
     & \mathit{Pre} \land \neg \phi \label{check:inv:pre} \\
     %% & (s \models \phi \land \mathit{Cond}) \land (\mathit{Body}(s) \not \models \phi) \label{check:inv:loop} \\
