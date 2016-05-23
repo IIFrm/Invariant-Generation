@@ -7,7 +7,7 @@ We have implemented our invariant inference framework in a tool, called \textsc{
 %% uses
  LibSVM~\cite{chang2011libsvm} as a primitive classification engine for
 SVM-based classification. %% based on SVM.
-For invariant verification, we %% reuse a large part of
+For candidate verification, we %% reuse a large part of
 adopt the KLEE project~\cite{cadar2008klee} to
 symbolically execute
 %% generate verification conditions for
@@ -23,9 +23,10 @@ concrete executions
 and return sound abstraction (i.e. $true$) for them.
  %% KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
 
-Our test subjects include a set of 29 benchmark programs %% which we
-gathered  from the previous publications~\cite{???} and from
- the software verification competition repository~\cite{Dirk:SVCOMP:2016}.
+Our test subjects include a set of 32 benchmark programs %% which we
+either gathered from the previous publications~\cite{gulwani2008program}\cite{sharma2012interpolants} and from
+the software verification competition repository~\cite{beyer:SVCOMP:2013}\cite{Dirk:SVCOMP:2016}
+\LJ{or constructed by ourselves}.
 All benchmarks are available from~\cite{zilu}.
 %% Note
 We remark that the loops in these benchmark programs often contain non-deterministic choices
@@ -55,7 +56,9 @@ As non-determinism is beyond the scope of this paper, we syntactically replace t
 The parameters chosen in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. Be default, we generate 8 random values for each free variable.
 %which would be enlarged if we can not find samples in a few tries.
 %Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-When we invoke LibSVM, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers. Each invocation of LibSVM's classification engine is set to time out in 600 seconds. The maximum dimension for learning polynomial classifiers is set to be 4. For invariant verification, we encode integer-type variables in the programs as integers in Z3.
+When we invoke LibSVM, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers. 
+Each invocation of LibSVM's classification engine is set to time out in 600 seconds. 
+The maximum degree for learning polynomial classifiers is set to be 4. For candidate verification, we encode integer-type variables in the programs as integers in Z3.
 
 
 %Considering the differences between machine learning problem and our setting,
@@ -244,55 +247,61 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
-\multicolumn{1}{|c|}{TEMPLATE} 		        								&polynomial 	& & &  &  &  &  & &  \\
-\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&6 &1 &9.2  &90  &4  &13.06  & &  \\
-\hline
-\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &27 &39.33	&5160 &129 &timeout  & &  \\
-\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunction 	&68 &3 &16.84  &220 &4   &15.22  & &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant\_true}   							&conjunction 	&204 &13 &108.57	&1620 &24 &timeout  & &  \\
-\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunction 	&324 &33 &57.78	&5080 &125 &258.65  & &  \\
-\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&240 &14 &84.02  &540 &7   &89.77  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunction 	&264  &15 &116.21  &1770  &27  &timeout  & &  \\
-\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&222 &14 &52.96  &720 &10   &44.99  & &  \\
+%\multicolumn{1}{|c|}{TEMPLATE} 		        	&polynomial 	& & &  &  &  &  & &  \\
+%\hline
+\multicolumn{1}{|c|}{f2~\cite{albarghouthi2013beautiful}}         				&linear 		&52 &1 &10.15  			&120 &1   &12.03  			& &  \\
+\multicolumn{1}{|c|}{xy10~\cite{albarghouthi2013beautiful}} 	        		&linear 		&162 &4 &39.69  		&840  &11  &40.51  			& &  \\
+\multicolumn{1}{|c|}{xyz~\cite{albarghouthi2013beautiful}}   	      			&linear 		&36 &1 &105.15  		&330  &5  &93.04  			& &  \\
+\multicolumn{1}{|c|}{xy0\_1~\cite{albarghouthi2013beautiful}}         			&conjunction 	&228 &20 &51.07			&1980 &48 &168.97  			& &  \\
+\multicolumn{1}{|c|}{xy0\_2~\cite{albarghouthi2013beautiful}}         			&conjunction 	&36  &2 &16.09			&260 &6 &15.98  			& &  \\
+\multicolumn{1}{|c|}{pldi08~\cite{albarghouthi2013beautiful}} 		        	&disjunction 	&100 &1 &timeout  		&120  &2  &timeout  		& &  \\
 
-\hline
-\multicolumn{1}{|c|}{interproc\_test1}         								&linear 		&8 &1 &9.21  &40 &2   &10.38  & &  \\
-\multicolumn{1}{|c|}{interproc\_test2}         								&linear 		&84 &1 &11.66  &240  &1  &171.14  & &  \\
-\multicolumn{1}{|c|}{interproc\_test3}         								&linear 		&42 &1 &30.32  &420 &5   &43.34  & &  \\
-\multicolumn{1}{|c|}{interproc\_test4}         								&linear 		&28 &4 &14.8  &240 &5   &38.25  & &  \\
-\multicolumn{1}{|c|}{interproc\_test5}         								&linear 		&32 &1 &9.18  &180 &3   &28.05  & &  \\
+%\hline
+\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}         			&linear 		&8 &1 &9.21  			&40 &2   &10.38  			& &  \\
+\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}         			&linear 		&84 &1 &11.66  			&240  &1  &171.14  			& &  \\
+\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}         			&linear 		&42 &1 &30.32  			&420 &5   &43.34  			& &  \\
+\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}         			&linear 		&28 &4 &14.8  			&240 &5   &38.25  			& &  \\
+\multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}         			&linear 		&32 &1 &9.18  			&180 &3   &28.05  			& &  \\
 
-\hline
-\multicolumn{1}{|c|}{cav12foo1}         									&conjunction 	&228 &20 &51.07	&1980 &48 &168.97  & &  \\
-\multicolumn{1}{|c|}{cav12foo2}         									&conjunction 	&36  &2 &16.09	&260 &6 &15.98  & &  \\
-\multicolumn{1}{|c|}{pldi} 		        									&disjunction 	& & &  &120  &2  &timeout  & &  \\
-\multicolumn{1}{|c|}{pldi082} 		        								&polynomial 	& & &  &  &  &  & &  \\
+%\hline
+\multicolumn{1}{|c|}{terminator\_01\_safe~\cite{beyer:SVCOMP:2013}}         	&linear 		&6 &1 &9.2  			&90  &4  &13.06  & &  \\
+%\hline
+\multicolumn{1}{|c|}{afnp2014\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunction	&248 &27 &39.33			&5160 &129 &timeout  		& &  \\
+\multicolumn{1}{|c|}{multivar\_true\_1~\cite{Dirk:SVCOMP:2016}}         		&conjunction 	&68 &3 &16.84  			&220 &4   &15.22  			& &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant~\cite{Dirk:SVCOMP:2016}}   				&conjunction 	&204 &13 &108.57		&1620 &24 &timeout  		& &  \\
+\multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&324 &33 &57.78			&5080 &125 &258.65  		& &  \\
+\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}         				&conjunction 	&240 &14 &84.02  		&540 &7   &89.77  			& &  \\
+\multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&264  &15 &116.21  		&1770  &27  &timeout  		& &  \\
+\multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&222 &14 &52.96  		&720 &10   &44.99  			& &  \\
 
-\hline
-\multicolumn{1}{|c|}{dis}         											&polynomial 	&22  &1 &24.27  &70   &2 &41.62  & &  \\
-\multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &2 &20.48		&70 &1 &28.48  & &  \\
-\multicolumn{1}{|c|}{lili2}         										&linear 		&84 &4 &21.28  &720  &9  &82.24  & &  \\
-\multicolumn{1}{|c|}{linear6}         										&linear 		&18 &1 &16.19  &270 &3  &179.39  & &  \\
-\multicolumn{1}{|c|}{f2}         											&linear 		&52 &1 &10.15  &120 &1   &12.03  & &  \\
-\multicolumn{1}{|c|}{f3}         											&linear 		&36 &1 &105.15  &330  &5  &93.04  & &  \\
-\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial 	&6 &1 &11.83  &70  &2  &18.27  & &  \\
-\multicolumn{1}{|c|}{interproc\_test7}         								&polynomial 	&300 &5 &timeout  &  &  & &  \\
-\multicolumn{1}{|c|}{interproc\_test8}         								&conjunction 	&24 &6 &22.13  &220  &2  &97.47  & &  \\
-\multicolumn{1}{|c|}{interproc\_test9}         								&polynomial 	&60 &2 &timeout  &1240  &18  &timeout  & &  \\
-\multicolumn{1}{|c|}{interproc\_test11}         							&linear 		&24 &2 &24.79  &180 &2   &206.07  & &  \\
+%\hline
+\multicolumn{1}{|c|}{zilu\_linear1}         				&linear 		&24 &2 &24.79  			&180 &2   &206.07  			& &  \\
+\multicolumn{1}{|c|}{zilu\_linear2}         				&linear 		&84 &4 &21.28  			&720  &9  &82.24  			& &  \\
+\multicolumn{1}{|c|}{zilu\_linear3}         				&linear 		&18 &1 &16.19  			&270 &3  &179.39  			& &  \\
+\multicolumn{1}{|c|}{zilu\_linear4}         				&linear 		&28 &1 &10.19  			&420 &2  &24.51  			& &  \\
+\multicolumn{1}{|c|}{zilu\_linear5}         				&linear 		&6 &1 &8.57  			&60 &3   &12.58  			& &  \\
 
-\multicolumn{1}{|c|}{test}         											&linear 		&28 &1 &10.19  &420 &2  &24.51  & &  \\
-\multicolumn{1}{|c|}{test2}         										&conjunction 	&56 &3 &173.09  &280  &7  &timeout  & &  \\
-\multicolumn{1}{|c|}{xle10}         										&linear 		&6 &1 &8.57  &60 &3   &12.58  & &  \\
-\multicolumn{1}{|c|}{xy10}         											&linear 		&162 &4 &39.69  &840  &11  &40.51  & &  \\
-\multicolumn{1}{|c|}{xyle0}         										&polynomial 	&60 &4 &85.61  &620   &12 &472.68  & &  \\
+\multicolumn{1}{|c|}{zilu\_poly1}         					&polynomial 	&10 &2 &20.48			&70 &1 &28.48  				& &  \\
+\multicolumn{1}{|c|}{zilu\_poly2}         					&polynomial 	&22  &1 &24.27  		&70   &2 &41.62  			& &  \\
+\multicolumn{1}{|c|}{zilu\_poly3}         					&polynomial 	&6 &1 &11.83  			&70  &2  &18.27  			& &  \\
+\multicolumn{1}{|c|}{zilu\_poly4}         					&polynomial 	&300 &5 &timeout  		&560  &2  &timeout 			& & \\
+\multicolumn{1}{|c|}{zilu\_poly5}         					&polynomial 	&680 &14 &timeout  		&800  &12  &timeout  		& &  \\
+\multicolumn{1}{|c|}{zilu\_poly6}         					&polynomial 	&60 &4 &85.61  			&620   &12 &472.68  		& &  \\
+
+\multicolumn{1}{|c|}{zilu\_conj1}         					&conjunction 	&24 &6 &22.13  			&220  &2  &97.47  			& &  \\
+\multicolumn{1}{|c|}{zilu\_conj2}         					&conjunction 	&56 &3 &173.09  		&280  &7  &timeout  		& &  \\
+
 \hline
 \end{tabular}
 \label{tbl:stats}
 \end{table}
 
-The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x86\_64 Ubuntu 14.04 (kernel 3.13.0-85-generic) with 2.3 GHz Intel Core i5 and 4G 1333MHz DDR3.
-The first column shows which a name of the benchmark program. The second shows the type of invariant required for proving the Hoare triple. The next three columns present details on \textsc{Zilu}, i.e., the number of samples, the number of iterations and the execution time. The next three columns present the corresponding statistics obtained by running \textsc{Zilu} without selective sampling. The last two columns show the execution time of Interproc and CPAChecker if it manages to generate a correct invariant.
+The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G 1333MHz DDR3.
+The first column shows which a name of the benchmark program. 
+The second shows the type of invariant required for proving the Hoare triple. 
+The next three columns present details on \textsc{Zilu}, i.e., the number of samples, the number of iterations and the execution time. 
+The next three columns present the corresponding statistics obtained by running \textsc{Zilu} without selective sampling. 
+The last two columns show the execution time of Interproc and CPAChecker if it manages to generate a correct invariant.
 %%\LL{I need more information on the percentage of the samples. }
 %`$\sharp$Invariants' stands the numbers of invariants generated by SVM,
 %and `$\sharp$Iterations' represents the number of invariant candidates.
@@ -306,11 +315,33 @@ The first column shows which a name of the benchmark program. The second shows t
 %and the eighth column gives the invariant type of the generated invariant.
 We remark that since \textsc{Zilu} relies on random sampling, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
 
-We have the following observations based on the experiment results. First, selective sampling is helpful in reducing the number of learn-and-check iterations. On average, the number of iterations is reduced from XXX to XXX. As a result, the time required for proving the program is reduced by a factor of XXX. We would like to highlight that for 13 out of 29 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration, whereas this is only the case for 3 programs without selective sampling. It implies that even if there is no verifier, \textsc{Zilu} may be able to learn the correct invariant. This is particularly useful if the loop body to beyond the capability of existing program verifiers. That is, in such a case, \textsc{Zilu} would generate an invariant which can be used to manually verify the program, whereas \textsc{Zilu} without selective sampling would not be able to help. Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast. We do notice that some of the experiments (\emph{poly 2}, \emph{poly 4} and \emph{conjunction 1}) take much longer time than the rest. To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
-However, the general form of an order-2 polynomial with 2 variables
-is: $a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \geq 0$. It takes XXX iterations before $c$, $d$, $e$ and $f$ to converge to 0.
+We have the following observations based on the experiment results. 
+
+First, selective sampling is helpful in reducing the number of learn-and-check iterations. 
+On average, the number of iterations is reduced from 10.84 to 4.96. As a result, the time required for proving the program is reduced by a factor of XXX. 
+We would like to highlight that for 13 out of 32 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration, whereas this is only the case for 3 programs without selective sampling. It implies that even if there is no verifier, \textsc{Zilu} may be able to learn the correct invariant. 
+This is particularly useful if the loop body to beyond the capability of existing program verifiers. 
+That is, in such a case, \textsc{Zilu} would generate an invariant which can be used to manually verify the program, whereas \textsc{Zilu} without selective sampling would not be able to help. 
+
+Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast. 
+\LJ{We do notice that most experiments with conjunctive form of invariants take much longer time than the rest,
+which is due to our $conjunctivePoly$ algorithm calls the primary \textsc{svm} many more times in one classification round while other algorithms only call it once. 
+We also notice that some experiments with polynomial invariant forms (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
+The reason is samples on the projected space is not continuous on integer domain while the samples on the original space is continuous on integer domain.
+For example, as an integer, $x$ can be any value in \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
+However, when mapped to degree 2, $(x, x^2)$ can be only \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points undefined, such as $(1, 3), (2, 1)$.
+And thus it makes the convergence of learned classifier much more difficult with these undefined holes.
+As the degree increases, these holes contains much much more points than the samples we can use, it can be much harder for the classifier to get converge.
+That is also the reason why we restrict the degree of our $polynomial$ algorithm up to 4. }
+
+%To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
+%However, the general form of an order-2 polynomial with 2 variables
+%is: $a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \geq 0$. It takes XXX iterations before $c$, $d$, $e$ and $f$ to converge to 0.
 Lastly, \textsc{Zilu} complements existing tools. For instance, \textsc{Zilu} can automatically generate polynomial loop invariants
-which are beyond the capability of Interproc or CPAChecker. It can be observed that both Interproc and CPAChecker run faster than \textsc{Zilu} if they can learn the correct invariant. However, the invariant generated by Interproc may not be correct. This can be demonstrated using our running example introduced in Section~\ref{sec:introduction}. Since we have the loop condition $x < y$, it is impossible to execute the loop body when $(x \ge 0) \land (y < 0)$. 
+which are beyond the capability of Interproc or CPAChecker. It can be observed that both Interproc and CPAChecker run faster than \textsc{Zilu} if they can learn the correct invariant. 
+However, the invariant generated by Interproc may not be correct. 
+This can be demonstrated using our running example introduced in Section~\ref{sec:introduction}. 
+Since we have the loop condition $x < y$, it is impossible to execute the loop body when $(x \ge 0) \land (y < 0)$. 
 However, Interproc outputs the loop invariant corresponding to this execution trace,
 because the invariants in Interproc are global constraints
 without considering their generation paths and conditions.
