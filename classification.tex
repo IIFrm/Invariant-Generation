@@ -8,17 +8,17 @@ Active learning aims at generating candidate invariants through iterations of cl
 \SetAlgoVlined
 \Indm
 \Indp
-let $\mathit{old_1}, \mathit{old_2}, \mathit{old_3}$ be $\textsc{null}$;\;
+let $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ be $\textsc{null}$\;
 \While{true} {
     let $f_1$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
     let $f_2$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}))$\;
     let $f_3$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
-    \If {for all $f_i$ where $i \in \{1,2,3\}$ such that $f_i = \mathit{old_i}$} {
+    \If {for all $f_i$ where $i \in \{1,2,3\}$ such that $f_i = \mathit{old\_f_i}$} {
         \Return $f_1$, $f_2$, $f_3$\;
     }
-    \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq \textsc{null}$ and $f_i \neq \mathit{old_i}$} {
+    \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq \textsc{null}$ and $f_i \neq \mathit{old\_f_i}$} {
         add $\mathit{selectiveSamples}(f_i, \mathit{SP})$ into $\mathit{SP}$\;
-        let $\mathit{old_i} = f_i$\;
+        let $\mathit{old\_f_i}\ be\ f_i$\;
     }
 }
 \caption{Algorithm $\mathit{activeLearning}(\mathit{SP})$}
@@ -187,13 +187,14 @@ Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is des
 %, avoiding the tries to convert them into a form of polynomials.
 It is inspired by the algorithm presented in~\cite{sharma2012interpolants}. The difference is that~\cite{sharma2012interpolants} learns conjunctive linear classifiers, whereas we learn conjunctive polynomial classifiers. The idea is to pick one sample $s$ from $N$ (at line 3) each time and identify a polynomial classifier based on Algorithm~\ref{alg:polynomialSVM} separating $P$ and $\{s\}$ (a.k.a.~a clause). Next, we remove (at line 6 to 8) all samples from $N$ which can be correctly classified by the polynomial classifier found at line 4, and then repeat the process until $N$ becomes empty.
 %Compared to the classification algorithm presented in~\cite{sharma2012interpolants}, Algorithm~\ref{alg:conjunctiveSVM} learns conjunctive polynomial classifiers whereas the one in~\cite{sharma2012interpolants} is limited to conjunctive linear classifier. The more important difference is however our classification algorithm is coupled with a selective sampling procedure.
-We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, may learn a classifier with many clauses, as one clause is introduce each time line 5 is executed. In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with less clauses.
+We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, may learn a classifier with many clauses, as one clause is introduce each time line 5 is executed. In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with fewer clauses.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
-    let $C$ = $\textsc{null}$; let $\mathit{Misclassified}$ = $N$\;
+    let $C$ = $\textsc{null}$\; 
+    let $\mathit{Misclassified}$ = $N$\;
     \While {$\mathit{Misclassified}$ is not empty} {
         Random choose $s$ from $\mathit{Misclassified}$\;
         let $f = \mathit{polynomial}(P, \{s\})$\;
@@ -204,6 +205,7 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
             }
         }
     }
+    Remove any $f$ in $C$ if $C\backslash f$ can perfectly classify $P$ and $N$\;
     \Return $C$;
 \caption{Algorithm $\mathit{conjunctivePoly}(P, N)$}
 \label{alg:conjunctiveSVM}
@@ -236,15 +238,16 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
 \subsection{Selective Sampling} \label{subsec:active:learning}
 Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
 
-Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn the following classifier: $-2x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
+Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $-4x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}
 \item Choose a variable in the classifier, for example $x$.
-\item Generates one random value for every other variable (with a uniform distribution over their range). For example, we let $y$ be $12$.
-\item Solve the equation $-2x^2+2y = -11$ after substituting the variables with their values. If there is no solution, go back to (1). In our example, we get $x \approx 2.9580$.
+\item Generates random value for other variables. For example, we let $y$ be $12$.
+\item Solve the equation $-4x^2+2y = -11$ after substituting variables with their values. If there is no solution, go back to (1) and retry. In our example, we get $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-Alternatively, we can use existing equation system solvers (like GSL~\cite{gough2009gnu}) directly to find solutions for equation $-2x^2+2y = -11$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is in general hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
+\LJ{Alternatively, we can use existing equation system solvers (like GSL~\cite{gough2009gnu}) directly to find solutions for equation $-2x^2+2y = -11$. It seems GSL can not handle multivariate polynomials directly }
+If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is in general hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
 %Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$),
 %active learning technique keeps refining the classifier until it gets converged.
 %That means the classifier remains identical even adding more data points into the training set.

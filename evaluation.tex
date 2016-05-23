@@ -244,32 +244,45 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
+\multicolumn{1}{|c|}{TEMPLATE} 		        								&polynomial 	& & &  &  &  &  & &  \\
+\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&6 &1 &9.2  &90  &4  &13.06  & &  \\
+\hline
 \multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &27 &39.33	&5160 &129 &timeout  & &  \\
-\multicolumn{1}{|c|}{cav12foo1}         									&conjunction 	&228 &20 &51.07	&1980 &48 &168.97  & &  \\
-\multicolumn{1}{|c|}{cav12foo2}         									&conjunction 	&36  &2 &16.09		&260 &6 &15.98  & &  \\
+\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunction 	&68 &3 &16.84  &220 &4   &15.22  & &  \\
 \multicolumn{1}{|c|}{cggmp2005\_variant\_true}   							&conjunction 	&204 &13 &108.57	&1620 &24 &timeout  & &  \\
-\multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &2 &20.48		&70 &1 &28.48  & &  \\
 \multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunction 	&324 &33 &57.78	&5080 &125 &258.65  & &  \\
-\multicolumn{1}{|c|}{dis}         											&polynomial 	&22  &1 &24.27  &70   &2 &41.62  & &  \\
+\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&240 &14 &84.02  &540 &7   &89.77  & &  \\
 \multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunction 	&264  &15 &116.21  &1770  &27  &timeout  & &  \\
 \multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&222 &14 &52.96  &720 &10   &44.99  & &  \\
-\multicolumn{1}{|c|}{f2}         											&linear 		&52 &1 &10.15  &120 &1   &12.03  & &  \\
-\multicolumn{1}{|c|}{f3}         											&linear 		&36 &1 &105.15  &330  &5  &93.04  & &  \\
+
+\hline
 \multicolumn{1}{|c|}{interproc\_test1}         								&linear 		&8 &1 &9.21  &40 &2   &10.38  & &  \\
 \multicolumn{1}{|c|}{interproc\_test2}         								&linear 		&84 &1 &11.66  &240  &1  &171.14  & &  \\
 \multicolumn{1}{|c|}{interproc\_test3}         								&linear 		&42 &1 &30.32  &420 &5   &43.34  & &  \\
 \multicolumn{1}{|c|}{interproc\_test4}         								&linear 		&28 &4 &14.8  &240 &5   &38.25  & &  \\
 \multicolumn{1}{|c|}{interproc\_test5}         								&linear 		&32 &1 &9.18  &180 &3   &28.05  & &  \\
-\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial 	&6 &1 &11.83  &70  &2  &18.27  & &  \\
-\multicolumn{1}{|c|}{interproc\_test8}         								&conjunction 	&24 &6 &22.13  &220  &2  &97.47  & &  \\
-\multicolumn{1}{|c|}{interproc\_test11}         							&linear 		&24 &2 &24.79  &180 &2   &206.07  & &  \\
+
+\hline
+\multicolumn{1}{|c|}{cav12foo1}         									&conjunction 	&228 &20 &51.07	&1980 &48 &168.97  & &  \\
+\multicolumn{1}{|c|}{cav12foo2}         									&conjunction 	&36  &2 &16.09	&260 &6 &15.98  & &  \\
+\multicolumn{1}{|c|}{pldi} 		        									&disjunction 	& & &  &120  &2  &timeout  & &  \\
+\multicolumn{1}{|c|}{pldi082} 		        								&polynomial 	& & &  &  &  &  & &  \\
+
+\hline
+\multicolumn{1}{|c|}{dis}         											&polynomial 	&22  &1 &24.27  &70   &2 &41.62  & &  \\
+\multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &2 &20.48		&70 &1 &28.48  & &  \\
 \multicolumn{1}{|c|}{lili2}         										&linear 		&84 &4 &21.28  &720  &9  &82.24  & &  \\
 \multicolumn{1}{|c|}{linear6}         										&linear 		&18 &1 &16.19  &270 &3  &179.39  & &  \\
-\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunction 	&68 &3 &16.84  &220 &4   &15.22  & &  \\
-\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&6 &1 &9.2  &90  &4  &13.06  & &  \\
+\multicolumn{1}{|c|}{f2}         											&linear 		&52 &1 &10.15  &120 &1   &12.03  & &  \\
+\multicolumn{1}{|c|}{f3}         											&linear 		&36 &1 &105.15  &330  &5  &93.04  & &  \\
+\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial 	&6 &1 &11.83  &70  &2  &18.27  & &  \\
+\multicolumn{1}{|c|}{interproc\_test7}         								&polynomial 	&300 &5 &timeout  &  &  & &  \\
+\multicolumn{1}{|c|}{interproc\_test8}         								&conjunction 	&24 &6 &22.13  &220  &2  &97.47  & &  \\
+\multicolumn{1}{|c|}{interproc\_test9}         								&polynomial 	&60 &2 &timeout  &1240  &18  &timeout  & &  \\
+\multicolumn{1}{|c|}{interproc\_test11}         							&linear 		&24 &2 &24.79  &180 &2   &206.07  & &  \\
+
 \multicolumn{1}{|c|}{test}         											&linear 		&28 &1 &10.19  &420 &2  &24.51  & &  \\
 \multicolumn{1}{|c|}{test2}         										&conjunction 	&56 &3 &173.09  &280  &7  &timeout  & &  \\
-\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&240 &14 &84.02  &540 &7   &89.77  & &  \\
 \multicolumn{1}{|c|}{xle10}         										&linear 		&6 &1 &8.57  &60 &3   &12.58  & &  \\
 \multicolumn{1}{|c|}{xy10}         											&linear 		&162 &4 &39.69  &840  &11  &40.51  & &  \\
 \multicolumn{1}{|c|}{xyle0}         										&polynomial 	&60 &4 &85.61  &620   &12 &472.68  & &  \\
