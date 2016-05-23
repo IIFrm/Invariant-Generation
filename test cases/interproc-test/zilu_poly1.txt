@@ -1,0 +1,16 @@
+var	x:int;
+
+begin
+	int loop_times;
+	loop_times = 10;
+	if (x>=0) && (x<=50) then 
+
+	while loop_times-->0 do
+		 if (x>50) x++;
+		if (x == 0) {
+			x ++;
+		} else x--;
+	done;	//(x>=0) && (x<=50)
+
+	endif;
+end

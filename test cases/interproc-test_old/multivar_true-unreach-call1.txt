@@ -1,0 +1,11 @@
+var	x:int, y:int;
+
+begin
+	if  y == x then 
+
+	while nondet() do
+		 x++; y++;
+	done;	//x == y
+
+	endif;
+end
