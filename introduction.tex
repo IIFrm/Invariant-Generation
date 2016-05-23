@@ -65,8 +65,7 @@ Lastly, we implement our framework as a tool called \textsc{Zilu}
     % we also claim that our framework have better extensibility comparing with their method.
     \textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library (GSL)~\cite{gough2009gnu} for selective sampling,
     LibSVM~\cite{chang2011libsvm} for SVM classification,
-    Z3~\cite{de2008z3} for invariant verification
-    and KLEE~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}) and can be used as a language/platform independent tool to verify programs.
+    revised KLEE~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for invariant verification) and can be used as a language/platform independent tool to verify programs.
 
 \paragraph{Organization} The remainders of the paper are organized as follows. Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. Section~\ref{sec:sampling} and~\ref{sec:learning} then presents details on two main steps in our framework: data collection and active learning. Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. Section~\ref{sec:related} reviews related work and concludes.
 
@@ -84,21 +83,36 @@ In our framework, loop invariant generation is an iterative process of \emph{dat
 \begin{subfigure}{0.5\textwidth}
     \raggedright
     \vspace{0.5cm}
-{\scriptsize\begin{verbatim}
-void P(int x, int y) {
-    assume(x < y);
-    while (x < y) {
-        if (x < 0) x = x + 7;
-        else x = x + 10;
+%% {\scriptsize\begin{verbatim}
+%% void P(int x, int y) {
+%%     assume(x < y);
+%%     while (x < y) {
+%%         if (x < 0) x = x + 7;
+%%         else x = x + 10;
 
-        if (y < 0) y = y - 10;
-        else y = y + 3;
-    }
-    assert(x >= y
-        && x <= y + 16);
-}
-\end{verbatim}}
-    \vspace{0.5cm}
+%%         if (y < 0) y = y - 10;
+%%         else y = y + 3;
+%%     }
+%%     assert(x >= y
+%%         && x <= y + 16);
+%% }
+%% \end{verbatim}}
+\vspace{-0.2cm} \[
+ \begin{array}{ll}
+1 & \code{void~P(int ~x{,} ~int~y)\{} \\
+2 & \code{~~~ assume(x~{<}~y);}  \\
+3 & \code{~~~ while(x~{<}~y)\{}  \\
+4 & \code{~~~ \quad if~(x~{<}~0)~x~{=}~x~{+}~7;}  \\
+5 & \code{~~~ \quad else~ x~{=}~x~{+}~10;}\\
+6 & \code{~~~ \quad if~(y~{<}~0)~y~{=}~y~{-}~10;} \\
+7 & \code{~~~ \quad else~ y~{=}~y~{+}~3;}\\
+8 & \code{~~~\}} \\
+9 & \code{~~~assert(x~{\geq}~y}\\
+10 & \code{~~~\quad \&\&~x~{\leq}~y~{+}~16);}\\
+11  & \}
+\end{array}
+\]
+    \vspace{-0.2cm}
     \caption{A sample program}
     \label{fig:running:example:program}
 \end{subfigure}%
@@ -115,8 +129,8 @@ void P(int x, int y) {
 
 
 \begin{example}
-An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an $assume$ statement captures the precondition and an $assert$ statement captures the postcondition). The set of variables $V$ contains two integer-type ones: $x$ and $y$. For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). The precondition $Pre$ is $x < y$, which is the same as the loop condition $Cond$.
-During each loop iteration, $x$ is increased by $7$ if it is negative; otherwise it is increased by $10$. $y$ is decreased by $10$ if it is negative; otherwise it is increased by $3$. The postcondition $Post$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $Inv$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
+An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). The set of variables $V$ contains two integer-type ones: $x$ and $y$. For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). The precondition $Pre$ is $x < y$, which is the same as the loop condition $Cond$.
+During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise it is increased by $3$ (line 7). The postcondition $Post$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $Inv$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
 \end{example}
 We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $Pre$ as random samples. For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record the variable evaluations after each iteration of the loop. %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
 Let $Inv$ denote any invariant which satisfies condition (1), (2) and (3.) All variable valuations are then divided into four categories.
@@ -157,7 +171,8 @@ After all three candidate invariants converge, we move on to \emph{invariant ver
      & sp(\phi \land \mathit{Cond}, \mathit{Body}) \land \neg \phi \label{check:inv:loop} \\
     & \phi \land \neg \mathit{Cond} \land \neg \mathit{Post} \label{check:inv:post}
 \end{align}
-where $sp(\phi,e)$ is the strongest postcondition obtained by executing program $e$
+where $sp(\phi,e)$ is the strongest postcondition obtained by
+symbolically executing program $e$
 starting from precondition $\phi$.
 If there is one candidate invariant which satisfies all the three conditions, we successfully prove the Hoare triple. For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, which are then added into $Positive$, $Negative$ or $NP$ accordingly. In particular, a counterexample failing condition (4) is added into $Positive$; a counterexample failing condition (6) may be added into $Negative$ or $NP$ (depending on whether it satisfies $Pre$). We then restart from data collection, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four categories accordingly, move on to active learning and so on.
 
