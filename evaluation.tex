@@ -326,13 +326,12 @@ That is, in such a case, \textsc{Zilu} would generate an invariant which can be 
 Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast. 
 \LJ{We do notice that most experiments with conjunctive form of invariants take much longer time than the rest,
 which is due to our $conjunctivePoly$ algorithm calls the primary \textsc{svm} many more times in one classification round while other algorithms only call it once. 
-We also notice that some experiments with polynomial invariant forms (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
-The reason is samples on the projected space is not continuous on integer domain while the samples on the original space is continuous on integer domain.
-For example, as an integer, $x$ can be any value in \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
-However, when mapped to degree 2, $(x, x^2)$ can be only \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points undefined, such as $(1, 3), (2, 1)$.
-And thus it makes the convergence of learned classifier much more difficult with these undefined holes.
-As the degree increases, these holes contains much much more points than the samples we can use, it can be much harder for the classifier to get converge.
-That is also the reason why we restrict the degree of our $polynomial$ algorithm up to 4. }
+We also notice that some experiments with polynomial invariants (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
+The reason is the samples on the projected space are discrete on the integer domain while the samples on the original space are continuous.
+For example, as an integer, variable $x$ can be any value in set \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
+However, after mapping to degree 2, $(x, x^2)$ can be defined only in set \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points are undefined, such as $(1, 3), (2, 1)$.
+And thus it makes the convergence of our learning algorithms much more difficult with these undefined holes.
+What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4. }
 
 %To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
 %However, the general form of an order-2 polynomial with 2 variables
