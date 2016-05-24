@@ -1,11 +1,10 @@
 var	i:int, k:int;
 
 begin
-	if 0 <= k && k <= 1 && i == 1 then 
+	if (0 <= k and k <= 1 and i == 1) then
+		while (true) do
+				i = i + 1; k = k - 1;		//1 <= i + k and i + k <= 2 and i >= 1
 
-	while nondet() do
-		i = i + 1; k = k - 1;
-	done;	//1 <= i + k && i + k <= 2 && i >= 1
-
+		done;
 	endif;
 end
