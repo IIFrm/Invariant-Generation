@@ -86,7 +86,7 @@ For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the ta
 That is, given a valuation in $P$, we systematically add all terms constituted by the same variables with a degree no more than $\mathit{degree}$, as if they are new variables.
 %The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions,
 SVM is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
-Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{???}. 
+Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}. 
 In order to favor classifiers with lower degrees (which often are easier to understand or verify), we start with looking for a polynomial classifier with degree 1 and only look for higher-degree polynomial classifiers if we find no lower-degree ones. 
 The algorithm terminates when we reach the threshold on the maximum degree. 
 We remark that the size of each sample in $P'$ or $N'$ grows exponentially with $\mathit{degree}$. 
@@ -255,7 +255,7 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
 % section classification (end)
 
 \subsection{Selective Sampling} \label{subsec:active:learning}
-Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
+Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. %We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
 
 Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $-4x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}
