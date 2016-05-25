@@ -36,7 +36,8 @@ In order to prove the Hoare triple, we would like to find a loop invariant $\mat
         &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
 Alternatively, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models Post$.
-The problem is thus either to prove the Hoare triple (by identifying an $\mathit{Inv}$ satisfying the three conditions) or to disprove it (by finding a valuation $s$ as described above). For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{acmcomm} for an introduction on extensive research on proving loop termination.
+The problem is thus either to prove the Hoare triple (by identifying an $\mathit{Inv}$ satisfying the three conditions) or to disprove it (by finding a valuation $s$ as described above). For simplicity, we further assume that the loop body always terminates and refer the readers to~ \cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
+ for an introduction on extensive research on proving loop termination.
 
 Many approaches have been proposed for invariant generation. 
 For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}. 
