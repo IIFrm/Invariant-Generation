@@ -258,47 +258,47 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \hline % inserts single horizontal line
 %\multicolumn{1}{|c|}{TEMPLATE} 		        	&polynomial 	& & &  &  &  &  & &  \\
 %\hline
-\multicolumn{1}{|c|}{f2}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&0.00 &  \\
-\multicolumn{1}{|c|}{xy10} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&0.00 &  \\
-\multicolumn{1}{|c|}{xyz}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&0.00 &  \\
-\multicolumn{1}{|c|}{xy0\_1}         					&conjunction 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&0.00 &  \\
-\multicolumn{1}{|c|}{xy0\_2}         					&conjunction 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&0.00 &  \\
-\multicolumn{1}{|c|}{pldi08} 		        			&disjunction 	&500 &1 &timeout  				&120  &2  &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{f2}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&\cmark &  \\
+\multicolumn{1}{|c|}{xy10} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&\cmark &  \\
+\multicolumn{1}{|c|}{xyz}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&\cmark &  \\
+\multicolumn{1}{|c|}{xy0\_1}         					&conjunction 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\cmark &  \\
+\multicolumn{1}{|c|}{xy0\_2}         					&conjunction 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\cmark &  \\
+\multicolumn{1}{|c|}{pldi08} 		        			&disjunction 	&500 &1 &timeout  				&120  &2  &timeout  		&\xmark &  \\
 
 %\hline
-\multicolumn{1}{|c|}{interproc1}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&0.00 &  \\
-\multicolumn{1}{|c|}{interproc2}         				&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&0.00 &  \\
-\multicolumn{1}{|c|}{interproc3}         				&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&0.00 &  \\
-\multicolumn{1}{|c|}{interproc4}         				&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&0.00 &  \\
-\multicolumn{1}{|c|}{interproc5}         				&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&0.00 &  \\
+\multicolumn{1}{|c|}{interproc1}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&\cmark &  \\
+\multicolumn{1}{|c|}{interproc2}         				&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&\cmark &  \\
+\multicolumn{1}{|c|}{interproc3}         				&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&\cmark &  \\
+\multicolumn{1}{|c|}{interproc4}         				&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&\xmark &  \\
+\multicolumn{1}{|c|}{interproc5}         				&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&\cmark &  \\
 
 %\hline
-\multicolumn{1}{|c|}{zilu\_linear1}         			&linear 		&120 &2 &\textbf{24.79}  		&180 &2   &206.07  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_linear2}         			&linear 		&420 &4 &\textbf{21.28}  		&720  &9  &82.24  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_linear3}         			&linear 		&90 &1 &\textbf{16.19}  		&270 &3  &179.39  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_linear4}         			&linear 		&140 &1 &\textbf{10.19}  		&420 &2  &24.51  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_linear5}         			&linear 		&30 &1 &\textbf{8.57}  			&60 &3   &12.58  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_linear1}         			&linear 		&120 &2 &\textbf{24.79}  		&180 &2   &206.07  			&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_linear2}         			&linear 		&420 &4 &\textbf{21.28}  		&720  &9  &82.24  			&\cmark &  \\
+\multicolumn{1}{|c|}{zilu\_linear3}         			&linear 		&90 &1 &\textbf{16.19}  		&270 &3  &179.39  			&\cmark &  \\
+\multicolumn{1}{|c|}{zilu\_linear4}         			&linear 		&140 &1 &\textbf{10.19}  		&420 &2  &24.51  			&\cmark &  \\
+\multicolumn{1}{|c|}{zilu\_linear5}         			&linear 		&30 &1 &\textbf{8.57}  			&60 &3   &12.58  			&\cmark &  \\
 
-\multicolumn{1}{|c|}{zilu\_poly1}         				&polynomial 	&50 &2 &\textbf{20.48}			&70 &1 &28.48  				&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_poly2}         				&polynomial 	&110  &1 &\textbf{24.27}  		&70   &2 &41.62  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_poly3}         				&polynomial 	&30 &1 &\textbf{11.83}  		&70  &2  &18.27  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&1500 &5 &timeout  				&560  &2  &timeout 			&0.00 & \\
-\multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&3400 &14 &timeout  			&800  &12  &timeout  		&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_poly1}         				&polynomial 	&50 &2 &\textbf{20.48}			&70 &1 &28.48  				&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_poly2}         				&polynomial 	&110  &1 &\textbf{24.27}  		&70   &2 &41.62  			&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_poly3}         				&polynomial 	&30 &1 &\textbf{11.83}  		&70  &2  &18.27  			&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&1500 &5 &timeout  				&560  &2  &timeout 			&\xmark & \\
+\multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&3400 &14 &timeout  			&800  &12  &timeout  		&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&\xmark &  \\
 
-\multicolumn{1}{|c|}{zilu\_conj1}         				&conjunction 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&0.00 &  \\
-\multicolumn{1}{|c|}{zilu\_conj2}         				&conjunction 	&280 &3 &\textbf{173.09}  		&280  &7  &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_conj1}         				&conjunction 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&\xmark &  \\
+\multicolumn{1}{|c|}{zilu\_conj2}         				&conjunction 	&280 &3 &\textbf{173.09}  		&280  &7  &timeout  		&\cmark &  \\
 
 %\hline
-\multicolumn{1}{|c|}{terminator\_01\_safe}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&0.00 &  \\
+\multicolumn{1}{|c|}{terminator\_01\_safe}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&\cmark &  \\
 %\hline
-\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunction	&1240 &27 &\textbf{39.33}		&5160 &129 &timeout  		&0.00 &  \\
-\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunction 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&0.00 &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunction 	&1020 &13 &\textbf{108.57}		&1620 &24 &timeout  		&0.00 &  \\
-\multicolumn{1}{|c|}{css2003\_true}         			&conjunction 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&0.00 &  \\
-\multicolumn{1}{|c|}{up\_true\_2}         				&conjunction 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&0.00 &  \\
-\multicolumn{1}{|c|}{down\_true\_1}         			&conjunction 	&1320  &15 &\textbf{116.21}  	&1770  &27  &timeout  		&0.00 &  \\
-\multicolumn{1}{|c|}{down\_true\_2}         			&conjunction 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &0.00 &  \\
+\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunction	&1240 &27 &\textbf{39.33}		&5160 &129 &timeout  		&\xmark &  \\
+\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunction 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&\cmark &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunction 	&1020 &13 &\textbf{108.57}		&1620 &24 &timeout  		&\cmark &  \\
+\multicolumn{1}{|c|}{css2003\_true}         			&conjunction 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&\cmark &  \\
+\multicolumn{1}{|c|}{up\_true\_2}         				&conjunction 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&\cmark &  \\
+\multicolumn{1}{|c|}{down\_true\_1}         			&conjunction 	&1320  &15 &\textbf{116.21}  	&1770  &27  &timeout  		&\cmark &  \\
+\multicolumn{1}{|c|}{down\_true\_2}         			&conjunction 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &\cmark &  \\
 
 \hline
 \end{tabular}
