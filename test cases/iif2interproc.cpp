@@ -7,6 +7,7 @@
 using namespace std;
 
 const int max_confignum = 32;
+bool nondet=false;
 
 class Config {
 	public:
@@ -21,7 +22,7 @@ class Config {
 
 		bool toCppStatement() {
 			//cout << "processing <" + key + ", " + value + ">......\n";
-			if (key == "precondition") { cppstatement = "if " + value + " then \n";
+			if (key == "precondition") { cppstatement = "if (" + value + ") then";
 			} else if (key == "beforeloop") { cppstatement = value;
 			} else if (key == "beforeloopinit") { cppstatement = value;
 			} else if (key == "symbolic") { 
@@ -30,13 +31,24 @@ class Config {
 				else 
 					cppstatement = "";
 			} else if (key == "loopcondition") { 
-				if (value.compare("") == 0) 
-					cppstatement = "while nondet() do";
+				if (value.compare("") == 0) {
+					//nondet=true;
+					//cppstatement += "\twhile (nondet>0) do";
+					cppstatement = "\twhile (brandom) do";
+				}
 				else
-					cppstatement = "while " + value + " do";
-			} else if (key == "loop") { cppstatement = "\t" + value + "\n\tdone;";
+					cppstatement = "\twhile (" + value + ") do";
+			} else if (key == "loop") { 
+				cppstatement = "\t\t" + value;
+				/*if (nondet == true) {
+					cppstatement += "\n\t\tnondet = random;";
+				}*/
+				cppstatement += "\n\t\tdone;";
+				//}
 			} else if (key == "postcondition") { 
 				cppstatement = "//" + value + "\n"; 
+				//if (nondet == true)
+				//cppstatement += "\n\t\tdone;";
 			}
 			return true;
 		}
@@ -156,22 +168,24 @@ class FileHelper {
 				for (int i = 1; i < vnum; i++) {
 					cppFile << ", " << variables[i] << ":int";
 				}
+				/*if (nondet == true)
+					cppFile << ", nondet:int";
+					*/
 				cppFile << ";\n\n";
 			}
 			cppFile << "begin\n";
-			int symb = -1;
+			/*
+			if (nondet == true)
+				cppFile << "\tnondet = random;\n";
+				*/
 			for (int i = 0; i < confignum; i++) {
-				if (cs[i].key == "symbolic") {
-					if (cs[i].value.compare("") == 0) continue;
-					symb = i;
-					cppFile << "\tint " << cs[i].cppstatement << " = rand();\n";
-					continue;
-				}
-				if (cs[i].key == "loop") { 
-					if (symb >= 0) cppFile << "\t" << cs[symb].cppstatement << " = rand();\n";
-					cppFile << "\t" << cs[i].cppstatement;
-					continue;
-				}
+				/*if (cs[i].key == "loop") { 
+					cppFile << "\t\t" << cs[i].cppstatement;
+					if (nondet) {
+						cppFile << "\t\tnondet = random;\n";
+						continue;
+					}
+				}*/
 				if (cs[i].cppstatement.compare("") != 0)
 					cppFile << "\t" << cs[i].cppstatement << endl;
 			}

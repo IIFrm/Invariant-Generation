@@ -7,6 +7,7 @@
 using namespace std;
 
 const int max_confignum = 32;
+bool nondet=false;
 
 class Config {
 	public:
@@ -21,25 +22,38 @@ class Config {
 
 		bool toCppStatement() {
 			//cout << "processing <" + key + ", " + value + ">......\n";
-			if (key == "precondition") { cppstatement = "if(!(" + value + ")) {\n\t return 0;\n\t}\n";
-			} else if (key == "beforeloop") { cppstatement = value;
-			} else if (key == "beforeloopinit") { cppstatement = value;
+			if (key == "precondition") { cppstatement = "\tif(!(" + value + ")) {\n\t\t return 0;\n\t}\n";
+			} else if (key == "beforeloop") { 
+				if (value.compare("") == 0)
+					cppstatement = "";
+				else
+					cppstatement = value + "\n";
+			} else if (key == "beforeloopinit") {
+				if (value.compare("") == 0)
+					cppstatement = "";
+				else
+					cppstatement = value + "\n";
 			} else if (key == "symbolic") { 
 				if (value.compare("") != 0) 
 					cppstatement = value;
 				else 
 					cppstatement = "";
-			} else if (key == "loop") { cppstatement = value;
+			} else if (key == "loop") { cppstatement = "\t"+ value + "\n";
 			} else if (key == "loopcondition") { 
-				if (value.compare("") == 0) 
-					cppstatement = "while(nondet()) {";
-				else
-					cppstatement = "while(" + value + ") {";
-			} else if (key == "loop") { cppstatement = "\t" + value;
+				if (value.compare("") == 0) {
+					nondet = true;
+					cppstatement = "\twhile(1) {\n";
+				} else
+					cppstatement = "\twhile(" + value + ") {\n";
+			} else if (key == "loop") { cppstatement = "\t\t" + value + "\n";
 			} else if (key == "postcondition") { 
-				cppstatement = "if(!(" + value + ")) {\n\t goto ERROR;\n\t}\n"; 
+				if (nondet) 
+					cppstatement = "\t\tif(!(" + value + ")) {\n\t\t\t goto ERROR;\n\t\t}\n\t}\n"; 
+				else
+					cppstatement = "\t}\n\tif(!(" + value + ")) {\n\t\t goto ERROR;\n\t}\n"; 
+
 				cppstatement += "\treturn 0;\n\n";
-				cppstatement += "ERROR: \n\treturn 1;\n}";
+				cppstatement += "ERROR: \n\t__assert_fail();\n\treturn 1;\n}";
 			}
 			return true;
 		}
@@ -154,25 +168,14 @@ class FileHelper {
 
 	private:
 		bool writeCppLoopFunction(ofstream& cppFile) {
+			cppFile << "extern void __assert_fail();\n\n";
 			cppFile <<"int main() {\n";
 			for (int i = 0; i < vnum; i++) {
 				cppFile << "\tint " << variables[i] << ";\n";
 			}
-			cppFile << "\n";
-			int symb = -1;
+			cppFile << endl;
 			for (int i = 0; i < confignum; i++) {
-				if (cs[i].key == "symbolic") {
-					if (cs[i].value.compare("") == 0) continue;
-					symb = i;
-					cppFile << "\tint " << cs[i].cppstatement << " = rand();\n";
-					continue;
-				}
-				if (cs[i].cppstatement.compare("") != 0)
-					cppFile << "\t" << cs[i].cppstatement << endl;
-				if (cs[i].key == "loop") { 
-					if (symb >= 0) cppFile << cs[symb].cppstatement << " = rand();\n";
-					cppFile << "\t}\n\n"; 
-				}
+				cppFile << cs[i].cppstatement;
 			}
 			return true;
 		}

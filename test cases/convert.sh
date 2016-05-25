@@ -70,4 +70,21 @@ if [ $option2 -eq 1 ]; then
 	rm $interproc_path/*.txt
 	mv $iif_path/*.txt $interproc_path
 fi
+
+for file in `find $interproc_path -name '*.txt'`
+do
+	sed -i "s/\ &&\ /\ and\ /g" $file
+	sed -i "s/\ &&/\ and\ /g" $file
+	sed -i "s/&&\ /\ and\ /g" $file
+	sed -i "s/&&/\ and\ /g" $file
+	sed -i "s/\ ||\ /\ or\ /g" $file
+	sed -i "s/\ ||/\ or\ /g" $file
+	sed -i "s/||\ /\ or\ /g" $file
+	sed -i "s/||/\ or\ /g" $file
+
+	sed -i "s/\([a-zA-Z][a-zA-Z_0-9]*\)++/\1=\1+1/g" $file
+	sed -i "s/\([a-zA-Z][a-zA-Z_0-9]*\)--/\1=\1-1/g" $file
+	sed -i "s/\([a-zA-Z][a-zA-Z_0-9]*\)+=/\1=\1+/g" $file
+	sed -i "s/\([a-zA-Z][a-zA-Z_0-9]*\)-=/\1=\1-/g" $file
+done
 rm iif2interproc

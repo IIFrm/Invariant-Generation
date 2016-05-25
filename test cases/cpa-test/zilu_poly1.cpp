@@ -1,24 +1,23 @@
+extern void __assert_fail();
+
 int main() {
 	int x;
 
-	int loop_times;
-	loop_times = 10;
 	if(!((x>=0) && (x<=50))) {
-	 return 0;
+		 return 0;
 	}
-
-	while(loop_times-->0) {
+	while(1) {
 	 if (x>50) x++;
 		if (x == 0) {
 			x ++;
 		} else x--;
-	}
-
-	if(!((x>=0) && (x<=50))) {
-	 goto ERROR;
+		if(!((x>=0) && (x<=50))) {
+			 goto ERROR;
+		}
 	}
 	return 0;
 
 ERROR: 
+	__assert_fail();
 	return 1;
 }
