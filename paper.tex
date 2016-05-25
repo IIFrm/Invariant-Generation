@@ -42,8 +42,9 @@
 
 \author{Jiaying Li, Li Li, Quang Loc Le, Jun Sun}
 
-\institute{Singapore University of Technology and Design \\
-\email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,quangloc\_le,sunjun\}@sutd.edu.sg}}
+\institute{Singapore University of Technology and Design %\\
+%\email{jiaying\_li@mymail.sutd.edu.sg\\ \{li\_li,quangloc\_le,sunjun\}@sutd.edu.sg}
+}
 
 %%\numberofauthors{4}
 %\author{
@@ -83,7 +84,7 @@
 \maketitle
 
 \begin{abstract}
-Loop invariant generation is important in program analysis and verification. In this work, we propose a framework for automatic loop invariant generation through iterations of active learning and verification. Given a Hoare triple of a program containing a loop, we start with random sampling of program states in the loop at runtime. We then categorize the program states based on whether they satisfy the pre-condition and/or post-condition. Next, machine learning techniques are employed to generate candidate loop invariants. We then improve the the generated candidates through active learning so that it is less limited by the sampled program states. Only after the candidate invariants cannot be improved further through active learning, we employ verification techniques to check whether the candidates can be used to prove the Hoare triple. If it cannot, the generated counter-examples are used to enrich the samples and we repeat the above process again. We have developed a prototype implementation and applied it to verify a set of benchmark programs. The evaluation shows our approach complements existing approaches/tools in finding loop invariants.
+Loop invariant generation is important in program analysis and verification. In this work, we propose a framework for automatic loop invariant generation through iterations of active learning and verification. Given a Hoare triple of a program containing a loop, we start with random sampling of program states in the loop at runtime. We then categorize the program states based on whether they would satisfy the invariant to be discovered. Next, machine learning techniques are employed to generate candidate loop invariants. We then improve the the generated candidates through active learning. Only after the candidate invariants cannot be improved further through active learning, we employ verification techniques to check whether the candidates can be used to prove the Hoare triple. If it cannot, the generated counter-examples are used to enrich the samples and we repeat the above process again. We have developed a prototype implementation and applied it to verify a set of benchmark programs. The evaluation shows our approach complements existing approaches/tools in finding loop invariants.
 
 %-------------------------------------------------------------------------
 %  \keywords Loop Invariant $\cdot$ Active Learning $\cdot$ Verification

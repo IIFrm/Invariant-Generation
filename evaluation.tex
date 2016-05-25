@@ -28,20 +28,14 @@ and return sound abstraction (i.e. $true$) for them.
 %the software verification competition repository~\cite{beyer:SVCOMP:2013}\cite{Dirk:SVCOMP:2016}
 %{or constructed by ourselves}.
 
-
-\LJ{
-To study the effectiveness of \textsc{Zilu}, we chose small C programs as benchmarks from multiple sources, including papers, other tool test suite.
-The benchmark $f2, xy*, pldi08$ are from publications~\cite{gulwani2008program}\cite{sharma2012interpolants} and \cite{gulavani2008automatically}.
-The benchmark $interproc*$ are from ~\cite{jeannet2010interproc}.
-The benchmark $zilu\_*$ are constructed by ourselves.
-The benchmark $terminator\_01\_safe$ is gathered from ~\cite{beyer:SVCOMP:2013} and the others are collected from ~\cite{Dirk:SVCOMP:2016}.
-All benchmarks are available from~\cite{zilu:benchmark}.
-}
+To study the effectiveness of \textsc{Zilu}, we choose benchmark C programs from multiple sources.
+The benchmark $f2, xy*, pldi08$ are from publications~\cite{gulwani2008program,sharma2012interpolants,gulavani2008automatically}. The benchmark $interproc*$ are from~\cite{jeannet2010interproc}.
+The benchmark $zilu\_*$ are constructed by ourselves. The benchmark $terminator\_01\_safe$ is gathered from~\cite{beyer:SVCOMP:2013} and the others are collected from the software verification competition repository~\cite{Dirk:SVCOMP:2016}. All benchmarks are available from~\cite{zilu:benchmark}.
 %% Note
 We remark that the loops in these benchmark programs often contain non-deterministic choices
 %% in the loop
 which are used to model I/O environment (e.g., an external function call).
-As non-determinism is beyond the scope of this paper, we syntactically replace these non-deterministic commands with free variables of type boolean. In the future, we would like to investigate how to learn loop invariants in the presence of non-determinism (e.g., random number generation in the loop).
+As non-determinism is beyond the scope of this work, we syntactically replace these non-deterministic commands with free variables of type boolean. In the future, we would like to investigate how to learn loop invariants in the presence of non-determinism (e.g., random number generation in the loop).
 %It would be interesting to investigate how our active learning verification system can be extended to infer non-determinism-based invariants.
  %% which by our assumption is not allowed. We thus transform the programs so that free boolean-type variables are introduced to replace the non-deterministic choice. We remark that the assumption of no non-determinism is less a problem for verification programs in practice as they are often deterministic. These benchmark programs are made non-deterministic often as a way of abstracting away certain complicated (e.g., an external function call) part of the program which is irrelevant to proving/disproving the Hoare triple.
 %In our experimental evaluation,
@@ -62,11 +56,11 @@ As non-determinism is beyond the scope of this paper, we syntactically replace t
 %\LL{Introduce the sources of the benchmark.}
  %% All benchmarks are available from~\cite{zilu}.
 
-The parameters chosen in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. Be default, we generate 8 random values for each free variable.
+The parameters in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. By default, we generate 8 random values for each free variable.
 %which would be enlarged if we can not find samples in a few tries.
 %Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-When we invoke LibSVM, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers. 
-Each invocation of LibSVM's classification engine is set to time out in 600 seconds. 
+When we invoke LibSVM for classification, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers.
+Each invocation of LibSVM's classification engine is set to time out in 600 seconds.
 The maximum degree for learning polynomial classifiers is set to be 4. For candidate verification, we encode integer-type variables in the programs as integers in Z3.
 
 
@@ -243,8 +237,9 @@ The maximum degree for learning polynomial classifiers is set to be 4. For candi
 %    \label{tab:experiments}
 %\end{table*}
 
-We compare \textsc{Zilu} with two state-of-the-art invariant inference tools: Interproc~\cite{jeannet2010interproc} and CPAChecker~\cite{beyer2011cpachecker}. %Though many others have been reported~\cite{}, most of which are not maintained any more. 
-We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker should be taken with a grain of salt as the methods for invariant generation are  different. Interproc is based on abstract interpretation. In the experiments, Interproc uses its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program. We thus can manually check their correctness and compare them with the invariants generated by \textsc{Zilu}. CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool based on the framework of configurable program analysis~\cite{beyer2007configurable}. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple. In addition, we measure the performance of \textsc{Zilu} with or without active learning in order to show the relevance of selective sampling.
+We compare \textsc{Zilu} with two state-of-the-art invariant inference tools: Interproc~\cite{jeannet2010interproc} and CPAChecker~\cite{beyer2011cpachecker}. %Though many others have been reported~\cite{}, most of which are not maintained any more.
+Interproc generates invariants based on abstract interpretation. In the experiments, it is set to use its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. %Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program.
+We manually check the generated invariants for correctness. CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple. We remark that the comparison should be taken with a grain of salt as the methods are different. In addition, we measure the performance of \textsc{Zilu} with or without selective sampling in order to show its relevance.
 
 \begin{table}[t]
 \scriptsize
@@ -252,7 +247,7 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \caption{Experiment results}
 \begin{tabular}{l c | c c c | c c c | c c }
 \cline{3-8}
-& &\multicolumn{3}{|c|}{\textsc{Zilu} - Selective Sampling}&\multicolumn{3}{c|}{\textsc{Zilu} - Random Sampling} & & \\
+& &\multicolumn{3}{|c|}{\textsc{Zilu} + Selective Sampling}&\multicolumn{3}{c|}{\textsc{Zilu} - Selective Sampling} & & \\
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
@@ -282,7 +277,7 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \multicolumn{1}{|c|}{zilu\_poly1}         				&polynomial 	&50 &2 &\textbf{20.48}			&70 &1 &28.48  				&\xmark &\cmark  \\
 \multicolumn{1}{|c|}{zilu\_poly2}         				&polynomial 	&110  &1 &\textbf{24.27}  		&70   &2 &41.62  			&\xmark &\cmark  \\
 \multicolumn{1}{|c|}{zilu\_poly3}         				&polynomial 	&30 &1 &\textbf{11.83}  		&70  &2  &18.27  			&\xmark &\xmark  \\
-\multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&1500 &5 &timeout  				&560  &2  &timeout 			&\xmark &\xmark  \\
+\multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&1500 &5 &timeout  				&560  &2  &timeout 			&\xmark &\xmark \\
 \multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&3400 &14 &timeout  			&800  &12  &timeout  		&\xmark &\cmark  \\
 \multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&\xmark &\xmark  \\
 
@@ -306,11 +301,11 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \end{table}
 
 The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.
-The first column shows which a name of the benchmark program. 
-The second shows the type of invariant required for proving the Hoare triple. 
-The next three columns present details on \textsc{Zilu}, i.e., the number of samples, the number of iterations and the execution time. 
-The next three columns present the corresponding statistics obtained by running \textsc{Zilu} without selective sampling. 
-The last two columns show the execution time of Interproc and CPAChecker if it manages to generate a correct invariant.
+The first column shows which a name of the benchmark program.
+The second shows the type of invariant required for proving the Hoare triple.
+The next three columns present details on \textsc{Zilu}, i.e., the number of samples, the number of iterations and the execution time.
+The next three columns present the corresponding statistics obtained by running \textsc{Zilu} without selective sampling.
+The last two columns show the result of Interproc and CPAChecker, i.e., whether it generates a correct invariant. We do not show the time of Interproc because its result may not be correct.
 %%\LL{I need more information on the percentage of the samples. }
 %`$\sharp$Invariants' stands the numbers of invariants generated by SVM,
 %and `$\sharp$Iterations' represents the number of invariant candidates.
@@ -324,32 +319,24 @@ The last two columns show the execution time of Interproc and CPAChecker if it m
 %and the eighth column gives the invariant type of the generated invariant.
 %We remark that since \textsc{Zilu} relies on random sampling, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
 
-We have the following observations based on the experiment results. 
+We have the following observations based on the experiment results. First, selective sampling is helpful in reducing the number of learn-and-check iterations.
+On average, the number of iterations is reduced from 10.84 to 4.96. As a result, the time required for proving the program is often reduced.
+We would like to highlight that for 13 out of 32 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration, whereas this is only the case for 3 programs without selective sampling. It implies that even if there is no verifier, \textsc{Zilu} may be able to learn the correct invariant.
+This is particularly useful if the loop body is beyond the capability of existing program verifiers. In such a case, \textsc{Zilu} would generate an invariant which can be used to manually verify the program, which is impossible without selective sampling.
 
-First, selective sampling is helpful in reducing the number of learn-and-check iterations. 
-On average, the number of iterations is reduced from 10.84 to 4.96. As a result, the time required for proving the program is reduced by a factor of XXX. 
-We would like to highlight that for 13 out of 32 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration, whereas this is only the case for 3 programs without selective sampling. It implies that even if there is no verifier, \textsc{Zilu} may be able to learn the correct invariant. 
-This is particularly useful if the loop body to beyond the capability of existing program verifiers. 
-That is, in such a case, \textsc{Zilu} would generate an invariant which can be used to manually verify the program, whereas \textsc{Zilu} without selective sampling would not be able to help. 
-
-Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast. 
-\LJ{We do notice that most experiments with conjunctive form of invariants take much longer time than the rest,
-which is due to our $conjunctivePoly$ algorithm calls the primary \textsc{svm} many more times in one classification round while other algorithms only call it once. 
-We also notice that some experiments with polynomial invariants (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
-The reason is the samples on the projected space are discrete on the integer domain while the samples on the original space are continuous.
-For example, as an integer, variable $x$ can be any value in set \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
-However, after mapping to degree 2, $(x, x^2)$ can be defined only in set \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points are undefined, such as $(1, 3), (2, 1)$.
-And thus it makes the convergence of our learning algorithms much more difficult with these undefined holes.
-What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4. }
+Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast.
+We observe that \textsc{Zilu} often takes more time to learn conjunctive invariants. This is because Algorithm~\ref{alg:conjunctiveSVM} may invoke SVM classification many times in one learn-and-check iteration.
+\textsc{Zilu} times out in three cases. One is $pldi08$, which requires a disjunctive invariant which is not supported by \textsc{Zilu} currently. The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}. Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $mapToDegree$), the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. For example, assume a program with an integer variable $x$ which can be any value in the set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. After the mapping, $(x, x^2)$ is defined only with the value in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}. As a result, if selective sampling generate a new sample $(3,4)$, we are not able to obtain an $x$-value which we can use to execute the program.  
+%What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4.
 
 %To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
 %However, the general form of an order-2 polynomial with 2 variables
 %is: $a \cdot x^2 + b \cdot y^2 + c \cdot x y + d \cdot x + e \cdot y + f \geq 0$. It takes XXX iterations before $c$, $d$, $e$ and $f$ to converge to 0.
 Lastly, \textsc{Zilu} complements existing tools. For instance, \textsc{Zilu} can automatically generate polynomial loop invariants
-which are beyond the capability of Interproc or CPAChecker. It can be observed that both Interproc and CPAChecker run faster than \textsc{Zilu} if they can learn the correct invariant. 
-However, the invariant generated by Interproc may not be correct. 
-This can be demonstrated using our running example introduced in Section~\ref{sec:introduction}. 
-Since we have the loop condition $x < y$, it is impossible to execute the loop body when $(x \ge 0) \land (y < 0)$. 
+which are beyond the capability of Interproc or CPAChecker. It can be observed that both Interproc and CPAChecker run faster than \textsc{Zilu} if they can learn the correct invariant.
+However, the invariant generated by Interproc may not be correct.
+This can be demonstrated using our running example introduced in Section~\ref{sec:introduction}.
+Since we have the loop condition $x < y$, it is impossible to execute the loop body when $(x \ge 0) \land (y < 0)$.
 However, Interproc outputs the loop invariant corresponding to this execution trace,
 because the invariants in Interproc are global constraints
 without considering their generation paths and conditions.
