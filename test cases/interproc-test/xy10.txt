@@ -1,11 +1,11 @@
 var	x:int, y:int, z:int;
 
 begin
-	if x==y then 
-
-	while nondet() do
-		x+=10; y+=1;
-	done;	//x>z || y<z+1
+	if (x==y) then
+		while (brandom) do
+			x=x+10; y=y+1;
+		done;
+	//x>z or y<z+1
 
 	endif;
 end

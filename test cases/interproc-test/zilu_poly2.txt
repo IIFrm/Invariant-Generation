@@ -1,11 +1,25 @@
 var	x:int;
 
 begin
-	if (x>=40) || (x<=0 && x>=-20) then 
-
-	while nondet() do
-		if(x>=40) x++; else if (x<-20) x--; else if (x==39) x--; else if (x>0) x++;
-	done;	//(x>=40) || (x<=0 && x>=-20)
+	if ((x>=40) or (x<=0 and x>=-20)) then
+		while (brandom) do
+			if(x>=40) then
+				x=x+1; 
+			else 
+				if (x<-20) then
+					x=x-1; 
+				else 
+					if (x==39) then
+						x=x-1; 
+					else 
+						if (x>0) then
+							x=x+1;
+						endif;
+					endif;
+				endif;
+			endif;
+		done;
+	//(x>=40) or (x<=0 and x>=-20)
 
 	endif;
 end

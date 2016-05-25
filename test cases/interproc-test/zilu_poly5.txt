@@ -1,12 +1,15 @@
 var	i:int, j:int;
 
 begin
-	if(i < 0) i = -i; i = i + 1;
-	if i*i < j && i >= 1 then 
-
-	while i*i < j do
-		 i = i + 1;
-	done;	//(i - 1) * (i - 1) < j && j <= i * i
+	if(i < 0) then
+		i = -i; 
+	endif;
+	i = i + 1;
+	if (i*i < j and i >= 1) then
+		while (i*i < j) do
+			 i = i + 1;
+		done;
+	//(i - 1) * (i - 1) < j and j <= i * i
 
 	endif;
 end
