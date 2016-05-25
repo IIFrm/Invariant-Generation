@@ -2,9 +2,10 @@ var	x:int, y:int;
 
 begin
 	if ( y == x) then
-		while (true) do
-				 x=x+1; y=y+1;		//x == y
-
+		while (brandom) do
+			 x=x+1; y=y+1;
 		done;
+	//x == y
+
 	endif;
 end

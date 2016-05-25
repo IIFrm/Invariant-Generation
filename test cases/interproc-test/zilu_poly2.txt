@@ -2,20 +2,24 @@ var	x:int;
 
 begin
 	if ((x>=40) or (x<=0 and x>=-20)) then
-		while (true) do
-				if(x>=40) then
-					x=x+1; 
-				else if (x<-20) then
+		while (brandom) do
+			if(x>=40) then
+				x=x+1; 
+			else 
+				if (x<-20) then
+					x=x-1; 
+				else 
+					if (x==39) then
 						x=x-1; 
-					else if (x==39) then
-							x=x-1; 
-						else if (x>0) then
-								x=x+1;		
-							endif;
+					else 
+						if (x>0) then
+							x=x+1;
 						endif;
 					endif;
 				endif;
-								//(x>=40) or (x<=0 and x>=-20)
+			endif;
 		done;
+	//(x>=40) or (x<=0 and x>=-20)
+
 	endif;
 end

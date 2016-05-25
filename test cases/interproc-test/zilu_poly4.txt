@@ -3,12 +3,13 @@ var	i:int, j:int;
 begin
 	if (i*i < j*j) then
 		while (i*i < j*j) do
-				 if (j > 0) then
-					 j = j - 1; 
-				else 
-					 j = j + 1;
-				endif;
-		done;		//i*i == j*j
+			 if (j > 0) then
+				j = j - 1;
+			else 
+				j = j + 1;
+			endif;
+		done;
+	//i*i == j*j
 
 	endif;
 end

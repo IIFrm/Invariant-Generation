@@ -3,8 +3,9 @@ var	low:int, mid:int, high:int;
 begin
 	if (low == 0 and mid >= 1 and high == 2*mid) then
 		while (mid > 0) do
-				low = low + 1; high = high - 1; mid = mid - 1;
-		done;		//low == high
+			low = low + 1; high = high - 1; mid = mid - 1;
+		done;
+	//low == high
 
 	endif;
 end
