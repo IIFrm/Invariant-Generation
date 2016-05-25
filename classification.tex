@@ -8,17 +8,17 @@ Active learning aims at generating candidate invariants through iterations of cl
 \SetAlgoVlined
 \Indm
 \Indp
-let $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ be $\textsc{null}$\;
+Initialize $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ as $\textsc{null}$\;
 \While{true} {
-    let $f_1$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
-    let $f_2$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}))$\;
-    let $f_3$ be $\mathit{classify}(\mathit{Positive}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
+    $f_1$\ := \ $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
+    $f_2$\ := \ $\mathit{classify}(\mathit{Positive}(\mathit{SP}), \mathit{Negative}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}))$\;
+    $f_3$\ := \ $\mathit{classify}(\mathit{Positive}(\mathit{SP}) \cup \mathit{NP}(\mathit{SP}), \mathit{Negative}(\mathit{SP}))$\;
     \If {for all $f_i$ where $i \in \{1,2,3\}$ such that $f_i = \mathit{old\_f_i}$} {
         \Return $f_1$, $f_2$, $f_3$\;
     }
     \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq \textsc{null}$ and $f_i \neq \mathit{old\_f_i}$} {
         add $\mathit{selectiveSamples}(f_i, \mathit{SP})$ into $\mathit{SP}$\;
-        let $\mathit{old\_f_i}\ be\ f_i$\;
+        $\mathit{old\_f_i}\ := \ f_i$\;
     }
 }
 \caption{Algorithm $\mathit{activeLearning}(\mathit{SP})$}
@@ -26,7 +26,7 @@ let $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ be $\textsc{null}$
 \end{algorithm}
 
 \subsection{Classification}
-In the machine learning community, many classification algorithms have been proposed, e.g., perceptron~\cite{???}, decision tree~\cite{quinlan1986induction}, SVM~\cite{???} and neutral network~\cite{???}.
+In the machine learning community, many classification algorithms have been proposed, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, SVM~\cite{svm:original} and neutral network~\cite{nn}.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
@@ -67,7 +67,16 @@ In our framework, the classification algorithms must generate perfect classifier
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other,
 %making it a non-probabilistic binary linear classifier.
-SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm}. In this work, we use its binary classification functionality. In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if there is any. In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise. We refer the readers to~\cite{svm} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible. Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different. SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space), e.g., in the form of $a x + b y \geq c$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants. In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
+SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. In this work, we use its binary classification functionality. 
+In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows. 
+Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if there is any. 
+In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise. 
+We refer the readers to~\cite{svm:smo} for details on how the classifier is computed. 
+In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{sharma2012interpolants}) if possible. 
+Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different. 
+SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space), 
+e.g., in the form of $a x + b y \geq c$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants. 
+In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
 
 \paragraph{Polynomial Classifiers} Algorithm~\ref{alg:conjunctiveSVM} shows our algorithm for learning classifiers in the form of polynomial inequalities. 
 The inputs of the algorithm include the two sets of samples $P$ and $N$ as well as a threshold on the maximum degree of the polynomial classifier. 
@@ -77,7 +86,7 @@ For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the ta
 That is, given a valuation in $P$, we systematically add all terms constituted by the same variables with a degree no more than $\mathit{degree}$, as if they are new variables.
 %The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions,
 SVM is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
-Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{???}. 
+Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}. 
 In order to favor classifiers with lower degrees (which often are easier to understand or verify), we start with looking for a polynomial classifier with degree 1 and only look for higher-degree polynomial classifiers if we find no lower-degree ones. 
 The algorithm terminates when we reach the threshold on the maximum degree. 
 We remark that the size of each sample in $P'$ or $N'$ grows exponentially with $\mathit{degree}$. 
@@ -88,14 +97,14 @@ However, in our experiments, we often are able to identify useful classifiers wi
 \SetAlgoVlined
 \Indm
 \Indp
-    $degree = 1$\;
+    Initialize $degree$ as 1\;
     \While {$degree \le \mathit{max\_degree}$} {
-        $P' = \mathit{mapToDegree}(P, \mathit{degree})$\;
-        $N' = \mathit{mapToDegree}(N, \mathit{degree})$\;
+        $P' := \mathit{mapToDegree}(P, \mathit{degree})$\;
+        $N' := \mathit{mapToDegree}(N, \mathit{degree})$\;
         \If {$\mathit{svm}(P', N')$ is not $\textsc{null}$} {
             \Return $\mathit{svm}(P', N')$\;
         }
-    	$\mathit{degree} = \mathit{degree} + 1$\;
+    	$\mathit{degree} := \mathit{degree} + 1$\;
     }
     \Return $\textsc{null}$;
 \caption{Algorithm $\mathit{polynomial}(P,N)$}
@@ -203,12 +212,12 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
 \SetAlgoVlined
 \Indm
 \Indp
-    let $C$ = $\textsc{null}$\; 
-    let $\mathit{Misclassified}$ = $N$\;
+    Initialize $C$\ as\ $\textsc{null}$\; 
+    Initialize $\mathit{Misclassified}$\ as\ $N$\;
     \While {$\mathit{Misclassified}$ is not empty} {
         Random choose $s$ from $\mathit{Misclassified}$\;
-        let $f = \mathit{polynomial}(P, \{s\})$\;
-        let $C = C \land f$\;
+        $f := \mathit{polynomial}(P, \{s\})$\;
+        $C := C \land f$\;
         \For {$s' \in \mathit{Misclassified}$} {\
             \If {$f(s') < 0$} {
                 remove $s'$ from $\mathit{Misclassified}$\;
@@ -246,7 +255,7 @@ We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2
 % section classification (end)
 
 \subsection{Selective Sampling} \label{subsec:active:learning}
-Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
+Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. %We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
 
 Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $-4x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}

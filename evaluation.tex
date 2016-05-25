@@ -8,13 +8,13 @@ We have implemented our invariant inference framework in a tool, called \textsc{
  LibSVM~\cite{chang2011libsvm} as a primitive classification engine for
 SVM-based classification. %% based on SVM.
 For candidate verification, we %% reuse a large part of
-adopt the KLEE project~\cite{cadar2008klee} to
+modify the KLEE project~\cite{cadar2008klee} to
 symbolically execute
 %% generate verification conditions for
  C programs %% and use
 prior to invoke Z3~\cite{de2008z3} for checking satisfiability of
 condition (4), (5) and (6).
- We remark that KLEE is a concolic symbolic executor; it may
+ We remark that KLEE is a symbolic executor; it may
 concretely execute the programs and return
  under-approximated
 abstraction. This may affect the soundness of our system.
@@ -23,11 +23,20 @@ concrete executions
 and return sound abstraction (i.e. $true$) for them.
  %% KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
 
-Our test subjects include a set of 32 benchmark programs %% which we
-either gathered from the previous publications~\cite{gulwani2008program}\cite{sharma2012interpolants} and from
-the software verification competition repository~\cite{beyer:SVCOMP:2013}\cite{Dirk:SVCOMP:2016}
-\LJ{or constructed by ourselves}.
-All benchmarks are available from~\cite{zilu}.
+%Our test subjects include a set of 32 benchmark programs %% which we
+%either gathered from the previous publications~\cite{gulwani2008program}\cite{sharma2012interpolants} \cite{gulavani2008automatically} and from
+%the software verification competition repository~\cite{beyer:SVCOMP:2013}\cite{Dirk:SVCOMP:2016}
+%{or constructed by ourselves}.
+
+
+\LJ{
+To study the effectiveness of \textsc{Zilu}, we chose small C programs as benchmarks from multiple sources, including papers, other tool test suite.
+The benchmark $f2, xy*, pldi08$ are from publications~\cite{gulwani2008program}\cite{sharma2012interpolants} and \cite{gulavani2008automatically}.
+The benchmark $interproc*$ are from ~\cite{jeannet2010interproc}.
+The benchmark $zilu\_*$ are constructed by ourselves.
+The benchmark $terminator\_01\_safe$ is gathered from ~\cite{beyer:SVCOMP:2013} and the others are collected from ~\cite{Dirk:SVCOMP:2016}.
+All benchmarks are available from~\cite{zilu:benchmark}.
+}
 %% Note
 We remark that the loops in these benchmark programs often contain non-deterministic choices
 %% in the loop
@@ -98,7 +107,7 @@ The maximum degree for learning polynomial classifiers is set to be 4. For candi
 %%\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 %\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sampls & $\sharp$v. sample &time(s) & $\sharp$r. sample & $\sharp$v. sample &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 %\hline % inserts single horizontal line
-%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &993 &27 &39.33	&5160 &129 &timeout  & &  \\
+%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &992 &27 &39.33	&5160 &129 &timeout  & &  \\
 %%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &993 &27 &39.33	&5160 & &223.63  & &  \\
 %\multicolumn{1}{|c|}{cav12foo1}         									&conjunction 	&228 &912 &20 &51.07	&1980 &48 &168.97  & &  \\
 %\multicolumn{1}{|c|}{cav12foo2}         									&conjunction 	&36 &144 &2 &16.09		&260 &6 &15.98  & &  \\
@@ -243,60 +252,60 @@ We remark that the comparison between \textsc{Zilu} and Interproc or CPAChecker 
 \caption{Experiment results}
 \begin{tabular}{l c | c c c | c c c | c c }
 \cline{3-8}
-& &\multicolumn{3}{|c|}{\textsc{Zilu}}&\multicolumn{3}{c|}{\textsc{Zilu} - Selective Sampling} & & \\
+& &\multicolumn{3}{|c|}{\textsc{Zilu} - Selective Sampling}&\multicolumn{3}{c|}{\textsc{Zilu} - Random Sampling} & & \\
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
 \hline % inserts single horizontal line
 %\multicolumn{1}{|c|}{TEMPLATE} 		        	&polynomial 	& & &  &  &  &  & &  \\
 %\hline
-\multicolumn{1}{|c|}{f2~\cite{albarghouthi2013beautiful}}         				&linear 		&52 &1 &10.15  			&120 &1   &12.03  			& &  \\
-\multicolumn{1}{|c|}{xy10~\cite{albarghouthi2013beautiful}} 	        		&linear 		&162 &4 &39.69  		&840  &11  &40.51  			& &  \\
-\multicolumn{1}{|c|}{xyz~\cite{albarghouthi2013beautiful}}   	      			&linear 		&36 &1 &105.15  		&330  &5  &93.04  			& &  \\
-\multicolumn{1}{|c|}{xy0\_1~\cite{albarghouthi2013beautiful}}         			&conjunction 	&228 &20 &51.07			&1980 &48 &168.97  			& &  \\
-\multicolumn{1}{|c|}{xy0\_2~\cite{albarghouthi2013beautiful}}         			&conjunction 	&36  &2 &16.09			&260 &6 &15.98  			& &  \\
-\multicolumn{1}{|c|}{pldi08~\cite{albarghouthi2013beautiful}} 		        	&disjunction 	&100 &1 &timeout  		&120  &2  &timeout  		& &  \\
+\multicolumn{1}{|c|}{f2}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&0.00 &  \\
+\multicolumn{1}{|c|}{xy10} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&0.00 &  \\
+\multicolumn{1}{|c|}{xyz}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&0.00 &  \\
+\multicolumn{1}{|c|}{xy0\_1}         					&conjunction 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&0.00 &  \\
+\multicolumn{1}{|c|}{xy0\_2}         					&conjunction 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&0.00 &  \\
+\multicolumn{1}{|c|}{pldi08} 		        			&disjunction 	&500 &1 &timeout  				&120  &2  &timeout  		&0.00 &  \\
 
 %\hline
-\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}         			&linear 		&8 &1 &9.21  			&40 &2   &10.38  			& &  \\
-\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}         			&linear 		&84 &1 &11.66  			&240  &1  &171.14  			& &  \\
-\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}         			&linear 		&42 &1 &30.32  			&420 &5   &43.34  			& &  \\
-\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}         			&linear 		&28 &4 &14.8  			&240 &5   &38.25  			& &  \\
-\multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}         			&linear 		&32 &1 &9.18  			&180 &3   &28.05  			& &  \\
+\multicolumn{1}{|c|}{interproc1}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&0.00 &  \\
+\multicolumn{1}{|c|}{interproc2}         				&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&0.00 &  \\
+\multicolumn{1}{|c|}{interproc3}         				&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&0.00 &  \\
+\multicolumn{1}{|c|}{interproc4}         				&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&0.00 &  \\
+\multicolumn{1}{|c|}{interproc5}         				&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&0.00 &  \\
 
 %\hline
-\multicolumn{1}{|c|}{terminator\_01\_safe~\cite{beyer:SVCOMP:2013}}         	&linear 		&6 &1 &9.2  			&90  &4  &13.06  & &  \\
-%\hline
-\multicolumn{1}{|c|}{afnp2014\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunction	&248 &27 &39.33			&5160 &129 &timeout  		& &  \\
-\multicolumn{1}{|c|}{multivar\_true\_1~\cite{Dirk:SVCOMP:2016}}         		&conjunction 	&68 &3 &16.84  			&220 &4   &15.22  			& &  \\
-\multicolumn{1}{|c|}{cggmp2005\_variant~\cite{Dirk:SVCOMP:2016}}   				&conjunction 	&204 &13 &108.57		&1620 &24 &timeout  		& &  \\
-\multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&324 &33 &57.78			&5080 &125 &258.65  		& &  \\
-\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}         				&conjunction 	&240 &14 &84.02  		&540 &7   &89.77  			& &  \\
-\multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&264  &15 &116.21  		&1770  &27  &timeout  		& &  \\
-\multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}         			&conjunction 	&222 &14 &52.96  		&720 &10   &44.99  			& &  \\
+\multicolumn{1}{|c|}{zilu\_linear1}         			&linear 		&120 &2 &\textbf{24.79}  		&180 &2   &206.07  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_linear2}         			&linear 		&420 &4 &\textbf{21.28}  		&720  &9  &82.24  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_linear3}         			&linear 		&90 &1 &\textbf{16.19}  		&270 &3  &179.39  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_linear4}         			&linear 		&140 &1 &\textbf{10.19}  		&420 &2  &24.51  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_linear5}         			&linear 		&30 &1 &\textbf{8.57}  			&60 &3   &12.58  			&0.00 &  \\
+
+\multicolumn{1}{|c|}{zilu\_poly1}         				&polynomial 	&50 &2 &\textbf{20.48}			&70 &1 &28.48  				&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_poly2}         				&polynomial 	&110  &1 &\textbf{24.27}  		&70   &2 &41.62  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_poly3}         				&polynomial 	&30 &1 &\textbf{11.83}  		&70  &2  &18.27  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&1500 &5 &timeout  				&560  &2  &timeout 			&0.00 & \\
+\multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&3400 &14 &timeout  			&800  &12  &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&0.00 &  \\
+
+\multicolumn{1}{|c|}{zilu\_conj1}         				&conjunction 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&0.00 &  \\
+\multicolumn{1}{|c|}{zilu\_conj2}         				&conjunction 	&280 &3 &\textbf{173.09}  		&280  &7  &timeout  		&0.00 &  \\
 
 %\hline
-\multicolumn{1}{|c|}{zilu\_linear1}         				&linear 		&24 &2 &24.79  			&180 &2   &206.07  			& &  \\
-\multicolumn{1}{|c|}{zilu\_linear2}         				&linear 		&84 &4 &21.28  			&720  &9  &82.24  			& &  \\
-\multicolumn{1}{|c|}{zilu\_linear3}         				&linear 		&18 &1 &16.19  			&270 &3  &179.39  			& &  \\
-\multicolumn{1}{|c|}{zilu\_linear4}         				&linear 		&28 &1 &10.19  			&420 &2  &24.51  			& &  \\
-\multicolumn{1}{|c|}{zilu\_linear5}         				&linear 		&6 &1 &8.57  			&60 &3   &12.58  			& &  \\
-
-\multicolumn{1}{|c|}{zilu\_poly1}         					&polynomial 	&10 &2 &20.48			&70 &1 &28.48  				& &  \\
-\multicolumn{1}{|c|}{zilu\_poly2}         					&polynomial 	&22  &1 &24.27  		&70   &2 &41.62  			& &  \\
-\multicolumn{1}{|c|}{zilu\_poly3}         					&polynomial 	&6 &1 &11.83  			&70  &2  &18.27  			& &  \\
-\multicolumn{1}{|c|}{zilu\_poly4}         					&polynomial 	&300 &5 &timeout  		&560  &2  &timeout 			& & \\
-\multicolumn{1}{|c|}{zilu\_poly5}         					&polynomial 	&680 &14 &timeout  		&800  &12  &timeout  		& &  \\
-\multicolumn{1}{|c|}{zilu\_poly6}         					&polynomial 	&60 &4 &85.61  			&620   &12 &472.68  		& &  \\
-
-\multicolumn{1}{|c|}{zilu\_conj1}         					&conjunction 	&24 &6 &22.13  			&220  &2  &97.47  			& &  \\
-\multicolumn{1}{|c|}{zilu\_conj2}         					&conjunction 	&56 &3 &173.09  		&280  &7  &timeout  		& &  \\
+\multicolumn{1}{|c|}{terminator\_01\_safe}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&0.00 &  \\
+%\hline
+\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunction	&1240 &27 &\textbf{39.33}		&5160 &129 &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunction 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&0.00 &  \\
+\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunction 	&1020 &13 &\textbf{108.57}		&1620 &24 &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{css2003\_true}         			&conjunction 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&0.00 &  \\
+\multicolumn{1}{|c|}{up\_true\_2}         				&conjunction 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&0.00 &  \\
+\multicolumn{1}{|c|}{down\_true\_1}         			&conjunction 	&1320  &15 &\textbf{116.21}  	&1770  &27  &timeout  		&0.00 &  \\
+\multicolumn{1}{|c|}{down\_true\_2}         			&conjunction 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &0.00 &  \\
 
 \hline
 \end{tabular}
 \label{tbl:stats}
 \end{table}
 
-The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G 1333MHz DDR3.
+The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.
 The first column shows which a name of the benchmark program. 
 The second shows the type of invariant required for proving the Hoare triple. 
 The next three columns present details on \textsc{Zilu}, i.e., the number of samples, the number of iterations and the execution time. 
@@ -313,7 +322,7 @@ The last two columns show the execution time of Interproc and CPAChecker if it m
 % the invariant inference difficulty increases.
 %The seventh column gives the time used for the invariant generation
 %and the eighth column gives the invariant type of the generated invariant.
-We remark that since \textsc{Zilu} relies on random sampling, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
+%We remark that since \textsc{Zilu} relies on random sampling, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
 
 We have the following observations based on the experiment results. 
 
@@ -326,13 +335,12 @@ That is, in such a case, \textsc{Zilu} would generate an invariant which can be 
 Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast. 
 \LJ{We do notice that most experiments with conjunctive form of invariants take much longer time than the rest,
 which is due to our $conjunctivePoly$ algorithm calls the primary \textsc{svm} many more times in one classification round while other algorithms only call it once. 
-We also notice that some experiments with polynomial invariant forms (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
-The reason is samples on the projected space is not continuous on integer domain while the samples on the original space is continuous on integer domain.
-For example, as an integer, $x$ can be any value in \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
-However, when mapped to degree 2, $(x, x^2)$ can be only \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points undefined, such as $(1, 3), (2, 1)$.
-And thus it makes the convergence of learned classifier much more difficult with these undefined holes.
-As the degree increases, these holes contains much much more points than the samples we can use, it can be much harder for the classifier to get converge.
-That is also the reason why we restrict the degree of our $polynomial$ algorithm up to 4. }
+We also notice that some experiments with polynomial invariants (\emph{zilu\_poly4}, \emph{zilu\_poly5}) can not get a classifier until run overtime. 
+The reason is the samples on the projected space are discrete on the integer domain while the samples on the original space are continuous.
+For example, as an integer, variable $x$ can be any value in set \{$\cdots, -1, 0, 1, 2, 3, \cdots$\}, which is continuous on integer domain.
+However, after mapping to degree 2, $(x, x^2)$ can be defined only in set \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}, which leaves many points are undefined, such as $(1, 3), (2, 1)$.
+And thus it makes the convergence of our learning algorithms much more difficult with these undefined holes.
+What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4. }
 
 %To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
 %However, the general form of an order-2 polynomial with 2 variables
