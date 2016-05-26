@@ -76,7 +76,7 @@ In this work, we always choose the \textit{optimal margin classifier} (see the d
 Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
 SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space),
 e.g., in the form of $a x + b y \geq c$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants.
-In practice, such classifiers may not be sufficient and thus we develop algorithms to learn more expressive invariants.
+In practice, such classifiers may not be sufficient and thus, we develop algorithms to learn more expressive invariants.
 
 \paragraph{Polynomial Classifiers} Algorithm~\ref{alg:conjunctiveSVM} shows our algorithm for learning classifiers in the form of polynomial inequalities.
 The inputs of the algorithm include the two sets of samples $P$ and $N$ as well as a threshold on the maximum degree of the polynomial classifier.
@@ -221,12 +221,12 @@ where $d_0 < d_1 < d_2$ are constants can be represented as: $x^3 + (d_0d_1 + d_
 \paragraph{Conjunctive Polynomial Classifiers}
 As discussed above, polynomial classifiers can equivalently represent certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. A simple example is $x \ge 0 \land y \ge 0$. Thus, we develop an algorithm to learn more expressive classifiers.
 
-Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is designed to learned conjunctive polynomial classifiers.
+Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is designed to learn conjunctive polynomial classifiers.
 %So in this part, we introduce the algorithm to learn conjunctive invariants directly.
 %, avoiding the tries to convert them into a form of polynomials.
 It is inspired by the algorithm presented in~\cite{sharma2012interpolants}. The difference is that~\cite{sharma2012interpolants} learns conjunctive linear classifiers, whereas we learn conjunctive polynomial classifiers. The idea is to pick one sample $s$ from $N$ (at line 3) each time and identify a polynomial classifier based on Algorithm~\ref{alg:polynomialSVM} separating $P$ and $\{s\}$ (a.k.a.~a clause). Next, we remove (at line 6 to 8) all samples from $N$ which can be correctly classified by the polynomial classifier found at line 4, and then repeat the process until $N$ becomes empty.
 %Compared to the classification algorithm presented in~\cite{sharma2012interpolants}, Algorithm~\ref{alg:conjunctiveSVM} learns conjunctive polynomial classifiers whereas the one in~\cite{sharma2012interpolants} is limited to conjunctive linear classifier. The more important difference is however our classification algorithm is coupled with a selective sampling procedure.
-At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that the conjunction of the remaining predicates in $C$ perfectly classifies $P$ and $N$ still. We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, may learn a classifier with many clauses, as one clause is introduce each time line 5 is executed. In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with fewer clauses.
+At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that the conjunction of the remaining predicates in $C$ perfectly classifies $P$ and $N$ still. We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, may learn a classifier with many clauses, as one clause is introduced each time line 5 is executed. In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with fewer clauses.
 
 
 
@@ -259,13 +259,13 @@ Selective sampling is helpful in order to overcome the lack of samples. Often, d
 
 Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $-4x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}
-\item Choose a variable in the classifier, for example $x$.
+\item Choose a variable in the classifier, for example, $x$.
 \item Generates random value for other variables. For example, we let $y$ be $12$.
 \item Solve the equation $-4x^2+2y = -11$ after substituting variables with their values. If there is no solution, go back to (1) and retry. In our example, we get $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-Alternatively, we can use existing equation system solvers directly to find solutions for equation $-4x^2+2y = -11$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
+Alternatively, we can use existing equation system solvers directly to find solutions for equation $-4x^2+2y = -11$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
 %Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$),
 %active learning technique keeps refining the classifier until it gets converged.
 %That means the classifier remains identical even adding more data points into the training set.
