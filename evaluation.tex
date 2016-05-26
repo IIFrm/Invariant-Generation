@@ -14,7 +14,7 @@ symbolically execute
  C programs %% and use
 prior to invoke Z3~\cite{de2008z3} for checking satisfiability of
 condition (4), (5) and (6).
- We remark that KLEE is a symbolic executor; it may
+ We remark that KLEE is a concolic symbolic executor; it may
 concretely execute the programs and return
  under-approximated
 abstraction. This may affect the soundness of our system.
@@ -29,8 +29,15 @@ and return sound abstraction (i.e. $true$) for them.
 %{or constructed by ourselves}.
 
 To study the effectiveness of \textsc{Zilu}, we choose benchmark C programs from multiple sources.
-The benchmark $f2, xy*, pldi08$ are from publications~\cite{gulwani2008program,sharma2012interpolants,gulavani2008automatically}. The benchmark $interproc*$ are from~\cite{jeannet2010interproc}.
-The benchmark $zilu\_*$ are constructed by ourselves. The benchmark $terminator\_01\_safe$ is gathered from~\cite{beyer:SVCOMP:2013} and the others are collected from the software verification competition repository~\cite{Dirk:SVCOMP:2016}. All benchmarks are available from~\cite{zilu:benchmark}.
+While the benchmarks
+ $zilu\_*$ are constructed by ourselves,
+the benchmarks $f2, xy*, pldi08$ are taken from~\cite{gulwani2008program,sharma2012interpolants,gulavani2008automatically}, %% the benchmarks
+$interproc*$ from~\cite{jeannet2010interproc},
+%% The benchmark
+ $terminator\_01\_safe$ %% is gathered
+ from~\cite{beyer:SVCOMP:2013} and the remaining
+%% are collected 
+from the software verification competition repository~\cite{Dirk:SVCOMP:2016}.  All benchmarks are available from~\cite{zilu:benchmark}.
 %% Note
 We remark that the loops in these benchmark programs often contain non-deterministic choices
 %% in the loop
