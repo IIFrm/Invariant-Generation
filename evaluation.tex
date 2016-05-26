@@ -36,7 +36,7 @@ $interproc*$ from~\cite{jeannet2010interproc},
 %% The benchmark
  $terminator\_01\_safe$ %% is gathered
  from~\cite{beyer:SVCOMP:2013} and the remaining
-%% are collected 
+%% are collected
 from the software verification competition repository~\cite{Dirk:SVCOMP:2016}.  All benchmarks are available from~\cite{zilu:benchmark}.
 %% Note
 We remark that the loops in these benchmark programs often contain non-deterministic choices
@@ -62,7 +62,6 @@ As non-determinism is beyond the scope of this work, we syntactically replace th
 %% \end{align*}
 %\LL{Introduce the sources of the benchmark.}
  %% All benchmarks are available from~\cite{zilu}.
->>>>>>> origin/master
 
 The parameters in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. By default, we generate 8 random values for each free variable.
 %which would be enlarged if we can not find samples in a few tries.
@@ -246,7 +245,7 @@ The maximum degree for learning polynomial classifiers is set to be 4. For candi
 
 In order to show the relevance of selective sampling, we measure the performance of \textsc{Zilu} with or without selective sampling. In addition, we compare \textsc{Zilu} with a state-of-the-art invariant inference tool Interproc~\cite{jeannet2010interproc}. We remark that though many other approaches have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, their tools are no longer not available for evaluation.
 Interproc generates invariants based on abstract interpretation. In the experiments, it is set to use its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. %Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program.
-We manually check the generated invariants for correctness. %CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple. 
+We manually check the generated invariants for correctness. %CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple.
 We remark that the comparison should be taken with a grain of salt as the methods are different. The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.
 
 \begin{table}[t]
@@ -330,7 +329,7 @@ This is particularly useful for handling real-world programs, i.e., in such a ca
 
 Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast.
 We observe that \textsc{Zilu} often takes more time to learn conjunctive invariants. This is because Algorithm~\ref{alg:conjunctiveSVM} may invoke SVM classification many times in one learn-and-check iteration.
-\textsc{Zilu} times out in three cases. One is $pldi08$, which requires a disjunctive invariant which is not supported by \textsc{Zilu} currently. The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}. Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $mapToDegree$), the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. For example, assume a program with an integer variable $x$ which can be any value in the set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. After the mapping, $(x, x^2)$ is defined only with the value in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}. As a result, if selective sampling failed to generate new samples.
+\textsc{Zilu} times out in three cases. One is $pldi08$, which requires a disjunctive invariant which is not supported by \textsc{Zilu} currently. The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}. Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $mapToDegree$), the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. For example, assume a program with an integer variable $x$ which can be any value in the set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. After the mapping, $(x, x^2)$ is defined only with the value in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}. As a result, a sample selected according to selective sampling may often be infeasible, i.e., the equation we need to solve for selective sampling has no solution.
 %What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4.
 
 %To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.
