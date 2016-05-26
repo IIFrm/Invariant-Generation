@@ -38,11 +38,12 @@ In~\cite{sharma2012interpolants}, the authors proposed to learn loop invariants 
 combinations of polynomial inequalities. In~\cite{DBLP:conf/esop/0001GHALN13}, the authors developed a guess-and-check algorithm for generating algebraic equation invariants. In~\cite{sharma2014invariant}, the authors proposed a framework for generating invariant based on randomized search. In particular, their approach has two phases. The search phase uses randomized search to discover candidate invariants and the validate phase uses the checker to either prove or refute that the candidate is an actual invariant. \textsc{Zilu} complements the above approaches with active learning and selective sampling techniques, so as to reduce the need of checking, sometimes completely.
 
 In addition, this work is related to a large body of approaches on loop invariant generation. The existing approaches can be mainly categorized as:
-the ones based abstract interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, the ones based on
-constraint synthesis~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}, the ones based on
-counterexample guided abstraction refinement (CEGAR)~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, the ones based on 
-computing interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy}, the ones based on abductive inference~\cite{isil2013inductive}, the ones based on 
-guess-and-check~\cite{cormac2001houdini,ernst2007daikon}.
+the ones based abstract interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, 
+the ones based on constraint synthesis~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}, 
+the ones based on counterexample guided abstraction refinement (CEGAR)~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, 
+the ones based on computing interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy}, 
+the ones based on abductive inference~\cite{isil2013inductive}, 
+the ones based on guess-and-check~\cite{cormac2001houdini,ernst2007daikon}.
 
 On one hand, invariant inference methods based on abstract interpretation and constraint synthesis
 often try to generate all possible invariants in certain domain~\cite{mine2006octagon,vincent2009subpolyhedra,ashutosh2009invgen}, regardless of

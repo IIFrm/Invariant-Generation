@@ -114,12 +114,12 @@ where $d_0 < d_1 < d_2$ are constants can be represented as: $x^3 + (d_0d_1 + d_
 \caption{Algorithm $\mathit{polynomial}(P,N)$}
 \label{alg:polynomialSVM}
 \end{algorithm}
+\vspace{-2mm}
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
-    Initialize $C$\ as an empty set $\{\}$\;
-    Initialize $\mathit{Misclassified}$\ as\ $N$\;
+    Initialize set $C$\ as an empty set $\{\}$, set $\mathit{Misclassified}$\ as\ $N$\;
     \While {$\mathit{Misclassified}$ is not empty} {
         Random choose $s$ from $\mathit{Misclassified}$\;
         $f := \mathit{polynomial}(P, \{s\})$\;
@@ -135,6 +135,7 @@ where $d_0 < d_1 < d_2$ are constants can be represented as: $x^3 + (d_0d_1 + d_
 \caption{Algorithm $\mathit{conjunctivePoly}(P, N)$}
 \label{alg:conjunctiveSVM}
 \end{algorithm}
+
 %The whole classification algorithm is described in Algorithm~\ref{alg:classify}.
 %Note that,
 %$\textsc{Svm}$ in this algorithm can be substitute with other classification techniques for different learning purposes.
