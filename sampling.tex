@@ -157,7 +157,7 @@ Figure~\ref{fig:sampling} visualizes how different sampling methods are related 
 \end{figure}
 
 \noindent
-In the following, we define the four sets of samples formally. Let $\mathit{SP}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{SP}$, by executing the given program with the initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $s_k \models \mathit{Cond}$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that there exists $i$ such that $Body^i(s) = s'$ and $Body^k(s) \models Cond$ for all $k$ such that $0 \leq k < i$, i.e., executing the program with the initial variable valuation $s$, we could have the variable valuation $s'$ after some number of iterations.
+In the following, we define the four sets of samples formally. Let $\mathit{SP}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{SP}$, by executing the given program with the initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $s_k \models \mathit{Cond}$ for all $0 \leq k < n$. In the following, we write $s \Rightarrow s'$ to denote that: either $s' = s$ or there exists $i$ such that $Body^i(s) = s'$ and $Body^k(s) \models Cond$ for all $k$ such that $0 \leq k < i$, i.e., executing the program with the initial variable valuation $s$, we could have the variable valuation $s'$ after some number of iterations.
 % there exists a sample $s_0 \in \mathit{Sample}$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$.
 Next, we define the four disjoint sets of samples as follows.
 \[
@@ -165,7 +165,7 @@ Next, we define the four disjoint sets of samples as follows.
 $CE(SP)$ is the set of valuations such that a valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We remark that a valuation in $CE(SP)$ may be a valuation in $SP$ or one which can be reached from one in $SP$ after some iterations. If $\mathit{CE}(\mathit{SP})$ is non-empty, the Hoare triple is disproved.
 \begin{align*}
  \mathit{Positive}(\mathit{SP}) = & \{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land \\
-     & ~~~~~~s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\} 
+     & ~~~~~~s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
 \end{align*}
 %\[
 % \mathit{Positive}(\mathit{SP}) = \\
@@ -174,10 +174,10 @@ $CE(SP)$ is the set of valuations such that a valuation in $CE(SP)$ satisfies $P
 $Positive(SP)$ is the set of valuations such that a valuation $s$ in $Postive(SP)$ can be reached by a valuation satisfying $Pre$ and $s$ becomes a valuation $s_n$ which satisfies $Post$ when the loop terminates. We show that any $s$ in $Positive(SP)$ must satisfy $Inv$. Because $s' \models Pre$, $s' \models Inv$ since $\mathit{Inv}$ satisfies condition (1). Since $\mathit{Inv}$ satisfies condition (2) and $Body(s') \models Inv$ if $Body(s') \models Cond$. Since $s = Body^i(s')$ for some $i$ and by definition $Body^j(s') \not \models Cond$ for all $j \leq i$, we have $s \models Inv$.
  \[
     \mathit{Negative}(\mathit{SP}) = \{s | \exists s_0 \in SP.~s_0 \Rightarrow s \Rightarrow s_n \land s \not \models \mathit{Pre} \land s_n \not \models Cond \land s_n \not \models Post\} \]
-$Negitve(SP)$ is the set of valuations such that a valuation $s$ in $Negitve(SP)$ fails $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We show that $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying condition (1), (2) and (3). Assume that $s \in Inv$, by condition (2), we can show that $s_n$ must satisfy $Inv$ through a simple induction. By condition (3), $s_n$ must satisfy $post$, which contradicts the definition of $Negitve(SP)$.
-\[    \mathit{NP}(\mathit{SP}) = \{s | \exists s_0 \in SP.~ s_0 \Rightarrow s \Rightarrow s_n \land s \not \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
+$Negitive(SP)$ is the set of valuations such that a valuation $s$ in $Negitive(SP)$ fails $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We show that $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying condition (1), (2) and (3). Assume that $s \in Inv$, by condition (2), we can show that $s_n$ must satisfy $Inv$ through a simple induction. By condition (3), $s_n$ must satisfy $post$, which contradicts the definition of $Negitive(SP)$.
+\[    \mathit{NP}(\mathit{SP}) = \{s | \exists s_0 \in SP.~ s_0 \Rightarrow s \land s \not \in CE(SP) \cup Positive(SP) \cup Negative(SP)\}
 \]
-$NP(SP)$ is the set of valuations such that a valuation $s$ in $NP(SP)$ satisfies $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We remark that $s$ may or may not satisfy an $Inv$ which satisfies condition (1), (2) and (3).
+$NP(SP)$ is the set of valuations which are not in any of the three sets defined above. We remark that a valuation $s$ in $NP(SP)$ may or may not satisfy an $Inv$ which satisfies condition (1), (2) and (3).
 
 %\subsection {Loop Execution}
 %With the initial states $\mathcal{S}$ obtained above,
