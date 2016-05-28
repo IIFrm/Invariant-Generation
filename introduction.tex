@@ -42,10 +42,10 @@ for extensive research on proving loop termination.
 Many approaches have been proposed for the invariant generation.
 For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
-Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorizes them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
+Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If a certain condition is violated, we obtain counterexamples in the form of variable valuations.
-For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s \models Pre \land s \not \models \phi$ is generated, which proves that $\phi$ is not an invariant.
+For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
 With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check iteration is repeated until an invariant satisfying all three conditions are identified or a valuation disproving the Hoare triple is.
 
 One problem with the above approach is that its effectiveness is often limited by the samples which are generated either randomly. In order to learn the right invariant through classification, often a large number of samples are necessary. Furthermore, often we must have those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not, so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. As a result, many iterations of learn-and-check are necessary before the candidate invariant converges to the right one. Another problem is that the loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are limited, e.g., linear inequalities or their conjunctions in~\cite{sharma2012interpolants}, and equalities in~\cite{DBLP:conf/esop/0001GHALN13}.
@@ -63,10 +63,11 @@ Compared to the existing approaches, we make the following contributions. Firstl
 %    and fine-tune the invariant candidate.
 Secondly, our framework is designed to be extensible for learning different invariants. For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
 Lastly, we implement our framework as a tool called \textsc{Zilu}~\cite{zilu:repo}
-    and compare it with other available state-of-the-art invariant inference tools,
-    i.e., 
+    and compare it with Interproc~\cite{jeannet2010interproc}, %% other
+an    available state-of-the-art invariant inference tool.
+%%    i.e., 
     %CPAChecker~\cite{beyer2011cpachecker} and 
-    Interproc~\cite{jeannet2010interproc}.
+ %%   Interproc~\cite{jeannet2010interproc}.
 %    Our experiment results show that
 %    we are the only tool that can work with polynomial invariant inference.
 %    Notice that the polynomial invariant inference works in our framework
@@ -143,7 +144,7 @@ An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (wh
 During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise, it is increased by $3$ (line 7). The postcondition $Post$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $Inv$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
 \end{example}
 We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $Pre$ as random samples. For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record the variable evaluations after each iteration of the loop. %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-Let $Inv$ be any invariant which satisfies condition (1), (2) and (3.) All variable valuations are divided into four sets.
+Let $Inv$ be any invariant which satisfies condition (1), (2) and (3). All variable valuations are divided into four sets.
 \begin{itemize}
     \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
     \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $Inv$.
