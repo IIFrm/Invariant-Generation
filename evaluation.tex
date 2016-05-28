@@ -2,7 +2,8 @@
 
 \section{Evaluation} % (fold)
 \label{sec:evaluations}
-We have implemented our invariant inference framework in a tool, called \textsc{Zilu}. \textsc{Zilu} is written using a combination of C++ as well as shell codes (for invoking external tools).
+We have implemented our invariant inference framework in a tool, called \textsc{Zilu}~\cite{zilu:repo}.
+It is written using a combination of C++ as well as shell codes (for invoking external tools).
 \textsc{Zilu} makes use of GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and
 %% uses
  LibSVM~\cite{chang2011libsvm} as a primitive classification engine for
@@ -243,7 +244,7 @@ The maximum degree for learning polynomial classifiers is set to be 4. For candi
 %    \label{tab:experiments}
 %\end{table*}
 
-In order to show the relevance of selective sampling, we measure the performance of \textsc{Zilu} with or without selective sampling. In addition, we compare \textsc{Zilu} with a state-of-the-art invariant inference tool Interproc~\cite{jeannet2010interproc}. We remark that though many other approaches have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, their tools are no longer not available for evaluation.
+In order to show the relevance of selective sampling, we measure the performance of \textsc{Zilu}~\cite{zilu:repo} with or without selective sampling. In addition, we compare \textsc{Zilu} with a state-of-the-art invariant inference tool Interproc~\cite{jeannet2010interproc}. We remark that though many other approaches have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, their tools are no longer not available for evaluation.
 Interproc generates invariants based on abstract interpretation. In the experiments, it is set to use its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. %Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program.
 We manually check the generated invariants for correctness. %CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple.
 We remark that the comparison should be taken with a grain of salt as the methods are different. The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.
