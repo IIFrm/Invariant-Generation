@@ -2,21 +2,22 @@
 
 \section{Introduction} % (fold)
 \label{sec:introduction}
-Automatic loop invariant generation is fundamental for program analysis. A loop invariant can be useful for software verification, compiler optimization, program understanding, etc. In the following, we first define the loop invariant generation problem and then briefly describe existing approaches and then our proposal. For simplicity, we assume that we are given a Hoare triple in the following form:
+
+Automatic loop invariant generation is fundamental for program analysis. A loop invariant can be useful for software verification, compiler optimization, program understanding, etc. In the following, we first define the loop invariant generation problem and then briefly describe existing approaches and then our proposal. For simplicity, we assume that we are given a Hoare triple in the following form. 
 %\[
 %    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
 %\]
 \begin{align*}
-&\{Pre\} & & /\star\text{\emph{Assumption}}\star/ \\
-&while (Cond) \{ Body \} && /\star\text{\emph{Loop Body}}\star/\\
-&\{Post\} & & /\star\text{\emph{Assertion}}\star/
+&\{\mathit{Pre}\} & & /\star\text{\emph{Assumption}}\star/ \\
+&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && /\star\text{\emph{Loop Body}}\star/\\
+&\{\mathit{Post}\} & & /\star\text{\emph{Assertion}}\star/
 \end{align*}
-Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $Pre$, $Cond$ and $Post$ are predicates constituted by variables in $V$.
+Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $\mathit{Pre}$, $\mathit{Cond}$ and $\mathit{Post}$ are predicates constituted by variables in $V$.
 %In practice, the pre-condition $\mathit{Pre}$ is often described by
 %the specification documents and checking conditions of the program inputs,
 %and the post-condition $\mathit{Post}$ is usually specified
 %by assertions and exceptions leading to an error state in the program.
-Let $s = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. We write $s \models \phi$ to denote that $\phi$ valuates to true given the program state $s$. We write $s \not \models \phi$ otherwise.
+Let $s = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. We write $s \models \phi$ to denote that $\phi$ is evaluated to $\mathit{true}$ given the program state $s$. Otherwise, we write $s \not \models \phi$. 
 $\mathit{Body}$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function on valuations of variables $V$, and write $\mathit{Body}(s)$ to denote the valuation of $V$ after executing $\mathit{Body}$ given the initial variable valuation $s$. For convenience, $\mathit{Body}^i(s)$ where $i \geq 0$ is defined as follows: $\mathit{Body}^0(s) = s$ and $\mathit{Body}^{i+1}(s) = \mathit{Body}(\mathit{Body}^i(s))$.
 %the evaluation function of the program variables $x_1, \ldots, x_n$
 %and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$,
@@ -35,8 +36,8 @@ In order to prove the Hoare triple, we would like to find a loop invariant $\mat
     &s \models \mathit{Inv} \wedge \neg \mathit{Cond}
         &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
-Alternatively, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models Post$.
-The problem is thus either to prove the Hoare triple (by identifying an $\mathit{Inv}$ satisfying the three conditions) or to disprove it (by finding a valuation $s$ as described above). For simplicity, we further assume that the loop body always terminates and refer the readers to~ \cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
+Alternatively, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$.
+The problem is thus either to prove the Hoare triple (by identifying an $\mathit{Inv}$ satisfying the three conditions) or to disprove it (by finding a valuation $s$ as described above). For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
 
 Many approaches have been proposed for the invariant generation.
@@ -46,13 +47,13 @@ Their approaches start with randomly generating valuations of $V$ (a.k.a.~the sa
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If a certain condition is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
-With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check iteration is repeated until an invariant satisfying all three conditions are identified or a valuation disproving the Hoare triple is.
+With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions are identified or a valuation disproving the Hoare triple is found.
 
 One problem with the above approach is that its effectiveness is often limited by the samples which are generated either randomly. In order to learn the right invariant through classification, often a large number of samples are necessary. Furthermore, often we must have those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not, so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. As a result, many iterations of learn-and-check are necessary before the candidate invariant converges to the right one. Another problem is that the loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are limited, e.g., linear inequalities or their conjunctions in~\cite{sharma2012interpolants}, and equalities in~\cite{DBLP:conf/esop/0001GHALN13}.
 
 In this work, we propose a framework for loop invariant generation following the same learn-and-check approach. %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
 %In the following, we define our problem and briefly illustrate how our approach works.
-Compared to the existing approaches, we make the following contributions. Firstly, we propose to adopt active learning techniques to (partially) overcome the limitation of random sampling. That is, active learning allows us to automatically generate samples which are important in improving the quality of the candidate invariants so that we can improve the candidates prior to verifying them during every learn-and-check iteration. As a result, we can reduce the number of learn-and-check iterations significantly, or even completely if some cases.
+Compared to the existing approaches, we make the following contributions. Firstly, we propose an active learning technique to (partially) overcome the limitation of random sampling. That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants so that we can improve the candidates prior to verifying them during every learn-and-check iteration. As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in some cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,
@@ -64,7 +65,7 @@ Compared to the existing approaches, we make the following contributions. Firstl
 Secondly, our framework is designed to be extensible for learning different invariants. For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
 Lastly, we implement our framework as a tool called \textsc{Zilu}~\cite{zilu:repo}
     and compare it with Interproc~\cite{jeannet2010interproc}, %% other
-an    available state-of-the-art invariant inference tool.
+an available state-of-the-art invariant inference tool.
 %%    i.e., 
     %CPAChecker~\cite{beyer2011cpachecker} and 
  %%   Interproc~\cite{jeannet2010interproc}.
@@ -140,16 +141,18 @@ In our framework, loop invariant generation is an iterative process of \emph{dat
 
 
 \begin{example}
-An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). The set of variables $V$ contains two integer-type ones: $x$ and $y$. For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). The precondition $Pre$ is $x < y$, which is the same as the loop condition $Cond$.
-During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise, it is increased by $3$ (line 7). The postcondition $Post$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $Inv$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
+An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). The set of variables $V$ contains two integer-type ones: $x$ and $y$. For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). The precondition $\mathit{Pre}$ is $x < y$, which is the same as the loop condition $\mathit{Cond}$.
+During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise, it is increased by $3$ (line 7). The postcondition $\mathit{Post}$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $\mathit{Inv}$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
 \end{example}
-We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $Pre$ as random samples. For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record the variable evaluations after each iteration of the loop. %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-Let $Inv$ be any invariant which satisfies condition (1), (2) and (3). All variable valuations are divided into four sets.
+We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. 
+% For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $\mathit{Pre}$ as random samples.
+For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record the variable evaluations after each iteration of the loop. %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
+Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). All variable valuations are divided into four sets.
 \begin{itemize}
     \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $Inv$.
-    \item Set $\mathit{Negative}$ contains the set of valuations which must fail $Inv$.
-    \item Set $\mathit{NP}$ contains the set of valuations which may or may not satisfy $Inv$.
+    \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $\mathit{Inv}$.
+    \item Set $\mathit{Negative}$ contains the set of valuations which must fail $\mathit{Inv}$.
+    \item Set $\mathit{NP}$ contains the set of valuations which may or may not satisfy $\mathit{Inv}$.
 \end{itemize}
 The exact definition of these sets is in Section~\ref{sec:sampling}.
 % Otherwise, because $\mathit{Inv}$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. The program states in $NP_T$ may or not may be in $\mathit{Inv}$. If we know that a program state $s \in NP_T$ is in $\mathit{Inv}$, $Body^*(s) \subseteq Inv$.
@@ -187,7 +190,7 @@ After all three candidate invariants converge, we move on to \emph{candidate ver
 where $sp(\phi,e)$ is the strongest postcondition obtained by
 symbolically executing program $e$
 starting from precondition $\phi$.
-If there is one candidate invariant which satisfies all the three conditions, we successfully prove the Hoare triple. For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, which are then added into $Positive$, $Negative$ or $NP$ accordingly. In particular, a counterexample failing condition (4) is added into $Positive$; a counterexample failing condition (6) may be added into either $Negative$ or $NP$ (depending on whether it satisfies $Pre$). We then restart from data collection, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
+If there is one candidate invariant which satisfies all the three conditions, we successfully prove the Hoare triple. For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, which are then added into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. In particular, a counterexample failing condition (4) is added into $\mathit{Positive}$; a counterexample failing condition (6) may be added into either $\mathit{Negative}$ or $\mathit{NP}$ (depending on whether it satisfies $\mathit{Pre}$). We then restart from data collection, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
 
 We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. For our running example, with active learning, one iteration of learn-and-check is sufficient to prove the Hoare triple. Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. In the following sections, we present details on data collection (in Section~\ref{sec:sampling}) and active learning (in Section~\ref{sec:learning}). For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
 
