@@ -152,13 +152,13 @@ We start with \emph{data collection}. Given the Hoare triple, we first randomly 
 For each sample $s_0$ (i.e., a variable valuation) $\in V$, we execute the given program with $s_0$ as the initial state and record variable evaluations $\{s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
 %We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
 %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-All variable valuations are divided into the following four sets according to the satisfaction to $Pre$ and $Post$.
+All variable valuations are divided into the following four sets according to the satisfaction to $\mathit{Pre}$ and $\mathit{Post}$.
 Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
 \begin{itemize}
-    \item Set $\mathit{CE}$ contains the set of valuations whose initial state satisfies $Pre$ but last state violates $Post$ afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $Pre$ and $Post$ respectively. It is shown in Section~\ref{sec:sampling} that all the valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violate $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{NP}$ contains the set of all the valuations which do not appear in the above three sets. We show you in Section~\ref{sec:sampling} the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $Inv$.
+    \item Set $\mathit{CE}$ contains the set of valuations whose initial state satisfies $\mathit{Pre}$ but last state violates $\mathit{Post}$ afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
+    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $\mathit{Pre}$ and $Post$ respectively. It is shown in Section~\ref{sec:sampling} that all the valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violate $\mathit{Pre}$ and $\mathit{Post}$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{NP}$ contains the set of all the valuations which do not appear in the above three sets. We show you in Section~\ref{sec:sampling} the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
 \end{itemize}
 %\begin{itemize}
 %    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
@@ -178,7 +178,7 @@ Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3).
 %        $(\mathit{false}, \mathit{false}) \rightarrow -$
 %        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}.
 \begin{example}
-We illustrate these four sets using the example shown in Figure~\ref{fig:running:example}. Since the Hoare triple is valid, set $CE$ for this example is empty. 
+We illustrate these four sets using the example shown in Figure~\ref{fig:running:example}. Since the Hoare triple is valid, set $\mathit{CE}$ for this example is empty. 
 Assume that the following three valuations are generation in our running example: $\{x \mapsto 1, y \mapsto 2\}$, $\{x \mapsto 10, y \mapsto 1\}$ and $\{x \mapsto 100, y \mapsto 0\}$. 
 Three sequences of valuations are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$, $\langle \{x \mapsto 10, y \mapsto 1\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. 
 Note that the loop is not executed for the latter two cases. 
@@ -238,7 +238,7 @@ After all three candidate invariants converge, we move on to \emph{candidate ver
      & sp(\phi \land \mathit{Cond}, \mathit{Body}) \land \neg \phi \label{check:inv:loop} \\
     & \phi \land \neg \mathit{Cond} \land \neg \mathit{Post} \label{check:inv:post}
 \end{align}
-where $sp(\phi,e)$ is the strongest postcondition obtained by
+where $\mathit{sp}(\phi,e)$ is the strongest postcondition obtained by
 symbolically executing program $e$
 starting from precondition $\phi$.
 If there is one candidate invariant which fails all the three conditions, we successfully prove the Hoare triple. 
