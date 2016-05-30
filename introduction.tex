@@ -47,7 +47,7 @@ Their approaches start with randomly generating valuations of $V$ (a.k.a.~the sa
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If a certain condition is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
-With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions are identified or a valuation disproving the Hoare triple is found.
+With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions is identified or a valuation disproving the Hoare triple is found.
 
 One problem with the above approach is that its effectiveness is often limited by the samples which are generated either randomly. In order to learn the right invariant through classification, often a large number of samples are necessary. Furthermore, often we must have those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not, so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. As a result, many iterations of learn-and-check are necessary before the candidate invariant converges to the right one. Another problem is that the loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are limited, e.g., linear inequalities or their conjunctions in~\cite{sharma2012interpolants}, and equalities in~\cite{DBLP:conf/esop/0001GHALN13}.
 
@@ -146,15 +146,24 @@ During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); 
 \end{example}
 We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. 
 % For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $\mathit{Pre}$ as random samples.
-For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record the variable evaluations after each iteration of the loop. %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). All variable valuations are divided into four sets.
+For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record variable evaluations $\{s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
+%We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
+%as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
+Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
+All variable valuations are divided into four sets according to the satisfaction to $pre$ and $post$.
 \begin{itemize}
-    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $\mathit{Inv}$.
-    \item Set $\mathit{Negative}$ contains the set of valuations which must fail $\mathit{Inv}$.
-    \item Set $\mathit{NP}$ contains the set of valuations which may or may not satisfy $\mathit{Inv}$.
+    \item Set $\mathit{CE}$ contains the set of valuations whose initial state satisfies $Pre$ but last state violates $Post$ afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
+    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violates $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{NP}$ contains the set of the other other valuations. We will show you in Section~\ref{sec:sampling} these valuations may or may not satisfy $\mathit{Inv}$ up to the current knowledge.
 \end{itemize}
-The exact definition of these sets is in Section~\ref{sec:sampling}.
+%\begin{itemize}
+%    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
+%    \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $\mathit{Inv}$.
+%    \item Set $\mathit{Negative}$ contains the set of valuations which must fail $\mathit{Inv}$.
+%    \item Set $\mathit{NP}$ contains the set of valuations which may or may not satisfy $\mathit{Inv}$.
+%\end{itemize}
+%The exact definition of these sets is in Section~\ref{sec:sampling}.
 % Otherwise, because $\mathit{Inv}$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. The program states in $NP_T$ may or not may be in $\mathit{Inv}$. If we know that a program state $s \in NP_T$ is in $\mathit{Inv}$, $Body^*(s) \subseteq Inv$.
 %
 %Each trace is then associated with a pair of boolean labels $(SatPre, SatPost)$
@@ -171,14 +180,42 @@ Assume that the following three valuations are generation in our running example
 \end{example}
 Next, we move on to \emph{active learning} to generate candidate invariants based on $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$. Intuitively, since we know that valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$ and valuations in $\mathit{Negative}$ must not satisfy $\mathit{Inv}$, a predicate separating the two sets (a.k.a.~a classifier) could be a candidate for $\mathit{Inv}$.
 %Formally, a classifier between two sets $P$ and $N$ is a predicate $\phi$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$.
-For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example if we consider only the variable valuation before the loop. In particular, valuations in $\mathit{Positive}$ are labeled with $+$ and color green; and valuation in $\mathit{Negative}$ are labeled with $-$ and color red; and valuations in $\mathit{NP}$ are labeled with ? and color yellow. It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $x - y \leq 16$) is the loop invariant that we are searching for. Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
+For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example if we consider only the variable valuation before the loop. 
+In particular, valuations in $\mathit{Positive}$ are labeled with $+$ and color green; 
+and valuation in $\mathit{Negative}$ are labeled with $-$ and color red; 
+and valuations in $\mathit{NP}$ are labeled with ? and color yellow. 
+It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $x - y \leq 16$) is the loop invariant that we are searching for. 
+Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
 
-In order to automatically generate the candidate invariants, we apply existing classification techniques to generate classifiers. There are however two issues to be solved. The first issue is, with the limited samples in $\mathit{Positive}$ and $\mathit{Negative}$, it is unlikely that we can obtain an ``accurate'' classifier. For instance, given the above-mentioned $\mathit{Positive}$ and $\mathit{Negative}$, a classifier identified using classification techniques like SVM could be: $x+y \leq 50$. It can be seen that this classifier perfectly separates $\mathit{Positive}$ from $\mathit{Negative}$. Nonetheless, it is hardly accurate and is clearly the result of having limited samples. Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}. Active learning is a semi-supervised machine learning in which a learning algorithm is able to interactively ask for samples which are important in improving a given classifier. For instance, active learning for SVM works by repeatedly generating samples on (or nearby) the current classification boundary, adding them into $\mathit{Positive}$ and $\mathit{Negative}$ accordingly and applying SVM to generate new classifiers. This process is repeated until the classifier converges. It has been shown that active learning effectively learns an accurate function with fewer samples~\cite{DBLP:conf/icml/SchohnC00}.
+In order to automatically generate the candidate invariants, we apply existing classification techniques to generate classifiers. 
+There are however two issues to be solved. The first issue is, with the limited samples in $\mathit{Positive}$ and $\mathit{Negative}$, 
+it is unlikely that we can obtain an ``accurate'' classifier. 
+For instance, given the above-mentioned $\mathit{Positive}$ and $\mathit{Negative}$, a classifier identified using classification techniques like SVM could be: $3x-10y \leq 152$. %$x+y \leq 50$. 
+It can be seen that this classifier perfectly separates $\mathit{Positive}$ from $\mathit{Negative}$. 
+Nonetheless, it is hardly accurate and is clearly the result of having limited samples. 
+Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}. 
+Active learning is a semi-supervised machine learning in which a learning algorithm is able to interactively ask for samples which are important in improving a given classifier. 
+For instance, active learning for SVM works by repeatedly generating samples on (or nearby) the current classification boundary, adding them into $\mathit{Positive}$ and $\mathit{Negative}$ accordingly and applying SVM to generate new classifiers. 
+This process is repeated until the classifier converges. It has been shown that active learning effectively learns an accurate function with fewer samples~\cite{DBLP:conf/icml/SchohnC00}.
 
 \begin{example}
-In the above example, given the current classifier $x+y \leq 50$, we apply active learning for SVM and generate new valuations $\{x \mapsto 1, y \mapsto 49\}$ and $\{x \mapsto 48, y \mapsto 2\}$ by solving the equation $x+y=50$ (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). Next, we execute the program with these initial variable valuations, obtain the variable valuations after every iteration of the loop, and add the variable valuations into $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ accordingly. With the new samples, a new classifier is then learned.
+In the above example, given the current classifier $3x-10y \leq 152$, we apply active learning for SVM 
+and generate new valuations $\{x \mapsto 64, y \mapsto 4\}$ and $\{x \mapsto 44, y \mapsto -2\}$ 
+by solving the equation $3x-10y = 152$ (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). 
+Next, we execute the program with these initial variable valuations, obtain the variable valuations after every iteration of the loop, and add the variable valuations into $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ accordingly. 
+With the new samples, a new classifier is then learned.
 \end{example}
-The other issue is: how do we handle those valuations in $\mathit{NP}$, which may or may not satisfy $\mathit{Inv}$? If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ and as a result, the learned classifier may not converge to the invariant we want, even with the help of active learning. This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $x - y \geq 1$, or $x - y \geq 10$, or $x - y \geq 15$) may be learned to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help improving the classifier either. To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). We remark active learning is applied to all three candidates until they converge. In our example, the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would converge to $x - y \geq 0$; and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ would converge to $x - y \geq 16$.
+The other issue is: how do we handle those valuations in $\mathit{NP}$, which may or may not satisfy $\mathit{Inv}$? 
+If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ and as a result, the learned classifier may not converge to the invariant we want, even with the help of active learning. 
+This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. 
+Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $x - y \leq 10$, or $x - y \leq 15$) may be learned to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. 
+Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help improving the classifier either. 
+To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: 
+one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); 
+and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). 
+We remark active learning is applied to all three candidates until they converge. 
+In our example, if we restrict our learning classifier to linear inequation, the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would converge to $\mathit{NULL}$; %x - y \leq 0$; 
+and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ would converge to $x - y \leq 16$.
 
 After all three candidate invariants converge, we move on to \emph{candidate verification}. We check whether any of the candidate invariants satisfies condition (1), (2) and (3). In particular, for each candidate invariant $\phi$, we check whether any of the following formulae is satisfiable or not using an SMT solver~\cite{barrett2009satisfiability,de2008z3}.
 \begin{align}
@@ -190,7 +227,14 @@ After all three candidate invariants converge, we move on to \emph{candidate ver
 where $sp(\phi,e)$ is the strongest postcondition obtained by
 symbolically executing program $e$
 starting from precondition $\phi$.
-If there is one candidate invariant which satisfies all the three conditions, we successfully prove the Hoare triple. For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, which are then added into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. In particular, a counterexample failing condition (4) is added into $\mathit{Positive}$; a counterexample failing condition (6) may be added into either $\mathit{Negative}$ or $\mathit{NP}$ (depending on whether it satisfies $\mathit{Pre}$). We then restart from data collection, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
+If there is one candidate invariant which fails all the three conditions, we successfully prove the Hoare triple. 
+For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. 
+If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, 
+which are then added into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. 
+In particular, a counterexample failing condition (4) is added into $\mathit{Positive}$; 
+a counterexample failing condition (6) may be added into either $\mathit{Negative}$ or $\mathit{NP}$ (depending on whether it satisfies $\mathit{Pre}$). 
+We then restart from data collection, i.e., we execute the program with the counterexample valuations, 
+collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
 
 We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. For our running example, with active learning, one iteration of learn-and-check is sufficient to prove the Hoare triple. Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. In the following sections, we present details on data collection (in Section~\ref{sec:sampling}) and active learning (in Section~\ref{sec:learning}). For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
 

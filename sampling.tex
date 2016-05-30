@@ -164,15 +164,24 @@ Next, we define the four disjoint sets of samples as follows.
 \[
 \mathit{CE}(\mathit{SP}) = \{s | \exists s_0 \in SP.~s_0 \Rightarrow s \Rightarrow s_n \land s \models Pre \land s_n \not \models Cond \land s_n \not \models \mathit{Post}\} \]
 $CE(SP)$ is the set of valuations such that a valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We remark that a valuation in $CE(SP)$ may be a valuation in $SP$ or one which can be reached from one in $SP$ after some iterations. If $\mathit{CE}(\mathit{SP})$ is non-empty, the Hoare triple is disproved.
-\begin{align*}
- \mathit{Positive}(\mathit{SP}) = & \{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land \\
-     & ~~~~~~s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
-\end{align*}
+%\begin{align*}
+% \mathit{Positive}(\mathit{SP}) = & \{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land \\
+%     & ~~~~~~s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
+%\end{align*}
+%\begin{align*}
+\[
+\mathit{Positive}(\mathit{SP}) = \{s | \exists s_0 \in SP.~s_0 \Rightarrow s \Rightarrow s_n \land s_0 \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}\]
+%\end{align*}
 %\[
 % \mathit{Positive}(\mathit{SP}) = \\
 %~~~~~~\{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
 % \]
-$Positive(SP)$ is the set of valuations such that a valuation $s$ in $Postive(SP)$ can be reached by a valuation satisfying $Pre$ and $s$ becomes a valuation $s_n$ which satisfies $Post$ when the loop terminates. We show that any $s$ in $Positive(SP)$ must satisfy $Inv$. Because $s' \models Pre$, $s' \models Inv$ since $\mathit{Inv}$ satisfies condition (1). Since $\mathit{Inv}$ satisfies condition (2) and $Body(s') \models Inv$ if $Body(s') \models Cond$. Since $s = Body^i(s')$ for some $i$ and by definition $Body^j(s') \not \models Cond$ for all $j \leq i$, we have $s \models Inv$.
+$Positive(SP)$ is the set of valuations such that a valuation $s$ in $Postive(SP)$ can be reached by a valuation satisfying $Pre$ and becomes a valuation $s_n$ which satisfies $Post$ when the loop terminates. 
+%We show that any $s$ in $Positive(SP)$ must satisfy $Inv$, if $Inv$ exists. 
+Because $s_0 \models Pre$, $s_0 \models Inv$ since $\mathit{Inv}$ satisfies condition (1). 
+Since $\mathit{Inv}$ satisfies condition (2) and $Body(s_0) \models Inv$ if $Body(s_0) \models Cond$.
+Therefore, by induction, we can prove $s = Body^i(s_0)$ for all $i$ satisfies $Inv$.
+%Since $s = Body^i(s_0)$ for some $i$ and by definition $Body^j(s') \not \models Cond$ for all $j \leq i$, we have $s \models Inv$.
  \[
     \mathit{Negative}(\mathit{SP}) = \{s | \exists s_0 \in SP.~s_0 \Rightarrow s \Rightarrow s_n \land s \not \models \mathit{Pre} \land s_n \not \models Cond \land s_n \not \models Post\} \]
 $Negitive(SP)$ is the set of valuations such that a valuation $s$ in $Negitive(SP)$ fails $Pre$ and becomes a valuation $s_n$ which fails $Post$ when the loop terminates. We show that $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying condition (1), (2) and (3). Assume that $s \in Inv$, by condition (2), we can show that $s_n$ must satisfy $Inv$ through a simple induction. By condition (3), $s_n$ must satisfy $post$, which contradicts the definition of $Negitive(SP)$.
