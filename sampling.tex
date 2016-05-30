@@ -46,14 +46,22 @@ In the following, we discuss how each one works in our approach.
 % and label them according to the satisfiability of $Pre$ and $Post$.
 %, either randomly or using tools based on the idea of concolic testing~\cite{},
 
-Random sampling provides us the initial set of samples to learn the first classifier. In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain, assuming a uniform probabilistic distribution over all values in its domain. The other is that we use an SMT solver~\cite{barrett2009satisfiability,de2008z3} to systematically generate valuations that satisfy $\mathit{Pre}$ as well as those that dissatisfies $\mathit{Pre}$. We remark that these two ways are complementary. On one hand, without using a solver, we may not be able to generate valuations which satisfy $\mathit{Pre}$ if $\mathit{Pre}$ is very restrictive (or dissatisfy $\mathit{Pre}$ if the negation of $\mathit{Pre}$ is very restrictive). On the other hand, using a solver often generates biased valuations. We remark that the cost of generating a random sample is often negligible.
+Random sampling provides us the initial set of samples to learn the first classifier. 
+In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain, 
+assuming a uniform probabilistic distribution over all values in its domain. 
+The other is that we use an SMT solver~\cite{barrett2009satisfiability,de2008z3} to systematically generate valuations that satisfy $\mathit{Pre}$ 
+as well as those that dissatisfies $\mathit{Pre}$. We remark that these two ways are complementary. 
+On one hand, without using a solver, we may not be able to generate valuations which satisfy $\mathit{Pre}$ if $\mathit{Pre}$ is very restrictive 
+(or dissatisfy $\mathit{Pre}$ if the negation of $\mathit{Pre}$ is very restrictive). 
+On the other hand, using a solver often generates biased valuations. We remark that the cost of generating a random sample is often negligible.
 
 Anytime a classifier has been identified, we apply active learning and selective sampling to improve the classifier without applying heavy techniques like program verification.
-The concept of active learning and selective sampling refers to the approaches that aim at reducing the effort of collecting and labeling samples (i.e., adding a sample into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ in our setting) by selecting only the most informative samples. Selective sampling methods have been proposed for different learning algorithms~\cite{DBLP:conf/icml/OrabonaC11}.
+The concept of active learning and selective sampling refers to the approaches that aim at reducing the effort of collecting and labeling samples (i.e., adding a sample into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ in our setting) by selecting only the most informative samples. 
+Selective sampling methods have been proposed for different learning algorithms~\cite{DBLP:conf/icml/OrabonaC11}.
 For instance, selective sampling techniques for SVM-based learning have been proven effective in achieving a
 high accuracy with fewer examples in many applications~\cite{DBLP:conf/icml/OrabonaC11,DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}.
 The basic idea of selective sampling is that, given a classifier learned based on a set of samples, we calculate the most informative samples (according to the classifier) and label them so that the classifier can be improved the most.
-For instance, in the setting of SVM, it has been proved that the most informative samples are those right on the classification boundary~\cite{DBLP:conf/icml/OrabonaC11}.
+For instance, in the setting of $\mathit{SVM}$, it has been proved that the most informative samples are those right on the classification boundary~\cite{DBLP:conf/icml/OrabonaC11}.
 % Since an SVM classification function is represented
 %by support vectors which are the samples closest to the boundary,
 %this selective sampling effectively learns an accurate function with
@@ -132,7 +140,15 @@ which will subsequently help us to identify the candidate invariant separating $
 %random sampling aims at reducing its impact that can lead to a biased candidate result.
 %As a result, the random sampling, as an important sampling approach,
 %is applied to all the invariant inference iterations.
-Figure~\ref{fig:sampling} visualizes how different sampling methods are related to each other in a 2-D plane. We start with the figure in the top-left corner. The (green) area above the line represents the space covered by the actual invariant. The dots are the samples obtained through random sampling. Based on these samples, a classifier is learnt to separate the random samples, as shown in the top-right figure. With this learnt invariant, selective sampling would us to identify those samples on the classification boundary based on the learnt classifier, as shown in the bottom-left figure. In comparison, sampling through verification would provide us the sample between the two lines shown in the bottom-left figure. It is obvious that the classifier will be improved with either selective sampling or sampling through verification, as shown in the bottom-right figure. The benefit of always applying selective sampling before applying sampling through verification is that verification is often more costly and thus we would like to avoid it as much as possible. \\
+Figure~\ref{fig:sampling} visualizes how different sampling methods are related to each other in a 2-D plane. 
+We start with the figure in the top-left corner. 
+The (green) area above the line represents the space covered by the actual invariant. 
+The dots are the samples obtained through random sampling. 
+Based on these samples, a classifier is learnt to separate the random samples, as shown in the top-right figure. 
+With this learnt invariant, selective sampling would us to identify those samples on the classification boundary based on the learnt classifier, as shown in the bottom-left figure. 
+In comparison, sampling through verification would provide us the sample between the two lines shown in the bottom-left figure. 
+It is obvious that the classifier will be improved with either selective sampling or sampling through verification, as shown in the bottom-right figure. 
+The benefit of always applying selective sampling before applying sampling through verification is that verification is often more costly and thus we would like to avoid it as much as possible. \\
 
 %the red area is the learnt invariant captured by the red line;
 %the green nodes represent the samples inside of the correct invariant;
