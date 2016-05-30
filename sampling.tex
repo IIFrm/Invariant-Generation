@@ -3,7 +3,11 @@
 %\section{Sampling} % (fold)
 \section{Data Collection} % (fold)
 \label{sec:sampling}
-The goal of data collection is to collect sample variable valuations, based on which we can learn candidate invariants. In general, the more samples we have, the more likely we would learn the right invariants. However, if we simply learn based on the random samples, it may take many random samples before a classification algorithm can find the right invariant. In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. In the following, we discuss how each one works.
+The goal of data collection is  to collect variable valuations with their labels, based on which we can learn candidate invariants, through the program executions. 
+In general, the more samples we have, the more likely we would learn the right invariants. 
+However, if we simply learn based on the random samples, it may take many random samples before a classification algorithm can find the right invariant. 
+In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. 
+In the following, we discuss how each one works.
 
 %Sampling is non-trivial in automatic loop invariant inference,
 %because we need to obtain samples that are helpful for invariant candidate generation and refinement.
