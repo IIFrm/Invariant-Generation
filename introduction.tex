@@ -142,20 +142,23 @@ In our framework, loop invariant generation is an iterative process of \emph{dat
 
 \begin{example}
 An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). The set of variables $V$ contains two integer-type ones: $x$ and $y$. For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). The precondition $\mathit{Pre}$ is $x < y$, which is the same as the loop condition $\mathit{Cond}$.
-During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise, it is increased by $3$ (line 7). The postcondition $\mathit{Post}$ is $y \le x \le y + 16$. It is easy to check that the Hoare triple can be proven using a loop invariant $\mathit{Inv}$: $x \le y + 16$. In the following, we show how our framework works to learn this loop invariant.
+During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). $y$ is decreased by $10$ if it is negative (line 6); otherwise, it is increased by $3$ (line 7). 
+The postcondition $\mathit{Post}$ is $y \le x \le y + 16$. 
+It is easy to check that the Hoare triple can be proven using a loop invariant $\mathit{Inv}$: $x \le y + 16$. 
+In the following, we show how our framework works to learn this loop invariant.
 \end{example}
 We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. 
 % For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $\mathit{Pre}$ as random samples.
-For each sample $s_0$ (i.e., a variable valuation), we execute the given program with the initial state $s_0$ and record variable evaluations $\{s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
+For each sample $s_0$ (i.e., a variable valuation) $\in V$, we execute the given program with $s_0$ as the initial state and record variable evaluations $\{s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
 %We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
 %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
+All variable valuations are divided into the following four sets according to the satisfaction to $Pre$ and $Post$.
 Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
-All variable valuations are divided into four sets according to the satisfaction to $pre$ and $post$.
 \begin{itemize}
     \item Set $\mathit{CE}$ contains the set of valuations whose initial state satisfies $Pre$ but last state violates $Post$ afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violates $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{NP}$ contains the set of the other other valuations. We will show you in Section~\ref{sec:sampling} these valuations may or may not satisfy $\mathit{Inv}$ up to the current knowledge.
+    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $Pre$ and $Post$ respectively. It is shown in Section~\ref{sec:sampling} that all the valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violate $Pre$ and $Post$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{NP}$ contains the set of all the valuations which do not appear in the above three sets. We show you in Section~\ref{sec:sampling} the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $Inv$.
 \end{itemize}
 %\begin{itemize}
 %    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
@@ -176,16 +179,27 @@ All variable valuations are divided into four sets according to the satisfaction
 %        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}.
 \begin{example}
 We illustrate these four sets using the example shown in Figure~\ref{fig:running:example}. Since the Hoare triple is valid, set $CE$ for this example is empty. 
-Assume that the following three valuations are generation in our running example: $\{x \mapsto 1, y \mapsto 2\}$, $\{x \mapsto 10, y \mapsto 1\}$ and $\{x \mapsto 100, y \mapsto 0\}$. Two sequences of valuations are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$, $\langle \{x \mapsto 10, y \mapsto 1\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. Note that the loop is not executed for the latter two cases. As a result, set $\mathit{Negative}$ contains $\{x \mapsto 100, y \mapsto 0\}$; set $\mathit{Positive}$ contains $\{x \mapsto 1, y \mapsto 2\}$ and $\{x \mapsto 11, y \mapsto 5\}$; and $\mathit{NP}$ contains $\{x \mapsto 10, y \mapsto 1\}$.
+Assume that the following three valuations are generation in our running example: $\{x \mapsto 1, y \mapsto 2\}$, $\{x \mapsto 10, y \mapsto 1\}$ and $\{x \mapsto 100, y \mapsto 0\}$. 
+Three sequences of valuations are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$, $\langle \{x \mapsto 10, y \mapsto 1\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. 
+Note that the loop is not executed for the latter two cases. 
+As a result, set $\mathit{Negative}$ contains $\{x \mapsto 100, y \mapsto 0\}$; 
+set $\mathit{Positive}$ contains $\{x \mapsto 1, y \mapsto 2\}$ and $\{x \mapsto 11, y \mapsto 5\}$; 
+and $\mathit{NP}$ contains $\{x \mapsto 10, y \mapsto 1\}$.
 \end{example}
 Next, we move on to \emph{active learning} to generate candidate invariants based on $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$. Intuitively, since we know that valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$ and valuations in $\mathit{Negative}$ must not satisfy $\mathit{Inv}$, a predicate separating the two sets (a.k.a.~a classifier) could be a candidate for $\mathit{Inv}$.
 %Formally, a classifier between two sets $P$ and $N$ is a predicate $\phi$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$.
-For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example if we consider only the variable valuation before the loop. 
+For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations 
+in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example. %if we consider only the variable valuation before the loop. 
 In particular, valuations in $\mathit{Positive}$ are labeled with $+$ and color green; 
 and valuation in $\mathit{Negative}$ are labeled with $-$ and color red; 
 and valuations in $\mathit{NP}$ are labeled with ? and color yellow. 
 It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $x - y \leq 16$) is the loop invariant that we are searching for. 
-Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
+%Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
+%, such as $\{x \mapsto 11, y \mapsto 5\} \rangle$.
+Note that there is a mixed label area lying between the two dotted lines which is because our labeling method depends on the observed program traces.
+For example, $\{x \mapsto 11, y \mapsto 5\} \rangle$, which is labeled as `+' in Fig.~\ref{fig:running:example:sampling}, 
+could also be labeled as `?' if it only appears in an one execute valuations $\langle \{x \mapsto 11, y \mapsto 5\} \rangle$.
+%If we do execute the program with $\{x \mapsto 11, y \mapsto 5\} \rangle$
 
 In order to automatically generate the candidate invariants, we apply existing classification techniques to generate classifiers. 
 There are however two issues to be solved. The first issue is, with the limited samples in $\mathit{Positive}$ and $\mathit{Negative}$, 
@@ -228,15 +242,19 @@ where $sp(\phi,e)$ is the strongest postcondition obtained by
 symbolically executing program $e$
 starting from precondition $\phi$.
 If there is one candidate invariant which fails all the three conditions, we successfully prove the Hoare triple. 
-For instance, the candidate invariant $x - y \geq 16$ generated in our example satisfies all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. 
+For instance, the candidate invariant $x - y \geq 16$ generated in our example fails all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. 
 If any of condition (4), (5) and (6) is satisfiable, the SMT solver generates a model in the form of a variable valuation, 
-which are then added into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. 
-In particular, a counterexample failing condition (4) is added into $\mathit{Positive}$; 
-a counterexample failing condition (6) may be added into either $\mathit{Negative}$ or $\mathit{NP}$ (depending on whether it satisfies $\mathit{Pre}$). 
-We then restart from data collection, i.e., we execute the program with the counterexample valuations, 
+and update $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ or $\mathit{CE}$ accordingly. % to the execution with these valuations. 
+In particular, a counterexample satisfying condition (4) should be added into $\mathit{Positive}$; 
+a counterexample satisfying condition (6) may be added into either $\mathit{Negative}$ or $\mathit{CE}$ (depending on whether it satisfies $\mathit{Pre}$). 
+Thus, we restart from data collection, i.e., we execute the program with the counterexample valuations, 
 collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
 
-We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. For our running example, with active learning, one iteration of learn-and-check is sufficient to prove the Hoare triple. Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. In the following sections, we present details on data collection (in Section~\ref{sec:sampling}) and active learning (in Section~\ref{sec:learning}). For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
+We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations.%, and also the corresponding learning time. 
+For our running example, with active learning, usually one iteration of learn-and-check is sufficient to prove the Hoare triple. 
+Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. 
+In the following sections, we present details on data collection (in Section~\ref{sec:sampling}) and active learning (in Section~\ref{sec:learning}). 
+For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
 
 %, with the three sets of valuations $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$, we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones   using machine learning algorithms, e.g., SVM derivatives.
 %    When the recently learnt classifier converges to the previously learnt ones,
