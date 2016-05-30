@@ -4,24 +4,24 @@
 \label{sec:evaluations}
 We have implemented our invariant inference framework in a tool, called \textsc{Zilu}~\cite{zilu:repo}.
 It is written using a combination of C++ as well as shell codes (for invoking external tools).
-\textsc{Zilu} makes use of GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and
+\textsc{Zilu} makes use of $\mathit{GSL}$~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and
 %% uses
- LibSVM~\cite{chang2011libsvm} as a primitive classification engine for
-SVM-based classification. %% based on SVM.
+ $\mathit{LibSVM}$~\cite{chang2011libsvm} as a primitive classification engine for
+$\mathit{SVM}$-based classification. %% based on SVM.
 For candidate verification, we %% reuse a large part of
-modify the KLEE project~\cite{cadar2008klee} to
+modify the $\mathit{KLEE}$ project~\cite{cadar2008klee} to
 symbolically execute
 %% generate verification conditions for
  C programs %% and use
 prior to invoking Z3~\cite{de2008z3} for checking satisfiability of
 condition (4), (5) and (6).
- We remark that KLEE is a symbolic executor; it may
+ We remark that $\mathit{KLEE}$ is a symbolic executor; it may
 concretely execute the programs and return
  under-approximated
 abstraction. This may affect the soundness of our system.
 To overcome this problem, we detect those path conditions produced from
 concrete executions
-and return sound abstraction (i.e. $true$) for them.
+and return sound abstraction (i.e. $true$). % for them.
  %% KLEE was designed for test case generation and thus its default encoding may result in under-approximation of the program behavior. We have re-implemented the relevant part of KLEE to make sure the right verification conditions are generated.
 
 %Our test subjects include a set of 32 benchmark programs %% which we
@@ -43,7 +43,8 @@ from the software verification competition repository~\cite{Dirk:SVCOMP:2016}.  
 We remark that the loops in these benchmark programs often contain non-deterministic choices
 %% in the loop
 which are used to model I/O environment (e.g., an external function call).
-As non-determinism is beyond the scope of this work, we syntactically replace these non-deterministic commands with free variables of type boolean. In the future, we would like to investigate how to learn loop invariants in the presence of non-determinism (e.g., random number generation in the loop).
+As non-determinism is beyond the scope of this work, we syntactically replace these non-deterministic commands with free variables of type boolean. 
+In the future, we would like to investigate how to learn loop invariants in the presence of non-determinism (e.g., random number generation in the loop).
 %It would be interesting to investigate how our active learning verification system can be extended to infer non-determinism-based invariants.
  %% which by our assumption is not allowed. We thus transform the programs so that free boolean-type variables are introduced to replace the non-deterministic choice. We remark that the assumption of no non-determinism is less a problem for verification programs in practice as they are often deterministic. These benchmark programs are made non-deterministic often as a way of abstracting away certain complicated (e.g., an external function call) part of the program which is irrelevant to proving/disproving the Hoare triple.
 %In our experimental evaluation,
@@ -64,12 +65,15 @@ As non-determinism is beyond the scope of this work, we syntactically replace th
 %\LL{Introduce the sources of the benchmark.}
  %% All benchmarks are available from~\cite{zilu}.
 
-The parameters in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. By default, we generate 8 random values for each free variable.
+The parameters in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. 
+By default, we generate 8 random values for each free variable.
 %which would be enlarged if we can not find samples in a few tries.
 %Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-When we invoke LibSVM for classification, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so as to generate only perfect classifiers.
-Each invocation of LibSVM's classification engine is set to time out in 600 seconds.
-The maximum degree for learning polynomial classifiers is set to be 4. For candidate verification, we encode integer-type variables in the programs as integers in Z3.
+When we invoke $\mathit{LibSVM}$ for classification, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) 
+and the inner iteration for $\mathit{SVM}$ learning are set to their maximum value so as to generate only perfect classifiers.
+Each invocation of $\mathit{LibSVM}$'s classification engine is set to time out in 600 seconds.
+The maximum degree for learning polynomial classifiers is set to be 4. 
+For candidate verification, we encode integer-type variables in the programs as integers in $\mathit{Z3}$.
 
 %Considering the differences between machine learning problem and our setting,
 %\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
@@ -308,7 +312,6 @@ We remark that the comparison should be taken with a grain of salt as the method
 \label{tbl:stats}
 \end{table}
 
-
 The first column in the table shows the name of the benchmark program. The second shows column the type of invariant required for proving the Hoare triple. The next three columns present statistics of \textsc{Zilu} with selective sampling, i.e., the number of samples generated in total, the number of learn-and-check iterations and the total execution time. The next three columns present the corresponding statistics of \textsc{Zilu} without selective sampling.
 The last column shows the result of Interproc, i.e., whether it generates a correct invariant. We do not show the time of Interproc because its result may not be correct and because it does not prove/disprove the Hoare triples.
 %%\LL{I need more information on the percentage of the samples. }
@@ -326,12 +329,21 @@ The last column shows the result of Interproc, i.e., whether it generates a corr
 
 We have the following observations based on the experiment results. First, selective sampling is helpful in reducing the number of learn-and-check iterations.
 On average, the number of iterations is reduced from 10.84 to 4.96. As a result, the time required for proving the program is often reduced.
-\emph{We would like to highlight that for 12 out of 32 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration}, whereas this is only the case for 3 programs without selective sampling. It implies that even if a program is too complicated to be verified through symbolic execution, \textsc{Zilu} may be able to learn the correct invariant with only random sampling and selective sampling.
+\emph{We would like to highlight that for 12 out of 32 cases, \textsc{Zilu} is able to learn the correct invariant with one iteration}, 
+whereas this is only the case for 3 programs without selective sampling. 
+It implies that even if a program is too complicated to be verified through symbolic execution, \textsc{Zilu} may be able to learn the correct invariant with only random sampling and selective sampling.
 This is particularly useful for handling real-world programs, i.e., in such a case, \textsc{Zilu} may be able to generate an invariant which can be used to manually verify the program.
 
-Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. It implies that selective sampling converges reasonably fast.
-We observe that \textsc{Zilu} often takes more time to learn conjunctive invariants. This is because Algorithm~\ref{alg:conjunctiveSVM} may invoke SVM classification many times in one learn-and-check iteration.
-\textsc{Zilu} times out in three cases. One is $pldi08$, which requires a disjunctive invariant which is not supported by \textsc{Zilu} currently. The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}. Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $mapToDegree$), the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. For example, assume a program with an integer variable $x$ which can be any value in the set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. After the mapping, $(x, x^2)$ is defined only with the value in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}. As a result, a sample selected according to selective sampling may often be infeasible, i.e., the equation we need to solve for selective sampling has no solution.
+Second, \textsc{Zilu} is reasonably efficient. All loop invariants are learned within three minutes. 
+It implies that selective sampling converges reasonably fast.
+We observe that \textsc{Zilu} often takes more time to learn conjunctive invariants. 
+This is because Algorithm~\ref{alg:conjunctiveSVM} may invoke $\mathit{SVM}$ classification many times in one learn-and-check iteration.
+\textsc{Zilu} times out in three cases. One is $pldi08$, which requires a disjunctive invariant which is not supported by \textsc{Zilu} currently. 
+The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}. 
+Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $mapToDegree$), the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. 
+For example, assume a program with an integer variable $x$ which can be any value in the set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. 
+After the mapping, $(x, x^2)$ is defined only with the value in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9)\cdots$\}. 
+As a result, a sample selected according to selective sampling may often be infeasible, i.e., the equation we need to solve for selective sampling has no solution.
 %What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4.
 
 %To illustrate the reason, consider the case of benchmark \emph{poly 1}, the loop invariant is $x^2 \le y^2$.

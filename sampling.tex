@@ -106,13 +106,13 @@ We use the example shown in Figure~\ref{fig:running:example} to illustrate that 
 %Assume that through random sampling, we have only obtained valuations in $\mathit{Positive}$ and $\mathit{NP}$ but never any in $Negative$. 
 %With selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{NP}$. 
 Assume that through random sampling and selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{Negative}$. 
-As a result, we generate only one candidate invariant $3x-10y \leq 152$. During candidate verification, formula (6) is as follows. 
+As a result, we generate only one candidate invariant $\mathit{3x-10y \leq 152}$. During candidate verification, formula (6) is as follows. 
 \[
-3x-10y \leq 152 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)
+\mathit{3x-10y \leq 152 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)}
 \]
 The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\{x \mapsto 48, y \mapsto 10\}$. 
 According to our categorization, this valuation is added to $\mathit{Negative}$, 
-which will subsequently help us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: ${x - y \leq 16}$ and prove the Hoare triple.
+which will subsequently help us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $\mathit{x - y \leq 16}$ and prove the Hoare triple.
 %The formula is proven to be satisfiable, for instance, with a variable valuation $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which %subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple.
 %$\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
 %(or known as concolic testing~\cite{sen2007concolic}) and constraint solving,

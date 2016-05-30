@@ -26,11 +26,16 @@ Initialize $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ as $\textsc
 \end{algorithm}
 
 \subsection{Classification}
-In the machine learning community, many classification algorithms have been proposed, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, SVM~\cite{svm:original} and neutral network~\cite{nn}.
+In the machine learning community, many classification algorithms have been proposed, 
+e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, $\mathit{SVM}$~\cite{svm:original} and neutral network~\cite{nn}.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
-In our framework, the classification algorithms must generate perfect classifiers. Formally, a perfect classifier $\phi$ for two sets of samples $P$ and $N$ is a predicate such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$. Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques. In the following, we present two such classification algorithms based on Support Vector Machine (SVM). We remark that our framework is not restricted to SVM-based classification algorithms.
+In our framework, the classification algorithms must generate perfect classifiers. 
+Formally, a perfect classifier $\phi$ for two sets of samples $P$ and $N$ is a predicate such that $s \models \phi$ for all $\mathit{s \in P}$ and $\mathit{s \not \models \phi}$ for all $\mathit{s \in N}$. 
+Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques. 
+In the following, we present two such classification algorithms based on Support Vector Machine ($\mathit{SVM}$). 
+We remark that our framework is not restricted to $\mathit{SVM}$-based classification algorithms.
 %But there are still differences between the classification problem in machine learning field and the one in our framework:
 %\begin{itemize}
 %\item Our framwork need to learn an classifier with explicit form which is readable by human and can be proceeded by off-the-shelf constraints solvers.
@@ -67,15 +72,15 @@ In our framework, the classification algorithms must generate perfect classifier
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other,
 %making it a non-probabilistic binary linear classifier.
-SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. In this work, we use its binary classification functionality.
+$\mathit{SVM}$ is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. In this work, we use its binary classification functionality.
 In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows.
 Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if there is any.
 In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise.
 We refer the readers to~\cite{svm:smo} for details on how the classifier is computed.
 In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{sharma2012interpolants}) if possible.
 Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
-SVM by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space),
-e.g., in the form of $a x + b y \geq c$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants.
+$\mathit{SVM}$ by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space),
+e.g., in the form of $\mathit{a x + b y \geq c}$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants.
 In practice, such classifiers may not be sufficient and thus, we develop algorithms to learn more expressive invariants.
 
 \paragraph{Polynomial Classifiers} Algorithm~\ref{alg:conjunctiveSVM} shows our algorithm for learning classifiers in the form of polynomial inequalities.
@@ -85,7 +90,7 @@ Given a set of samples $X$ and a target degree, function $\mathit{mapToDegree}$ 
 For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the target $\mathit{degree}$ be 2, the following element is added to $X'$: $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
 That is, given a valuation in $P$, we systematically add all terms constituted by the same variables with a degree no more than $\mathit{degree}$, as if they are new variables.
 %The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions,
-SVM is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
+$\mathit{SVM}$ is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
 Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}.
 In order to favor classifiers with lower degrees (which often are easier to understand or verify), we start with looking for a polynomial classifier with degree 1 and only look for higher-degree polynomial classifiers if we find no lower-degree ones.
 The algorithm terminates when we reach the threshold on the maximum degree.
@@ -95,7 +100,7 @@ However, in our experiments, we can often identify useful classifiers with a sma
 We remark that the polynomial classifiers learned by Algorithm~\ref{alg:polynomialSVM} can represent classifiers in the form of disjunctive or conjunctive linear inequalities.
 %Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
 For instance, the classifier $\big((x \ge d_0) \wedge (x \le d_1)\big) \vee (x \ge d_2)$
-where $d_0 < d_1 < d_2$ are constants can be represented as: $x^3 + (d_0d_1 + d_0d_2 + d_1d_2)x^2 - (d_0 + d_1 + d_2)x - d_0d_1d_2 \geq 0$.
+where $\mathit{d_0 < d_1 < d_2}$ are constants can be represented as: $\mathit{x^3 + (d_0d_1 + d_0d_2 + d_1d_2)x^2 - (d_0 + d_1 + d_2)x - d_0d_1d_2 \geq 0}$.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -220,7 +225,7 @@ where $d_0 < d_1 < d_2$ are constants can be represented as: $x^3 + (d_0d_1 + d_
 %So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
 
 \paragraph{Conjunctive Polynomial Classifiers}
-As discussed above, polynomial classifiers can equivalently represent certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. A simple example is $x \ge 0 \land y \ge 0$. Thus, we develop an algorithm to learn more expressive classifiers.
+As discussed above, polynomial classifiers can equivalently represent certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. A simple example is $\mathit{x \ge 0 \land y \ge 0}$. Thus, we develop an algorithm to learn more expressive classifiers.
 
 Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is designed to learn conjunctive polynomial classifiers.
 %So in this part, we introduce the algorithm to learn conjunctive invariants directly.
@@ -258,15 +263,17 @@ At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that
 \subsection{Selective Sampling} \label{subsec:active:learning}
 Selective sampling is helpful in order to overcome the lack of samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. %We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
 
-Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $-4x^2+2y \geq -11$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
+Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $\mathit{-4x^2+2y \geq -11}$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}
 \item Choose a variable in the classifier, for example, $x$.
 \item Generates random value for other variables. For example, we let $y$ be $12$.
-\item Solve the equation $-4x^2+2y = -11$ after substituting variables with their values. If there is no solution, go back to (1) and retry. In our example, we get $x \approx 2.9580$.
+\item Solve the equation $\mathit{-4x^2+2y = -11}$ after substituting variables with their values. If there is no solution, go back to (1) and retry. In our example, we get $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-Alternatively, we can use existing equation system solvers directly to find solutions for equation $-4x^2+2y = -11$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. While it is easy to see that the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), it is hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
+Alternatively, we can use existing equation system solvers directly to find solutions for equation $\mathit{-4x^2+2y = -11}$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. 
+While it is easy to see that the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), 
+it is hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
 %Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$),
 %active learning technique keeps refining the classifier until it gets converged.
 %That means the classifier remains identical even adding more data points into the training set.
