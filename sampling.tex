@@ -3,11 +3,11 @@
 %\section{Sampling} % (fold)
 \section{Data Collection} % (fold)
 \label{sec:sampling}
-The goal of data collection is  to collect variable valuations with their labels, based on which we can learn candidate invariants, through the program executions. 
+The goal of data collection is  to collect the variable valuations with their labels, based on which we can learn candidate invariants, through the program executions. 
 In general, the more samples we have, the more likely we would learn the right invariants. 
 However, if we simply learn based on the random samples, it may take many random samples before a classification algorithm can find the right invariant. 
-In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. 
-In the following, we discuss how each one works.
+So in this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. 
+In the following, we discuss how each one works in our approach.
 
 %Sampling is non-trivial in automatic loop invariant inference,
 %because we need to obtain samples that are helpful for invariant candidate generation and refinement.
@@ -90,12 +90,22 @@ As a result, selective sampling can be reduced to solving an equation system bas
 %As a result, this technique is applied all along the learning process except the very beginning.
 %Counter-example sampling chooses samples lying in the difference zone between the invariant candidate and the actual invariant.
 %Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.
-The last method of sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage,
-a counter-example is provided by the verifier. We add the counter-example as new samples for the next learning iteration. We use the example shown in Figure~\ref{fig:running:example} to illustrate that sampling through verification is necessary. Assume that through random sampling, we have only obtained valuations in $\mathit{Positive}$ and $\mathit{NP}$ but never any in $Negative$. With selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{NP}$. As a result, we generate only one candidate invariant $x - y \geq 0$. During candidate verification, formula (6) is as follows. \[
-x - y \geq 0 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)
+The last method of sampling is sampling through verification. 
+When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage,
+a counter-example is provided by the verifier. 
+We add the counter-example as new samples for the next learning iteration. 
+We use the example shown in Figure~\ref{fig:running:example} to illustrate that sampling through verification is necessary. 
+%Assume that through random sampling, we have only obtained valuations in $\mathit{Positive}$ and $\mathit{NP}$ but never any in $Negative$. 
+%With selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{NP}$. 
+Assume that through random sampling and selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{Negative}$. 
+As a result, we generate only one candidate invariant $3x-10y \leq 152$. During candidate verification, formula (6) is as follows. 
+\[
+3x-10y \leq 152 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)
 \]
-The formula is proven to be satisfiable, for instance, with a variable valuation $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple.
-
+The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\{x \mapsto 48, y \mapsto 10\}$. 
+According to our categorization, this valuation is added to $\mathit{Negative}$, 
+which will subsequently help us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: ${x - y \leq 16}$ and prove the Hoare triple.
+%The formula is proven to be satisfiable, for instance, with a variable valuation $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which %subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple.
 %$\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
 %(or known as concolic testing~\cite{sen2007concolic}) and constraint solving,
 %which is shown in detail in Section ~\ref{sec:verification}.

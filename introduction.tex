@@ -214,7 +214,7 @@ This process is repeated until the classifier converges. It has been shown that 
 
 \begin{example}
 In the above example, given the current classifier $3x-10y \leq 152$, we apply active learning for SVM 
-and generate new valuations $\{x \mapsto 64, y \mapsto 4\}$ and $\{x \mapsto 44, y \mapsto -2\}$ 
+and generate new valuations $\{x \mapsto 64, y \mapsto 4\}$ and $\{x \mapsto -46, y \mapsto -29\}$ %$\{x \mapsto 44, y \mapsto -2\}$ 
 by solving the equation $3x-10y = 152$ (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). 
 Next, we execute the program with these initial variable valuations, obtain the variable valuations after every iteration of the loop, and add the variable valuations into $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ accordingly. 
 With the new samples, a new classifier is then learned.
