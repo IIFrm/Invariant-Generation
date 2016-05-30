@@ -226,12 +226,13 @@ In the above example, given the current classifier $\mathit{3x-10y \leq 152}$, w
 and generate new valuations $\{x \mapsto 64, y \mapsto 4\}$ and $\{x \mapsto -46, y \mapsto -29\}$ %$\{x \mapsto 44, y \mapsto -2\}$ 
 by solving the equation $\mathit{3x-10y = 152}$ (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). 
 Next, we execute the program with these initial variable valuations, obtain the variable valuations after every iteration of the loop, and add the variable valuations into $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ accordingly. 
-With the new samples, a new classifier is then learned.
+With the new samples, a new classifier is then learnt.
 \end{example}
 The other issue is: how do we handle those valuations in $\mathit{NP}$, which may or may not satisfy $\mathit{Inv}$? 
-If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ and as a result, the learned classifier may not converge to the invariant we want, even with the help of active learning. 
+If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ 
+and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning. 
 This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. 
-Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $\mathit{x - y \leq 10}$, or $\mathit{x - y \leq 15}$) may be learned to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. 
+Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $\mathit{x - y \leq 10}$, or $\mathit{x - y \leq 15}$) may be learnt to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. 
 Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help improving the classifier either. 
 To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: 
 one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); 

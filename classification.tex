@@ -97,7 +97,7 @@ The algorithm terminates when we reach the threshold on the maximum degree.
 We remark that the size of each sample in $P'$ or $N'$ grows rapidly with $\mathit{degree}$. 
 %The number of monomials of $\mathit{degree}$ in $\mathit{n}$ is $(^{n+degree-1}_{degree})$.
 However, in our experiments, we can often identify useful classifiers with a small value for $\mathit{degree}$.
-We remark that the polynomial classifiers learned by Algorithm~\ref{alg:polynomialSVM} can represent classifiers in the form of disjunctive or conjunctive linear inequalities.
+We remark that the polynomial classifiers learnt by Algorithm~\ref{alg:polynomialSVM} can represent classifiers in the form of disjunctive or conjunctive linear inequalities.
 %Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
 For instance, the classifier $\big((x \ge d_0) \wedge (x \le d_1)\big) \vee (x \ge d_2)$
 where $\mathit{d_0 < d_1 < d_2}$ are constants can be represented as: $\mathit{x^3 + (d_0d_1 + d_0d_2 + d_1d_2)x^2 - (d_0 + d_1 + d_2)x - d_0d_1d_2 \geq 0}$.
@@ -261,19 +261,25 @@ At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that
 % section classification (end)
 
 \subsection{Selective Sampling} \label{subsec:active:learning}
-Selective sampling is helpful in reducing the number of required samples. Often, different selective sampling methods are adopted according to different classification algorithms. In the following, we show how selective sampling works for the two above-mentioned classification algorithms. %We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
+Selective sampling is helpful in reducing the number of required samples. 
+Often, different selective sampling methods are adopted according to different classification algorithms. 
+In the following, we show how selective sampling works for the two above-mentioned classification algorithms. %We refer the readers to~\cite{???} on a survey on how selective sampling works in general.
 
-Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $\mathit{-4x^2+2y \geq -11}$. Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
+Assume that we adopt Algorithm~\ref{alg:polynomialSVM} in our framework and learn a polynomial classifier: $\mathit{-4x^2+2y \geq -11}$. 
+Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure is applied to identify samples right on the classification boundary for improving the classifier.
 \begin{enumerate}
 \item Choose a variable in the classifier, for example, $x$.
 \item Generates random value for other variables. For example, we let $y$ be $12$.
-\item Solve the equation $\mathit{-4x^2+2y = -11}$ after substituting variables with their values. If there is no solution, go back to (1) and retry. In our example, we get $x \approx 2.9580$.
+\item Solve the equation $\mathit{-4x^2+2y = -11}$ after substituting variables with their values. If there is no solution, go back to (1) and retry. 
+In our example, $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-Alternatively, we can use existing equation system solvers directly to find solutions for equation $\mathit{-4x^2+2y = -11}$. If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. 
-While it is easy to see that the classifiers learned in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), 
-it is hard to predict how fast it converges. We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
+Alternatively, we can use existing equation system solvers directly to find solutions for equation $\mathit{-4x^2+2y = -11}$. 
+If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. 
+While it is easy to see that the classifiers learnt in Algorithm~\ref{alg:active} may improve through the iterations (since more samples are available), 
+it is hard to predict how fast it converges. 
+We evaluate the effectiveness of these classification algorithms as well as selective sampling methods empirically in the next section.
 %Having a classifier for the current dataset ($\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$),
 %active learning technique keeps refining the classifier until it gets converged.
 %That means the classifier remains identical even adding more data points into the training set.
