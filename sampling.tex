@@ -3,11 +3,8 @@
 %\section{Sampling} % (fold)
 \section{Data Collection} % (fold)
 \label{sec:sampling}
-The goal of data collection is  to collect variable valuations with their labels, based on which we can learn candidate invariants, through the program executions. 
-In general, the more samples we have, the more likely we would learn the right invariants. 
-However, if we simply learn based on the random samples, it may take many random samples before a classification algorithm can find the right invariant. 
-In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. 
-In the following, we discuss how each one works.
+
+The goal of data collection is to collect sample variable valuations, based on which we can learn candidate invariants. In general, the more samples we have, the more likely we would learn the right invariants. However, if we simply learn based on the random samples, it may take many random samples before a classification algorithm can find the right invariant. In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}. In the following, we discuss how each one works.
 
 %Sampling is non-trivial in automatic loop invariant inference,
 %because we need to obtain samples that are helpful for invariant candidate generation and refinement.
@@ -186,7 +183,7 @@ Since $\mathit{Inv}$ satisfies condition (2) and $\mathit{Body}(s_0) \models \ma
 Therefore, by induction, we can prove $s = \mathit{Body}^i(s_0)$ for all $i$ satisfies $\mathit{Inv}$.
 %Since $s = Body^i(s_0)$ for some $i$ and by definition $Body^j(s') \not \models Cond$ for all $j \leq i$, we have $s \models Inv$.
  \[
-    \mathit{Negative}(\mathit{SP}) = \{s~|~\exists s_0 \in SP.~s_0 \Rightarrow s \Rightarrow s_n \land s \not \models \mathit{Pre} \land s_n \not \models Cond \land s_n \not \models Post\} \]
+    \mathit{Negative}(\mathit{SP}) = \{s~|~\exists s_0 \in \mathit{SP}.~s_0 \Rightarrow s \Rightarrow s_n \land s \not \models \mathit{Pre} \land s_n \not \models \mathit{Cond} \land s_n \not \models \mathit{Post}\} \]
 $\mathit{Negitive}(\mathit{SP})$ is the set of valuations such that a valuation $s$ in $\mathit{Negitive}(\mathit{SP})$ fails $\mathit{Pre}$ and becomes a valuation $s_n$ which fails $\mathit{Post}$ when the loop terminates. We show that $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying condition (1), (2) and (3). Assume that $s \in \mathit{Inv}$, by condition (2), we can show that $s_n$ must satisfy $\mathit{Inv}$ through a simple induction. By condition (3), $s_n$ must satisfy $\mathit{Post}$, which contradicts the definition of $\mathit{Negitive}(\mathit{SP})$.
 \[    \mathit{NP}(\mathit{SP}) = \{s~|~\exists s_0 \in \mathit{SP}.~ s_0 \Rightarrow s \land s \not \in \mathit{CE(SP)} \cup \mathit{Positive(SP)} \cup \mathit{Negative(SP)}\}
 \]
