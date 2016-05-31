@@ -153,18 +153,20 @@ The postcondition $\mathit{Post}$ is $\mathit{y \le x \le y + 16}$.
 It is easy to check that the Hoare triple can be proven using a loop invariant $\mathit{Inv}$: $\mathit{x \le y + 16}$. 
 In the following, we show how our framework works to learn this loop invariant.
 \end{example}
-We start with \emph{data collection}. Given the Hoare triple, we first randomly generate a set of valuations of $V$. 
+We start with \emph{data collection}. Given the Hoare triple, we first  generate a set of valuations of $V$ randomly. 
 % For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $\mathit{Pre}$ as random samples.
-For each sample $s_0$ (i.e., a variable valuation) $\in V$, we execute the given program with $s_0$ as the initial state and record variable evaluations $\{s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
+%For each sample $s_0$ (i.e., a variable valuation) $\in V$, 
+Then we execute the loop program with $s_0 \in V$ as the initial evaluation and record an evaluation sequence $\{s_0, s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
+%We donate $s_0$ as the initial evaluation of $s_i$, and $s_n$ as the last evaluation of $s_i$.
 %We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
 %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-All variable valuations are divided into the following four sets according to the satisfaction to $\mathit{Pre}$ and $\mathit{Post}$.
+All the variable valuations $s_i~(0 \leq i \leq n)$ in such an evaluation sequence are divided into the following four sets according to whether $s_0$ satisfies $\mathit{Pre}$ and $s_n$ satisfies $\mathit{Post}$.
 Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
 \begin{itemize}
-    \item Set $\mathit{CE}$ contains the set of valuations whose initial state satisfies $\mathit{Pre}$ but last state violates $\mathit{Post}$ afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains the set of valuations whose initial and last state satisfy $\mathit{Pre}$ and $Post$ respectively. It is shown in Section~\ref{sec:sampling} that all the valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{Negative}$ contains the set of valuations whose initial and last state violate $\mathit{Pre}$ and $\mathit{Post}$ respectively. Section~\ref{sec:sampling} proves all these valuations fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{NP}$ contains the set of all the valuations which do not appear in the above three sets. We show you in Section~\ref{sec:sampling} the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
+    \item Set $\mathit{CE}$ contains all the valuations $s_i$ in an evaluation sequence where $\mathit{s_0 \models \mathit{Pre}}$ but $\mathit{s_n \not\models \mathit{Post}}$. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
+    \item Set $\mathit{Positive}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \models \mathit{Pre}}$ and $\mathit{s_n \models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{Negative}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \not\models \mathit{Pre}}$ and $\mathit{s_n \not\models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Negative}$ must fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{NP}$ contains all the valuations which have not appear in the above three sets. Section~\ref{sec:sampling} shows the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
 \end{itemize}
 %\begin{itemize}
 %    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
@@ -239,7 +241,7 @@ one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i
 and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). 
 We remark active learning is applied to all three candidates until they converge. 
 In our example, if we restrict our learning classifier to linear inequation, 
-the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would converge to $\mathit{NULL}$; %x - y \leq 0$; 
+the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would be $\textsc{null}$; % $\emptyset$, %converge to $\varnothing$ %$\mathit{NULL}$; %x - y \leq 0$; 
 and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ would converge to $\mathit{x - y \leq 16}$.
 
 After all three candidate invariants converge, we move on to \emph{candidate verification}. 
@@ -255,7 +257,7 @@ where $\mathit{sp}(\phi,e)$ is the strongest postcondition obtained by
 symbolically executing program $e$
 starting from precondition $\phi$.
 If there is one candidate invariant which fails all the three conditions, we successfully prove the Hoare triple. 
-For instance, the candidate invariant $x - y \geq 16$ generated in our example fails all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. 
+For instance, the candidate invariant $\mathit{x - y \geq 16}$ generated in our example fails all three conditions and we prove the Hoare triple shown in Figure~\ref{fig:running:example:program}. 
 If any of condition (4), (5) and (6) is satisfiable, the $\mathit{SMT}$ solver generates a model in the form of a variable valuation, 
 and update $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ or $\mathit{CE}$ accordingly. % to the execution with these valuations. 
 In particular, a counterexample satisfying condition (4) should be added into $\mathit{Positive}$; 

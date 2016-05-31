@@ -367,7 +367,7 @@ The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polyn
 Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $\mathit{mapToDegree}$), 
 the values needed for selective sampling in the higher-dimension space may not be feasible in the original space. 
 For example, assume a program with an integer variable $x$ which can be any value in set $\{\cdots, -1, 0,  1, 2, 3, \cdots\}$. 
-After the mapping, $(x, x^2)$ is defined only in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9) \cdots$\}. 
+However $(x, x^2)$ is defined only in \{$\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9) \cdots$\} after mapping. 
 As a result, a sample selected according to selective sampling may often be infeasible, i.e., the equation we need to solve for selective sampling has no solution.
 
 %What's more, the problem becomes much worse as the degree increases, as these undefined holes contains much more points than the defined samples, which is also the reason that we restrict the degree of our $polynomial$ algorithm up to 4.
