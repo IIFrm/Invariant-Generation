@@ -110,9 +110,10 @@ As a result, we generate only one candidate invariant $\mathit{3x-10y \leq 152}$
 \[
 \mathit{3x-10y \leq 152 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)}
 \]
-The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\{x \mapsto 48, y \mapsto 10\}$. 
+The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\{x \mapsto 4, y \mapsto -14\}$. 
 According to our categorization, this valuation is added to $\mathit{Negative}$, 
-which will subsequently help us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $\mathit{x - y \leq 16}$ and prove the Hoare triple.
+which will subsequently help us to identify a better candidate invariant separating $\mathit{Negative}$ from the rest than the last one.
+As this procedure repeats iteratively, it can finally reach the actual invariant $\mathit{x - y \leq 16}$ and prove the Hoare triple.
 %The formula is proven to be satisfiable, for instance, with a variable valuation $\{x \mapsto 17, y \mapsto 0\}$. According to our categorization, this valuation is added to $\mathit{Negative}$, which %subsequently allow us to identify the candidate invariant separating $\mathit{Negative}$ from the rest: $x - y \geq 16$ and prove the Hoare triple.
 %$\textsc{Zilu}$ tries to valid it using symbolic execution~\cite{king1976symbolic}\cite{khurshid2003generalized}
 %(or known as concolic testing~\cite{sen2007concolic}) and constraint solving,
