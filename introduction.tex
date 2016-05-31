@@ -237,7 +237,7 @@ If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\m
 and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning. 
 This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. 
 Without considering the samples in $\mathit{NP}$, multiple classifiers located in the $\mathit{NP}$ region (e.g., $\mathit{x - y \leq 10}$, or $\mathit{x - y \leq 15}$) may be learnt to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. 
-Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help improving the classifier either. 
+Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help to improve the classifier either. 
 To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: 
 one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); 
 and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). 

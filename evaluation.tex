@@ -65,15 +65,17 @@ As non-determinism is beyond the scope of this work, we replace these non-determ
 %\LL{Introduce the sources of the benchmark.}
  %% All benchmarks are available from~\cite{zilu}.
 
-The parameters in our experiments are set as follows. For random sampling, we generate random values of all input variables of the program from their default ranges. 
-By default, we generate 8 random values for each free variable.
+The parameters in our experiments are set as follows. 
+For random sampling, we generate random values of all input variables of the program from their default ranges. 
+By default, we generate 10 random values for each free variable.
+For selective sampling, the default ratio between random samples and selective samples is 1:4.
 %which would be enlarged if we can not find samples in a few tries.
 %Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-When we invoke $\mathit{LibSVM}$ for classification, the parameter $C$ (i.e., the preference between avoiding misclassifying each training example and enlarging decision boundary) 
+When we invoke $\mathit{LibSVM}$ for classification, the parameter $C$ (i.e., it controls the trade-off between avoiding misclassifying training examples and enlarging decision boundary) 
 and the inner iteration for $\mathit{SVM}$ learning are set to their maximum value so as to generate only perfect classifiers.
-Each invocation of $\mathit{LibSVM}$'s classification engine is set to time out in 600 seconds.
-The maximum degree for learning polynomial classifiers is set to be 4. 
-For candidate verification, we encode integer-type variables in the programs as integers in $\mathit{Z3}$.
+%Each invocation of $\mathit{LibSVM}$'s classification engine is set to time out in 300 seconds.
+The maximum degree in $\mathit{mapToDegree}$ is set to be 4. 
+During candidate verification, integer-type variables in programs are encoded as integers in $\mathit{Z3}$.
 %Considering the differences between machine learning problem and our setting,
 %\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
 %\begin{itemize}
