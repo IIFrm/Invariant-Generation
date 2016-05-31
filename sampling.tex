@@ -58,7 +58,7 @@ On the other hand, using a solver often generates biased valuations. We remark t
 Anytime a classifier has been identified, we apply active learning and selective sampling to improve the classifier without applying heavy techniques like program verification.
 The concept of active learning and selective sampling refers to the approaches that aim at reducing the effort of collecting and labeling samples (i.e., adding a sample into $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ in our setting) by selecting only the most informative samples. 
 Selective sampling methods have been proposed for different learning algorithms~\cite{DBLP:conf/icml/OrabonaC11}.
-For instance, selective sampling techniques for SVM-based learning have been proven effective in achieving a
+For instance, selective sampling techniques for $\mathit{SVM}$-based learning have been proven effective in achieving a
 high accuracy with fewer examples in many applications~\cite{DBLP:conf/icml/OrabonaC11,DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}.
 The basic idea of selective sampling is that, given a classifier learnt based on a set of samples, we calculate the most informative samples (according to the classifier) and label them so that the classifier can be improved the most.
 For instance, in the setting of $\mathit{SVM}$, it has been proved that the most informative samples are those right on the classification boundary~\cite{DBLP:conf/icml/OrabonaC11}.
@@ -110,7 +110,7 @@ As a result, we generate only one candidate invariant $\mathit{3x-10y \leq 152}$
 \[
 \mathit{3x-10y \leq 152 \land \neg (x < y) \land \neg (x \geq y \land x \leq y + 16)}
 \]
-The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\{x \mapsto 4, y \mapsto -14\}$. 
+The formula is proven to be satisfiable by SMT solver, for instance, with a variable valuation $\mathit{\{x \mapsto 20, y \mapsto 0\}}$. 
 According to our categorization, this valuation is added to $\mathit{Negative}$, 
 which will subsequently help us to identify a better candidate invariant separating $\mathit{Negative}$ from the rest than the last one.
 As this procedure repeats iteratively, it can finally reach the actual invariant $\mathit{x - y \leq 16}$ and prove the Hoare triple.
@@ -188,7 +188,7 @@ The benefit of always applying selective sampling before applying sampling throu
 \end{figure}
 
 \noindent
-In the following, we define the four sets of samples formally. Let $\mathit{SP}$ be the set of samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{SP}$, by executing the given program with the initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $\forall k \in [0, n), s_k \models \mathit{Cond}$. Given the above sequence and two (not necessarily different) valuations $s$ and $s'$ in the sequence, we write $s \Rightarrow s'$ to denote that $s$ exists no later than $s'$, i.e., $s$ is a variable valuation before or the same valuation as $s'$ in a program execution.
+In the following, we define the four sets of samples formally. Let $\mathit{SP}$ be the set of initial samples we obtain (through any of the above-discussed sampling methods). For each sample $s_0 \in \mathit{SP}$, by executing the given program with the initial variable valuation $s_0$, we can obtain a sequence of variable valuation $\langle s_0, s_1, \cdots, s_n \rangle$ where $s_i = \mathit{Body}^i(s_0)$ and $s_n \not \models \mathit{Cond}$ and $\forall k \in [0, n), s_k \models \mathit{Cond}$. Given the above sequence and two (not necessarily different) valuations $s$ and $s'$ in the sequence, we write $s \Rightarrow s'$ to denote that $s$ exists no later than $s'$, i.e., $s$ is a variable valuation before or the same valuation as $s'$ in a program execution.
 % there exists a sample $s_0 \in \mathit{Sample}$ and a corresponding sequence of variable valuation $\langle s_0, \cdots, s_i, \cdots, s_j, \cdots s_n \rangle$ such that $s_i = s$ and $s_j = s'$.
 Next, we define the four disjoint sets of samples as follows.
 \[
@@ -217,7 +217,10 @@ Therefore, by induction, we can prove $s = \mathit{Body}^i(s_0)$ for all $i$ sat
 $\mathit{Negitive}(\mathit{SP})$ is the set of valuations such that a valuation $s$ in $\mathit{Negitive}(\mathit{SP})$ fails $\mathit{Pre}$ and becomes a valuation $s_n$ which fails $\mathit{Post}$ when the loop terminates. We show that $s \not \models \mathit{Inv}$ for all $\mathit{Inv}$ satisfying condition (1), (2) and (3). Assume that $s \in \mathit{Inv}$, by condition (2), we can show that $s_n$ must satisfy $\mathit{Inv}$ through a simple induction. By condition (3), $s_n$ must satisfy $\mathit{Post}$, which contradicts the definition of $\mathit{Negitive}(\mathit{SP})$.
 \[    \mathit{NP}(\mathit{SP}) = \{s~|~\exists s_0 \in \mathit{SP}.~ s_0 \Rightarrow s \land s \not \in \mathit{CE(SP)} \cup \mathit{Positive(SP)} \cup \mathit{Negative(SP)}\}
 \]
-$\mathit{NP(SP)}$ is the set of valuations which are not in any of the three sets defined above. We remark that a valuation $s$ in $\mathit{NP(SP)}$ may or may not satisfy an $\mathit{Inv}$ which satisfies condition (1), (2) and (3).
+$\mathit{NP(SP)}$ is the set of valuations which are not in any of the three sets defined above. 
+We remark that a valuation $s$ in $\mathit{NP(SP)}$ means, up to now, we can not decide whether it satisfies an $\mathit{Inv}$ which satisfies condition (1), (2) and (3).
+%Up to now, we can not decide
+Actually, it may change to any of the other three sets accordingly if $s$ is observed in later execution sequence.
 
 %\subsection {Loop Execution}
 %With the initial states $\mathcal{S}$ obtained above,

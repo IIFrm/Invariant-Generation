@@ -17,7 +17,7 @@ Initialize $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ as $\textsc
         \Return $f_1$, $f_2$, $f_3$\;
     }
     \For {$f_i$ where $i \in \{1,2,3\}$ such that $f_i \neq \textsc{null}$ and $f_i \neq \mathit{old\_f_i}$} {
-        add $\mathit{selectiveSamples}(f_i, \mathit{SP})$ into $\mathit{SP}$\;
+        add $\mathit{selectiveSampling}(f_i)$ into $\mathit{SP}$\;
         $\mathit{old\_f_i}\ := \ f_i$\;
     }
 }
@@ -74,7 +74,7 @@ We remark that our framework is not restricted to $\mathit{SVM}$-based classific
 %making it a non-probabilistic binary linear classifier.
 $\mathit{SVM}$ is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. In this work, we use its binary classification functionality.
 In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows.
-Given two sets of samples $P$ and $N$, SVM generates a perfect linear classifier to separate them if there is any.
+Given two sets of samples $P$ and $N$, $\mathit{SVM}$ generates a perfect linear classifier to separate them if there is any.
 In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise.
 We refer the readers to~\cite{svm:smo} for details on how the classifier is computed.
 In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{sharma2012interpolants}) if possible.
@@ -271,9 +271,9 @@ Following the idea in~\cite{DBLP:conf/icml/OrabonaC11}, the following procedure 
 \item Choose a variable in the classifier, for example, $x$.
 \item Generates random value for other variables. For example, we let $y$ be $12$.
 \item Solve the equation $\mathit{-4x^2+2y = -11}$ after substituting variables with their values. If there is no solution, go back to (1) and retry. 
-In our example, $x \approx 2.9580$.
+In our example, $\mathit{x \approx 2.9580}$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
-\item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
+\item Roundoff the values of all the variables according to their types in the given program. In our example, we obtain the valuation $\mathit{\{x \mapsto 3, y \mapsto 12\}}$.
 \end{enumerate}
 Alternatively, we can use existing equation system solvers directly to find solutions for equation $\mathit{-4x^2+2y = -11}$. 
 If Algorithm~\ref{alg:conjunctiveSVM} is adopted to learn conjunctive polynomial classifiers, we apply the above procedure to each and every polynomial clause in the classifier to obtain new samples. 

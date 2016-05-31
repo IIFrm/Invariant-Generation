@@ -166,7 +166,7 @@ Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3).
     \item Set $\mathit{CE}$ contains all the valuations $s_i$ in an evaluation sequence where $\mathit{s_0 \models \mathit{Pre}}$ but $\mathit{s_n \not\models \mathit{Post}}$. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
     \item Set $\mathit{Positive}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \models \mathit{Pre}}$ and $\mathit{s_n \models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
     \item Set $\mathit{Negative}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \not\models \mathit{Pre}}$ and $\mathit{s_n \not\models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Negative}$ must fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{NP}$ contains all the valuations which have not appear in the above three sets. Section~\ref{sec:sampling} shows the satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
+    \item Set $\mathit{NP}$ contains all the valuations which have not appear in the above three sets. The satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
 \end{itemize}
 %\begin{itemize}
 %    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
@@ -187,12 +187,12 @@ Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3).
 %        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}.
 \begin{example}
 We illustrate these four sets using the example shown in Figure~\ref{fig:running:example}. Since the Hoare triple is valid, set $\mathit{CE}$ for this example is empty. 
-Assume that the following three valuations are randomly sampled initially in our running example: $\{x \mapsto 1, y \mapsto 2\}$, $\{x \mapsto 10, y \mapsto 1\}$ and $\{x \mapsto 100, y \mapsto 0\}$. 
-Three sequences of valuations are generated accordingly: $\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle$, $\langle \{x \mapsto 10, y \mapsto 1\} \rangle$ and $\langle \{x \mapsto 100, y \mapsto 0\} \rangle$. 
+Assume that the following three valuations are randomly sampled initially in our running example: $\mathit{\{x \mapsto 1, y \mapsto 2\}}$, $\mathit{\{x \mapsto 10, y \mapsto 1\}}$ and $\mathit{\{x \mapsto 100, y \mapsto 0\}}$. 
+Three sequences of valuations are generated accordingly: $\mathit{\langle \{x \mapsto 1, y \mapsto 2\}, \{x \mapsto 11, y \mapsto 5\} \rangle}$, $\mathit{\langle \{x \mapsto 10, y \mapsto 1\} \rangle}$ and $\mathit{\langle \{x \mapsto 100, y \mapsto 0\} \rangle}$. 
 Note that the loop is not executed for the latter two cases. 
-As a result, set $\mathit{Negative}$ contains $\{x \mapsto 100, y \mapsto 0\}$; 
-set $\mathit{Positive}$ contains $\{x \mapsto 1, y \mapsto 2\}$ and $\{x \mapsto 11, y \mapsto 5\}$; 
-and $\mathit{NP}$ contains $\{x \mapsto 10, y \mapsto 1\}$.
+As a result, set $\mathit{Negative}$ contains $\mathit{\{x \mapsto 100, y \mapsto 0\}}$; 
+set $\mathit{Positive}$ contains $\mathit{\{x \mapsto 1, y \mapsto 2\}}$ and $\mathit{\{x \mapsto 11, y \mapsto 5\}}$; 
+and $\mathit{NP}$ contains $\mathit{\{x \mapsto 10, y \mapsto 1\}}$.
 \end{example}
 Next, we move on to \emph{active learning} to generate candidate invariants based on $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$. 
 Intuitively, since we know that valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$ and valuations in $\mathit{Negative}$ must not satisfy $\mathit{Inv}$, 
@@ -222,12 +222,12 @@ Although this classifier perfectly separates the current valuations in $\mathit{
 it is far from our wanted loop invariant and is clearly the result of having limited samples. 
 Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}. 
 Active learning is a semi-supervised machine learning in which a learning algorithm is able to interactively ask for samples which are important in improving a given classifier. 
-For instance, active learning for SVM works by repeatedly generating samples on (or nearby) the current classification boundary, adding them into $\mathit{Positive}$ and $\mathit{Negative}$ accordingly and applying SVM to generate new classifiers. 
+For instance, active learning for $\mathit{SVM}$ works by repeatedly generating samples on (or nearby) the current classification boundary, adding them into $\mathit{Positive}$ and $\mathit{Negative}$ accordingly and applying $\mathit{SVM}$ to generate new classifiers. 
 This process is repeated until the classifier converges. It has been shown that active learning effectively learns an accurate function with fewer samples~\cite{DBLP:conf/icml/SchohnC00}.
 
 \begin{example}
 In the above example, given the current classifier $\mathit{3x-10y \leq 152}$, we apply active learning for $\mathit{SVM}$ 
-and generate new valuations $\{x \mapsto 7, y \mapsto -13\}$ and $\{x \mapsto 14, y \mapsto -11\}$ %$\{x \mapsto 44, y \mapsto -2\}$ 
+and generate new valuations $\mathit{\{x \mapsto 7, y \mapsto -13\}}$ and $\mathit{\{x \mapsto 14, y \mapsto -11\}}$ %$\{x \mapsto 44, y \mapsto -2\}$ 
 by solving the equation $\mathit{3x-10y = 152}$. % (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). 
 Next, we execute the program with these variable valuations, obtain the variable valuation sequences, and add them into $\mathit{CE}$, $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. 
 With these new samples, a new classifier is then learnt by applying classification algorithms.
