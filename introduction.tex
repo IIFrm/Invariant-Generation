@@ -13,6 +13,12 @@ Automatic loop invariant generation is fundamental for program analysis. A loop 
 &\{\mathit{Post}\} & & /\star\text{\emph{Assertion}}\star/
 \end{align*}
 Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $\mathit{Pre}$, $\mathit{Cond}$ and $\mathit{Post}$ are predicates constituted by variables in $V$.
+
+\begin{align*}
+&\{\mathit{Pre}\} & & \emph{Pre} \Rightarrow \emph{Inv} \\
+&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\}\\\
+&\{\mathit{Post}\} & & \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post}
+\end{align*}
 %In practice, the pre-condition $\mathit{Pre}$ is often described by
 %the specification documents and checking conditions of the program inputs,
 %and the post-condition $\mathit{Post}$ is usually specified
@@ -164,9 +170,9 @@ All the variable valuations $s_i~(0 \leq i \leq n)$ in such an evaluation sequen
 Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
 \begin{itemize}
     \item Set $\mathit{CE}$ contains all the valuations $s_i$ in an evaluation sequence where $\mathit{s_0 \models \mathit{Pre}}$ but $\mathit{s_n \not\models \mathit{Post}}$. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-    \item Set $\mathit{Positive}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \models \mathit{Pre}}$ and $\mathit{s_n \models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{Negative}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \not\models \mathit{Pre}}$ and $\mathit{s_n \not\models \mathit{Post}}$. Section~\ref{sec:sampling} proves any valuation in $\mathit{Negative}$ must fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-    \item Set $\mathit{NP}$ contains all the valuations which have not appear in the above three sets. The satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
+    \item Set $\mathit{Positive}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \models \mathit{Pre}}$ and $\mathit{s_n \models \mathit{Post}}$. In Section~\ref{sec:sampling} we prove that any valuation in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{Negative}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \not\models \mathit{Pre}}$ and $\mathit{s_n \not\models \mathit{Post}}$. In Section~\ref{sec:sampling} we prove that any valuation in $\mathit{Negative}$ must fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
+    \item Set $\mathit{NP}$ contains all the valuations which have not appeared in the above three sets. The satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
 \end{itemize}
 %\begin{itemize}
 %    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
@@ -205,7 +211,7 @@ valuations in $\mathit{Negative}$ are labeled with $-$; % and color red;
 and valuations in $\mathit{NP}$ are labeled with ?. % and color yellow. 
 %Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
 %, such as $\{x \mapsto 11, y \mapsto 5\} \rangle$.
-And there are three areas: a pure positive area with color green, a pure negative area with color read, and a mixed area with color yellow.
+And there are three areas: a pure positive area with color green, a pure negative area with color red, and a mixed area with color yellow.
 The existence of a mixed area is caused by our labeling method which depends much on the observed program valuation sequences.
 For example, $\mathit{\{x \mapsto 11, y \mapsto 5\}}$, labeled as `+' in Fig.~\ref{fig:running:example:sampling}, 
 could also be labeled as `?' if it only appears in an one execution valuation sequence $\mathit{\langle \{x \mapsto 11, y \mapsto 5\} \rangle}$.
@@ -241,7 +247,7 @@ Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not h
 To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, we learn two additional candidate invariants making use of $\mathit{NP}$: 
 one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); 
 and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). 
-We remark active learning is applied to all three candidates until they converge. 
+We remark that active learning is applied to all three candidates until they converge. 
 In our example, if we restrict our learning classifier to linear inequation, 
 the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would be $\textsc{null}$ (no such a linear classifier); % $\emptyset$, %converge to $\varnothing$ %$\mathit{NULL}$; %x - y \leq 0$; 
 and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ would converge to $\mathit{x - y \leq 16}$.
@@ -267,7 +273,7 @@ a counterexample satisfying condition (6) may be added into either $\mathit{Nega
 Thus, we restart from data collection, i.e., we execute the program with the counterexample valuations, 
 collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
 
-We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations.%, and also the corresponding learning time. 
+We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. %, and also the corresponding learning time. 
 For our running example, with active learning, usually one iteration of learn-and-check is sufficient to prove the Hoare triple. 
 Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. 
 In the following sections, we present details on data collection (in Section~\ref{sec:sampling}) and active learning (in Section~\ref{sec:learning}). 

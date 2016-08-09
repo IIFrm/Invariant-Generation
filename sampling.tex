@@ -61,7 +61,7 @@ Selective sampling methods have been proposed for different learning algorithms~
 For instance, selective sampling techniques for $\mathit{SVM}$-based learning have been proven effective in achieving a
 high accuracy with fewer examples in many applications~\cite{DBLP:conf/icml/OrabonaC11,DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}.
 The basic idea of selective sampling is that given a classifier learnt based on a set of samples, we calculate the most informative samples (according to the classifier) and label them so that the classifier can be improved the most.
-For instance, in the setting of $\mathit{SVM}$, it has been proved that the most informative samples are those right on the classification boundary~\cite{DBLP:conf/icml/OrabonaC11}.
+For instance, in the setting of $\mathit{SVM}$, it has been proven that the most informative samples are those right on the classification boundary~\cite{DBLP:conf/icml/OrabonaC11}.
 % Since an SVM classification function is represented
 %by support vectors which are the samples closest to the boundary,
 %this selective sampling effectively learns an accurate function with
@@ -206,7 +206,7 @@ $\mathit{CE(SP)}$ is the set of valuations such that a valuation in $\mathit{CE(
 % \mathit{Positive}(\mathit{SP}) = \\
 %~~~~~~\{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land s' \models \mathit{Pre} \land s_n \not \models Cond \land s_n \models \mathit{Post}\}
 % \]
-$\mathit{Positive}(\mathit{SP})$ is the set of valuations such that a valuation $s$ in $\mathit{Postive}(\mathit{SP})$ can be reached by a valuation satisfying $Pre$ and becomes a valuation $s_n$ which satisfies $Post$ when the loop terminates. 
+$\mathit{Positive}(\mathit{SP})$ is the set of valuations such that a valuation $s$ in $\mathit{Positive}(\mathit{SP})$ can be reached by a valuation satisfying $Pre$ and becomes a valuation $s_n$ which satisfies $Post$ when the loop terminates. 
 %We show that any $s$ in $Positive(SP)$ must satisfy $Inv$, if $Inv$ exists. 
 Because $s_0 \models \mathit{Pre}$, $s_0 \models \mathit{Inv}$ since $\mathit{Inv}$ satisfies condition (1). 
 Since $\mathit{Inv}$ satisfies condition (2) and $\mathit{Body}(s_0) \models \mathit{Inv}$ if $\mathit{Body}(s_0) \models \mathit{Cond}$.
