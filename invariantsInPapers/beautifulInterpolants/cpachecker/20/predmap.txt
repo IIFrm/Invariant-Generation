@@ -1,0 +1,11 @@
+LOCATION: N44
+<7:1> <-> "PRED(0 <= ((-(main::x) + main::k) + -(main::y)))" <-> (0 <= ((-(main::x) + main::k) + -(main::y)))
+<0:1> <-> "PRED(0 <= main::m)" <-> (0 <= main::m)
+<8:1> <-> "PRED(1 <= (main::n - main::m))" <-> (1 <= (main::n - main::m))
+<1:1> <-> "PRED(0 <= (-(main::k) + (main::y + main::x)))" <-> (0 <= (-(main::k) + (main::y + main::x)))
+<2:1> <-> "PRED((-(main::k) + (main::y + main::x)) <= 0)" <-> ((-(main::k) + (main::y + main::x)) <= 0)
+<3:1> <-> "PRED(main::j <= 0)" <-> (main::j <= 0)
+<4:1> <-> "PRED(0 <= main::j)" <-> (0 <= main::j)
+<5:1> <-> "PRED(main::j = main::m)" <-> (main::j = main::m)
+<6:1> <-> "PRED(((-(main::x) + main::k) + -(main::y)) <= 0)" <-> (((-(main::x) + main::k) + -(main::y)) <= 0)
+

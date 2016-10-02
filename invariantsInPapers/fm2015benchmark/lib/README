@@ -1,0 +1,9 @@
+princess.jar and smt-parser.jar have to be included from the
+Princess solver.
+
+Experiments were done with Princess release 2014-02-10.
+The sources are available from
+http://www.philipp.ruemmer.org/princess/princess-2014-02-10.tar.gz
+
+philipp@hal3:/tmp$ md5sum princess-2014-02-10.tar.gz 
+df15e3cd3759305518f35f268a4ce914  princess-2014-02-10.tar.gz

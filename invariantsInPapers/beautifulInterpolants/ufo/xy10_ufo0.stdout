@@ -1,0 +1,17 @@
+Working directory /tmp/ufo-qpiTMC
+/home/aws/git/ufo/Release/bin/ufo --lawi temp/xy10.o.o0.bc --ufo-trace=temp/xy10.noneO0.trace --ufo-post=NONE --ufo-increfine=REF4 --ufo-dvo=true --ufo-simplify=false --ufo-consrefine=true
+cleanMerge: entry
+cleanMerge: %_0
+cleanMerge: %y.0_1
+cleanMerge: %x.0_1
+cleanMerge: %_0
+cleanMerge: %y.0
+cleanMerge: %y.0_1
+cleanMerge: %x.0
+cleanMerge: %x.0_1
+cleanMerge: bb
+cleanMerge: %_1
+cleanMerge: %_2
+cleanMerge: bb1
+cleanMerge: %_3
+cleanMerge: %_4

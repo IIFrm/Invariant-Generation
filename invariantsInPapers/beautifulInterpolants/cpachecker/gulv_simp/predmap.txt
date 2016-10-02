@@ -1,0 +1,12 @@
+LOCATION: N21
+<7:1> <-> "PRED(200 <= main::y)" <-> (200 <= main::y)
+<0:1> <-> "PRED(main::x <= 0)" <-> (main::x <= 0)
+<8:1> <-> "PRED(300 <= main::y)" <-> (300 <= main::y)
+<1:1> <-> "PRED(4 <= main::x)" <-> (4 <= main::x)
+<9:1> <-> "PRED(400 <= main::y)" <-> (400 <= main::y)
+<2:1> <-> "PRED(main::x <= 1)" <-> (main::x <= 1)
+<3:1> <-> "PRED(main::x <= 2)" <-> (main::x <= 2)
+<4:1> <-> "PRED(main::x <= 3)" <-> (main::x <= 3)
+<5:1> <-> "PRED(0 <= main::y)" <-> (0 <= main::y)
+<6:1> <-> "PRED(100 <= main::y)" <-> (100 <= main::y)
+

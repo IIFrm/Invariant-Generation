@@ -1,0 +1,211 @@
+ Creating LAWI 
+
+ Creating LBE pass 
+
+ Creating Topo pass 
+; Creating WTOPass
+
+== Running Topo pass ==
+;
+ == Running LBE == 
+F name: main
+Computing Cutpoints for main
+done
+0CUTPOINT: entry
+
+--another edge--
+entry
+to: bb
+
+1CUTPOINT: ERROR
+
+2CUTPOINT: bb
+
+--another edge--
+bb
+bb10
+bb11
+to: ERROR
+
+--another edge--
+bb
+to: bb2
+
+--another edge--
+bb
+bb10
+bb11
+to: __UFO__0
+
+3CUTPOINT: bb2
+
+--another edge--
+bb2
+bb3
+bb4
+bb5
+to: bb2
+
+--another edge--
+bb2
+to: bb7
+
+4CUTPOINT: bb7
+
+--another edge--
+bb7
+bb9
+to: bb
+
+--another edge--
+bb7
+bb8
+to: bb7
+
+5CUTPOINT: __UFO__0
+
+--another edge--
+__UFO__0
+to: __UFO__0
+
+===Looking at Header entry
+
+After first loop==Inteval size 1 entry 
+===Looking at Header bb
+
+After first loop==Inteval size 1 entry 
+==Inteval size 1 bb 
+===Looking at Header bb2
+
+After first loop==Inteval size 1 entry 
+==Inteval size 1 bb 
+==Inteval size 1 bb2 
+===Looking at Header bb7
+
+After first loop==Inteval size 1 entry 
+==Inteval size 1 bb 
+==Inteval size 1 bb2 
+==Inteval size 1 bb7 
+Size of graph: 4
+==Inteval size 1 entry 
+==Inteval size 1 bb 
+==Inteval size 3 (bb2 )
+==Inteval size 3 (bb7 )
+===Looking at Header entry
+
+After first loop==Inteval size 1 entry 
+===Looking at Header bb
+
+
+mergingOut bb2
+Adding to fixpoint bb2
+
+mergingOut bb7
+Adding to fixpoint bb7
+
+MergeOut: Checking canReach: bb2
+false 
+After bracketing
+==Inteval size 1 bb 
+
+MergeOut: Checking canReach: bb7
+true 
+After bracketing
+==Inteval size 6 (bb (bb7 ))
+After first loop==Inteval size 1 entry 
+==Inteval size 9 (bb (bb7 ))(bb2 )
+Size of graph: 2
+==Inteval size 1 entry 
+==Inteval size 9 (bb (bb7 ))(bb2 )
+===Looking at Header entry
+
+
+mergingOut bb
+Adding to fixpoint bb
+
+MergeOut: Checking canReach: bb
+false 
+After bracketing
+==Inteval size 1 entry 
+After first loop==Inteval size 10 entry (bb (bb7 ))(bb2 )
+Size of graph: 1
+==Inteval size 10 entry (bb (bb7 ))(bb2 )
+==Inteval size 14 entry (bb (bb7 ))(bb2 )(__UFO__0 )ERROR 
+Looking at entry
+Looking at bb
+Looking at bb7
+Looking at bb2
+Looking at __UFO__0
+Looking at ERROR
+instantiating mc
+instantiated model checker - now model checking
+Creating new node: 0:entry
+ Picked root node and about to start UFO
+
+
+========================ITER 0 ========================
+
+Largest node: 1
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 0
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 1
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 0.000000e+00
+BRUNCH_STAT STime 1.200000e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 1
+BRUNCH_STAT ufo.main_loop 1
+BRUNCH_STAT ufo.total 0.00
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+marked
+Creating new node: 1:bb
+	Adding child 1:bb
+Done adding children
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+marked
+Creating new node: 2:ERROR
+	Adding child 2:ERROR
+Creating new node: 3:bb2
+	Adding child 3:bb2
+Done adding children
+Done computing post
+Picking next node from future in SAME component bb7
+
+PICKING bb7
+
+looking at node NULL
+0  ufo             0x0000000000cac45f
+1  ufo             0x0000000000cac8e9
+2  libpthread.so.0 0x00007fa4b4df3060
+3  ufo             0x0000000000815e2d ufo::ModelChecker::ufoExpand(ufo::Node*) + 285
+4  ufo             0x0000000000819e60 ufo::ModelChecker::ufo() + 1040
+5  ufo             0x000000000081b306 ufo::Lawi::runOnModule(llvm::Module&) + 1334
+6  ufo             0x0000000000c43c3f llvm::MPPassManager::runOnModule(llvm::Module&) + 463
+7  ufo             0x0000000000c43d69 llvm::PassManagerImpl::run(llvm::Module&) + 137
+8  ufo             0x000000000079b97e main + 2318
+9  libc.so.6       0x00007fa4b37e330d __libc_start_main + 237
+10 ufo             0x00000000007a1669
+Stack dump:
+0.	Program arguments: /home/aws/git/ufo/Release/bin/ufo --lawi temp/33.o.o0.bc --ufo-trace=temp/33.noneO0.trace --ufo-post=NONE --ufo-increfine=REF4 --ufo-dvo=true --ufo-simplify=false --ufo-consrefine=true 
+1.	Running pass 'LAWI model checker' on module 'temp/33.o.o0.bc'.

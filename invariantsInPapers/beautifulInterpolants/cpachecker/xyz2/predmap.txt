@@ -1,0 +1,10 @@
+LOCATION: N14
+<3:1> <-> "PRED(main::x <= 0)" <-> (main::x <= 0)
+<1:1> <-> "PRED(nondet = 0)" <-> (nondet = 0)
+<0:1> <-> "PRED(main::z = main::x)" <-> (main::z = main::x)
+
+LOCATION: N27
+<3:1> <-> "PRED(main::x <= 0)" <-> (main::x <= 0)
+<2:1> <-> "PREDfalse" <-> false
+<0:1> <-> "PRED(main::z = main::x)" <-> (main::z = main::x)
+

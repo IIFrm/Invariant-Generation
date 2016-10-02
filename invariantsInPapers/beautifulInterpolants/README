@@ -1,0 +1,55 @@
+This folder contains the C benchmarks used
+in the CAV 2013 submission "Beautiful Interpolants".
+
+The benchmarks are in this directory and the directory ./dillig/
+
+==Tools used==
+We compared against CPAChecker, UFO, and InvGen.
+The following describes the command-line options to these tools:
+
+1) CPAChecker
+Downloaded form: http://sv-comp.sosy-lab.org/2013/downloads/CPAchecker-1.1.10-svcomp13-unix.tar.bz2
+
+Tool output in ./cpachecker/
+
+Command-line options:
+> cilly --dosimplify --printCilAsIs --save-temps --domakeCFG $1.c
+
+> ./scripts/cpa.sh -heap 12000m -disable-java-assertions -predicateAnalysis $1.cil.c -outputpath ./temp/
+
+The first command runs CIL (required) on the program.
+The second command calls CPAChecker with a predicate abstraction configuration.
+
+2) InvGen
+Downloaded from: http://pub.ist.ac.at/~agupta/invgen/
+
+Tool output in ./invgenai/ and ./invgencs/
+
+Command-line options
+ -- Configuration 1: InvGenAI
+   > ./frontend -main main -o $1.pl $1.c
+   > ./invgen -dotty $1.pl
+ -- Configuration 2: InvGenCS
+   > ./frontend -main main -o $1.pl $1.c
+   > ./invgen -dotty -nostrength $1.pl
+
+frontend transforms the program into InvGen's intermediate representation.
+invgen is then called with and without -nostrength.
+
+Note that the C files had to be modified in order to work with InvGen.
+Specifically, nondeterministic functions were replaced by an int NONDET variable.
+
+3) UFO
+Source downloaded from: https://bitbucket.org/arieg/ufo/wiki/Home
+Added fixes to improve precision.
+
+Tool output in ./ufo/
+
+Command-line options:
+  First, program is preprocessed with LLVM
+  > opt --stats -f -funit-at-a-time -strip-dead-prototypes -deadtypeelim -mergereturn -lowerswitch -instcombine -simplifycfg -instcombine -die -dce -lowerswitch
+  
+  Second, UFO is called on the preprocessed program using the options
+  --ufo-post=NONE --ufo-increfine=REF4 --ufo-dvo=true --ufo-simplify=false --ufo-consrefine=true 
+
+

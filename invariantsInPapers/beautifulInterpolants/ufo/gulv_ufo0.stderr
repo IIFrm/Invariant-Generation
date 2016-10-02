@@ -1,0 +1,5683 @@
+ Creating LAWI 
+
+ Creating LBE pass 
+
+ Creating Topo pass 
+; Creating WTOPass
+
+== Running Topo pass ==
+;
+ == Running LBE == 
+F name: main
+Computing Cutpoints for main
+done
+0CUTPOINT: entry
+
+--another edge--
+entry
+to: bb
+
+1CUTPOINT: ERROR
+
+2CUTPOINT: bb
+
+--another edge--
+bb
+bb11
+to: ERROR
+
+--another edge--
+bb
+bb1
+bb3
+bb2
+bb7
+bb4
+bb8
+bb5
+bb10
+to: bb
+
+--another edge--
+bb
+bb11
+to: __UFO__0
+
+3CUTPOINT: __UFO__0
+
+--another edge--
+__UFO__0
+to: __UFO__0
+
+===Looking at Header entry
+
+After first loop==Inteval size 1 entry 
+===Looking at Header bb
+
+After first loop==Inteval size 1 entry 
+==Inteval size 1 bb 
+Size of graph: 2
+==Inteval size 1 entry 
+==Inteval size 3 (bb )
+===Looking at Header entry
+
+
+mergingOut bb
+Adding to fixpoint bb
+
+MergeOut: Checking canReach: bb
+false 
+After bracketing
+==Inteval size 1 entry 
+After first loop==Inteval size 4 entry (bb )
+Size of graph: 1
+==Inteval size 4 entry (bb )
+==Inteval size 8 entry (bb )(__UFO__0 )ERROR 
+Looking at entry
+Looking at bb
+Looking at __UFO__0
+Looking at ERROR
+instantiating mc
+instantiated model checker - now model checking
+Creating new node: 0:entry
+ Picked root node and about to start UFO
+
+
+========================ITER 0 ========================
+
+Largest node: 1
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 0
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 1
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 8.000000e-03
+BRUNCH_STAT STime 4.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 1
+BRUNCH_STAT ufo.main_loop 1
+BRUNCH_STAT ufo.total 0.00
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+marked
+Creating new node: 1:bb
+	Adding child 1:bb
+Done adding children
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+marked
+Creating new node: 2:ERROR
+	Adding child 2:ERROR
+Creating new node: 3:bb
+	Adding child 3:bb
+Done adding children
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 4:bb
+	Adding child 4:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 12
+Number of true assumptions: 12
+
+
+
+************************
+
+Number of assumptions: 48
+
+	Number of inst assumptions: 44
+	Number of node assumptions: 2
+Number of TRUE assumptions: 12
+	Number of true inst assumptions: 12
+	Number of true node assumptions: 0
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  2
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 9 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 1 ========================
+
+Largest node: 5
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 1
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 5
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 2.400100e-02
+BRUNCH_STAT STime 4.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 5
+BRUNCH_STAT ufo.main_loop 2
+BRUNCH_STAT SmartExprSet.add 0.00
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.00
+BRUNCH_STAT msat.from_expr 0.00
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.00
+BRUNCH_STAT refiner.assumptions.total 0.00
+BRUNCH_STAT refiner.interps 0.00
+BRUNCH_STAT refiner.mkInScope 0.00
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.00
+BRUNCH_STAT refiner.mkInScope.elim_node 0.00
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.00
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.00
+BRUNCH_STAT refiner.total 0.01
+BRUNCH_STAT ufo.expand 0.00
+BRUNCH_STAT ufo.expand.is_covered 0.00
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 0.02
+BRUNCH_STAT z3.from_expr 0.00
+BRUNCH_STAT z3.to_expr 0.00
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 5:bb
+	Adding child 5:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 6:bb
+	Adding child 6:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 27
+Number of true assumptions: 27
+
+
+
+************************
+
+Number of assumptions: 131
+
+	Number of inst assumptions: 122
+	Number of node assumptions: 4
+Number of TRUE assumptions: 27
+	Number of true inst assumptions: 24
+	Number of true node assumptions: 1
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  4
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 10 AFTER SIMP: 10
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 16 AFTER SIMP: 15
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 2 ========================
+
+Largest node: 7
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 2
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 7
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 4.000200e-02
+BRUNCH_STAT STime 8.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 7
+BRUNCH_STAT ufo.main_loop 3
+BRUNCH_STAT SmartExprSet.add 0.00
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.00
+BRUNCH_STAT msat.from_expr 0.00
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.01
+BRUNCH_STAT refiner.assumptions.total 0.01
+BRUNCH_STAT refiner.interps 0.01
+BRUNCH_STAT refiner.mkInScope 0.00
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.00
+BRUNCH_STAT refiner.mkInScope.elim_node 0.00
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.00
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.00
+BRUNCH_STAT refiner.total 0.03
+BRUNCH_STAT ufo.expand 0.00
+BRUNCH_STAT ufo.expand.is_covered 0.00
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 0.04
+BRUNCH_STAT z3.from_expr 0.00
+BRUNCH_STAT z3.to_expr 0.00
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 7:bb
+	Adding child 7:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 8:bb
+	Adding child 8:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 126
+Number of true assumptions: 121
+Number of true assumptions: 111
+Number of true assumptions: 111
+
+
+
+************************
+
+Number of assumptions: 216
+
+	Number of inst assumptions: 200
+	Number of node assumptions: 6
+Number of TRUE assumptions: 111
+	Number of true inst assumptions: 105
+	Number of true node assumptions: 2
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  6
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 118 AFTER SIMP: 31
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 67 AFTER SIMP: 46
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 68 AFTER SIMP: 48
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 118 AFTER SIMP: 79
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 101 AFTER SIMP: 81
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 72 AFTER SIMP: 36
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 3 ========================
+
+Largest node: 9
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 3
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 9
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 1.240070e-01
+BRUNCH_STAT STime 8.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 9
+BRUNCH_STAT ufo.main_loop 4
+BRUNCH_STAT SmartExprSet.add 0.00
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.00
+BRUNCH_STAT msat.from_expr 0.00
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.05
+BRUNCH_STAT refiner.assumptions.total 0.06
+BRUNCH_STAT refiner.interps 0.04
+BRUNCH_STAT refiner.mkInScope 0.00
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.00
+BRUNCH_STAT refiner.mkInScope.elim_node 0.00
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.00
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.00
+BRUNCH_STAT refiner.total 0.11
+BRUNCH_STAT ufo.expand 0.01
+BRUNCH_STAT ufo.expand.is_covered 0.00
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 0.12
+BRUNCH_STAT z3.from_expr 0.01
+BRUNCH_STAT z3.to_expr 0.00
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 9:bb
+	Adding child 9:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 10:bb
+	Adding child 10:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 208
+Number of true assumptions: 195
+Number of true assumptions: 184
+Number of true assumptions: 184
+
+
+
+************************
+
+Number of assumptions: 341
+
+	Number of inst assumptions: 278
+	Number of node assumptions: 8
+Number of TRUE assumptions: 184
+	Number of true inst assumptions: 156
+	Number of true node assumptions: 5
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  8
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 577 AFTER SIMP: 34
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 261 AFTER SIMP: 75
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 278 AFTER SIMP: 117
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 280 AFTER SIMP: 150
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 298 AFTER SIMP: 186
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 415 AFTER SIMP: 308
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 423 AFTER SIMP: 254
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 228 AFTER SIMP: 40
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 4 ========================
+
+Largest node: 11
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 4
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 11
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 3.760230e-01
+BRUNCH_STAT STime 8.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 11
+BRUNCH_STAT ufo.main_loop 5
+BRUNCH_STAT SmartExprSet.add 0.00
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.01
+BRUNCH_STAT msat.from_expr 0.01
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.17
+BRUNCH_STAT refiner.assumptions.total 0.19
+BRUNCH_STAT refiner.interps 0.12
+BRUNCH_STAT refiner.mkInScope 0.02
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.02
+BRUNCH_STAT refiner.mkInScope.elim_node 0.00
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.01
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.01
+BRUNCH_STAT refiner.total 0.35
+BRUNCH_STAT ufo.expand 0.01
+BRUNCH_STAT ufo.expand.is_covered 0.00
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 0.37
+BRUNCH_STAT z3.from_expr 0.03
+BRUNCH_STAT z3.to_expr 0.01
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 11:bb
+	Adding child 11:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 12:bb
+	Adding child 12:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 288
+Number of true assumptions: 253
+Number of true assumptions: 250
+Number of true assumptions: 248
+
+
+
+************************
+
+Number of assumptions: 521
+
+	Number of inst assumptions: 356
+	Number of node assumptions: 10
+Number of TRUE assumptions: 248
+	Number of true inst assumptions: 177
+	Number of true node assumptions: 7
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  10
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 297 AFTER SIMP: 13
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 45 AFTER SIMP: 8
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 107 AFTER SIMP: 15
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 156 AFTER SIMP: 66
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 156 AFTER SIMP: 61
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 256 AFTER SIMP: 162
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 298 AFTER SIMP: 200
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 356 AFTER SIMP: 242
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 267 AFTER SIMP: 150
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 174 AFTER SIMP: 48
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 5 ========================
+
+Largest node: 13
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 5
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 13
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 6.880430e-01
+BRUNCH_STAT STime 8.000000e-03
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 13
+BRUNCH_STAT ufo.main_loop 6
+BRUNCH_STAT SmartExprSet.add 0.01
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.01
+BRUNCH_STAT msat.from_expr 0.01
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.33
+BRUNCH_STAT refiner.assumptions.total 0.35
+BRUNCH_STAT refiner.interps 0.22
+BRUNCH_STAT refiner.mkInScope 0.03
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.03
+BRUNCH_STAT refiner.mkInScope.elim_node 0.00
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.02
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.02
+BRUNCH_STAT refiner.total 0.64
+BRUNCH_STAT ufo.expand 0.02
+BRUNCH_STAT ufo.expand.is_covered 0.01
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 0.68
+BRUNCH_STAT z3.from_expr 0.04
+BRUNCH_STAT z3.to_expr 0.01
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 13:bb
+	Adding child 13:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 14:bb
+	Adding child 14:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 368
+Number of true assumptions: 334
+Number of true assumptions: 306
+Number of true assumptions: 303
+
+
+
+************************
+
+Number of assumptions: 694
+
+	Number of inst assumptions: 434
+	Number of node assumptions: 12
+Number of TRUE assumptions: 303
+	Number of true inst assumptions: 199
+	Number of true node assumptions: 9
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  12
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 504 AFTER SIMP: 133
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 503 AFTER SIMP: 224
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 509 AFTER SIMP: 247
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 473 AFTER SIMP: 261
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 426 AFTER SIMP: 268
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 365 AFTER SIMP: 218
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 257 AFTER SIMP: 68
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 6 ========================
+
+Largest node: 15
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 6
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 15
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 1.180073e+00
+BRUNCH_STAT STime 1.600100e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 15
+BRUNCH_STAT ufo.main_loop 7
+BRUNCH_STAT SmartExprSet.add 0.02
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.02
+BRUNCH_STAT msat.from_expr 0.02
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 0.56
+BRUNCH_STAT refiner.assumptions.total 0.60
+BRUNCH_STAT refiner.interps 0.41
+BRUNCH_STAT refiner.mkInScope 0.04
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.04
+BRUNCH_STAT refiner.mkInScope.elim_node 0.01
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.03
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.03
+BRUNCH_STAT refiner.total 1.12
+BRUNCH_STAT ufo.expand 0.03
+BRUNCH_STAT ufo.expand.is_covered 0.02
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 1.18
+BRUNCH_STAT z3.from_expr 0.06
+BRUNCH_STAT z3.to_expr 0.01
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 15:bb
+	Adding child 15:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 16:bb
+	Adding child 16:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 470
+Number of true assumptions: 406
+Number of true assumptions: 403
+Number of true assumptions: 397
+
+
+
+************************
+
+Number of assumptions: 899
+
+	Number of inst assumptions: 512
+	Number of node assumptions: 14
+Number of TRUE assumptions: 397
+	Number of true inst assumptions: 254
+	Number of true node assumptions: 11
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  14
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 35 AFTER SIMP: 17
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 284 AFTER SIMP: 132
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 298 AFTER SIMP: 152
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 267 AFTER SIMP: 168
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 200 AFTER SIMP: 139
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 237 AFTER SIMP: 182
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 200 AFTER SIMP: 139
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 134 AFTER SIMP: 88
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 182 AFTER SIMP: 123
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 82 AFTER SIMP: 36
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 7 ========================
+
+Largest node: 17
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 7
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 17
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 1.916119e+00
+BRUNCH_STAT STime 2.000100e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 17
+BRUNCH_STAT ufo.main_loop 8
+BRUNCH_STAT SmartExprSet.add 0.04
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.02
+BRUNCH_STAT msat.from_expr 0.02
+BRUNCH_STAT msat.to_expr 0.00
+BRUNCH_STAT refiner.assumptions 1.00
+BRUNCH_STAT refiner.assumptions.total 1.05
+BRUNCH_STAT refiner.interps 0.60
+BRUNCH_STAT refiner.mkInScope 0.06
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.05
+BRUNCH_STAT refiner.mkInScope.elim_node 0.01
+BRUNCH_STAT refiner.mkInScope.elim_other 0.00
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.04
+BRUNCH_STAT refiner.mkInScope.variants 0.00
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.04
+BRUNCH_STAT refiner.total 1.82
+BRUNCH_STAT ufo.expand 0.06
+BRUNCH_STAT ufo.expand.is_covered 0.04
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 1.91
+BRUNCH_STAT z3.from_expr 0.08
+BRUNCH_STAT z3.to_expr 0.02
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 17:bb
+	Adding child 17:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 18:bb
+	Adding child 18:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 625
+Number of true assumptions: 606
+Number of true assumptions: 588
+Number of true assumptions: 579
+
+
+
+************************
+
+Number of assumptions: 1080
+
+	Number of inst assumptions: 590
+	Number of node assumptions: 16
+Number of TRUE assumptions: 579
+	Number of true inst assumptions: 367
+	Number of true node assumptions: 13
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  16
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 201 AFTER SIMP: 20
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 47 AFTER SIMP: 18
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 147 AFTER SIMP: 71
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 148 AFTER SIMP: 90
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 193 AFTER SIMP: 115
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1080 AFTER SIMP: 243
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1053 AFTER SIMP: 264
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1079 AFTER SIMP: 336
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1067 AFTER SIMP: 329
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1182 AFTER SIMP: 550
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1212 AFTER SIMP: 602
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1235 AFTER SIMP: 624
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1217 AFTER SIMP: 619
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 825 AFTER SIMP: 402
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 696 AFTER SIMP: 249
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 528 AFTER SIMP: 71
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 8 ========================
+
+Largest node: 19
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 8
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 19
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 3.392212e+00
+BRUNCH_STAT STime 2.800100e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 19
+BRUNCH_STAT ufo.main_loop 9
+BRUNCH_STAT SmartExprSet.add 0.06
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.03
+BRUNCH_STAT msat.from_expr 0.02
+BRUNCH_STAT msat.to_expr 0.01
+BRUNCH_STAT refiner.assumptions 1.72
+BRUNCH_STAT refiner.assumptions.total 1.78
+BRUNCH_STAT refiner.interps 1.19
+BRUNCH_STAT refiner.mkInScope 0.11
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.10
+BRUNCH_STAT refiner.mkInScope.elim_node 0.02
+BRUNCH_STAT refiner.mkInScope.elim_other 0.01
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.08
+BRUNCH_STAT refiner.mkInScope.variants 0.01
+BRUNCH_STAT refiner.nnf 0.00
+BRUNCH_STAT refiner.pre 0.05
+BRUNCH_STAT refiner.total 3.25
+BRUNCH_STAT ufo.expand 0.08
+BRUNCH_STAT ufo.expand.is_covered 0.06
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 3.39
+BRUNCH_STAT z3.from_expr 0.12
+BRUNCH_STAT z3.to_expr 0.03
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 19:bb
+	Adding child 19:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 20:bb
+	Adding child 20:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 591
+Number of true assumptions: 531
+Number of true assumptions: 526
+Number of true assumptions: 518
+
+
+
+************************
+
+Number of assumptions: 1437
+
+	Number of inst assumptions: 668
+	Number of node assumptions: 18
+Number of TRUE assumptions: 518
+	Number of true inst assumptions: 246
+	Number of true node assumptions: 15
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  18
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 85 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 85 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 85 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 85 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 85 AFTER SIMP: 9
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 267 AFTER SIMP: 133
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 547 AFTER SIMP: 252
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 562 AFTER SIMP: 288
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 636 AFTER SIMP: 335
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 491 AFTER SIMP: 266
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 379 AFTER SIMP: 184
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 326 AFTER SIMP: 142
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 234 AFTER SIMP: 42
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 9 ========================
+
+Largest node: 21
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 9
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 21
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 4.452278e+00
+BRUNCH_STAT STime 2.800100e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 21
+BRUNCH_STAT ufo.main_loop 10
+BRUNCH_STAT SmartExprSet.add 0.11
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.04
+BRUNCH_STAT msat.from_expr 0.03
+BRUNCH_STAT msat.to_expr 0.01
+BRUNCH_STAT refiner.assumptions 2.30
+BRUNCH_STAT refiner.assumptions.total 2.39
+BRUNCH_STAT refiner.interps 1.49
+BRUNCH_STAT refiner.mkInScope 0.14
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.13
+BRUNCH_STAT refiner.mkInScope.elim_node 0.02
+BRUNCH_STAT refiner.mkInScope.elim_other 0.01
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.10
+BRUNCH_STAT refiner.mkInScope.variants 0.01
+BRUNCH_STAT refiner.nnf 0.01
+BRUNCH_STAT refiner.pre 0.07
+BRUNCH_STAT refiner.total 4.24
+BRUNCH_STAT ufo.expand 0.13
+BRUNCH_STAT ufo.expand.is_covered 0.11
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 4.45
+BRUNCH_STAT z3.from_expr 0.17
+BRUNCH_STAT z3.to_expr 0.03
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 21:bb
+	Adding child 21:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 22:bb
+	Adding child 22:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 650
+Number of true assumptions: 596
+Number of true assumptions: 520
+Number of true assumptions: 509
+
+
+
+************************
+
+Number of assumptions: 1667
+
+	Number of inst assumptions: 746
+	Number of node assumptions: 20
+Number of TRUE assumptions: 509
+	Number of true inst assumptions: 231
+	Number of true node assumptions: 17
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  20
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 106 AFTER SIMP: 37
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 266 AFTER SIMP: 95
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 374 AFTER SIMP: 184
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 514 AFTER SIMP: 216
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 501 AFTER SIMP: 288
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 485 AFTER SIMP: 317
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 409 AFTER SIMP: 237
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 299 AFTER SIMP: 61
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 10 ========================
+
+Largest node: 23
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 10
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 23
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 5.400337e+00
+BRUNCH_STAT STime 3.200200e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 23
+BRUNCH_STAT ufo.main_loop 11
+BRUNCH_STAT SmartExprSet.add 0.17
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.04
+BRUNCH_STAT msat.from_expr 0.04
+BRUNCH_STAT msat.to_expr 0.01
+BRUNCH_STAT refiner.assumptions 2.82
+BRUNCH_STAT refiner.assumptions.total 2.93
+BRUNCH_STAT refiner.interps 1.72
+BRUNCH_STAT refiner.mkInScope 0.16
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.15
+BRUNCH_STAT refiner.mkInScope.elim_node 0.02
+BRUNCH_STAT refiner.mkInScope.elim_other 0.01
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.12
+BRUNCH_STAT refiner.mkInScope.variants 0.01
+BRUNCH_STAT refiner.nnf 0.01
+BRUNCH_STAT refiner.pre 0.10
+BRUNCH_STAT refiner.total 5.10
+BRUNCH_STAT ufo.expand 0.20
+BRUNCH_STAT ufo.expand.is_covered 0.17
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 5.40
+BRUNCH_STAT z3.from_expr 0.22
+BRUNCH_STAT z3.to_expr 0.04
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 23:bb
+	Adding child 23:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 24:bb
+	Adding child 24:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 676
+Number of true assumptions: 654
+Number of true assumptions: 640
+Number of true assumptions: 619
+
+
+
+************************
+
+Number of assumptions: 1913
+
+	Number of inst assumptions: 824
+	Number of node assumptions: 22
+Number of TRUE assumptions: 619
+	Number of true inst assumptions: 275
+	Number of true node assumptions: 19
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  22
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 96 AFTER SIMP: 61
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 279 AFTER SIMP: 113
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 367 AFTER SIMP: 136
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 456 AFTER SIMP: 216
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 456 AFTER SIMP: 227
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 393 AFTER SIMP: 201
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 399 AFTER SIMP: 253
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 349 AFTER SIMP: 164
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 217 AFTER SIMP: 37
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 11 ========================
+
+Largest node: 25
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 11
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 25
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 6.492405e+00
+BRUNCH_STAT STime 3.600200e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 25
+BRUNCH_STAT ufo.main_loop 12
+BRUNCH_STAT SmartExprSet.add 0.25
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.05
+BRUNCH_STAT msat.from_expr 0.04
+BRUNCH_STAT msat.to_expr 0.01
+BRUNCH_STAT refiner.assumptions 3.37
+BRUNCH_STAT refiner.assumptions.total 3.51
+BRUNCH_STAT refiner.interps 2.03
+BRUNCH_STAT refiner.mkInScope 0.18
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.16
+BRUNCH_STAT refiner.mkInScope.elim_node 0.02
+BRUNCH_STAT refiner.mkInScope.elim_other 0.01
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.00
+BRUNCH_STAT refiner.mkInScope.propSimp 0.13
+BRUNCH_STAT refiner.mkInScope.variants 0.02
+BRUNCH_STAT refiner.nnf 0.02
+BRUNCH_STAT refiner.pre 0.13
+BRUNCH_STAT refiner.total 6.10
+BRUNCH_STAT ufo.expand 0.28
+BRUNCH_STAT ufo.expand.is_covered 0.25
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 6.49
+BRUNCH_STAT z3.from_expr 0.28
+BRUNCH_STAT z3.to_expr 0.04
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 25:bb
+	Adding child 25:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 26:bb
+	Adding child 26:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 1196
+Number of true assumptions: 1136
+Number of true assumptions: 1093
+Number of true assumptions: 1046
+
+
+
+************************
+
+Number of assumptions: 2145
+
+	Number of inst assumptions: 902
+	Number of node assumptions: 24
+Number of TRUE assumptions: 1046
+	Number of true inst assumptions: 526
+	Number of true node assumptions: 21
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  24
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 14 AFTER SIMP: 13
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 30 AFTER SIMP: 27
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 44 AFTER SIMP: 33
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 51 AFTER SIMP: 32
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 168 AFTER SIMP: 111
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 202 AFTER SIMP: 135
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 216 AFTER SIMP: 137
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 247 AFTER SIMP: 131
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 268 AFTER SIMP: 90
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 296 AFTER SIMP: 105
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 607 AFTER SIMP: 392
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 694 AFTER SIMP: 372
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1200 AFTER SIMP: 678
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1227 AFTER SIMP: 636
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2265 AFTER SIMP: 1070
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2429 AFTER SIMP: 1144
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2179 AFTER SIMP: 1103
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2519 AFTER SIMP: 1151
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2345 AFTER SIMP: 1183
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1302 AFTER SIMP: 581
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 875 AFTER SIMP: 265
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 532 AFTER SIMP: 57
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 12 ========================
+
+Largest node: 27
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 12
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 27
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 1.078067e+01
+BRUNCH_STAT STime 4.400200e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 27
+BRUNCH_STAT ufo.main_loop 13
+BRUNCH_STAT SmartExprSet.add 0.34
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.06
+BRUNCH_STAT msat.from_expr 0.05
+BRUNCH_STAT msat.to_expr 0.03
+BRUNCH_STAT refiner.assumptions 5.86
+BRUNCH_STAT refiner.assumptions.total 6.05
+BRUNCH_STAT refiner.interps 3.40
+BRUNCH_STAT refiner.mkInScope 0.28
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.25
+BRUNCH_STAT refiner.mkInScope.elim_node 0.05
+BRUNCH_STAT refiner.mkInScope.elim_other 0.01
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.01
+BRUNCH_STAT refiner.mkInScope.propSimp 0.19
+BRUNCH_STAT refiner.mkInScope.variants 0.02
+BRUNCH_STAT refiner.nnf 0.04
+BRUNCH_STAT refiner.pre 0.16
+BRUNCH_STAT refiner.total 10.26
+BRUNCH_STAT ufo.expand 0.37
+BRUNCH_STAT ufo.expand.is_covered 0.34
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 10.78
+BRUNCH_STAT z3.from_expr 0.35
+BRUNCH_STAT z3.to_expr 0.05
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+not marked
+
+labeling node: 24:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+not marked
+
+labeling node: 25:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 26:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 27:bb
+	Adding child 27:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 27:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 28:bb
+	Adding child 28:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+27:bb
+28:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 1482
+Number of true assumptions: 1339
+Number of true assumptions: 1277
+Number of true assumptions: 1259
+
+
+
+************************
+
+Number of assumptions: 2662
+
+	Number of inst assumptions: 980
+	Number of node assumptions: 26
+Number of TRUE assumptions: 1259
+	Number of true inst assumptions: 547
+	Number of true node assumptions: 23
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  26
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 16 AFTER SIMP: 15
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 23 AFTER SIMP: 19
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 366 AFTER SIMP: 166
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 341 AFTER SIMP: 198
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 343 AFTER SIMP: 206
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 562 AFTER SIMP: 351
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 603 AFTER SIMP: 358
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 616 AFTER SIMP: 359
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 815 AFTER SIMP: 524
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 897 AFTER SIMP: 474
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1259 AFTER SIMP: 716
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1591 AFTER SIMP: 871
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1794 AFTER SIMP: 1037
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 3507 AFTER SIMP: 1789
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 4000 AFTER SIMP: 2203
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 4214 AFTER SIMP: 2243
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 4072 AFTER SIMP: 2164
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 4012 AFTER SIMP: 2174
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2527 AFTER SIMP: 1368
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2330 AFTER SIMP: 1130
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1195 AFTER SIMP: 169
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1062 AFTER SIMP: 96
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1025 AFTER SIMP: 39
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 13 ========================
+
+Largest node: 29
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 13
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 29
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 1.858916e+01
+BRUNCH_STAT STime 6.800400e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 29
+BRUNCH_STAT ufo.main_loop 14
+BRUNCH_STAT SmartExprSet.add 0.49
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.08
+BRUNCH_STAT msat.from_expr 0.07
+BRUNCH_STAT msat.to_expr 0.08
+BRUNCH_STAT refiner.assumptions 10.09
+BRUNCH_STAT refiner.assumptions.total 10.33
+BRUNCH_STAT refiner.interps 6.27
+BRUNCH_STAT refiner.mkInScope 0.48
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.42
+BRUNCH_STAT refiner.mkInScope.elim_node 0.10
+BRUNCH_STAT refiner.mkInScope.elim_other 0.02
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.02
+BRUNCH_STAT refiner.mkInScope.propSimp 0.30
+BRUNCH_STAT refiner.mkInScope.variants 0.04
+BRUNCH_STAT refiner.nnf 0.08
+BRUNCH_STAT refiner.pre 0.22
+BRUNCH_STAT refiner.total 17.84
+BRUNCH_STAT ufo.expand 0.52
+BRUNCH_STAT ufo.expand.is_covered 0.49
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 18.59
+BRUNCH_STAT z3.from_expr 0.48
+BRUNCH_STAT z3.to_expr 0.08
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+not marked
+
+labeling node: 24:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+not marked
+
+labeling node: 25:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 26:bb
+not marked
+
+labeling node: 26:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 27:bb
+not marked
+
+labeling node: 27:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 28:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 29:bb
+	Adding child 29:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 29:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 30:bb
+	Adding child 30:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+27:bb
+28:bb
+29:bb
+30:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 1655
+Number of true assumptions: 1439
+Number of true assumptions: 1284
+Number of true assumptions: 1208
+
+
+
+************************
+
+Number of assumptions: 3077
+
+	Number of inst assumptions: 1058
+	Number of node assumptions: 28
+Number of TRUE assumptions: 1208
+	Number of true inst assumptions: 551
+	Number of true node assumptions: 25
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  28
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 40 AFTER SIMP: 29
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 68 AFTER SIMP: 51
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 149 AFTER SIMP: 108
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 156 AFTER SIMP: 101
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 185 AFTER SIMP: 124
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 192 AFTER SIMP: 139
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 229 AFTER SIMP: 157
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 204 AFTER SIMP: 136
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 354 AFTER SIMP: 246
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 445 AFTER SIMP: 263
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 502 AFTER SIMP: 270
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 531 AFTER SIMP: 307
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 517 AFTER SIMP: 307
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 718 AFTER SIMP: 361
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1180 AFTER SIMP: 560
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 871 AFTER SIMP: 521
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1477 AFTER SIMP: 1038
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1649 AFTER SIMP: 1054
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1322 AFTER SIMP: 787
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1182 AFTER SIMP: 735
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 513 AFTER SIMP: 155
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 435 AFTER SIMP: 90
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 376 AFTER SIMP: 32
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 14 ========================
+
+Largest node: 31
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 14
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 31
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 2.498956e+01
+BRUNCH_STAT STime 8.000500e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 31
+BRUNCH_STAT ufo.main_loop 15
+BRUNCH_STAT SmartExprSet.add 0.83
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.11
+BRUNCH_STAT msat.from_expr 0.09
+BRUNCH_STAT msat.to_expr 0.09
+BRUNCH_STAT refiner.assumptions 13.98
+BRUNCH_STAT refiner.assumptions.total 14.31
+BRUNCH_STAT refiner.interps 7.90
+BRUNCH_STAT refiner.mkInScope 0.58
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.50
+BRUNCH_STAT refiner.mkInScope.elim_node 0.13
+BRUNCH_STAT refiner.mkInScope.elim_other 0.04
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.02
+BRUNCH_STAT refiner.mkInScope.propSimp 0.34
+BRUNCH_STAT refiner.mkInScope.variants 0.05
+BRUNCH_STAT refiner.nnf 0.09
+BRUNCH_STAT refiner.pre 0.32
+BRUNCH_STAT refiner.total 23.81
+BRUNCH_STAT ufo.expand 0.86
+BRUNCH_STAT ufo.expand.is_covered 0.83
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 24.99
+BRUNCH_STAT z3.from_expr 0.68
+BRUNCH_STAT z3.to_expr 0.08
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+not marked
+
+labeling node: 24:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+not marked
+
+labeling node: 25:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 26:bb
+not marked
+
+labeling node: 26:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 27:bb
+not marked
+
+labeling node: 27:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 28:bb
+not marked
+
+labeling node: 28:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 29:bb
+not marked
+
+labeling node: 29:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 30:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 31:bb
+	Adding child 31:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 31:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 32:bb
+	Adding child 32:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+27:bb
+28:bb
+29:bb
+30:bb
+31:bb
+32:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 1364
+Number of true assumptions: 1268
+Number of true assumptions: 1179
+Number of true assumptions: 1157
+
+
+
+************************
+
+Number of assumptions: 3438
+
+	Number of inst assumptions: 1136
+	Number of node assumptions: 30
+Number of TRUE assumptions: 1157
+	Number of true inst assumptions: 474
+	Number of true node assumptions: 26
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  30
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 13 AFTER SIMP: 13
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 29 AFTER SIMP: 25
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 178 AFTER SIMP: 125
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 253 AFTER SIMP: 147
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 329 AFTER SIMP: 194
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 343 AFTER SIMP: 220
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 361 AFTER SIMP: 206
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 834 AFTER SIMP: 292
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 852 AFTER SIMP: 306
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 972 AFTER SIMP: 351
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 949 AFTER SIMP: 340
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 924 AFTER SIMP: 316
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 962 AFTER SIMP: 356
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1624 AFTER SIMP: 840
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1931 AFTER SIMP: 1134
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2049 AFTER SIMP: 1218
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2062 AFTER SIMP: 1254
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 2272 AFTER SIMP: 1270
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1665 AFTER SIMP: 924
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1604 AFTER SIMP: 863
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 914 AFTER SIMP: 350
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 535 AFTER SIMP: 67
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 400 AFTER SIMP: 34
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 15 ========================
+
+Largest node: 33
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 15
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 33
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 3.313007e+01
+BRUNCH_STAT STime 8.400500e-02
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 33
+BRUNCH_STAT ufo.main_loop 16
+BRUNCH_STAT SmartExprSet.add 1.24
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.14
+BRUNCH_STAT msat.from_expr 0.11
+BRUNCH_STAT msat.to_expr 0.11
+BRUNCH_STAT refiner.assumptions 18.54
+BRUNCH_STAT refiner.assumptions.total 18.96
+BRUNCH_STAT refiner.interps 10.40
+BRUNCH_STAT refiner.mkInScope 0.73
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.65
+BRUNCH_STAT refiner.mkInScope.elim_node 0.16
+BRUNCH_STAT refiner.mkInScope.elim_other 0.06
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.03
+BRUNCH_STAT refiner.mkInScope.propSimp 0.43
+BRUNCH_STAT refiner.mkInScope.variants 0.06
+BRUNCH_STAT refiner.nnf 0.11
+BRUNCH_STAT refiner.pre 0.42
+BRUNCH_STAT refiner.total 31.43
+BRUNCH_STAT ufo.expand 1.27
+BRUNCH_STAT ufo.expand.is_covered 1.24
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 33.13
+BRUNCH_STAT z3.from_expr 0.88
+BRUNCH_STAT z3.to_expr 0.10
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+not marked
+
+labeling node: 24:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+not marked
+
+labeling node: 25:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 26:bb
+not marked
+
+labeling node: 26:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 27:bb
+not marked
+
+labeling node: 27:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 28:bb
+not marked
+
+labeling node: 28:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 29:bb
+not marked
+
+labeling node: 29:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 30:bb
+not marked
+
+labeling node: 30:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 31:bb
+not marked
+
+labeling node: 31:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 32:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 33:bb
+	Adding child 33:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 33:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 34:bb
+	Adding child 34:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+27:bb
+28:bb
+29:bb
+30:bb
+31:bb
+32:bb
+33:bb
+34:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 1311
+Number of true assumptions: 1023
+Number of true assumptions: 994
+Number of true assumptions: 967
+
+
+
+************************
+
+Number of assumptions: 3867
+
+	Number of inst assumptions: 1214
+	Number of node assumptions: 32
+Number of TRUE assumptions: 967
+	Number of true inst assumptions: 382
+	Number of true node assumptions: 29
+
+
+************************
+
+INTERPOLATING...
+DONE INTERPOLATING: # interps =  32
+Refiner: Mining labels from interpolants
+Refiner: mkInScope ...
+ITP SIZE : 7 AFTER SIMP: 7
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1 AFTER SIMP: 1
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 539 AFTER SIMP: 337
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 699 AFTER SIMP: 441
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 880 AFTER SIMP: 528
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1643 AFTER SIMP: 760
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1628 AFTER SIMP: 746
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1423 AFTER SIMP: 709
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1347 AFTER SIMP: 661
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1307 AFTER SIMP: 745
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1251 AFTER SIMP: 761
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1288 AFTER SIMP: 772
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 1197 AFTER SIMP: 687
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 742 AFTER SIMP: 336
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 473 AFTER SIMP: 73
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: mkInScope ...
+ITP SIZE : 442 AFTER SIMP: 36
+Refiner: mkInScope: DONE
+Conjoining labels
+Refiner: refine: DONE 
+
+
+========================ITER 16 ========================
+
+Largest node: 35
+
+========REPORT========
+BRUNCH_STAT Result UNKNOWN
+BRUNCH_STAT Iter 16
+BRUNCH_STAT Refine 0
+BRUNCH_STAT BoolPost 0
+BRUNCH_STAT BoolPostP 0
+BRUNCH_STAT CartPost 0
+BRUNCH_STAT NodesNum 35
+
+BRUNCH_STAT InterpTime 0.000000e+00
+BRUNCH_STAT CoverTimeU 0.000000e+00
+BRUNCH_STAT ExprTime 0.000000e+00
+BRUNCH_STAT PostTime 0.000000e+00
+BRUNCH_STAT CleanTime 0.000000e+00
+BRUNCH_STAT UTime 3.857841e+01
+BRUNCH_STAT STime 1.520090e-01
+
+
+
+************** BRUNCH STATS ***************** 
+BRUNCH_STAT aArg.size 35
+BRUNCH_STAT ufo.main_loop 17
+BRUNCH_STAT SmartExprSet.add 1.74
+BRUNCH_STAT asm_refiner.simplify.assumptions 0.16
+BRUNCH_STAT msat.from_expr 0.12
+BRUNCH_STAT msat.to_expr 0.13
+BRUNCH_STAT refiner.assumptions 21.28
+BRUNCH_STAT refiner.assumptions.total 21.79
+BRUNCH_STAT refiner.interps 11.94
+BRUNCH_STAT refiner.mkInScope 0.84
+BRUNCH_STAT refiner.mkInScope.elim_and_simplify 0.75
+BRUNCH_STAT refiner.mkInScope.elim_node 0.19
+BRUNCH_STAT refiner.mkInScope.elim_other 0.07
+BRUNCH_STAT refiner.mkInScope.out_of_scope 0.03
+BRUNCH_STAT refiner.mkInScope.propSimp 0.49
+BRUNCH_STAT refiner.mkInScope.variants 0.06
+BRUNCH_STAT refiner.nnf 0.13
+BRUNCH_STAT refiner.pre 0.57
+BRUNCH_STAT refiner.total 36.28
+BRUNCH_STAT ufo.expand 1.78
+BRUNCH_STAT ufo.expand.is_covered 1.74
+BRUNCH_STAT ufo.post 0.00
+BRUNCH_STAT ufo.total 38.57
+BRUNCH_STAT z3.from_expr 1.10
+BRUNCH_STAT z3.to_expr 0.11
+************** BRUNCH STATS END ***************** 
+
+looking at node 0:entry
+not marked
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 1:bb
+not marked
+
+labeling node: 1:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 3:bb
+not marked
+
+labeling node: 3:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 4:bb
+not marked
+
+labeling node: 4:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 5:bb
+not marked
+
+labeling node: 5:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 6:bb
+not marked
+
+labeling node: 6:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 7:bb
+not marked
+
+labeling node: 7:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 8:bb
+not marked
+
+labeling node: 8:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 9:bb
+not marked
+
+labeling node: 9:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 10:bb
+not marked
+
+labeling node: 10:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 11:bb
+not marked
+
+labeling node: 11:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 12:bb
+not marked
+
+labeling node: 12:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 13:bb
+not marked
+
+labeling node: 13:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 14:bb
+not marked
+
+labeling node: 14:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 15:bb
+not marked
+
+labeling node: 15:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 16:bb
+not marked
+
+labeling node: 16:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 17:bb
+not marked
+
+labeling node: 17:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 18:bb
+not marked
+
+labeling node: 18:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 19:bb
+not marked
+
+labeling node: 19:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 20:bb
+not marked
+
+labeling node: 20:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 21:bb
+not marked
+
+labeling node: 21:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 22:bb
+not marked
+
+labeling node: 22:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 23:bb
+not marked
+
+labeling node: 23:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 24:bb
+not marked
+
+labeling node: 24:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 25:bb
+not marked
+
+labeling node: 25:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 26:bb
+not marked
+
+labeling node: 26:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 27:bb
+not marked
+
+labeling node: 27:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 28:bb
+not marked
+
+labeling node: 28:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 29:bb
+not marked
+
+labeling node: 29:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 30:bb
+not marked
+
+labeling node: 30:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 31:bb
+not marked
+
+labeling node: 31:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 32:bb
+not marked
+
+labeling node: 32:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 33:bb
+not marked
+
+labeling node: 33:bb
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 34:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 35:bb
+	Adding child 35:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Picking next node from future in SAME component bb
+
+PICKING bb
+
+looking at node 35:bb
+marked
+	Adding child 2:ERROR
+Creating new node: 36:bb
+	Adding child 36:bb
+Done adding children
+
+==WIDEN GCNR08=
+Done computing post
+Looking for head of 2
+BB: bb
+Looking for head of 3
+BB: __UFO__0
+Picking next node from future in NEXT component ERROR
+
+PICKING ERROR
+
+looking at node 2:ERROR
+marked
+Done adding children
+Done computing post
+ERROR NODE :2:ERROR
+0:entry
+1:bb
+2:ERROR
+3:bb
+4:bb
+5:bb
+6:bb
+7:bb
+8:bb
+9:bb
+10:bb
+11:bb
+12:bb
+13:bb
+14:bb
+15:bb
+16:bb
+17:bb
+18:bb
+19:bb
+20:bb
+21:bb
+22:bb
+23:bb
+24:bb
+25:bb
+26:bb
+27:bb
+28:bb
+29:bb
+30:bb
+31:bb
+32:bb
+33:bb
+34:bb
+35:bb
+36:bb
+Refiner: refine path to ERROR ...
+Number of true assumptions: 2406
+Number of true assumptions: 2109
+Number of true assumptions: 1991

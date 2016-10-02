@@ -1,0 +1,60 @@
+digraph CFA {
+27 [shape="doublecircle"]
+31 [shape="diamond"]
+31 [shape="diamond"]
+37 [shape="diamond"]
+37 [shape="diamond"]
+43 [shape="diamond"]
+43 [shape="diamond"]
+node [shape="circle"]
+subgraph cluster_unknown2 {
+label="unknown2()"
+7 -> 8 [label="Function start dummy edge"]
+8 -> 10 [label="int x;"]
+10 -> 6 [label="return x;"]}
+subgraph cluster_unknown1 {
+label="unknown1()"
+1 -> 2 [label="Function start dummy edge"]
+2 -> 4 [label="int x;"]
+4 -> 0 [label="return x;"]}
+subgraph cluster_main {
+label="main()"
+13 -> 50 [label="INIT GLOBAL VARS"]
+50 -> 51 [label="int unknown1();"]
+51 -> 52 [label="int unknown2();"]
+52 -> 53 [label="int main();"]
+53 -> 14 [label="Function start dummy edge"]
+14 -> 16 [label="int k;"]
+16 -> 18 [label="int w;"]
+18 -> 20 [label="int z;"]
+20 -> 22 [label="int tmp;"]
+22 -> 24 [label="int tmp___0;"]
+24 -> 25 [label="k = 1;"]
+25 -> 26 [label="w = 1;"]
+26 -> 27 [label="while"]
+27 -> 28 [label=""]
+28 -> 30 [label="Label: while_continue"]
+30 -> 31 [label="tmp___0 = unknown1();" style="dotted" arrowhead="empty"]
+31 -> 34 [label="[!(tmp___0 != 0)]"]
+31 -> 33 [label="[tmp___0 != 0]"]
+33 -> 32 [label=""]
+32 -> 36 [label="tmp = unknown2();" style="dotted" arrowhead="empty"]
+36 -> 37 [label="z = tmp;"]
+37 -> 40 [label="[!(z > 5)]"]
+37 -> 39 [label="[z > 5]"]
+39 -> 41 [label="w = w + 1;"]
+41 -> 38 [label=""]
+38 -> 42 [label="k = k + w;"]
+42 -> 27 [label=""]
+40 -> 38 [label=""]
+34 -> 43 [label="Goto: while_break"]
+43 -> 46 [label="[!(k <= 0)]"]
+43 -> 45 [label="[k <= 0]"]
+45 -> 48 [label="Goto: ERROR"]
+48 -> 44 [label=""]
+44 -> 12 [label="return 0;"]
+46 -> 44 [label=""]}
+30 -> 1 [label="unknown1()"]
+0 -> 31 [label="Return edge from unknown1 to main"]
+32 -> 7 [label="unknown2()"]
+6 -> 36 [label="Return edge from unknown2 to main"]}

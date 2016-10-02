@@ -1,0 +1,2 @@
+Working directory /tmp/ufo-rUWJsg
+/home/aws/git/ufo/Release/bin/ufo --lawi temp/39.o.o0.bc --ufo-trace=temp/39.noneO0.trace --ufo-post=NONE --ufo-increfine=REF4 --ufo-dvo=true --ufo-simplify=false --ufo-consrefine=true

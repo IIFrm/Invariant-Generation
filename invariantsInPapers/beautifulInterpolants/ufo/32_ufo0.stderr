@@ -1,0 +1,17 @@
+ Creating LAWI 
+
+ Creating LBE pass 
+
+ Creating Topo pass 
+; Creating WTOPass
+
+== Running Topo pass ==
+;
+ == Running LBE == 
+F name: main
+Computing Cutpoints for main
+
+
+LBE: Main does not return
+program correct: ERROR unreachable
+BRUNCH_STAT Result SAFE

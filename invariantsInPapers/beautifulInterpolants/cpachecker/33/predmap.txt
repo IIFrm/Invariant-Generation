@@ -1,0 +1,16 @@
+LOCATION: N48
+<3:1> <-> "PRED(((-(main::z) + main::k) + main::y) <= 0)" <-> (((-(main::z) + main::k) + main::y) <= 0)
+<0:1> <-> "PRED(main::y <= main::x)" <-> (main::y <= main::x)
+<1:1> <-> "PRED(main::x <= main::y)" <-> (main::x <= main::y)
+<2:1> <-> "PRED(0 <= ((-(main::z) + main::k) + main::y))" <-> (0 <= ((-(main::z) + main::k) + main::y))
+
+LOCATION: N58
+<0:1> <-> "PRED(main::y <= main::x)" <-> (main::y <= main::x)
+<4:1> <-> "PRED(0 <= (-(main::c) + ((-(main::z) + main::k) + main::y)))" <-> (0 <= (-(main::c) + ((-(main::z) + main::k) + main::y)))
+<1:1> <-> "PRED(main::x <= main::y)" <-> (main::x <= main::y)
+<5:1> <-> "PRED((-(main::c) + ((-(main::z) + main::k) + main::y)) <= 0)" <-> ((-(main::c) + ((-(main::z) + main::k) + main::y)) <= 0)
+
+LOCATION: N79
+<1:1> <-> "PRED(main::x <= main::y)" <-> (main::x <= main::y)
+<0:1> <-> "PRED(main::y <= main::x)" <-> (main::y <= main::x)
+

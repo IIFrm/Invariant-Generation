@@ -1,0 +1,7 @@
+LOCATION: N25
+<3:1> <-> "PRED(0 <= main::m)" <-> (0 <= main::m)
+<4:1> <-> "PRED(1 <= (main::n - main::m))" <-> (1 <= (main::n - main::m))
+<0:1> <-> "PRED(main::x <= 0)" <-> (main::x <= 0)
+<1:1> <-> "PRED(0 <= main::x)" <-> (0 <= main::x)
+<2:1> <-> "PRED(main::m = main::x)" <-> (main::m = main::x)
+

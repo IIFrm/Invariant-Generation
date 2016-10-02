@@ -1,0 +1,5 @@
+LOCATION: N21
+<1:1> <-> "PRED(2 <= (main::x + main::y))" <-> (2 <= (main::x + main::y))
+<2:1> <-> "PRED(2 <= main::y)" <-> (2 <= main::y)
+<0:1> <-> "PRED(main::y = 1)" <-> (main::y = 1)
+

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export JAVA_OPTS="-ea"
+
+scala -cp dist/horn-abductor.jar:lib/princess.jar:lib/smt-parser.jar:lib/java-cup-11a.jar:lib/abductor.jar ha.Main "$@"

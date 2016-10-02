@@ -1,0 +1,10 @@
+LOCATION: N33
+<1:1> <-> "PRED(main::y = main::x)" <-> (main::y = main::x)
+<2:1> <-> "PRED(1 <= (main::i - main::j))" <-> (1 <= (main::i - main::j))
+<0:1> <-> "PRED(main::j <= main::i)" <-> (main::j <= main::i)
+
+LOCATION: N42
+<1:1> <-> "PRED(main::y = main::x)" <-> (main::y = main::x)
+<2:1> <-> "PRED(1 <= (main::i - main::j))" <-> (1 <= (main::i - main::j))
+<0:1> <-> "PRED(main::j <= main::i)" <-> (main::j <= main::i)
+
