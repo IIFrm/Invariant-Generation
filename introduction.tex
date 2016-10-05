@@ -53,13 +53,22 @@ Their approaches start with randomly generating valuations of $V$ (a.k.a.~the sa
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If a certain condition is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
-With this new sample, we can apply the classification algorithm again to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions is identified or a valuation disproving the Hoare triple is found.
+With sample $s$, we can reapply classification algorithms to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions is identified or a valuation disproving the Hoare triple is found.
 
 One problem with the above approach is that its effectiveness is often limited by the samples which are generated either randomly. In order to learn the right invariant through classification, often a large number of samples are necessary. Furthermore, often we must have those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not, so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. As a result, many iterations of learn-and-check are necessary before the candidate invariant converges to the right one. Another problem is that the loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are limited, e.g., linear inequalities or their conjunctions in~\cite{sharma2012interpolants}, and equalities in~\cite{DBLP:conf/esop/0001GHALN13}.
 
+Another problem with the above approach is that its effectiveness is limited by the learning algorithms adapted.
+Although different learning algorithms can be leveraged to partially overcome this defect, 
+it is hard to deal with invariants with complicated relations.
+For example, disjunctive invariants can not be learned in this way, for there is no efficient classification algorithm to learn disjunctive relations. 
+
+
 In this work, we propose a framework for loop invariant generation following the same learn-and-check approach. %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
 %In the following, we define our problem and briefly illustrate how our approach works.
-Compared to the existing approaches, we make the following contributions. Firstly, we propose an active learning technique to (partially) overcome the limitation of random sampling. That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants so that we can improve the candidates prior to verifying them during every learn-and-check iteration. As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in some cases.
+Compared to the existing approaches, we make the following contributions. 
+Firstly, we propose an active learning technique to (partially) overcome the limitation of random sampling. 
+That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants so that we can improve the candidates prior to verifying them during every learn-and-check iteration. 
+As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in some cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,
@@ -68,9 +77,13 @@ Compared to the existing approaches, we make the following contributions. Firstl
 %    give very accurate information to amend the invariant candidate,
 %    they become a useful supplementary to overcome the weakness of machine learning
 %    and fine-tune the invariant candidate.
-Secondly, our framework is designed to be extensible for learning different invariants. For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
-Lastly, we implement our framework as a tool called \textsc{Zilu}~\cite{zilu:repo}
-    and compare it with Interproc~\cite{jeannet2010interproc}, %% other
+Secondly, we partially handle disjunctive invariants by learning at different program locations.
+We observe that one reason for invariants to involve disjunctions is program branches.
+Therefore, our framework could handle these invariants by learning at each of program branches.
+Next, our framework is designed to be extensible for learning different invariants, 
+and thus our framework can handle non-linear invariants.
+For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
+Lastly, we implement our framework as a tool called \textsc{Zilu}~\cite{zilu:repo} and compare it with Interproc~\cite{jeannet2010interproc}, %% other
 an available state-of-the-art invariant inference tool.
 %%    i.e., 
     %CPAChecker~\cite{beyer2011cpachecker} and 
@@ -86,7 +99,12 @@ an available state-of-the-art invariant inference tool.
     revised $\mathit{KLEE}$~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for verification) and 
     can be used as a language/platform independent tool to verify programs.
 
-\paragraph{Organization} The remainders of the paper are organized as follows. Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. Section~\ref{sec:sampling} and~\ref{sec:learning} then presents details on two main steps in our framework: data collection and active learning. Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. Section~\ref{sec:related} reviews related work and concludes.
+\paragraph{Organization} The remainders of the paper are organized as follows. 
+Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. 
+Section~\ref{sec:sampling} and~\ref{sec:learning} then presents details on two main steps in our framework: data collection and active learning. 
+Section~\ref{sec:disjunctive} shows the details of our framework to handle disjunctive invariants based on program locations.
+Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. 
+Section~\ref{sec:related} reviews related work and concludes.
 
 \section{Overview through an Example} \label{sec:overview}
 In our framework, loop invariant generation is an iterative process of \emph{data collection}, \emph{active learning} and \emph{candidate verification}. The overall workflow is shown in the Figure~\ref{fig:overview}. In the following, we use a simple example to illustrate how our approach works.
