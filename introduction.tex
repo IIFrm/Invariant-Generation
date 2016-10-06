@@ -14,11 +14,16 @@ Automatic loop invariant generation is fundamental for program analysis. A loop 
 \end{align*}
 Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $\mathit{Pre}$, $\mathit{Cond}$ and $\mathit{Post}$ are predicates constituted by variables in $V$.
 
-\begin{align*}
-&\{\mathit{Pre}\} & & \emph{Pre} \Rightarrow \emph{Inv} \\
-&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\}\\\
-&\{\mathit{Post}\} & & \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post}
-\end{align*}
+\begin{align}
+&\{\mathit{Pre}\} & & \emph{Pre} \Rightarrow \emph{Inv} \label{org:inv:pre}\\
+&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{org:inv:loop}\\\
+&\{\mathit{Post}\} & & \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{org:inv:post}
+\end{align}
+% \begin{align}
+% &\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{Inv} \label{sl1:org:inv:pre}\\
+% &\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{sl1:org:inv:loop}\\\
+% &\{\mathit{Post}\} && \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{sl1:org:inv:post}
+% \end{align}
 %In practice, the pre-condition $\mathit{Pre}$ is often described by
 %the specification documents and checking conditions of the program inputs,
 %and the post-condition $\mathit{Post}$ is usually specified

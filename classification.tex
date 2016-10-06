@@ -46,7 +46,7 @@ We remark that our framework is not restricted to $\mathit{SVM}$-based classific
 %an SVM training algorithm builds a model, which is a representation of the examples as points in space,
 %that can assign new examples into one category or the other,
 %making it a non-probabilistic binary linear classifier.
-\subsection{Linear Classifier}
+\subsection{Linear Classifiers}
 $\mathit{SVM}$ is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. 
 In this work, we use its binary classification functionality.
 In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows.
@@ -185,7 +185,7 @@ where $\mathit{d_0 < d_1 < d_2}$ are constants can be represented as: $\mathit{x
 %$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$
 %So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
 
-\subsection{Conjunctive Polynomial Classifiers}
+\subsection{Conjunctive Classifiers}
 As discussed above, polynomial classifiers can equivalently represent certain conjunction or disjunction of linear classifiers. It is however not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. A simple example is $\mathit{x \ge 0 \land y \ge 0}$. Thus, we develop an algorithm to learn more expressive classifiers.
 \begin{algorithm}[!h]
 \SetAlgoVlined
@@ -216,44 +216,51 @@ At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that
 
 
 
-\subsection{Disjunctive Polynomial Classifier}
-In the last section, we learn branch invariant candidates according to new divisions on our dataset and
-disjunct the branch invariant candidates together to get the loop invariant candidate.
-In this section, we show you why we can learn branch invariant candidate and synthesize disjunctive invariant in that way. 
+\subsection{Disjunctive Classifiers}
+Some loops in real programs fundamentally require disjunctive invariants. 
+% Actually, there are many reasons to involve disjunction in invariants, one of which is due to program branches.
+We observe one reason for invariants to involve disjunction is due to program branches.
+To give an example, in the following, we show how our framework handle disjunctive invariant for loop body with 2 branches.
+% Actually, many different previous efforts have proposed techniques for inferring invariants with at least one disjunction,
+% including (i) template-based techniques, such as~\cite{beyer2007invariant, colon2003linear, ashutosh2009invgen},
+% (ii) predicate abstraction based techniques, such as~\cite{beyer2007path, gulavani2008automatically, jhala2006practical},
+% and (iii) probabilistic inference based techniques, such as~\cite{gulwani2007program}.
+% We remark that the technique `splitter predicates' for disjunctive invariant learning in ~\cite{sharma2011simplifying} inspired us on the idea in this chapter.
+% The basic idea of `splitter predicates' is to split a loop into several loops, and each of them only requires a conjunctive invariant.
 
-In the Chapter~\ref{chap:introduction}, we assume that we are given a loop program as the Hoare triple on the left side in the following form,
-$\emph{Inv}$ representing the invariant for the given loop program.
+% In the last section, we learn branch invariant candidates according to new divisions on our dataset and
+% disjunct the branch invariant candidates together to get the loop invariant candidate.
+% In this section, we show you why we can learn branch invariant candidate and synthesize disjunctive invariant in that way. 
 
-\begin{align}
-&\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{Inv} \label{sl1:org:inv:pre}\\
-&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{sl1:org:inv:loop}\\\
-&\{\mathit{Post}\} && \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{sl1:org:inv:post}
-\end{align}
+% In the Chapter~\ref{chap:introduction}, we assume that we are given a loop program as the Hoare triple on the left side in the following form,
+% $\emph{Inv}$ representing the invariant for the given loop program.
 
-In general, loop invariants are defined as the above form. 
-An equivalent definition of loop invariants will be given in this chapter.
-Based on the new form, we can extend our framework to support disjunctive loop invariants.
+% \begin{align}
+% &\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{Inv} \label{sl1:org:inv:pre}\\
+% &\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{sl1:org:inv:loop}\\\
+% &\{\mathit{Post}\} && \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{sl1:org:inv:post}
+% \end{align}
 
-In fact, there might be complex control structure in the loop body, involving multiple branches and even inner loops. 
-For simplicity, we start with a simple loop body in which there are just two branches and no inner loops.
-Then we extend our approach to loops with more complicated inner structure.
+% In general, loop invariants are defined as the above form. 
+% An equivalent definition of loop invariants will be given in this chapter.
+% Based on the new form, we can extend our framework to support disjunctive loop invariants.
+
+% In fact, there might be complex control structure in the loop body, involving multiple branches and even inner loops. 
+% For simplicity, we start with a simple loop body in which there are just two branches and no inner loops.
+% Then we extend our approach to loops with more complicated inner structure.
 
 \subsubsection{Disjunctive Invariants for Loop Body with 2 Branches}
 Formally, the Hoare triple for any loop body with two branches can be expressed in the following form on the left side, 
 where $\mathit{Pre}$ is named the precondition while $\mathit{Post}$ is named the postcondition, and $\mathit{Cond}$ is named the loop condition.
 In the loop body, $\mathit{C_1}$ guards the first branch $\mathit{Body_1}$, while $\mathit{\neg C_1}$ guards the other branch $\mathit{Body_2}$.
 \begin{align}
-&\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{$Inv_1$} \vee \emph{$Inv_2$} \label{sl1:ext:inv:pre}\\
+&\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{$Inv_1$} \vee \emph{$Inv_2$} \label{ext:inv:pre}\\
 &\mathit{while} (\mathit{Cond}) \{ && \\
-&~~~~~~~~\mathit{if} (\mathit{C_1}) ~~\{ \mathit{Body_1} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge C_1\} Body_1 \{\emph{$Inv_1$}\} \label{sl1:ext:inv:loop:b1}\\
-&~~~~~~~~\mathit{else} ~~\{ \mathit{Body_2} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge \neg C_1\} Body_2 \{\emph{$Inv_2$}\} \label{sl1:ext:inv:loop:b2}\\
+&~~~~~~~~\mathit{if} (\mathit{C_1}) ~~\{ \mathit{Body_1} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge C_1\} Body_1 \{\emph{$Inv_1$}\} \label{ext:inv:loop:b1}\\
+&~~~~~~~~\mathit{else} ~~\{ \mathit{Body_2} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge \neg C_1\} Body_2 \{\emph{$Inv_2$}\} \label{ext:inv:loop:b2}\\
 &\} && \\
-&\{\mathit{Post}\} && (\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge \neg Cond \Rightarrow \emph{Post} \label{sl1:ext:inv:post}
+&\{\mathit{Post}\} && (\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge \neg Cond \Rightarrow \emph{Post} \label{ext:inv:post}
 \end{align}
-% \begin{align*}
-% &\mathit{if} (\mathit{$C_1$}) \{ \mathit{$Body_1; continue;$} \} \\
-% &\mathit{if} (\mathit{$C_2$}) \{ \mathit{$Body_2; continue;$} \} 
-% \end{align*}
 If the Hoare triple is valid, $Inv_1 \vee Inv_2$ that satisfies the conditions on the right side is defined as the loop invariant for the program, 
 in which $Inv_1$ and $Inv_2$ are branch invariants for corresponding branches.
 % For example, $Inv_1$ is the branch invariant for the first branch as it is evaluated true after execution of $Body_1$ as shown in~\ref{sl1:ext:inv:loop:b1}.
@@ -282,15 +289,15 @@ and any loop invariant for the program can be written as $Inv_1 \vee Inv_2$, whe
 \end{theorem}
 
 \noindent \textbf{Proof:} In order to prove $Inv_1 \vee Inv_2$ is a loop invariant for the program,
-we need to show it satisfies all the three conditions~\ref{sl1:org:inv:pre}, ~\ref{sl1:org:inv:loop} and ~\ref{sl1:org:inv:post}.
+we need to show it satisfies all the three conditions~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
 
 By simply substituting $Inv$ with  $Inv_1 \vee Inv_2$,
-we can see $Inv_1 \vee Inv_2$ satisfies condition~\ref{sl1:org:inv:pre} and ~\ref{sl1:org:inv:post}.
+we can see $Inv_1 \vee Inv_2$ satisfies condition~\ref{org:inv:pre} and ~\ref{org:inv:post}.
 
-For condition~\ref{sl1:org:inv:loop},
+For condition~\ref{org:inv:loop},
 as the valuations obtained through the two branches satisfy $Inv_1$ and $Inv_2$ respectively, 
 the valuations for the loop body must satisfy $Inv_1 \vee Inv_2$ naturally.
-Thus, by combining the condition~\ref{sl1:ext:inv:loop:b1} and~\ref{sl1:ext:inv:loop:b2},
+Thus, by combining the condition~\ref{ext:inv:loop:b1} and~\ref{ext:inv:loop:b2},
 \begin{align*}
 &\{(Inv_1 \vee Inv_2) \wedge Cond \wedge C_1\} Body_1 \{Inv_1\} \\
 &\{(Inv_1 \vee Inv_2) \wedge Cond \wedge \neg C_1\} Body_2 \{Inv_2\}
@@ -306,15 +313,28 @@ Therefore, $Inv_1 \vee Inv_2$ is a loop invariant for the given loop program. %\
 \end{theorem}
 
 \noindent \textbf{Proof:} If $Inv$ is a loop invariant for the given loop program,
-then $Inv$ satisfies the three conditions ~\ref{sl1:org:inv:pre}, ~\ref{sl1:org:inv:loop} and ~\ref{sl1:org:inv:post}.
+then $Inv$ satisfies the three conditions ~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
 As $Inv = Inv \vee Inv$ always holds, we assign $Inv_1 = Inv$ and $Inv_2 = Inv$.
 Then the three conditions can be easily verified. %\hfill \qed \\
 
-%in the loop body are exclusively executed,
-\subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
-For the loop body with $n$ branches and the valuations after each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
-it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots Inv_n$ is equivalent to the invariant defined before,
-which means we can apply same technique to combine all the branch invariants together as the whole loop invariant.
+\paragraph{Disjunctive Invariant Learning Algorithm}
+Assume a Hoare triple that there are $n$ branches in the loop body is given, 
+and thus our invariants can be written as $(Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n)$.
+Without loss of generality, we take branch $B_i~(1 \le i \le n)$ , whose branch invariant $Inv_i$ accordingly, as an example.
+We build a new set $\mathit{Positive\_B_i}$ by extracting the valuations in $\mathit{Positive}$ which are obtained after passing branch $B_i$.
+According to definition in~\ref{ext:inv:loop:b1} and \ref{ext:inv:loop:b2}, 
+valuations in $\mathit{Positive\_B_i}$ must satisfy $Inv_i$.
+For any valuation $s \in \mathit{Negative}$, 
+we can infer $s \not \models Inv_i$ since $s \not \models Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$.
+Therefore, all the valuation in $\mathit{Negative}$ fails any branch invariant $Inv_i $.
+
+As a result, we can apply classification algorithm on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
+Similar procedures are adapted for other branches and the approach can generate an invariant candidate by combining all there branch invariant candidates.
+
+% \subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
+% For the loop body with $n$ branches and the valuations after each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
+% it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots Inv_n$ is equivalent to the invariant defined before,
+% which means we can apply same technique to combine all the branch invariants together as the whole loop invariant.
 
 % \subsection{Disjunctive Invariants for Loop Body with Inner Loops}
 % For the loop body with inner loops, 
