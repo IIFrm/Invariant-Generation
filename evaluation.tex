@@ -269,9 +269,9 @@ We remark that the comparison should be taken with a grain of salt as the method
 \multicolumn{1}{|c|}{f2}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{xy10} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{xyz}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xy0\_1}         					&conjunction 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xy0\_2}         					&conjunction 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{pldi08} 		        			&disjunction 	&- & - &timeout  				&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{xy0\_1}         					&conjunctive 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xy0\_2}         					&conjunctive 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{pldi08} 		        			&disjunctive 	&- & - &timeout  				&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
 
 %\hline
 \multicolumn{1}{|c|}{interproc1}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&\multicolumn{1}{|c|}{\cmark} \\
@@ -294,19 +294,19 @@ We remark that the comparison should be taken with a grain of salt as the method
 \multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&- &- &timeout  			&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
 \multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&\multicolumn{1}{|c|}{\xmark} \\
 
-\multicolumn{1}{|c|}{zilu\_conj1}         				&conjunction 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&\multicolumn{1}{|c|}{\xmark} \\
-\multicolumn{1}{|c|}{zilu\_conj2}         				&conjunction 	&280 &3 &\textbf{173.09}  		&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{zilu\_conj1}         				&conjunctive 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{zilu\_conj2}         				&conjunctive 	&280 &3 &\textbf{173.09}  		&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
 
 %\hline
 \multicolumn{1}{|c|}{terminator\_01\_safe}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&\multicolumn{1}{|c|}{\cmark} \\
 %\hline
-\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunction	&1240 &27 &\textbf{39.33}		&- &- &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
-\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunction 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunction 	&1020 &13 &\textbf{108.57}		&- &- &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{css2003\_true}         			&conjunction 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{up\_true\_2}         				&conjunction 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{down\_true\_1}         			&conjunction 	&1320  &15 &\textbf{116.21}  	&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{down\_true\_2}         			&conjunction 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunctive	&1240 &27 &\textbf{39.33}		&- &- &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunctive 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunctive 	&1020 &13 &\textbf{108.57}		&- &- &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{css2003\_true}         			&conjunctive 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{up\_true\_2}         				&conjunctive 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{down\_true\_1}         			&conjunctive 	&1320  &15 &\textbf{116.21}  	&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{down\_true\_2}         			&conjunctive 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &\multicolumn{1}{|c|}{\cmark} \\
 
 \hline
 \end{tabular}

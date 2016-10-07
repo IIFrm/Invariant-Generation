@@ -1,7 +1,7 @@
 %!TEX root = paper.tex
 
 \section{Active Learning} % (fold)
-\label{sec:learning}
+\label{sec:activelearning}
 Active learning aims at generating candidate invariants through iterations of classification and selective sampling. Our overall algorithm for active learning is shown in Algorithm~\ref{alg:active}. The inputs of the algorithm include the set of samples $\mathit{SP}$; a classification algorithm $\mathit{classify}(P,N)$ which takes two sets of samples $P$ and $N$ and generates a classifier separating $P$ and $N$; and an algorithm for selective sampling $\mathit{selectiveSampling}$ which is often coupled with the classification algorithm. During each iteration of the loop from line 2 to 10, we apply $\mathit{classify}$ three times at line 3, 4 and 5 to learn three classifiers. The reason has been discussed in Section~\ref{sec:overview}. At line 6, we check whether any of the classifiers is different from the ones obtained during the last iteration. If none of them is, we return the three classifiers as candidate invariants at line 7, which will be verified afterwards. Otherwise, at line 9, we apply selective sampling to add more samples into $\mathit{SP}$ and then move on to the next iteration. We remark this algorithm is customizable in term of the classification algorithm and the corresponding selective sampling algorithm. In the following, we present two classification algorithms and selective sampling methods as examples.
 
 \begin{algorithm}[t]
@@ -24,6 +24,7 @@ Initialize $\mathit{old\_f_1}, \mathit{old\_f_2}, \mathit{old\_f_3}$ as $\textsc
 \caption{Algorithm $\mathit{activeLearning}(\mathit{SP})$}
 \label{alg:active}
 \end{algorithm}
+\vspace{-0.2cm}
 
 % \subsection{Classification}
 % In the machine learning community, many classification algorithms have been proposed, 

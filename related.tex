@@ -5,7 +5,7 @@
 In this work, we propose a framework for improving loop invariant learning through active learning. 
 In theory, our framework can be extended to learn arbitrary mathematical classifiers using methods like $\mathit{SVM}$ with kernel methods~\cite{svm:kernel}. 
 Nonetheless, due to the limited verification capability of existing program verification techniques, 
-we focus on invariants in the form of polynomial inequalities or conjunctions of polynomial inequalities in our evaluation.
+we focus on invariants in the form of polynomial inequalities or conjunctions/disjunctions of polynomial inequalities in our evaluation.
 %Furthermore, we assume there is a bound $k$ on the number of clauses in the variant.
 %In practice, we would expect (refer to empirical evidence in Section~\ref{sec:evaluations}) often $k$ is of a small value.
 
@@ -36,14 +36,16 @@ we focus on invariants in the form of polynomial inequalities or conjunctions of
 %     \label{tab:related}
 % \end{table}
 
-This work is closely related and inspired by the work documented in~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, where the same learn-and-check approach is applied. 
+This work is closely related and inspired by the work documented in~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, 
+where the same learn-and-check approach is applied. 
 In~\cite{sharma2012interpolants}, the authors proposed to learn loop invariants based on $\mathit{SVM}$ classification. 
 The required samples are generated through constraint solving. In~\cite{sharma2013verification}, the authors proposed to apply PAC learning. 
 It has been demonstrated that their approach may learn invariants in the form of arbitrary boolean
-combinations of polynomial inequalities. In~\cite{DBLP:conf/esop/0001GHALN13}, the authors developed a guess-and-check algorithm for generating algebraic equation invariants. 
+combinations of polynomial inequalities. In~\cite{DBLP:conf/esop/0001GHALN13}, 
+the authors developed a guess-and-check algorithm for generating algebraic equation invariants. 
 In~\cite{sharma2014invariant}, the authors proposed a framework for generating invariant based on randomized search. 
 In particular, their approach has two phases. 
-The search phase uses randomized search to discover candidate invariants and the validate phase uses the checker to either prove or refute that the candidate is an actual invariant. 
+The search phase uses randomized search to discover candidate invariants and the validate phase uses the checker to either prove or refute the candidate. 
 \textsc{Zilu} complements the above approaches with active learning and selective sampling techniques, so as to reduce the need of checking, sometimes completely.
 
 In addition, this work is related to a large body of approaches on loop invariant generation. The existing approaches can be mainly categorized as:
@@ -55,13 +57,14 @@ the ones based on abductive inference~\cite{isil2013inductive},
 the ones based on guess-and-check~\cite{cormac2001houdini,ernst2007daikon}.
 
 On one hand, invariant inference methods based on abstract interpretation and constraint synthesis
-often try to generate all possible invariants in certain domain~\cite{mine2006octagon,vincent2009subpolyhedra,ashutosh2009invgen}, regardless of
-whether they are useful to prove the Hoare triple or not.
+often try to generate all possible invariants in certain domain~\cite{mine2006octagon,vincent2009subpolyhedra,ashutosh2009invgen}, 
+regardless of whether they are useful to prove the Hoare triple or not.
 As a result, the invariants inferred by them can be complex sometimes and yet fail to prove the program correctness.
 On the other hand, other methods based on $\mathit{CEGAR}$, interpolation and abduction only generate those related to the program verification~\cite{isil2013inductive}.
 Different from the above approaches, \textsc{Zilu} initially treats the given program as a black box and only collects relevant program states by executing the program. 
 This step has no scalability issue. 
-\textsc{Zilu} only opens up the black box after candidate invariants have converged. From this point of view, \textsc{Zilu} is lightweight compared to the above approaches. 
+\textsc{Zilu} only opens up the black box after candidate invariants have converged. 
+From this point of view, \textsc{Zilu} is lightweight compared to the above approaches. 
 %In addition, \textsc{Zilu} adopts an active learning approach in an iterative refinement scheme.
 %After generating the invariant, we check its correctness and refine it
 %based on various new information (e.g., counter-examples, new samples)
