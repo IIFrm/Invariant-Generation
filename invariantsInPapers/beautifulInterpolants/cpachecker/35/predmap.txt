@@ -1,4 +1,0 @@
-LOCATION: N14
-<1:1> <-> "PRED(main::x <= main::n)" <-> (main::x <= main::n)
-<0:1> <-> "PRED(main::x <= 0)" <-> (main::x <= 0)
-

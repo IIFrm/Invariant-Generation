@@ -1,4 +1,0 @@
-LOCATION: N8
-<1:1> <-> "PRED(-1 <= (main::x - main::y))" <-> (-1 <= (main::x - main::y))
-<0:1> <-> "PRED(main::x <= -50)" <-> (main::x <= -50)
-

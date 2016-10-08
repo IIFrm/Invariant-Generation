@@ -1,3 +1,0 @@
-LOCATION: N21
-<0:1> <-> "PRED(main::y <= main::x)" <-> (main::y <= main::x)
-

@@ -1,8 +1,0 @@
-LOCATION: N14
-<1:1> <-> "PRED(nondet = 0)" <-> (nondet = 0)
-<0:1> <-> "PRED(0 <= main::z)" <-> (0 <= main::z)
-
-LOCATION: N27
-<2:1> <-> "PREDfalse" <-> false
-<0:1> <-> "PRED(0 <= main::z)" <-> (0 <= main::z)
-

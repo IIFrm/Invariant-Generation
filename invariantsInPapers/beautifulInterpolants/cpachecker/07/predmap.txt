@@ -1,5 +1,0 @@
-LOCATION: N30
-<1:1> <-> "PRED(main::j <= main::i)" <-> (main::j <= main::i)
-<2:1> <-> "PRED((main::n - main::j) <= -1)" <-> ((main::n - main::j) <= -1)
-<0:1> <-> "PRED(main::j <= main::n)" <-> (main::j <= main::n)
-

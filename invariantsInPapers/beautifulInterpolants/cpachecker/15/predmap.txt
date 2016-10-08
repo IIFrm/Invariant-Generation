@@ -1,7 +1,0 @@
-LOCATION: N27
-<3:1> <-> "PRED(((-(main::k) + main::n) + -(main::j)) <= 0)" <-> (((-(main::k) + main::n) + -(main::j)) <= 0)
-<4:1> <-> "PRED(((-(main::j) + main::n) + -(main::k)) <= 0)" <-> (((-(main::j) + main::n) + -(main::k)) <= 0)
-<0:1> <-> "PRED(1 <= (main::n - main::j))" <-> (1 <= (main::n - main::j))
-<1:1> <-> "PRED(1 <= main::k)" <-> (1 <= main::k)
-<2:1> <-> "PRED(0 <= main::k)" <-> (0 <= main::k)
-
