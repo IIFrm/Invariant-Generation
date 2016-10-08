@@ -92,8 +92,8 @@ For instance, in the setting of $\mathit{SVM}$, it has been proven that the most
 %In our setting, %after learning an candidate,
 %which is usually a single polynomials or conjunction or \LL{disjunction?} of polynomials,
 As a result, selective sampling can be reduced to solving an equation system based on the current classifier. 
-We present details on how selective sampling is done with respects to two classification algorithms in section~\ref{sec:activelearning} as examples. 
-We remark that the selective sampling is often more expensive in time and memory than random sampling but cheaper than sampling through verification.
+We present details on how selective sampling is done with respect to several classification algorithms in section~\ref{sec:activelearning} as examples. 
+% We remark that the selective sampling is often more expensive in time and memory than random sampling but cheaper than sampling through verification.
 
 
 %In step 4, we add a small variance to variables because sometimes the points just lies on the boundary are very hard to tell their labels.
@@ -103,8 +103,7 @@ We remark that the selective sampling is often more expensive in time and memory
 %Compared with the above sampling techniques, we should admit counter-example sampling is more directly and objective.
 The last method of sampling is sampling through verification. 
 When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage,
-a counter-example is provided by the verifier. 
-We add the counter-example as new samples for the next learning iteration. 
+the verifier could provide counter-examples, which are added as new samples for the next learning iteration. 
 % We use the example shown in Figure~\ref{fig:running:example} to illustrate that sampling through verification is necessary. 
 % Assume that through random sampling and selective sampling, we would converge to the half space separating $\mathit{Positive}$ and $\mathit{Negative}$. 
 % As a result, we generate only one candidate invariant $\mathit{3x-10y \leq 152}$. During candidate verification, formula (6) is as follows. 

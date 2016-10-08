@@ -113,9 +113,11 @@ Section~\ref{sec:activelearning} then demonstrates the active learning technique
 Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. 
 Section~\ref{sec:related} reviews related work and concludes.
 
-\section{Overview through an Example} \label{sec:overview}
+\section{Overview through an Example} 
+\label{sec:overview}
 In our framework, loop invariant generation is an iterative process of \emph{data collection}, \emph{classifier learning} and \emph{candidate verification}. 
-The overall workflow is shown in the Figure~\ref{fig:overview}. In the following, we use a loop example to illustrate how our approach works.
+The overall workflow is shown in the Figure~\ref{fig:overview}. 
+In the following, we use a loop example to illustrate how our approach works.
 
 \begin{figure}[t]
     \centering
@@ -176,7 +178,7 @@ The overall workflow is shown in the Figure~\ref{fig:overview}. In the following
 \begin{example}
 An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). 
 The set of variables $V$ contains two integer-type ones: $x$ and $y$,
-and the evaluation $\mathit{(x \mapsto x_0, ~y \mapsto y_0)}$ is written as $\mathit{(x_0, y_0)}$ in the following.
+and in the following, the evaluation $\mathit{(x \mapsto x_0, ~y \mapsto y_0)}$ is written as $\mathit{(x_0, y_0)}$.
 For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). 
 The precondition $\mathit{Pre}$ is $\mathit{x < y}$, which is the same as the loop condition $\mathit{Cond}$.
 During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). 
@@ -194,8 +196,8 @@ and record an evaluation sequence $\{s_0, s_1, s_2, \cdots, s_i, \cdots, s_n\}$ 
 %We donate $s_0$ as the initial evaluation of $s_i$, and $s_n$ as the last evaluation of $s_i$.
 %We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
 %as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-All the variable valuations $s_i~(0 \leq i \leq n)$ in such an evaluation sequence are divided into 
-four sets $\mathit{CE}$ (Counter-Example), $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ (Negative or Positive).
+Any variable valuation $s_i~(0 \leq i \leq n)$ in such a sequence are divided into 
+one of the four sets: $\mathit{CE}$ (Counter-Example), $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ (Negative or Positive) 
 according to whether $s_0$ satisfies $\mathit{Pre}$ and $s_n$ satisfies $\mathit{Post}$.
 The categorization rules are detailed in Section~\ref{sec:datacollection}.
 % Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
@@ -232,8 +234,8 @@ Since the Hoare triple is valid, set $\mathit{CE}$ for this example is empty.
 Assume that the following three valuations are randomly sampled initially in our running example: 
 $\mathit{(1, 2)}$, $\mathit{(10, 1)}$ and $\mathit{(100, 0)}$. 
 Three sequences of valuations are generated accordingly: 
-$\mathit{\langle (1, 2)}, (11, 5) \rangle$, 
-$\mathit{\langle (10, 1) \rangle}$ and $\mathit{\langle (100, 0) \rangle}$. 
+$\mathit{\{ (1, 2)}, (11, 5) \}$, 
+$\mathit{\{ (10, 1) \}}$ and $\mathit{\{ (100, 0) \} }$. 
 Note that the loop is not executed for the latter two cases. 
 According to categorization rules, set $\mathit{Negative}$ contains $\mathit{(100, 0)}$; 
 set $\mathit{Positive}$ contains $\mathit{(1, 2)}$ and $\mathit{(11, 5)}$; 
@@ -251,11 +253,11 @@ and valuations in $\mathit{NP}$ are labeled with ?. % and color yellow.
 %Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
 %, such as $\{x \mapsto 11, y \mapsto 5\} \rangle$.
 And there are three areas: a pure positive area with color green, a pure negative area with color red, and a mixed area with color yellow.
-The existence of a mixed area is caused by our labeling method which depends much on the observed program valuation sequences.
-For example, $\mathit{(11, 5)}$, labeled as `+' in Fig.~\ref{fig:running:example:sampling}, 
-could also be labeled as `?' if it only appears in an one execution valuation sequence $\mathit{\langle (11, 5) \rangle}$.
-It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $\mathit{x - y \leq 16}$) 
-is the loop invariant we are searching for. 
+The mixed area exists because our labeling method depends much on the observed program valuation sequences.
+% For example, $\mathit{(11, 5)}$, labeled as `+' in Fig.~\ref{fig:running:example:sampling},
+% could also be labeled as `?' if it only appears in an one execution valuation sequence $\mathit{\langle (11, 5) \rangle}$.
+% It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $\mathit{x - y \leq 16}$)
+% is the loop invariant we are searching for.
 %If we do execute the program with $\{x \mapsto 11, y \mapsto 5\} \rangle$
 
 In order to automatically generate candidate invariants, we apply existing classification techniques to generate classifiers. 
@@ -264,7 +266,7 @@ The first issue is, with the limited samples in $\mathit{Positive}$ and $\mathit
 it is unlikely that we can obtain an ``accurate'' classifier. 
 For instance, given the above-mentioned set $\mathit{Positive}$ and $\mathit{Negative}$, 
 a classifier identified using classification techniques like $\mathit{SVM}$ could be: $\mathit{3x-10y \leq 152}$. %$x+y \leq 50$. 
-Although this classifier perfectly separates the current valuations in $\mathit{Positive}$ from $\mathit{Negative}$. 
+Although this classifier perfectly separates the current valuations in $\mathit{Positive}$ from $\mathit{Negative}$, 
 it is far from our wanted loop invariant and is clearly the result of having limited samples. 
 Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}. 
 Active learning is a semi-supervised machine learning in which a learning algorithm is able to interactively ask for samples which are important in improving a given classifier. 
@@ -327,7 +329,8 @@ Without active learning, more iterations are often required as shown in Section~
 In the following sections, we present details on data collection (in Section~\ref{sec:datacollection}) and active learning (in Section~\ref{sec:activelearning}). 
 For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
 
-%, with the three sets of valuations $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$, we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones   using machine learning algorithms, e.g., SVM derivatives.
+%, with the three sets of valuations $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$, 
+% we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones   using machine learning algorithms, e.g., SVM derivatives.
 %    When the recently learnt classifier converges to the previously learnt ones,
 %    we treat it as an invariant candidate and move to the next stage.
 %    Otherwise, we apply selective sampling on the recently learnt classifier

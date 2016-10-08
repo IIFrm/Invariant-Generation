@@ -6,8 +6,8 @@
 % We observe one reason for invariants to involve disjunction is due to program branches. 
 % To give an example, in the following, we show how our framework handle disjunctive invariant for loop body with 2 branches.
 
-In the machine learning community, many classification algorithms have been proposed, 
-e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, $\mathit{SVM}$~\cite{svm:original} and neutral network~\cite{nn}.
+The machine learning community have proposed many classification algorithms, 
+such as perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, $\mathit{SVM}$~\cite{svm:original} and neutral network~\cite{nn}.
 %Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
 %Before demonstrating the specific technique applied in \textsc{Zilu},
 %it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
@@ -74,12 +74,14 @@ In practice, such classifiers may not be sufficient and thus, we develop algorit
 The inputs of the algorithm include the two sets of samples $P$ and $N$ as well as a threshold on the maximum degree of the polynomial classifier.
 During the loop from line 2 to 7, we first map all the samples in $P$ (similarly $N$) to a set of samples $P'$ (similarly $N'$) in a high dimensional space using function $\mathit{mapToDegree}$.
 Given a set of samples $X$ and a target degree, function $\mathit{mapToDegree}$ returns a set of new samples $X'$ such that each element in $X$ is mapped to an element in $X'$.
-For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the target $\mathit{degree}$ be 2, 
-the following element is added to $X'$: $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
+For instance, let ${(x, y) =  (2, 1)}$ be an element in $X$ and the target $\mathit{degree}$ be 2, 
+% For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the target $\mathit{degree}$ be 2,
+the following element is added to $X'$: ${(x, y, x^2, xy, y^2) =  (2, 1, 4, 2, 1)}$.
+%the following element is added to $X'$: $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
 That is, given a valuation in $P$, we systematically add all terms constituted by the same variables with a degree no more than $\mathit{degree}$, 
 as if they are new variables.
-\vspace{-0.2cm}
-\begin{algorithm}[]
+% \vspace{-0.2cm}
+\begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
@@ -96,16 +98,16 @@ as if they are new variables.
 \caption{Algorithm $\mathit{polynomial}(P,N)$}
 \label{alg:polynomialSVM}
 \end{algorithm}
-\vspace{-0.2cm}
+% \vspace{-0.2cm}
 %The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions,
 $\mathit{SVM}$ is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
 Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}.
-In order to favor classifiers with lower degrees (which often are easier to understand or verify), 
+In order to favor classifiers with lower degrees (which often are easier to understand and verify), 
 we start with looking for a polynomial classifier with degree 1 and only look for higher-degree polynomial classifiers if we find no lower-degree ones.
 The algorithm terminates when we reach the threshold on the maximum degree.
 We remark that the size of each sample in $P'$ or $N'$ grows rapidly with $\mathit{degree}$. 
 %The number of monomials of $\mathit{degree}$ in $\mathit{n}$ is $(^{n+degree-1}_{degree})$.
-However, in our experiments, we can often identify useful classifiers with a small value for $\mathit{degree}$.
+However, in our experiments, we can often identify useful classifiers with a small $\mathit{degree}$ value.
 We remark that the polynomial classifiers learnt by Algorithm~\ref{alg:polynomialSVM} can represent classifiers in the form of disjunctive or conjunctive linear inequalities.
 %Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
 For instance, the classifier $\big((x \ge d_0) \wedge (x \le d_1)\big) \vee (x \ge d_2)$
@@ -209,11 +211,12 @@ Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is des
 %, avoiding the tries to convert them into a form of polynomials.
 It is inspired by the algorithm presented in~\cite{sharma2012interpolants}. 
 The difference is that~\cite{sharma2012interpolants} learns conjunctive linear classifiers, whereas we learn conjunctive polynomial classifiers. 
-The idea is to pick one sample $s$ from $N$ (at line 3) each time and identify a polynomial classifier based on Algorithm~\ref{alg:polynomialSVM} separating $P$ and $\{s\}$ (a.k.a.~a clause). 
+The idea is to pick one sample $s$ from $N$ (at line 3) each time and identify a polynomial classifier based on Algorithm~\ref{alg:polynomialSVM},
+ separating $P$ and $\{s\}$ (a.k.a.~a clause). 
 Next, we remove (at line 6 to 8) all samples from $N$ which can be correctly classified by the polynomial classifier found at line 4, 
 and then repeat the process until $N$ becomes empty.
-\vspace{-0.2cm}
-\begin{algorithm}[]
+% \vspace{-0.2cm}
+\begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
@@ -233,21 +236,24 @@ and then repeat the process until $N$ becomes empty.
 \caption{Algorithm $\mathit{conjunctive}(P, N)$}
 \label{alg:conjunctiveSVM}
 \end{algorithm}
-\vspace{-0.2cm}
-%Compared to the classification algorithm presented in~\cite{sharma2012interpolants}, Algorithm~\ref{alg:conjunctiveSVM} learns conjunctive polynomial classifiers whereas the one in~\cite{sharma2012interpolants} is limited to conjunctive linear classifier. The more important difference is however our classification algorithm is coupled with a selective sampling procedure.
+% \vspace{-0.2cm}
+%Compared to the classification algorithm presented in~\cite{sharma2012interpolants}, 
+Algorithm~\ref{alg:conjunctiveSVM} learns conjunctive polynomial classifiers whereas the one in~\cite{sharma2012interpolants} is limited to conjunctive linear classifier. 
+The more important difference is however our classification algorithm is coupled with a selective sampling procedure.
 At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that the conjunction of the remaining predicates in $C$ perfectly classifies $P$ and $N$ still. 
-We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, may learn a classifier with many clauses, as one clause is introduced each time line 5 is executed. 
+We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, 
+may learn a classifier with many clauses, as one clause is introduced each time line 5 is executed. 
 In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. 
 Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with fewer clauses.
-
-
+In addition, equation can also be handled by this algorithm, as one equation can be expressed in a conjunction of two inequations.
+\vspace{-0.2cm}
 
 \subsection{Disjunctive Classifiers}
-Some loops in real programs fundamentally require disjunctive invariants. 
+Some loops in real programs fundamentally require disjunctive invariants.
 % Actually, there are many reasons to involve disjunction in invariants, one of which is due to program branches.
 We observe one reason for invariants to involve disjunction is program branches.
 % To give an simple example, 
-In the following, we demonstrate how our framework handle disjunctive invariants for loop body with 2 branches .
+In the following, we demonstrate how disjunctive invariants are handled for loop body with 2 branches.
 % Actually, many different previous efforts have proposed techniques for inferring invariants with at least one disjunction,
 % including (i) template-based techniques, such as~\cite{beyer2007invariant, colon2003linear, ashutosh2009invgen},
 % (ii) predicate abstraction based techniques, such as~\cite{beyer2007path, gulavani2008automatically, jhala2006practical},
@@ -320,7 +326,6 @@ we need to show it satisfies all the three conditions~\ref{org:inv:pre}, ~\ref{o
 
 By simply substituting $Inv$ with  $Inv_1 \vee Inv_2$,
 we can see $Inv_1 \vee Inv_2$ satisfies condition~\ref{org:inv:pre} and ~\ref{org:inv:post}.
-
 For condition~\ref{org:inv:loop},
 as the valuations obtained through the two branches satisfy $Inv_1$ and $Inv_2$ respectively, 
 the valuations for the loop body must satisfy $Inv_1 \vee Inv_2$ naturally.
@@ -344,19 +349,24 @@ then $Inv$ satisfies the three conditions ~\ref{org:inv:pre}, ~\ref{org:inv:loop
 As $Inv = Inv \vee Inv$ always holds, we assign $Inv_1 = Inv$ and $Inv_2 = Inv$.
 Then the three conditions can be easily verified. %\hfill \qed \\
 
-\paragraph{Disjunctive Invariant Learning Algorithm}
+\subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
+For the loop body with $n$ branches and valuations for each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
+it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$ is equivalent to the invariant defined before,
+which means we can apply same technique to combine all the branch invariants together as the candidate loop invariant.
+
+\subsubsection{Disjunctive Invariant Learning Algorithm}
 Assume a Hoare triple that there are 2 branches in the loop body is given, 
-and thus our invariants can be written as $(Inv_1 \vee Inv_2)$.
-Without loss of generality, we take branch $B_i~(1 \le i \le 2)$ , whose branch invariant $Inv_i$ accordingly, as an example.
+and thus our invariants can be written as $(Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n)$.
+Without loss of generality, we take branch $B_i~(1 \le i \le n)$ , whose branch invariant $Inv_i$ accordingly, as an example.
 We build a new set $\mathit{Positive\_B_i}$ by extracting the valuations in $\mathit{Positive}$ which are obtained after passing branch $B_i$.
 According to definition in~\ref{ext:inv:loop:b1} and \ref{ext:inv:loop:b2}, 
 valuations in $\mathit{Positive\_B_i}$ must satisfy $Inv_i$.
 For any valuation $s \in \mathit{Negative}$, 
-we can infer $s \not \models Inv_i$ since $s \not \models Inv_1 \vee Inv_2$.
+we can infer $s \not \models Inv_i$ since $s \not \models Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$.
 Therefore, all the valuation in $\mathit{Negative}$ fails any branch invariant $Inv_i $.
 
-As a result, we can apply classification algorithm on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
-Similar procedures are adapted for the other branch and the approach can generate an invariant candidate by combining both the classifiers.
+As a result, we can apply Algorithm~\ref{alg:polynomialSVM} on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
+Similar procedures are adapted for other branches and the approach can generate an invariant candidate by combining all the classifiers.
 
 \paragraph{Example}
 In the following, we use an illustrative example to show how our framework works on disjunctive invariant learning. 
@@ -366,7 +376,7 @@ In the following, we use an illustrative example to show how our framework works
   % \begin{subfigure}{0.5\textwidth}
     \raggedright
     % \vspace{0.5cm}
-    \vspace{-0.2cm} \[
+     \vspace{-0.2cm} \[
       \begin{array}{ll}
       1 & \code{void~foo(int ~x{,} ~int~y)\{} \\
       2 & \code{~~~ assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
@@ -391,10 +401,11 @@ In the following, we use an illustrative example to show how our framework works
 \caption{Disjunctive loop example}
 \label{fig:disjunctive:example}
 \end{figure}
-\vspace{-0.2cm}
-We collect the variable valuations at line 4 and line 5, and apply SVM on these two locations. 
-A classifier $x>0$ can be learned at line 4 while $y>0$ can be obtained at line 5.
+% \vspace{-0.2cm}
+We collect and label the variable valuations at line 4 and line 5.
+After classifier learning phase, a classifier $x>0$ can be learned at line 4 while $y>0$ can be obtained at line 5.
 Thus, we can get a candidate invariant $(x>0) \vee (y>0)$ by combining the classifiers together.
+Apparently, $(x>0) \vee (y>0)$ is the actual invariant for the given program.
 
 % \subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
 % For the loop body with $n$ branches and the valuations after each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
