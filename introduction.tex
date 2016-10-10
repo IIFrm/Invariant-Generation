@@ -3,22 +3,22 @@
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-Automatic loop invariant generation is fundamental for program analysis. A loop invariant can be useful for software verification, compiler optimization, program understanding, etc. In the following, we first define the loop invariant generation problem and then briefly describe existing approaches and then our proposal. For simplicity, we assume that we are given a Hoare triple in the following form. 
+Automatic loop invariant generation is fundamental for program analysis. A loop invariant can be useful for software verification, compiler optimization, program understanding, etc. In the following, we first define the loop invariant generation problem and then briefly describe existing approaches and then our proposal. For simplicity, we assume that we are given a Hoare triple in the following form.
 %\[
 %    P = \{ \mathit{Pre} \} \mathit{while}(\mathit{Cond}) \{ \mathit{Body} \} \{ \mathit{Post} \}
 %\]
 \begin{align*}
-&\{\mathit{Pre}\} & & /\star\text{\emph{Assumption}}\star/ \\
-&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && /\star\text{\emph{Loop Body}}\star/\\
-&\{\mathit{Post}\} & & /\star\text{\emph{Assertion}}\star/
+&\{Pre\} & & /\star\text{\emph{Assumption}}\star/ \\
+& while (Cond) \{ Body \} && /\star\text{\emph{Loop Body}}\star/\\
+&\{ Post \} & & /\star\text{\emph{Assertion}}\star/
 \end{align*}
-Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $\mathit{Pre}$, $\mathit{Cond}$ and $\mathit{Post}$ are predicates constituted by variables in $V$.
+Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program variables which are relevant to the loop body. $Pre$, $Cond$ and $Post$ are predicates constituted by variables in $V$.
 
-\begin{align}
-&\{\mathit{Pre}\} & & \emph{Pre} \Rightarrow \emph{Inv} \label{org:inv:pre}\\
-&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{org:inv:loop}\\\
-&\{\mathit{Post}\} & & \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{org:inv:post}
-\end{align}
+%\begin{align}
+%&\{\mathit{Pre}\} & & \emph{Pre} \Rightarrow \emph{Inv} \label{org:inv:pre}\\
+%&\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{org:inv:loop}\\\
+%&\{\mathit{Post}\} & & \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{org:inv:post}
+%\end{align}
 % \begin{align}
 % &\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{Inv} \label{sl1:org:inv:pre}\\
 % &\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{sl1:org:inv:loop}\\\
@@ -28,8 +28,8 @@ Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program var
 %the specification documents and checking conditions of the program inputs,
 %and the post-condition $\mathit{Post}$ is usually specified
 %by assertions and exceptions leading to an error state in the program.
-Let $s = \{ x_1 \mapsto v_1, \ldots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. We write $s \models \phi$ to denote that $\phi$ is evaluated to $\mathit{true}$ given the program state $s$. Otherwise, we write $s \not \models \phi$. 
-$\mathit{Body}$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function on valuations of variables $V$, and write $\mathit{Body}(s)$ to denote the valuation of $V$ after executing $\mathit{Body}$ given the initial variable valuation $s$. For convenience, $\mathit{Body}^i(s)$ where $i \geq 0$ is defined as follows: $\mathit{Body}^0(s) = s$ and $\mathit{Body}^{i+1}(s) = \mathit{Body}(\mathit{Body}^i(s))$.
+Let $s = \{ x_1 \mapsto v_1, \cdots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. We write $s \models \phi$ to denote that $\phi$ is evaluated to $true$ given the program state $s$. Otherwise, we write $s \not \models \phi$.
+$Body$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the initial variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
 %the evaluation function of the program variables $x_1, \ldots, x_n$
 %and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$,
 %the above program means that (1) $\mathit{Pre}$ is the assumption to the initial value of $s$;
@@ -38,7 +38,7 @@ $\mathit{Body}$ is an imperative program which updates the valuation of $V$. For
 %(3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration,
 %the while-loop ends and $s$ should satisfy $\mathit{Post}$.
 
-In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
+The problem is thus either to prove the Hoare triple or to disprove it. In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
 \begin{align}
     &s \models \mathit{Pre}
         &&\Longrightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
@@ -47,35 +47,31 @@ In order to prove the Hoare triple, we would like to find a loop invariant $\mat
     &s \models \mathit{Inv} \wedge \neg \mathit{Cond}
         &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
 \end{align}
-Alternatively, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$.
-The problem is thus either to prove the Hoare triple (by identifying an $\mathit{Inv}$ satisfying the three conditions) or to disprove it (by finding a valuation $s$ as described above). For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
+In order to disprove it, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
 
-Many approaches have been proposed for the invariant generation.
+Many approaches have been proposed to solve this problem.
 For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
 Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
-The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If a certain condition is violated, we obtain counterexamples in the form of variable valuations.
+The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
-With sample $s$, we can reapply classification algorithms to obtain a new candidate invariant. The learn-and-check process is iteratively repeated until an invariant satisfying all three conditions is identified or a valuation disproving the Hoare triple is found.
+With the new sample $s$, we can re-classify the samples to obtain a new candidate invariant. This learn-and-check process is repeated until either the Hoare triple is proved or disproved.
 
-One problem with the above approach is that its effectiveness is often limited by the samples which are generated either randomly. 
-In order to learn the right invariant through classification, often a large number of samples are necessary. 
-Furthermore, often we must have those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not, 
-so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. 
-As a result, many iterations of learn-and-check are necessary before the candidate invariant converges to the right one. 
-Another problem is that the loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are limited by learning approaches, 
-e.g., linear inequalities or their conjunctions in~\cite{sharma2012interpolants}, and equalities in~\cite{DBLP:conf/esop/0001GHALN13}.
-Invariants with disjunctions can not be handled in this way, for there is no efficient classification algorithm to learn disjunctive relations. 
+One problem with the guess-and-check approach is that its effectiveness is often limited by the samples which are generated randomly.
+In order to learn the right invariant through classification, often a large number of samples are necessary.
+Furthermore, often those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not must be sampled so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard.
+As a result, many iterations of learn-and-check are required. Another problem is that the kinds of loop invariants obtained through existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are often limited, e.g., to conjunctive linear inequalities~\cite{sharma2012interpolants} or equalities~\cite{DBLP:conf/esop/0001GHALN13}. Despite the approach presented in~\cite{DBLP:conf/pldi/GulwaniSV08,DBLP:conf/cav/SharmaDDA11}, learning disjunctive loop invariants remains a challenge.
 
-In this work, we propose a framework for loop invariant generation following the same learn-and-check approach. %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
+In this work, we propose a technique to improve the existing learn-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}.
+ %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
 %In the following, we define our problem and briefly illustrate how our approach works.
-Compared to the existing approaches, we make the following contributions. 
-Firstly, we propose an active learning technique to (partially) overcome the limitation of random sampling. 
-That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants 
-so that we can improve the candidates prior to verifying them during every learn-and-check iteration. 
-As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in some cases.
+Compared to the existing approaches, we make the following contributions.
+Firstly, we propose an active learning technique to overcome the limitation of random sampling.
+That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants
+so that we can improve the candidates prior to verifying them during every learn-and-check iteration.
+As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in many cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,
@@ -84,15 +80,11 @@ As a result, we can reduce the number of learn-and-check iterations significantl
 %    give very accurate information to amend the invariant candidate,
 %    they become a useful supplementary to overcome the weakness of machine learning
 %    and fine-tune the invariant candidate.
-Second, our framework is designed to be extensible for learning different invariants, 
-and thus our framework can handle non-linear invariants.
-For instance, we show that we can easily extend our framework to learn candidate invariants in the form of polynomial inequalities or their conjunctions.
-What's more,  we partially handle disjunctive invariants by analyzing branches.
-Our framework handle these invariants by learning classifiers at each of program branches and then combine them together.
-Lastly, we implement our framework as a tool called \textsc{Zilu}~\cite{zilu:repo} and compare it with Interproc~\cite{jeannet2010interproc}, %% other
-an available state-of-the-art invariant inference tool.
-%%    i.e., 
-    %CPAChecker~\cite{beyer2011cpachecker} and 
+Secondly, our approach is designed to be extensible so that we can learn different kinds of invariants.
+For instance, we show that we can learn candidate invariants in the form of polynomial inequalities or their conjunctions using a different classification algorithm.
+Furthermore, we show that by partitioning the samples according to the control locations they visit and classifying each partition separately, we are able to generate disjunctive invariants. Lastly, we implement our framework as a tool called \textsc{Zilu} (available at~\cite{zilu:repo}) and compare it with state-of-the-art tools like Interproc~\cite{jeannet2010interproc} as well as CPAChecker~\cite{DBLP:conf/cav/BeyerK11}.
+%%    i.e.,
+    %CPAChecker~\cite{beyer2011cpachecker} and
  %%   Interproc~\cite{jeannet2010interproc}.
 %    Our experiment results show that
 %    we are the only tool that can work with polynomial invariant inference.
@@ -100,253 +92,13 @@ an available state-of-the-art invariant inference tool.
 %    naturally with very light additional programming.
     % Based on the design of different approaches,
     % we also claim that our framework have better extensibility comparing with their method.
-    \textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library ($\mathit{GSL}$)~\cite{gough2009gnu} for active learning,
-    $\mathit{LibSVM}$~\cite{chang2011libsvm} for $\mathit{SVM}$ classification,
-    revised $\mathit{KLEE}$~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for verification) and 
-    can be used as a language/platform independent tool to verify programs.
+%\textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library ($\mathit{GSL}$)~\cite{gough2009gnu} for active learning,   $\mathit{LibSVM}$~\cite{chang2011libsvm} for $\mathit{SVM}$ classification, revised $\mathit{KLEE}$~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for verification) and can be used as a language/platform independent tool to verify programs.
 
-\paragraph{Organization} The remainders of the paper are organized as follows. 
-Section~\ref{sec:overview} presents an overview of our approach using an illustrative example. 
-Section~\ref{sec:datacollection} presents how the framework collects and labels program states at runtime. 
+The remainders of the paper are organized as follows.
+Section~\ref{sec:overview} presents an overview of our approach using an illustrative example.
+Section~\ref{sec:datacollection} presents how the framework collects and labels program states at runtime.
 Section~\ref{sec:classifierlearning} shows the learning algorithms adapted to handle invariants in different forms.
 Section~\ref{sec:activelearning} then demonstrates the active learning technique which is applied to reduce the number of required samples.
-Section~\ref{sec:evaluations} discusses our prototype implementation and evaluates its effectiveness using a set of benchmark programs. 
+Section~\ref{sec:evaluations} discusses our implementation and evaluates its effectiveness using a set of benchmark programs.
 Section~\ref{sec:related} reviews related work and concludes.
-
-\section{Overview through an Example} 
-\label{sec:overview}
-In our framework, loop invariant generation is an iterative process of \emph{data collection}, \emph{classifier learning} and \emph{candidate verification}. 
-The overall workflow is shown in the Figure~\ref{fig:overview}. 
-In the following, we use a loop example to illustrate how our approach works.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[scale=0.45]{figures/overview.pdf}
-    \caption{Loop Invariant Inference Framework Overview}
-    \label{fig:overview}
-\end{figure}
-
-\begin{figure}[t]
-\begin{subfigure}{0.5\textwidth}
-    \raggedright
-    \vspace{0.5cm}
-%% {\scriptsize\begin{verbatim}
-%% void P(int x, int y) {
-%%     assume(x < y);
-%%     while (x < y) {
-%%         if (x < 0) x = x + 7;
-%%         else x = x + 10;
-
-%%         if (y < 0) y = y - 10;
-%%         else y = y + 3;
-%%     }
-%%     assert(x >= y
-%%         && x <= y + 16);
-%% }
-%% \end{verbatim}}
-\vspace{-0.2cm} \[
- \begin{array}{ll}
-1 & \code{void~foo(int ~x{,} ~int~y)\{} \\
-2 & \code{~~~ assume(x~{<}~y);}  \\
-3 & \code{~~~ while(x~{<}~y)\{}  \\
-4 & \code{~~~ \quad if~(x~{<}~0)~x~{=}~x~{+}~7;}  \\
-5 & \code{~~~ \quad else~ x~{=}~x~{+}~10;}\\
-6 & \code{~~~ \quad if~(y~{<}~0)~y~{=}~y~{-}~10;} \\
-7 & \code{~~~ \quad else~ y~{=}~y~{+}~3;}\\
-8 & \code{~~~\}} \\
-9 & \code{~~~assert(x~{\geq}~y}\\
-10 & \code{~~~\quad \&\&~x~{\leq}~y~{+}~16);}\\
-11  & \}
-\end{array}
-\]
-    \vspace{-0.2cm}
-    \caption{A sample program}
-    \label{fig:running:example:program}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-      \centering
-      \includegraphics[scale=0.42]{figures/running-sampling.pdf}
-      \caption{Sampling}
-      \label{fig:running:example:sampling}
-\end{subfigure}
-\caption{A running example}
-\label{fig:running:example}
-\end{figure}
-%%%sunjun: the two lines should x - y = 0 and x - y = 16.
-
-
-\begin{example}
-An example Hoare triple is shown in Figure~\ref{fig:running:example:program} (where an \code{assume} statement captures the precondition and an \code{assert} statement captures the postcondition). 
-The set of variables $V$ contains two integer-type ones: $x$ and $y$,
-and in the following, the evaluation $\mathit{(x \mapsto x_0, ~y \mapsto y_0)}$ is written as $\mathit{(x_0, y_0)}$.
-For simplicity, we interpret integers in the programs as mathematical integers (i.e., they do not overflow). 
-The precondition $\mathit{Pre}$ is $\mathit{x < y}$, which is the same as the loop condition $\mathit{Cond}$.
-During each loop iteration, $x$ is increased by $7$ if it is negative (line 4); otherwise, it is increased by $10$ (line 5). 
-$y$ is decreased by $10$ if it is negative (line 6); 
-otherwise, it is increased by $3$ (line 7). 
-The postcondition $\mathit{Post}$ is $\mathit{y \le x \le y + 16}$. 
-It is easy to check that the Hoare triple can be proven using a loop invariant $\mathit{Inv}$: $\mathit{x \le y + 16}$. 
-In the following, we show how our framework works to learn this loop invariant.
-\end{example}
-We start with \emph{data collection}. Given the Hoare triple, we first  generate a set of valuations of $V$ randomly. 
-% For instance, we can adopt a constraint solver to generate random valuations which satisfy or fail $\mathit{Pre}$ as random samples.
-%For each sample $s_0$ (i.e., a variable valuation) $\in V$, 
-Then we execute the loop program with $s_0 \in V$ as the initial evaluation 
-and record an evaluation sequence $\{s_0, s_1, s_2, \cdots, s_i, \cdots, s_n\}$ after each iteration of the loop. 
-%We donate $s_0$ as the initial evaluation of $s_i$, and $s_n$ as the last evaluation of $s_i$.
-%We write $s_i$ as the state after the $i_{th}$ iteration of the loop. %, ~ {0<=i<=n}$
-%as a trace $\langle s_0, s_1, \ldots, s_n \rangle$ where $s_n \not \models Cond$. Let $T$ denote the set of traces. We write $s \Rightarrow_T s'$ to denote that there exists a trace $\langle s_0, s_1, \cdots, s, \cdots, s', \cdots, s_n \rangle \in T$.
-Any variable valuation $s_i~(0 \leq i \leq n)$ in such a sequence are divided into 
-one of the four sets: $\mathit{CE}$ (Counter-Example), $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ (Negative or Positive) 
-according to whether $s_0$ satisfies $\mathit{Pre}$ and $s_n$ satisfies $\mathit{Post}$.
-The categorization rules are detailed in Section~\ref{sec:datacollection}.
-% Let $\mathit{Inv}$ be any invariant which satisfies condition (1), (2) and (3). 
-% \begin{itemize}
-%     \item Set $\mathit{CE}$ contains all the valuations $s_i$ in an evaluation sequence where $\mathit{s_0 \models \mathit{Pre}}$ but $\mathit{s_n \not\models \mathit{Post}}$. 
-%     We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-%     \item Set $\mathit{Positive}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \models \mathit{Pre}}$ and $\mathit{s_n \models \mathit{Post}}$. 
-%     In Section~\ref{sec:datacollection} we prove that any valuation in $\mathit{Positive}$ must satisfy $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-%     \item Set $\mathit{Negative}$ contains all the valuations $s_i$ in an evaluation where $\mathit{s_0 \not\models \mathit{Pre}}$ and $\mathit{s_n \not\models \mathit{Post}}$. 
-%     In Section~\ref{sec:datacollection} we prove that any valuation in $\mathit{Negative}$ must fail $\mathit{Inv}$, if $\mathit{Inv}$ exists.
-%     \item Set $\mathit{NP}$ contains all the valuations which have not appeared in the above three sets. 
-%     The satisfaction of these valuations to $\mathit{Inv}$ can not be decided according to the current knowledge. So they may or may not satisfy $\mathit{Inv}$.
-% \end{itemize}
-%\begin{itemize}
-%    \item Set $\mathit{CE}$ contains the set of valuations which satisfy the precondition and violate the postcondition afterwards. We remark that anytime a valuation in $\mathit{CE}$ is identified, a counterexample is found and the Hoare triple is falsified.
-%    \item Set $\mathit{Positive}$ contains the set of valuations which must satisfy $\mathit{Inv}$.
-%    \item Set $\mathit{Negative}$ contains the set of valuations which must fail $\mathit{Inv}$.
-%    \item Set $\mathit{NP}$ contains the set of valuations which may or may not satisfy $\mathit{Inv}$.
-%\end{itemize}
-%The exact definition of these sets is in Section~\ref{sec:sampling}.
-% Otherwise, because $\mathit{Inv}$ must satisfy (1),(2) and (3), we know that $P_T \subseteq Inv$ and $N_T \cap Inv = \emptyset$. The program states in $NP_T$ may or not may be in $\mathit{Inv}$. If we know that a program state $s \in NP_T$ is in $\mathit{Inv}$, $Body^*(s) \subseteq Inv$.
-%
-%Each trace is then associated with a pair of boolean labels $(SatPre, SatPost)$
-%
-%    All of the evaluations in the above trace (referred by its initial evaluation $s_0$)
-%    are labelled based on a pair of boolean values
-%    $(s_0 \models \mathit{Pre}, s_n \models \mathit{Post})$\footnote{
-%        $(\mathit{true}, \mathit{true}) \rightarrow +$,
-%        $(\mathit{false}, \mathit{false}) \rightarrow -$
-%        and $(\mathit{false}, \mathit{true}) \rightarrow ?$}.
-\begin{example}
-We illustrate these four sets using the example shown in Figure~\ref{fig:running:example}. 
-Since the Hoare triple is valid, set $\mathit{CE}$ for this example is empty. 
-Assume that the following three valuations are randomly sampled initially in our running example: 
-$\mathit{(1, 2)}$, $\mathit{(10, 1)}$ and $\mathit{(100, 0)}$. 
-Three sequences of valuations are generated accordingly: 
-$\mathit{\{ (1, 2)}, (11, 5) \}$, 
-$\mathit{\{ (10, 1) \}}$ and $\mathit{\{ (100, 0) \} }$. 
-Note that the loop is not executed for the latter two cases. 
-According to categorization rules, set $\mathit{Negative}$ contains $\mathit{(100, 0)}$; 
-set $\mathit{Positive}$ contains $\mathit{(1, 2)}$ and $\mathit{(11, 5)}$; 
-and $\mathit{NP}$ contains $\mathit{(10, 1)}$.
-\end{example}
-Next, we move on to \emph{classifier learning} to generate candidate invariants based on $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$. 
-Intuitively, since we know that valuations in $\mathit{Positive}$ must satisfy $\mathit{Inv}$ and valuations in $\mathit{Negative}$ must not satisfy $\mathit{Inv}$, 
-a predicate separating the two sets (a.k.a.~a classifier) could be a candidate for $\mathit{Inv}$.
-%Formally, a classifier between two sets $P$ and $N$ is a predicate $\phi$ such that $s \models \phi$ for all $s \in P$ and $s \not \models \phi$ for all $s \in N$.
-For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations 
-in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example. %if we consider only the variable valuation before the loop. 
-In particular, valuations in $\mathit{Positive}$ are labeled with $+$; % and color green; 
-valuations in $\mathit{Negative}$ are labeled with $-$; % and color red; 
-and valuations in $\mathit{NP}$ are labeled with ?. % and color yellow. 
-%Note that if variable valuations after some iterations of the loop are considered, some of the valuations categorized as $NP$ in Figure~\ref{fig:running:example:sampling} may be in $Positive$ instead as we show in Section~\ref{sec:sampling}.
-%, such as $\{x \mapsto 11, y \mapsto 5\} \rangle$.
-And there are three areas: a pure positive area with color green, a pure negative area with color red, and a mixed area with color yellow.
-The mixed area exists because our labeling method depends much on the observed program valuation sequences.
-% For example, $\mathit{(11, 5)}$, labeled as `+' in Fig.~\ref{fig:running:example:sampling},
-% could also be labeled as `?' if it only appears in an one execution valuation sequence $\mathit{\langle (11, 5) \rangle}$.
-% It can be observed the classifier separating $\mathit{Negative}$ from the rest (i.e., $\mathit{x - y \leq 16}$)
-% is the loop invariant we are searching for.
-%If we do execute the program with $\{x \mapsto 11, y \mapsto 5\} \rangle$
-
-In order to automatically generate candidate invariants, we apply existing classification techniques to generate classifiers. 
-There are however two issues to be solved. 
-The first issue is, with the limited samples in $\mathit{Positive}$ and $\mathit{Negative}$, 
-it is unlikely that we can obtain an ``accurate'' classifier. 
-For instance, given the above-mentioned set $\mathit{Positive}$ and $\mathit{Negative}$, 
-a classifier identified using classification techniques like $\mathit{SVM}$ could be: $\mathit{3x-10y \leq 152}$. %$x+y \leq 50$. 
-Although this classifier perfectly separates the current valuations in $\mathit{Positive}$ from $\mathit{Negative}$, 
-it is far from our wanted loop invariant and is clearly the result of having limited samples. 
-Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}. 
-Active learning is a semi-supervised machine learning in which a learning algorithm is able to interactively ask for samples which are important in improving a given classifier. 
-For instance, active learning for $\mathit{SVM}$ works by repeatedly generating samples on (or nearby) the current classification boundary, 
-adding them into $\mathit{Positive}$ and $\mathit{Negative}$ accordingly and applying $\mathit{SVM}$ to generate new classifiers. 
-This process is repeated until the classifier converges. 
-It has been shown that active learning effectively learns an accurate function with fewer samples~\cite{DBLP:conf/icml/SchohnC00}.
-
-\begin{example}
-In the above example, given the current classifier $\mathit{3x-10y \leq 152}$, we apply active learning for $\mathit{SVM}$ 
-and generate new valuations $\mathit{(7, 13)}$ and $\mathit{(14, -11)}$ %$\{x \mapsto 44, y \mapsto -2\}$ 
-by solving the equation $\mathit{3x-10y = 152}$. % (and using an existing $x$ values to figure out the corresponding $y$ value and vice versa). 
-Next, we execute the program with these variable valuations, 
-obtain the variable valuation sequences, and add them into $\mathit{CE}$, $\mathit{Positive}$, $\mathit{Negative}$ or $\mathit{NP}$ accordingly. 
-With these new samples, a new classifier is then learned by applying classification algorithms.
-\end{example}
-The other issue is: how do we handle those valuations in $\mathit{NP}$, which may or may not satisfy $\mathit{Inv}$? 
-If we simply ignore them, there may be a gap between $\mathit{Positive}$ and $\mathit{Negative}$ 
-and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning. 
-This is illustrated in Figure~\ref{fig:running:example:sampling}, where $\mathit{NP}$ happens to be located in between $\mathit{Positive}$ and $\mathit{Negative}$. 
-Without considering the samples in $\mathit{NP}$, 
-multiple classifiers located in the $\mathit{NP}$ region (e.g., $\mathit{x - y \leq 10}$, or $\mathit{x - y \leq 15}$) may be learned 
-to perfectly classify $\mathit{Positive}$ and $\mathit{Negative}$. 
-Identifying more samples in $\mathit{Positive}$ or $\mathit{Negative}$ may not help to improve the classifier either. 
-To overcome the problem, in addition to learn a classifier separating $\mathit{Positive}$ and $\mathit{Negative}$, 
-we learn two additional candidate invariants making use of $\mathit{NP}$: 
-one separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ fail $\mathit{Inv}$); 
-and the other separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ (i.e., assuming valuations in $\mathit{NP}$ satisfy $\mathit{Inv}$). 
-We remark that active learning is applied to all three candidates until they converge. 
-In our example, if we restrict our learning classifier to linear in-equation, 
-the classifier separating $\mathit{Positive}$ from $\mathit{Negative}$ and $\mathit{NP}$ would be $\textsc{null}$ (no such a linear classifier); 
-% $\emptyset$, %converge to $\varnothing$ %$\mathit{NULL}$; %x - y \leq 0$; 
-and the classifier separating $\mathit{Negative}$ from $\mathit{Positive}$ and $\mathit{NP}$ would converge to $\mathit{x - y \leq 16}$.
-
-After all three candidate invariants converge, we move on to \emph{candidate verification}. 
-We check whether any of the candidate invariants satisfies condition (1), (2) and (3). 
-In particular, for each candidate invariant $\phi$, we check whether any of the following formula is satisfiable or not using an $\mathit{SMT}$solver~\cite{barrett2009satisfiability,de2008z3}.
-\begin{align}
-    & \mathit{Pre} \land \neg \phi \label{check:inv:pre} \\
-    %% & (s \models \phi \land \mathit{Cond}) \land (\mathit{Body}(s) \not \models \phi) \label{check:inv:loop} \\
-     & sp(\phi \land \mathit{Cond}, \mathit{Body}) \land \neg \phi \label{check:inv:loop} \\
-    & \phi \land \neg \mathit{Cond} \land \neg \mathit{Post} \label{check:inv:post}
-\end{align}
-where $\mathit{sp}(\phi,e)$ is the strongest postcondition obtained by
-symbolically executing program $e$
-starting from precondition $\phi$.
-If there is one candidate invariant which fails all the three conditions, we successfully prove the Hoare triple. 
-For instance, the candidate invariant $\mathit{x - y \geq 16}$ generated in our example fails all three conditions and we prove the Hoare triple 
-shown in Figure~\ref{fig:running:example:program}. 
-If any of condition (4), (5) and (6) is satisfiable, the $\mathit{SMT}$ solver generates a model in the form of a variable valuation, 
-and update $\mathit{Positive}$, $\mathit{Negative}$, $\mathit{NP}$ or $\mathit{CE}$ accordingly. % to the execution with these valuations. 
-In particular, a counterexample satisfying condition (4) should be added into $\mathit{Positive}$; 
-a counterexample satisfying condition (6) may be added into either $\mathit{Negative}$ or $\mathit{CE}$ (depending on whether it satisfies $\mathit{Pre}$). 
-Thus, we restart from data collection, i.e., we execute the program with the counterexample valuations, 
-collect and add the variable valuations after each iteration of the loop to the four sets accordingly, move on to active learning and so on.
-
-We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. %, and also the corresponding learning time. 
-For our running example, with active learning, usually one iteration of learn-and-check is sufficient to prove the Hoare triple. 
-Without active learning, more iterations are often required as shown in Section~\ref{sec:evaluations}. 
-In the following sections, we present details on data collection (in Section~\ref{sec:datacollection}) and active learning (in Section~\ref{sec:activelearning}). 
-For candidate verification, the standard program verification technique is adopted and thus we only present the relevant implementation details in Section~\ref{sec:evaluations}.
-
-%, with the three sets of valuations $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$, 
-% we apply active learning techniques to learn a classifier to capture the positive ones from the negative ones   using machine learning algorithms, e.g., SVM derivatives.
-%    When the recently learnt classifier converges to the previously learnt ones,
-%    we treat it as an invariant candidate and move to the next stage.
-%    Otherwise, we apply selective sampling on the recently learnt classifier
-%   to add more samples to $S_{\mathit{in}}$.
-%    When a sample cannot be classified using a certain classification model,
-%    we try other alternative models in a sequential order.
-%    \LL{We prove the termination of the \emph{active learning} stage if such an invariant exists.}
-
-%    In the \textbf{Invariant Verification} stage (see Section~\ref{sec:verification}),
-%    we check the correctness of the invariant candidate.
-%    First, we check condition (\ref{inv:pre}) and condition (\ref{inv:post}) with the candidate.
-%    Then, we verify the condition (\ref{inv:loop})
-%    based on all of the program execution traces of $\mathit{Body}$ using symbolic execution~\cite{}.
-%    The above conditions are checked by SMT~\cite{barrett2009satisfiability} solvers in this work.
-%    If all of the above conditions are satisfied,
-%    we claim the correctness of $P$ with its loop invariant.
-%    Otherwise, we add the counter-example from SMT Solving to $S_{\mathit{in}}$
-%    and restart from the \emph{data collection} stage.
 
