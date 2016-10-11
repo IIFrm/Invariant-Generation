@@ -28,7 +28,7 @@ Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program var
 %the specification documents and checking conditions of the program inputs,
 %and the post-condition $\mathit{Post}$ is usually specified
 %by assertions and exceptions leading to an error state in the program.
-Let $s = \{ x_1 \mapsto v_1, \cdots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. We write $s \models \phi$ to denote that $\phi$ is evaluated to $true$ given the program state $s$. Otherwise, we write $s \not \models \phi$.
+Let $s = \{ x_1 \mapsto v_1, \cdots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. $\phi$ is viewed as the set of valuations of $V$ such that $\phi$ evaluates to true given the valuation. We thus write $s \in \phi$ to denote that $\phi$ is evaluated to $true$ given $s$. Otherwise, we write $s \not \in \phi$.
 $Body$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the initial variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
 %the evaluation function of the program variables $x_1, \ldots, x_n$
 %and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$,
@@ -40,12 +40,9 @@ $Body$ is an imperative program which updates the valuation of $V$. For simplici
 
 The problem is thus either to prove the Hoare triple or to disprove it. In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
 \begin{align}
-    &s \models \mathit{Pre}
-        &&\Longrightarrow & s &\models \mathit{Inv} \label{inv:pre} \\
-    &s \models \mathit{Inv} \wedge \mathit{Cond}
-        &&\Longrightarrow & \mathit{Body}(s) &\models \mathit{Inv} \label{inv:loop} \\
-    &s \models \mathit{Inv} \wedge \neg \mathit{Cond}
-        &&\Longrightarrow & s &\models \mathit{Post} \label{inv:post}
+    & Pre \subseteq Inv && \label{inv:pre} \\
+    &\forall s.~s \in Inv \land Cond \implies Body(s) \in Inv && \label{inv:loop} \\
+    & Inv \land \neg Cond \subseteq Post && \label{inv:post}
 \end{align}
 In order to disprove it, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{Domagoj:FAC:2013,LeQC:PLDI:15,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
@@ -56,7 +53,7 @@ Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBL
 Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
-For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s$ satisfying $s {\models} Pre {\land} s {\not \models} \phi$ is generated, which proves that $\phi$ is not an invariant.
+For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s \in (Pre \land \neg \phi)$ is generated, which proves that $\phi$ is not an invariant.
 With the new sample $s$, we can re-classify the samples to obtain a new candidate invariant. This learn-and-check process is repeated until either the Hoare triple is proved or disproved.
 
 One problem with the guess-and-check approach is that its effectiveness is often limited by the samples which are generated randomly.
@@ -96,9 +93,8 @@ Furthermore, we show that by partitioning the samples according to the control l
 
 The remainders of the paper are organized as follows.
 Section~\ref{sec:overview} presents an overview of our approach using an illustrative example.
-Section~\ref{sec:datacollection} presents how the framework collects and labels program states at runtime.
-Section~\ref{sec:classifierlearning} shows the learning algorithms adapted to handle invariants in different forms.
-Section~\ref{sec:activelearning} then demonstrates the active learning technique which is applied to reduce the number of required samples.
+Section~\ref{sec:classifierlearning} shows how candidate loop invariants are generated and refined through active learning.
+%Section~\ref{sec:activelearning} then demonstrates the active learning technique which is applied to reduce the number of required samples.
 Section~\ref{sec:evaluations} discusses our implementation and evaluates its effectiveness using a set of benchmark programs.
 Section~\ref{sec:related} reviews related work and concludes.
 
