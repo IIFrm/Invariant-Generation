@@ -75,6 +75,7 @@ On the other hand, using a solver often generates biased valuations. We remark t
 \Indp
 let $SP$ be a set of randomly generated valuations of $V$\;
 \While{not time out} {
+    add all valuations $s'$ such that $s \Rightarrow s'$ for some $s \in SP$ into SP\;
     call $actL(SP)$ to generate a candidate invariant\;
     \For {each candidate $\phi$} {
         return ``proved'' if the program is verified with $\phi$ otherwise add the counterexample into $SP$\;
@@ -84,10 +85,9 @@ let $SP$ be a set of randomly generated valuations of $V$\;
 \label{alg:active}
 \end{algorithm}
 
-Next, for any valuation $s$ in $SP$, we execute the program starting with initial variable valuation $s$ and record the valuation of $V$ after each iteration of the loop. For any valuation $s$, we write $s \Rightarrow s'$ to denote that there exists $i \geq 0$ such that $s' = Body^i(s)$ and $Body^k(s) \in Cond$ for all $k \in [0, i)$.
-That is, if we execute the program with initial valuation $s$, we obtain $s'$ after some number of iterations. We define $SP^*$ to be the set $\{s' | \exists s \in SP.~s \Rightarrow s'\}$. Next, we categorize $SP^*$ into the four disjoint sets: $CE$ (short for counterexample), $Positive$, $Negative$, $NP$. Intuitively, $CE$ contains counterexamples which disprove the Hoare triple; $Positive$ contains those valuations of $V$ which we know must satisfy any loop invariant which proves the Hoare triple; $Negative$ contains those valuations of $V$ which we know must not satisfy any loop invariant which proves the Hoare triple; and $NP$ contains the rest. Formally,
+Next, for any valuation $s$ in $SP$, we execute the program starting with initial variable valuation $s$ and record the valuation of $V$ after each iteration of the loop. For any valuation $s$, we write $s \Rightarrow s'$ to denote that there exists $i \geq 0$ such that $s' = Body^i(s)$ and $Body^k(s) \in Cond$ for all $k \in [0, i)$. That is, if we execute the program with initial valuation $s$, we obtain $s'$ after some number of iterations. Line 3 of Algorithm~\ref{alg:active} adds all such valuations $s'$ into $SP$. Next, we categorize $SP$ into the four disjoint sets: $CE$ (short for counterexample), $Positive$, $Negative$, $NP$. Intuitively, $CE$ contains counterexamples which disprove the Hoare triple; $Positive$ contains those valuations of $V$ which we know must satisfy any loop invariant which proves the Hoare triple; $Negative$ contains those valuations of $V$ which we know must not satisfy any loop invariant which proves the Hoare triple; and $NP$ contains the rest. Formally,
 \[
-CE(SP) = \{s \in SP^* |~\exists s'.~s \Rightarrow s' \land s \in Pre \land s' \not \in Cond \land s' \not \in Post\} \]
+CE(SP) = \{s \in SP |~\exists s'.~s \Rightarrow s' \land s \in Pre \land s' \not \in Cond \land s' \not \in Post\} \]
 A valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s'$ which fails $Post$ when the loop terminates. If $CE(SP)$ is non-empty, the Hoare triple is disproved.
 %\begin{align*}
 % \mathit{Positive}(\mathit{SP}) = & \{s | \exists s_0 \in SP.~\exists s'.~s_0 \Rightarrow s' \Rightarrow s \Rightarrow s_n \land \\
@@ -95,16 +95,16 @@ A valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s'$ which fails
 %\end{align*}
 %\begin{align*}
 \begin{align*}
-Positive(SP) = & \{s \in SP^* | \exists s_0,s_1: SP^*. \\
+Positive(SP) = & \{s \in SP | \exists s_0,s_1: SP. \\
 & ~~~~~~ s_0 \in Pre \land s_0 \Rightarrow s \Rightarrow s_1 \land s_1 \not \in Cond \land s_1 \in Post\}
 \end{align*}
 $Positive(SP)$ contains a valuation $s$ if there exists a valuation $s_0$ in $SP^*$ which satisfies $Pre$ and becomes $s$ after zero or more iterations. Furthermore, $s$ subsequently becomes $s'$ which satisfies $Post$ when the loop terminates. Let $Inv$ be any loop invariant which proves the Hoare triple. Because $s_0 \in Pre$, $s_0 \in Inv$ since $Inv$ satisfies condition (1). Since $Inv$ satisfies condition (2) and $Body(s_0) \in Inv$ if $Body(s_0) \in Cond$. By a simple induction, we prove $s \in Inv$.
 \begin{align*}
-    Negative(SP) = & \{s \in SP^* | s \not \in Pre \land \exists s'. \\
+    Negative(SP) = & \{s \in SP | s \not \in Pre \land \exists s'. \\
     & ~~~~~~s \Rightarrow s' \land s' \not \in Cond \land s' \not \in Post\}
 \end{align*}
 $Negative(SP)$ is the set of valuations which violates $Pre$ and becomes a valuation $s'$ which violates $Post$ when the loop terminates. We show that $s \not \in Inv$ for all $Inv$ satisfying condition (1), (2) and (3). Assume that $s \in Inv$, by condition (2), $s'$ must satisfy $Inv$ through a simple induction. By condition (3), $s'$ must satisfy $Post$, which contradicts the definition of $Negative(SP)$.
-\[    NP(SP) = SP^* - CE(SP) - Positive(SP) - Negative(SP)
+\[    NP(SP) = SP - CE(SP) - Positive(SP) - Negative(SP)
 \]
 $NP(SP)$ contains the rest of the samples. We remark that a valuation $s$ in $NP$ may or may not satisfy an invariant $Inv$ which satisfies condition (1), (2) and (3).
 
