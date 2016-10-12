@@ -20,11 +20,13 @@ In this section, we present details on how candidate loop invariants are generat
 \label{classification}
 \end{algorithm}
 
-The method call $classify(SP)$ at line 3 in Algorithm~\ref{classification} generates a candidate invariant based in classification. Intuitively, since we know that valuations in $Positive(SP)$ must satisfy $Inv$ and valuations in $Negative(SP)$ must not satisfy $Inv$, a predicate separating the two sets (a.k.a.~a classifier) may be a candidate invariant. In order to automatically generate classifiers, we apply existing classification techniques to generate classifiers. There are many classification algorithms, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, Support Vector Machine (SVM)~\cite{svm:original} and neutral network~\cite{nn}.
-In our approach, the classification algorithms must generate perfect classifiers. Formally, a perfect classifier $\phi$ for two sets of samples $P$ and $N$ is a predicate such that $s \in \phi$ for all $s \in P$ and $s \not \in \phi$ for all $s \in Negative$. Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques.
-In the following, we show how to adopt previously proposed algorithms~\cite{sharma2012interpolants} to generate classifiers based on SVM. Next, we extend the algorithms to generate disjunctive invariants. Lastly, we show how to improve all these candidates systematically through active learning.
+The method call $classify(SP)$ at line 3 in Algorithm~\ref{classification} generates a candidate invariant based in classification. Intuitively, since we know that valuations in $Positive(SP)$ must satisfy $Inv$ and valuations in $Negative(SP)$ must not satisfy $Inv$, a predicate separating the two sets (a.k.a.~a classifier) may be a candidate invariant. In the following, we fix two disjoint sets of samples $P$ and $N$ and discuss how to automatically generate classifiers separating $P$ and $N$. For now, $P$ can be understood as $Positive(SP)$ and $N$ can be understood as $Negative(SP)$. We discuss alternatives in Section~\ref{alternative}.
 
 \subsection{Linear and Polynomial Classifiers}
+To automatically generate classifiers separating $P$ and $N$, we apply existing classification techniques to generate classifiers. There are many classification algorithms, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, Support Vector Machine (SVM)~\cite{svm:original} and neutral network~\cite{nn}.
+In our approach, the classification algorithms must generate perfect classifiers. Formally, a perfect classifier $\phi$ for $P$ and $N$ is a predicate such that $s \in \phi$ for all $s \in P$ and $s \not \in \phi$ for all $s \in Negative$. Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques.
+In the following, we show how to adopt previously proposed algorithms~\cite{sharma2012interpolants} to generate classifiers based on SVM. Next, we extend the algorithms to generate disjunctive invariants. Lastly, we show how to improve all these candidates systematically through active learning.
+
 In~\cite{sharma2012interpolants}, the authors propose to use SVM to generate candidate invariants. SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}.
 In general, the binary classification functionality of linear SVM works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect classifier to separate them if there is any.
 In the following, we write $svm(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise. We refer the readers to~\cite{svm:smo} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} if possible. Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
@@ -45,12 +47,13 @@ In~\cite{sharma2012interpolants}, an algorithm for learning conjunctive classifi
 separate $P$ and $\{s\}$, remove all samples from $N$ which can be correctly classified by $\phi_i$, and then repeat the process until $N$ becomes empty. The conjunction of all the classifier is then a perfect classifier. We refer the readers to~\cite{sharma2012interpolants} for details of the algorithm. %This approach however may learn a classifier with many clauses. In the worse case, if each classifier $\phi_i$ only classifies the one sample $s$, the returned classifier would conjunct as many clauses as the number of samples in $N$.
 
 \subsection{Disjunctive Classifiers}
-It is known~\cite{DBLP:conf/cav/SharmaDDA11,DBLP:conf/pldi/GulwaniSV08} that it is challenging to automatically generate disjunctive invariants, whereas certain loops can only be proved with disjunctive invariants. In the following, we show how to learn disjunctive invariants through classification. Our observation is that a disjunctive invariant is needed often when the loop contains multiple branches. For instance, proving the Hoare triple shown on the left of Figure~\ref{fig:disjunctive:example} requires the loop invariant $x > 0 \lor y > 0$, which is due to the conditional branch at line 3; and the Hoare triple shown on the right of Figure~\ref{fig:disjunctive:example} (adopted from~\cite{DBLP:conf/popl/HenzingerJMS02}) can be proved with the loop invariant: $lock = 0 \lor new = old$. The reason that such a loop invariant is required is due to the conditional branch at line 5. Based on this observation, we apply the following approach to learn conjunctive or disjunctive invariants. 
+It is known~\cite{DBLP:conf/cav/SharmaDDA11,DBLP:conf/pldi/GulwaniSV08} that it is challenging to automatically generate disjunctive invariants, whereas certain loops can only be proved with disjunctive invariants. In the following, we show how to learn disjunctive invariants through classification. Our observation is that a disjunctive invariant is needed often when the loop contains multiple branches. For instance, proving the Hoare triple shown on the left of Figure~\ref{fig:disjunctive:example} requires the loop invariant $x > 0 \lor y > 0$, which is due to the conditional branch at line 3; and the Hoare triple shown on the right of Figure~\ref{fig:disjunctive:example} (adopted from~\cite{DBLP:conf/popl/HenzingerJMS02}) can be proved with the loop invariant: $lock = 0 \lor new = old$. The reason that such a loop invariant is required is due to the conditional branch at line 5. Based on this observation, we apply the following approach to learn conjunctive or disjunctive invariants.
 
-Assume that the loop body $Body$ contains a finite set of control locations. For instance, the loop in the first program in Figure~\ref{fig:disjunctive:example} has two locations: line 3 and 4. Given a valuation of $V$, say $s$, we write $visit(s)$ to be the set of control location which is visited if we execute the program with initial variable valuation $s$ during the first iteration of the loop. For instance, given the second program in Figure~\ref{fig:disjunctive:example}, $visit(\{lock \mapsto 0, new \mapsto 0, old \mapsto 1\})$ returns $\{\}$. We first partition $SP$ into a set of disjoint partitions such that all valuations in the same partition $SP_i$ visits the same set of control locations. Note that applying the same categorization discussed in Section~\ref{sec:overview}, samples in each partition can be similarly categorized into four sets. Next, we apply the above-mentioned classification algorithms to learn classifiers for each partition. Assume that $\phi_i$ is the classifier obtained for partition $i$ such that a sample in $Postitive(SP_i)$ satisfies $\phi_i$. The disjunction $\bigwedge_i \phi_i$ is then a perfect classifier separating $Positive(SP)$ from the rest.
+Assume that the loop body $Body$ contains a finite set of control locations. For instance, the loop in the first program in Figure~\ref{fig:disjunctive:example} has two locations: line 3 and 4. Given a valuation of $V$, say $s$, we write $visit(s)$ to be the set of control location which is visited if we execute the program with initial variable valuation $s$ during the first iteration of the loop. For instance, given the second program in Figure~\ref{fig:disjunctive:example}, $visit(\{lock \mapsto 0, new \mapsto 0, old \mapsto 1\})$ returns $\{\}$. We first partition $P$ into a set of disjoint partitions such that all valuations in the same partition $P_i$ visits the same set of control locations. Next, we apply the above-mentioned classification algorithms to learn a classifier for each partition, i.e., we learn a classifier $\phi_i$ for partition $i$ separating $P_i$ from $N$.
+Since any sample in $P_i$ satisfies $\phi_i$ and any sample in $N$ does not satisfies, the disjunction $\bigwedge_i \phi_i$ is then a perfect classifier separating $P$ from $N$.
 
 \begin{example}
-
+Given the program shown on the left of
 \end{example}
 
 \begin{figure}[t]
@@ -173,10 +176,10 @@ Assume that the loop body $Body$ contains a finite set of control locations. For
 %
 %As a result, we can apply Algorithm~\ref{alg:polynomialSVM} on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
 %Similar procedures are adapted for other branches and the approach can generate an invariant candidate by combining all the classifiers.
-
+%
 %\paragraph{Example}
 %In the following, we use an illustrative example to show how our framework works on disjunctive invariant learning.
-
+%
 %% can apply the primary SVM
 %\begin{figure}[t]
 %  % \begin{subfigure}{0.5\textwidth}
@@ -213,22 +216,9 @@ Assume that the loop body $Body$ contains a finite set of control locations. For
 %Thus, we can get a candidate invariant $(x>0) \vee (y>0)$ by combining the classifiers together.
 %Apparently, $(x>0) \vee (y>0)$ is the actual invariant for the given program.
 
-\subsection{Making Use of Undetermined Samples}
-The other issue is: how do we handle those valuations in $NP$, which may or may not satisfy $Inv$? If we simply ignore them, there may be a gap between $Positive$ and $Negative$ and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning.
-This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set of valuations in $Positive$ (marked with $+$), $Negative$ (marked with $-$) and $NP$ (marked with $?$) in our running example are plotted in a 2-D plane. Many samples between the line $x=y$ and $x-y=16$ may be contained in $NP$. Without considering the samples in $NP$, classifiers located in the $NP$ region (e.g., $x - y \leq 10$, or $x - y \leq 15$) may be learned to perfectly classify $Positive$ and $Negative$. Identifying more samples in $Positive$ or $Negative$ may not help to improve the classifier either. To overcome the problem, in addition to learn a classifier separating $Positive$ and $Negative$, we learn two additional candidate invariants making use of $NP$:
-one separating $Positive$ from $Negative$ and $NP$ (i.e., assuming valuations in $NP$ fail $Inv$);
-and the other separating $Negative$ from $Positive$ and $NP$ (i.e., assuming valuations in $NP$ satisfy $Inv$).
-We remark that active learning is applied to all three candidates until they converge.
-In our example, if we restrict our learning classifier to linear inequalities, the classifier separating $Positive$ from $Negative$ and $NP$ converge to $\textsc{null}$ (no such classifier), whereas the classifier separating $Negative$ from $Positive$ and $NP$ converges to the desired $x - y \leq 16$.
-
-Once we collect the four categories of samples, we generate candidate loop invariants are obtained through classification algorithms developed in the machine learning community.
-
 \subsection{Active Learning}
-There are however two issues to be solved.
-The first issue is, with the limited samples in $Positive$ and $Negative$,
-it is unlikely that we can obtain an ``accurate'' classifier.
-For instance, given the above-mentioned set $Positive$ and $Negative$,
-a classifier identified using classification techniques like $SVM$ could be: $3x-10y \leq 152$. %$x+y \leq 50$.
+One fundamental problem on applying machine learning techniques to learn loop invariants is the we often have only a limited set of samples. That is, with the limited samples in $Positive(SP)$ and $Negative(SP)$,
+it is unlikely that we can obtain an ``accurate'' classifier. For instance, in Example~\ref{examples}, with the set $Positive$ and $Negative$, a linear classifier identified using SVM could be: $3x-10y \leq 152$. %$x+y \leq 50$.
 Although this classifier perfectly separates the current valuations in $Positive$ from $Negative$,
 it is not useful in proving the Hoare triple and is clearly the result of having limited samples.
 Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}.
@@ -277,3 +267,14 @@ We evaluate the effectiveness of these classification algorithms as well as sele
 We remark that with the help of active learning, we can often reduce the number of learn-and-check iterations. %, and also the corresponding learning time.
 For our running example, with active learning, one iteration of learn-and-check is sufficient to prove the Hoare triple.
 Without active learning, multiple iterations are often required as shown in Section~\ref{sec:evaluations}.
+
+\subsection{Making Use of Undetermined Samples} \label{alternative}
+The other issue is: how do we handle those valuations in $NP$, which may or may not satisfy $Inv$? If we simply ignore them, there may be a gap between $Positive$ and $Negative$ and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning.
+This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set of valuations in $Positive$ (marked with $+$), $Negative$ (marked with $-$) and $NP$ (marked with $?$) in our running example are plotted in a 2-D plane. Many samples between the line $x=y$ and $x-y=16$ may be contained in $NP$. Without considering the samples in $NP$, classifiers located in the $NP$ region (e.g., $x - y \leq 10$, or $x - y \leq 15$) may be learned to perfectly classify $Positive$ and $Negative$. Identifying more samples in $Positive$ or $Negative$ may not help to improve the classifier either. To overcome the problem, in addition to learn a classifier separating $Positive$ and $Negative$, we learn two additional candidate invariants making use of $NP$:
+one separating $Positive$ from $Negative$ and $NP$ (i.e., assuming valuations in $NP$ fail $Inv$);
+and the other separating $Negative$ from $Positive$ and $NP$ (i.e., assuming valuations in $NP$ satisfy $Inv$).
+We remark that active learning is applied to all three candidates until they converge.
+In our example, if we restrict our learning classifier to linear inequalities, the classifier separating $Positive$ from $Negative$ and $NP$ converge to $\textsc{null}$ (no such classifier), whereas the classifier separating $Negative$ from $Positive$ and $NP$ converges to the desired $x - y \leq 16$.
+
+Once we collect the four categories of samples, we generate candidate loop invariants are obtained through classification algorithms developed in the machine learning community.
+

@@ -108,7 +108,7 @@ $Negative(SP)$ is the set of valuations which violates $Pre$ and becomes a valua
 \]
 $NP(SP)$ contains the rest of the samples. We remark that a valuation $s$ in $NP$ may or may not satisfy an invariant $Inv$ which satisfies condition (1), (2) and (3).
 
-\begin{example}
+\begin{example} \label{example2}
 In our example, assume that the following three valuations are randomly generated:
 $(1, 2)$, $(10, 1)$ and $(100, 0)$. Three sequences of valuations are generated after executing the program with these three valuations: $\langle (1, 2), (11, 5) \rangle$, $\langle (10, 1) \rangle$ and $\langle (100, 0) \rangle$.
 Note that the loop is skipped entirely for the latter two cases. After categorization, set $CE(SP)$ is empty; $Positive(SP)$ is $\{(1, 2),(11, 5)\}$; $Negative(SP)$ is $\{(100, 0)\}$; and $NP(SP)$ is $\{(10, 1)\}$.
