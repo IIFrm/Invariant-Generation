@@ -4,205 +4,12 @@ We have implemented our approach in a self-contained tool called \textsc{Zilu}, 
 \textsc{Zilu} is written using a combination of C++ as well as shell codes (for invoking external tools). It makes use of GSL~\cite{gough2009gnu} to solve equation systems which is necessary for selective sampling and
 LibSVM~\cite{chang2011libsvm} as a primitive classification engine for SVM-based classification. For verifying whether a candidate invariant can be used to prove the Hoare triple, we modify the KLEE project~\cite{cadar2008klee} to symbolically execute C programs prior to invoking Z3~\cite{de2008z3} for checking satisfiability of
 condition (4), (5) and (6). We remark that KLEE is a symbolic executor; it may concretely execute the programs and return under-approximated abstraction. This may affect the soundness of our system.
-To overcome this problem, we detect those path conditions produced from concrete executions and return sound abstraction (i.e. $true$). % for them.
+To overcome this problem, we detect those path conditions produced from concrete executions and return sound abstraction (i.e., $true$). % for them.
 
-To study the effectiveness of \textsc{Zilu}, we choose benchmark C programs from multiple sources.
-While the benchmarks $\mathit{zilu\_*}$ are constructed by ourselves, the benchmarks $\mathit{f2}, \mathit{xy*}, \mathit{pldi08}$ are taken from~\cite{gulwani2008program,sharma2012interpolants,gulavani2008automatically}, 
-$\mathit{interproc*}$ from~\cite{jeannet2010interproc}, $\mathit{terminator\_01\_safe}$ from~\cite{beyer:SVCOMP:2013} and the remaining from the software verification competition repository~\cite{Dirk:SVCOMP:2016}.  All benchmarks are available from~\cite{zilu:benchmark}. We remark that the loops in these benchmark programs often contain non-deterministic choices which are used to model I/O environment (e.g., an external function call).
-As non-determinism is beyond the scope of this work, we replace these non-deterministic commands with free boolean variables. 
+Our evaluation subjects include all C programs we can find from previous publications (e.g.,~\cite{DBLP:conf/pldi/GulwaniSV08,sharma2012interpolants,gulavani2008automatically,jeannet2010interproc}) as well as software verification competitions~\cite{Dirk:SVCOMP:2016} (excluding those which cannot be made to satisfy our assumptions). All evaluated programs are available at~\cite{zilu:benchmark}. We remark that the loops in these benchmark programs often contain non-deterministic choices which are used to model I/O environment (e.g., an external function call). As non-determinism is beyond the scope of this work, we replace these non-deterministic commands with free boolean variables.
 
-
-In summary, we have three ways of setting the two sets of samples $P$ and $N$; two kinds of primitive invariants: linear inequalities and polynomial inequalities; and the conjunction or disjunction of primitive invariants.
-
-
-The parameters in our experiments are set as follows.
-For random sampling, we generate random values of all input variables of the program from their default ranges.
-By default, we generate 10 random values for each free variable.
-For selective sampling, the default ratio between random samples and selective samples is 1:4.
-%which would be enlarged if we can not find samples in a few tries.
-%Our experiments indicate this $\mathcal{R}$ is a relatively rational range for the initial sampling.
-When we invoke $\mathit{LibSVM}$ for classification, the parameter $C$ (i.e., it controls the trade-off between avoiding misclassifying training examples and enlarging decision boundary)
-and the inner iteration for $\mathit{SVM}$ learning are set to their maximum value so as to generate only perfect classifiers.
-%Each invocation of $\mathit{LibSVM}$'s classification engine is set to time out in 300 seconds.
-The maximum degree in $\mathit{mapToDegree}$ is set to be 4.
-During candidate verification, integer-type variables in programs are encoded as integers in $\mathit{Z3}$.
-%Considering the differences between machine learning problem and our setting,
-%\textsc{Zilu} tunes $\textsc{LibSvm}$~\cite{chang2011libsvm} in the following three aspects in order to get a \underline{perfect classifier}.
-%\begin{itemize}
-%\item Convert \textsc{Svm} model to an explicit classifier.
-%The original \textsc{Svm} technique does not explicitly calculate a hyperplane, but emits its own model
-%which can be used to do prediction on the given data.
-%%This might not a big problem if we do not apply $\textsc{Svm}$ with some kernel method (which is used to classify no linear separable data).
-%However, we need a explicit classifier as the loop invariant candidate which can be understood and proceeded later for verification.
-%(This is also why we do not apply $\textsc{Svm}$ with kernel methods~\cite{yu2009evolving},
-%considering converting $\textsc{Svm}$ models with kernel methods, i.e. $\textsc{Rbf}$ kernel, would be a complicated, sometimes even impossible, task.)
-%
-%\item As \textsc{Zilu} treasures classification accuracy on the training dataset% than anything else,
-%before applying primitive $\textsc{Svm}$ technique, the parameters
-%(mainly $C$ which tells the $\textsc{Svm}$ optimization how much you want to avoid misclassifying each training example)
-%%different from $\mathcal{C}$ used as loop invariant candidate in our context)
-%should be carefully tuned to learn a perfect classifier which perform well on the training points.
-%
-%\item Validating the learned classifier.
-%Checking the classification correctness of the learned classifier
-%on $\mathcal{S}^+$ and $\mathcal{S}^-$ is still needed as our setting needs to ensure the learned classifier is a perfect one.
-%\textsc{Zilu} also takes $\mathcal{S}^\rightarrow$ to validate the learned classifier(as is shown in Section~\ref{sec:sampling}).
-%\end{itemize}
-
-%\begin{table}[t]
-%\scriptsize
-%\centering
-%\caption{Experiment results}
-%%\begin{tabular}{l c | c c c c | c c c c | c c }
-%%\cline{3-10}
-%\begin{tabular}{l c | c c c c| c c c | c c }
-%\cline{3-9}
-%%& &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{4}{c|}{\textsc{Zilu} without Selective} & & \\
-%& &\multicolumn{4}{|c|}{\textsc{Zilu} with Selective}&\multicolumn{3}{c|}{\textsc{Zilu} without Selective} & & \\
-%\hline
-%%\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sample & $\sharp$v. sample & time & $\sharp$r. sample & & $\sharp$v. sample & time & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
-%\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$r. sample & $\sharp$s. sampls & $\sharp$v. sample &time(s) & $\sharp$r. sample & $\sharp$v. sample &time(s) & \multicolumn{1}{|c|}{Interproc} & \multicolumn{1}{|c|}{CPAChecker} \\
-%\hline % inserts single horizontal line
-%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &992 &27 &39.33	&5160 &129 &timeout  & &  \\
-%%\multicolumn{1}{|c|}{afnp2014\_true\text{-}unreach\text{-}call}         	&conjunction	&248 &993 &27 &39.33	&5160 & &223.63  & &  \\
-%\multicolumn{1}{|c|}{cav12foo1}         									&conjunction 	&228 &912 &20 &51.07	&1980 &48 &168.97  & &  \\
-%\multicolumn{1}{|c|}{cav12foo2}         									&conjunction 	&36 &144 &2 &16.09		&260 &6 &15.98  & &  \\
-%%\multicolumn{1}{|c|}{cggmp2005\_variant\_true\text{-}unreach\text{-}call}   &conjunction 	&210 &840 & &74045	&2220 & &timeout  & &  \\
-%\multicolumn{1}{|c|}{cggmp2005\_variant\_true}   							&conjunction 	&204 &816 &13 &108.57	&1620 &24 &timeout  & &  \\
-%\multicolumn{1}{|c|}{conj}         											&polynomial 	&10 &40 &2 &20.48		&70 &1 &28.48  & &  \\
-%%\multicolumn{1}{|c|}{conj}         											&conjunction/polynomial & & &  &   &  & & &  & &  \\
-%\multicolumn{1}{|c|}{css2003\_true\text{-}unreach\text{-}call}         		&conjunction 	&324 &1296 &33 &57.78	&5080 &125 &258.65  & &  \\
-%\multicolumn{1}{|c|}{dis}         											&polynomial 	&22 &88 &1 &24.27  &70   &2 &41.62  & &  \\
-%\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_1}         		&conjunction 	&264 &1056 &15 &116.21  &1770  &27  &timeout  & &  \\
-%\multicolumn{1}{|c|}{down\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&222 &888 &14 &52.96  &720 &10   &44.99  & &  \\
-%\multicolumn{1}{|c|}{f2}         											&linear 		&52 &208 &1 &10.15  &120 &1   &12.03  & &  \\
-%\multicolumn{1}{|c|}{f3}         											&linear 		&36 &144 &1 &105.15  &330  &5  &93.04  & &  \\
-%%\multicolumn{1}{|c|}{fig1a\_1}         										&linear & & &  &   &  & & &  & &  \\
-%%\multicolumn{1}{|c|}{fig1a\_2}         										&linear & & &  &   &  & & &  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test1}         								&linear 		&8 &32 &1 &9.21  &40 &2   &10.38  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test2}         								&linear 		&84 &96 &1 &11.66  &240  &1  &171.14  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test3}         								&linear 		&42 &168 &1 &30.32  &420 &5   &43.34  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test4}         								&linear 		&28 &112 &4 &14.8  &240 &5   &38.25  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test5}         								&linear 		&32 &128 &1 &9.18  &180 &3   &28.05  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test6}         								&polynomial 	&6 &24 &1 &11.83  &70  &2  &18.27  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test8}         								&conjunction 	&24 &96 &6 &22.13  &220  &2  &97.47  & &  \\
-%\multicolumn{1}{|c|}{interproc\_test11}         							&linear 		&24 &96 &2 &24.79  &180 &2   &206.07  & &  \\
-%\multicolumn{1}{|c|}{lili2}         										&linear 		&84 &336 &4 &21.28  &720  &9  &82.24  & &  \\
-%\multicolumn{1}{|c|}{linear6}         										&linear 		&18 &72 &1 &16.19  &270 &3  &179.39  & &  \\
-%\multicolumn{1}{|c|}{multivar\_true\text{-}unreach\text{-}call1}         	&conjunction 	&68 &272 &3 &16.84  &220 &4   &15.22  & &  \\
-%\multicolumn{1}{|c|}{terminator\_01\_safe}         							&linear 		&6 &24 &1 &9.2  &90  &4  &13.06  & &  \\
-%\multicolumn{1}{|c|}{test}         											&linear 		&28 &112 &1 &10.19  &420 &2  &24.51  & &  \\
-%\multicolumn{1}{|c|}{test2}         										&conjunction 	&56 &218 &3 &173.09  &280  &7  &timeout  & &  \\
-%%\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_1}         		&conjunction & & &  &   &  & & &  & &  \\
-%\multicolumn{1}{|c|}{up\_true\text{-}unreach\text{-}call\_2}         		&conjunction 	&240 &960 &14 &84.02  &540 &7   &89.77  & &  \\
-%%\multicolumn{1}{|c|}{xeq10}         										&linear & & &  &   &  & & &  & &  \\
-%\multicolumn{1}{|c|}{xle10}         										&linear 		&6 &24 &1 &8.57  &60 &3   &12.58  & &  \\
-%\multicolumn{1}{|c|}{xy10}         											&linear 		&162 &648 &4 &39.69  &840  &11  &40.51  & &  \\
-%\multicolumn{1}{|c|}{xyle0}         										&polynomial 	&60 &240 &4 &85.61  &620   &12 &472.68  & &  \\
-%\hline
-%\end{tabular}
-%\label{tbl:stats}
-%\end{table}
-
-%\begin{table*}[t]
-%    \begin{center}
-%    % \begin{minipage}{\textwidth}
-%    % \begin{adjustwidth}{-1in}{-1in}
-%    \begin{center}
-%    \begin{adjustbox}{max width=1\textwidth}
-%    \begin{tabular}{l | r | r | r | r | r | r | r | r | r}
-%        \hline\hline
-%        Benchmark
-%            & $\sharp$Random Samples & $\sharp$Selective Samples & $\sharp$Iterations
-%            & $\sharp$Traces & $\sharp$Variables
-%            & Time & Invariant Type
-%            & Interproc & CPAChecker
-%            \\
-%        \hline
-%        Linear 1
-%            & 196 & 4 & 1
-%            & 1 & 1
-%            & 3.31s & Linear
-%            & 0.01s & 3.42s
-%            \\
-%        \hline
-%        Linear 2
-%            & 3158 & 7 & 1
-%            & 1 & 2
-%            & 9.86s & Linear
-%            & 0.01s & 3.29s
-%            \\
-%        \hline
-%        Linear 3
-%            & 11102 & 6 & 1
-%            & 1 & 3
-%            & 40.24s & Linear
-%            & 0.01s & 3.50s
-%            \\
-%        \hline
-%        Linear 4
-%            & 1143 & 10 & 1
-%            & 9 & 2
-%            & 12.54s & Linear
-%            & 0.01s & 3.76s
-%            \\
-%        \hline
-%        Linear 5
-%            & 918 & 8 & 2
-%            & 3 & 2
-%            & 14.47s & Linear
-%            & Error & 3.66s
-%            \\
-%        \hline
-%        Poly 1
-%            & 64 & 7 & 2
-%            & 1 & 1
-%            & 10.51s & Polynomial
-%            & Unknown & Unknown
-%            \\
-%        \hline
-%        Poly 2
-%            & 32711 & 85 & 7
-%            & 2 & 2
-%            & 23m43.1s & Polynomial
-%            & Unknown & Unknown
-%            \\
-%        \hline
-%        Poly 3
-%            & 272 & 17 & 4
-%            & 3 & 1
-%            & 15.82s & Polynomial
-%            & 0.01s & 3.31s
-%            \\
-%        \hline
-%        Poly 4
-%            & 2287 & 112 & 9
-%            & 2 & 2
-%            & 13m43.7s & Polynomial
-%            & Unknown & Unknown
-%            \\
-%        \hline
-%        Conjunction 1
-%            & 21247 & 81 & 1
-%            & 3 & 2
-%            & 20m41.35s & Conjunction
-%            & 0.01s & 3.16s
-%            \\
-%        \hline
-%    \end{tabular}
-%    \end{adjustbox}
-%    \end{center}
-%    % \end{adjustwidth}
-%    % \end{minipage}
-%    \end{center}
-%    \caption{Experiment Results}
-%    \label{tab:experiments}
-%\end{table*}
-
-In order to show the relevance of selective sampling, we measure the performance of \textsc{Zilu}~\cite{zilu:repo} with or without selective sampling. In addition, we compare \textsc{Zilu} with a state-of-the-art invariant inference tool Interproc~\cite{jeannet2010interproc}. We remark that though many other approaches have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, their tools are no longer not available for evaluation.
-Interproc generates invariants based on abstract interpretation. In the experiments, it is set to use its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. %Similar to \textsc{Zilu}, Interproc explicitly labels the loop invariants in the loop program.
-We manually check the generated invariants for correctness. %CPAChecker (formerly BLAST~\cite{henzinger2003software}) is a software verification tool. In the experiments, CPAChecker is configured to generate loop invariants to prove the same Hoare triple.
-We remark that the comparison should be taken with a grain of salt as the methods are different. The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.
+The parameters in our experiments are set as follows. For random sampling, we generate 10 random values of all input variables of a program from their default ranges. Furthermore, during selective sampling, we would add a few random samples in order to improve convergence. The default ratio between random samples and selective samples is 1:4. When we invoke LibSVM for classification, the parameter $C$ (which controls the trade-off between avoiding misclassifying training examples and enlarging decision boundary) and the inner iteration for SVM learning are set to their maximum value so that it generates only perfect classifiers.
+During candidate verification, integer-type variables in programs are encoded as integers in Z3 (not as bit vectors). Since we have three ways of generating the candidate invariant, e.g., by setting the two sets of samples $P$ and $N$ differently as discussed in~Section~\ref{alternative}; or by using different classification algorithm (linear vs. polynomial or conjunctive vs. disjunctive), we simultaneously try to all combinations and terminate as soon as either the Hoare triple is proved or disproved. For polynomial classifiers, the maximum degree is set to be 4.
 
 \begin{table}[t]
 \scriptsize
@@ -216,19 +23,19 @@ We remark that the comparison should be taken with a grain of salt as the method
 \hline % inserts single horizontal line
 %\multicolumn{1}{|c|}{TEMPLATE} 		        	&polynomial 	& & &  &  &  &  & &  \\
 %\hline
-\multicolumn{1}{|c|}{f2}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xy10} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xyz}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xy0\_1}         					&conjunctive 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{xy0\_2}         					&conjunctive 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{pldi08} 		        			&disjunctive 	&- & - &timeout  				&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{f2~\cite{DBLP:conf/pldi/GulwaniSV08}}         						&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xy10~\cite{sharma2012interpolants}} 	        					&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xyz~\cite{sharma2012interpolants}}   	      					&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}         					&conjunctive 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}         					&conjunctive 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}} 		        			&disjunctive 	&- & - &timeout  				&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
 
 %\hline
-\multicolumn{1}{|c|}{interproc1}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{interproc2}         				&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{interproc3}         				&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{interproc4}         				&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&\multicolumn{1}{|c|}{\xmark} \\
-\multicolumn{1}{|c|}{interproc5}         				&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}         				&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}         				&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}         				&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}         				&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}         				&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&\multicolumn{1}{|c|}{\cmark} \\
 
 %\hline
 \multicolumn{1}{|c|}{zilu\_linear1}         			&linear 		&120 &2 &\textbf{24.79}  		&180 &2   &206.07  			&\multicolumn{1}{|c|}{\xmark} \\
@@ -248,42 +55,25 @@ We remark that the comparison should be taken with a grain of salt as the method
 \multicolumn{1}{|c|}{zilu\_conj2}         				&conjunctive 	&280 &3 &\textbf{173.09}  		&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
 
 %\hline
-\multicolumn{1}{|c|}{terminator\_01\_safe}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{terminator\_01\_safe~\cite{beyer:SVCOMP:2013}}         		&linear 		&30 &1 &\textbf{9.2}  			&90  &4  &13.06  			&\multicolumn{1}{|c|}{\cmark} \\
 %\hline
-\multicolumn{1}{|c|}{afnp2014\_true}         			&conjunctive	&1240 &27 &\textbf{39.33}		&- &- &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
-\multicolumn{1}{|c|}{multivar\_true\_1}         		&conjunctive 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{cggmp2005\_variant}   				&conjunctive 	&1020 &13 &\textbf{108.57}		&- &- &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{css2003\_true}         			&conjunctive 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{up\_true\_2}         				&conjunctive 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{down\_true\_1}         			&conjunctive 	&1320  &15 &\textbf{116.21}  	&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{down\_true\_2}         			&conjunctive 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{afnp2014\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunctive	&1240 &27 &\textbf{39.33}		&- &- &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
+\multicolumn{1}{|c|}{multivar\_true\_1~\cite{Dirk:SVCOMP:2016}}         		&conjunctive 	&340 &3 &16.84  				&220 &4   &\textbf{15.22}  	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{cggmp2005\_variant~\cite{Dirk:SVCOMP:2016}}   				&conjunctive 	&1020 &13 &\textbf{108.57}		&- &- &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1420 &33 &\textbf{57.78}		&5080 &125 &258.65  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}         				&conjunctive 	&1200 &14 &\textbf{84.02}  		&540 &7   &89.77  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1320  &15 &\textbf{116.21}  	&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1110 &14 &52.96  				&720 &10   &\textbf{44.99}  &\multicolumn{1}{|c|}{\cmark} \\
 
 \hline
 \end{tabular}
 \label{tbl:stats}
 \end{table}
 
-The first column in the table shows the name of the benchmark program.
-The second shows column the type of invariant required for proving the Hoare triple.
-The next three columns present statistics of \textsc{Zilu} with selective sampling, i.e., the number of samples generated in total, the number of learn-and-check iterations and the total execution time. The next three columns present the corresponding statistics of \textsc{Zilu} without selective sampling.
-The last column shows the result of Interproc, i.e., whether it generates a correct invariant.
-We do not show the time of Interproc because its result may not be correct and because it does not prove/disprove the Hoare triples.
-%%\LL{I need more information on the percentage of the samples. }
-%`$\sharp$Invariants' stands the numbers of invariants generated by SVM,
-%and `$\sharp$Iterations' represents the number of invariant candidates.
-%Notice that an invariant generated by SVM becomes an invariant candidate
-%when it converges to two previously generated invariants from SVM in one iteration process.
-%`$\sharp$Traces' represents the number of loop body traces produced by KLEE~\cite{cadar2008klee}.
-%and `$\sharp$Variables' represents the number of program variables.
-% In general, when numbers of traces and variables increase in a program,
-% the invariant inference difficulty increases.
-%The seventh column gives the time used for the invariant generation
-%and the eighth column gives the invariant type of the generated invariant.
-%We remark that since \textsc{Zilu} relies on random sampling, all numbers collected from \textsc{Zilu} in the table are the average of 10 experiments.
+The experiment results are presented in Table~\ref{tbl:stats}. All of the experiments are conducted using x64 Ubuntu 14.04.1 (kernel 3.19.0-59-generic) with 3.60 GHz Intel Core i7 and 32G DDR3.  In addition, we compare \textsc{Zilu} with a state-of-the-art invariant inference tool Interproc~\cite{jeannet2010interproc}. The first column in the table shows the name of the benchmark program as well as where it is from. The second shows column the type of invariant required for proving the Hoare triple. The next three columns present statistics of \textsc{Zilu} with selective sampling, i.e., the number of samples generated in total, the number of learn-and-check iterations and the total execution time. In order to show the relevance of active learning and selective sampling, we measure the performance of \textsc{Zilu}~\cite{zilu:repo} without selective sampling as well. The next three columns present the corresponding statistics of \textsc{Zilu} without selective sampling. 
+The last column shows the result of an existing tool called Interproc, i.e., whether it generates a correct invariant. We do not show the time of Interproc because its result may not be correct and because it does not prove/disprove the Hoare triples. We remark that though many other approaches have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, their tools are no longer not available for evaluation. Interproc generates invariants based on abstract interpretation. In the experiments, it is set to use its most expressive abstract domain, i.e., the reduced product of polyhedra and linear congruences abstraction. The comparison should be taken with a grain of salt as the methods are different. 
 
-We have the following observations based on the experiment results.
-
-First, selective sampling is helpful in reducing the number of samples and learn-and-check iterations.
+We have the following observations based on the experiment results. First, selective sampling is helpful in reducing the number of samples and learn-and-check iterations.
 In the 25 experiments which \textsc{Zilu} work successfully without selective sampling, 19 of them need fewer or equal number of samples if apply selective sampling.
 On average, the number of iterations is reduced from 10.84 to 4.96.
 As a result, the time required for proving the program is often reduced.

@@ -76,14 +76,12 @@ Given the program shown on the left of
    \begin{subfigure}{0.5\textwidth}
       \[
       \begin{array}{ll}
-      1 & \code{assume(lock=0~and~new=old+1)} \\
-      2 & \code{while(new~!=~old)\{}  \\
-      3 & \code{~~~ \quad lock=1;~old=new;}  \\
-      4 & \code{~~~ \quad if~(*) \{ lock=0;~new++; \}}  \\
-%      5 & \code{~~~ \quad ~~~}\\
-%      6 & \code{~~~ \quad \}} \\
+      1 & \code{assume(x < 0)} \\
+      2 & \code{while(x < 0)\{}  \\
+      3 & \code{~~~ \quad x = x + y;}  \\
+      4 & \code{~~~ \quad y++; \}}  \\
       5 & \code{\}} \\
-      6 & \code{assert(lock~!=~0);}
+      6 & \code{assert(y>0);}
       \end{array}
     \]
    \end{subfigure}
@@ -247,37 +245,41 @@ In our example, $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
 \item Roundoff the values of all the variables according to their types in the program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
 \end{enumerate}
-In the case that a conjunctive or disjunctive classifier (of linear or polynomial inequalities) is learned, we apply the above approach to each and every clause in the classifier to obtain new samples. With the help of active learning and selective sampling, we can often reduce the number of learn-and-check iterations. As we show in Section~\ref{sec:evaluations}, with active learning, often one iteration of learn-and-check is sufficient to prove the Hoare triple. 
+In the case that a conjunctive or disjunctive classifier (of linear or polynomial inequalities) is learned, we apply the above approach to each and every clause in the classifier to obtain new samples. With the help of active learning and selective sampling, we can often reduce the number of learn-and-check iterations. As we show in Section~\ref{sec:evaluations}, with active learning, often one iteration of learn-and-check is sufficient to prove the Hoare triple.
+
+\paragraph{Selective sampling vs. other sampling} In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}.
+Random sampling provides us the initial set of samples. The cost of generating a random sample is often low. However we often need a huge number of random samples in order to learn accurately. Selective sampling bares a slightly higher cost since often it requires to solve some equation system. However, it has been shown that selective sampling is often beneficial compared to random sampling~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. The last sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage, the verifier could provide counter-examples, which are added as new samples. Sampling through verification provides useful new samples by paying a high cost. Thus, in this work, our approach is to start with random sampling, use selective sampling to improve the classifier as much as possible and apply sampling through verification only as the last resort. 
+
+Figure~\ref{fig:sampling} visualizes how different sampling methods are related to each other in a 2-D plane. We start with the figure in the top-left corner.
+The (green) area above the line represents the space covered by the actual invariant. The dots are the samples obtained through random sampling.
+Based on these samples, a classifier is learnt to separate the random samples, as shown in the top-right figure.
+With this learnt invariant, selective sampling would us to identify those samples on the classification boundary based on the learnt classifier, as shown in the bottom-left figure.
+In comparison, sampling through verification would provide us the sample between the two lines shown in the bottom-left figure.
+It is obvious that the classifier will be improved with either selective sampling or sampling through verification, as shown in the bottom-right figure.
+The benefit of always applying selective sampling before applying sampling through verification is that verification is often more costly and thus we would like to avoid it as much as possible. \\
+
+\begin{figure}[t]
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-0.pdf}
+%        \caption{Random Sampling}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-1.pdf} \\
+%        \caption{Learnt Invariant}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-2.pdf}
+%        \caption{Selective and Counter-Example Sampling}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-3.pdf}
+%        \caption{Refined Invariant}
+    \caption{Sampling approaches}
+    \label{fig:sampling}
+\end{figure}
+
 
 \subsection{Making Use of Undetermined Samples} \label{alternative}
 So far we have focused on learning and refining classifiers between $Positive(SP)$ and $Negative(SP)$. The question is then: how do we handle those valuations in $NP(SP)$, which may or may not satisfy $Inv$? If we simply ignore them, there may be a gap between $Positive(SP)$ and $Negative(SP)$ and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning.
-This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set of valuations in $Positive(SP)$ (marked with $+$), $Negative(SP)$ (marked with $-$) and $NP(SP)$ (marked with $?$) for the example in Figure~\ref{fig:running:example:program} are plotted in a 2-D plane. Many samples between the line $x=y$ and $x-y=16$ may be contained in $NP(SP)$. As a result, without considering the samples in $NP(SP)$, classifiers located in the $NP(SP)$ region (e.g., $x - y \leq 10$, or $x - y \leq 13$) may be learned to perfectly classify $Positive(SP)$ and $Negative(SP)$. Worse, identifying more samples may not help to improve the classifier if the new samples are in $NP(SP)$ or are already classified by the existing classifier. 
+This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set of valuations in $Positive(SP)$ (marked with $+$), $Negative(SP)$ (marked with $-$) and $NP(SP)$ (marked with $?$) for the example in Figure~\ref{fig:running:example:program} are plotted in a 2-D plane. Many samples between the line $x=y$ and $x-y=16$ may be contained in $NP(SP)$. As a result, without considering the samples in $NP(SP)$, classifiers located in the $NP(SP)$ region (e.g., $x - y \leq 10$, or $x - y \leq 13$) may be learned to perfectly classify $Positive(SP)$ and $Negative(SP)$. Worse, identifying more samples may not help to improve the classifier if the new samples are in $NP(SP)$ or are already classified by the existing classifier.
 
 To overcome the problem, in addition to learn a classifier separating $Positive(SP)$ and $Negative(SP)$, we learn candidate invariants making use of $NP(SP)$, i.e., classifiers separating $Positive(SP)$ from $Negative(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP(SP)$ fail the actual invariant), and classifiers separating $Negative(SP)$ from $Positive(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP$ satisfy the actual invariant).
 We remark that active learning is applied to all these candidates until they converge. For the example in Figure~\ref{fig:running:example:program}, if we focus classifiers in the form of linear inequalities, the classifier separating $Positive(SP)$ from the rest converges to $\textsc{null}$ (no such classifier), whereas the classifier separating $Negative(SP)$ from the rest converges to $x - y \leq 16$, which can be used to prove the Hoare triple.
 
-%\begin{table}[t]
-%    \begin{center}
-%     \begin{tabular}{| l | c | c | l |}
-%         \hline
-%          & $P=Positive(SP)$, $N=Negative(SP)$ & $P=Positive(SP)$, $N=Negative(SP)$ & $P=Positive(SP)$, $N=Negative(SP)$ \\
-%         \hline
-%         linear inequality &  & \\
-%         \hline
-%         CONS & Eager & \\
-%         \hline
-%         CEGAR & Lazy & Counterexample \\
-%         \hline
-%         INTER & Lazy & Counterexample \\
-%         \hline
-%         G\&C & Eager & Empirical \\
-%         \hline
-%         ABD & Lazy & Semantic \\
-%         \hline
-%         DAL & Eager & All Above \\
-%         \hline
-%     \end{tabular}
-%     \end{center}
-%     \caption{Existing Invariant Inference Approaches}
-%     \label{tab:related}
-%\end{table}
