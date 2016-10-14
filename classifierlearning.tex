@@ -1,6 +1,6 @@
 \section{Our Approach: Classification and Active Learning}
 \label{sec:classifierlearning}
-In this section, we present details on how candidate loop invariants are generated. The work flow is shown in Algorithm~\ref{classification}, which iteratively generates a candidate through classification (at line 3) and improves it through active learning at line 5 until a fixed point is reached. Note that any time a counterexample is identified (at line 2), our approach exits and reports that the Hoare triple is disproved.
+In this section, we present details on how candidate loop invariants are generated. Algorithm~\ref{classification} shows how $actL(SP)$ is implemented in general, i.e., it iteratively generates a candidate through classification (at line 3) and improves it through active learning (at line 5) until a fixed point is reached. Note that any time a counterexample is identified (at line 2), our approach exits and reports that the Hoare triple is disproved.
 
 \begin{algorithm}[t]
 \SetAlgoVlined
@@ -23,7 +23,7 @@ In this section, we present details on how candidate loop invariants are generat
 The method call $classify(SP)$ at line 3 in Algorithm~\ref{classification} generates a candidate invariant based in classification. Intuitively, since we know that valuations in $Positive(SP)$ must satisfy $Inv$ and valuations in $Negative(SP)$ must not satisfy $Inv$, a predicate separating the two sets (a.k.a.~a classifier) may be a candidate invariant. In the following, we fix two disjoint sets of samples $P$ and $N$ and discuss how to automatically generate classifiers separating $P$ and $N$. For now, $P$ can be understood as $Positive(SP)$ and $N$ can be understood as $Negative(SP)$. We discuss alternatives in Section~\ref{alternative}.
 
 \subsection{Linear and Polynomial Classifiers}
-To automatically generate classifiers separating $P$ and $N$, we apply existing classification techniques to generate classifiers. There are many classification algorithms, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, Support Vector Machine (SVM)~\cite{svm:original} and neutral network~\cite{nn}.
+To automatically generate classifiers separating $P$ and $N$, we apply existing classification techniques. There are many classification algorithms, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, Support Vector Machine (SVM)~\cite{svm:original} and neutral network~\cite{nn}.
 In our approach, the classification algorithms must generate perfect classifiers. Formally, a perfect classifier $\phi$ for $P$ and $N$ is a predicate such that $s \in \phi$ for all $s \in P$ and $s \not \in \phi$ for all $s \in Negative$. Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques.
 In the following, we show how to adopt previously proposed algorithms~\cite{sharma2012interpolants} to generate classifiers based on SVM. Next, we extend the algorithms to generate disjunctive invariants. Lastly, we show how to improve all these candidates systematically through active learning.
 
@@ -56,38 +56,38 @@ Since any sample in $P_i$ satisfies $\phi_i$ and any sample in $N$ does not sati
 Given the program shown on the left of
 \end{example}
 
-\begin{figure}[t]
-   \begin{subfigure}{0.5\textwidth}
-    \raggedright
-    % \vspace{0.5cm}
-    \[
-      \begin{array}{ll}
-      1 & \code{assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
-      2 & \code{while(x~{+}~y~{\le}-2)\{}  \\
-      3 & \code{\quad if~(x~{>}~0) ~~~x{++};}  \\
-      4 & \code{\quad else~ ~~~y{++};}\\
-      5 & \code{\}} \\
-      6 & \code{assert(x~{>}~0~ {||} ~y~{>}~0);}\\
-      \end{array}
-    \]
-%     \caption{A sample program}
-%     \label{fig:sl1:example:program}
-   \end{subfigure}%
-   \begin{subfigure}{0.5\textwidth}
-      \[
-      \begin{array}{ll}
-      1 & \code{assume(x < 0)} \\
-      2 & \code{while(x < 0)\{}  \\
-      3 & \code{~~~ \quad x = x + y;}  \\
-      4 & \code{~~~ \quad y++; \}}  \\
-      5 & \code{\}} \\
-      6 & \code{assert(y>0);}
-      \end{array}
-    \]
-   \end{subfigure}
-\caption{Sample programs with disjunctive loop invariants}
-\label{fig:disjunctive:example}
-\end{figure}
+%\begin{figure}[t]
+%   \begin{subfigure}{0.5\textwidth}
+%    \raggedright
+%    % \vspace{0.5cm}
+%    \[
+%      \begin{array}{ll}
+%      1 & \code{assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
+%      2 & \code{while(x~{+}~y~{\le}-2)\{}  \\
+%      3 & \code{\quad if~(x~{>}~0) ~~~x{++};}  \\
+%      4 & \code{\quad else~ ~~~y{++};}\\
+%      5 & \code{\}} \\
+%      6 & \code{assert(x~{>}~0~ {||} ~y~{>}~0);}\\
+%      \end{array}
+%    \]
+%%     \caption{A sample program}
+%%     \label{fig:sl1:example:program}
+%   \end{subfigure}%
+%   \begin{subfigure}{0.5\textwidth}
+%      \[
+%      \begin{array}{ll}
+%      1 & \code{assume(x < 0)} \\
+%      2 & \code{while(x < 0)\{}  \\
+%      3 & \code{~~~ \quad x = x + y;}  \\
+%      4 & \code{~~~ \quad y++; \}}  \\
+%      5 & \code{\}} \\
+%      6 & \code{assert(y>0);}
+%      \end{array}
+%    \]
+%   \end{subfigure}
+%\caption{Sample programs with disjunctive loop invariants}
+%\label{fig:disjunctive:example}
+%\end{figure}
 
 %\subsubsection{Disjunctive Invariants for Loop Body with 2 Branches}
 %Formally, the Hoare triple for any loop body with two branches can be expressed in the following form on the left side.
@@ -248,7 +248,7 @@ In our example, $x \approx 2.9580$.
 In the case that a conjunctive or disjunctive classifier (of linear or polynomial inequalities) is learned, we apply the above approach to each and every clause in the classifier to obtain new samples. With the help of active learning and selective sampling, we can often reduce the number of learn-and-check iterations. As we show in Section~\ref{sec:evaluations}, with active learning, often one iteration of learn-and-check is sufficient to prove the Hoare triple.
 
 \paragraph{Selective sampling vs. other sampling} In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}.
-Random sampling provides us the initial set of samples. The cost of generating a random sample is often low. However we often need a huge number of random samples in order to learn accurately. Selective sampling bares a slightly higher cost since often it requires to solve some equation system. However, it has been shown that selective sampling is often beneficial compared to random sampling~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. The last sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage, the verifier could provide counter-examples, which are added as new samples. Sampling through verification provides useful new samples by paying a high cost. Thus, in this work, our approach is to start with random sampling, use selective sampling to improve the classifier as much as possible and apply sampling through verification only as the last resort. 
+Random sampling provides us the initial set of samples. The cost of generating a random sample is often low. However we often need a huge number of random samples in order to learn accurately. Selective sampling bares a slightly higher cost since often it requires to solve some equation system. However, it has been shown that selective sampling is often beneficial compared to random sampling~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. The last sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage, the verifier could provide counter-examples, which are added as new samples. Sampling through verification provides useful new samples by paying a high cost. Thus, in this work, our approach is to start with random sampling, use selective sampling to improve the classifier as much as possible and apply sampling through verification only as the last resort.
 
 Figure~\ref{fig:sampling} visualizes how different sampling methods are related to each other in a 2-D plane. We start with the figure in the top-left corner.
 The (green) area above the line represents the space covered by the actual invariant. The dots are the samples obtained through random sampling.
@@ -283,3 +283,9 @@ This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set 
 To overcome the problem, in addition to learn a classifier separating $Positive(SP)$ and $Negative(SP)$, we learn candidate invariants making use of $NP(SP)$, i.e., classifiers separating $Positive(SP)$ from $Negative(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP(SP)$ fail the actual invariant), and classifiers separating $Negative(SP)$ from $Positive(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP$ satisfy the actual invariant).
 We remark that active learning is applied to all these candidates until they converge. For the example in Figure~\ref{fig:running:example:program}, if we focus classifiers in the form of linear inequalities, the classifier separating $Positive(SP)$ from the rest converges to $\textsc{null}$ (no such classifier), whereas the classifier separating $Negative(SP)$ from the rest converges to $x - y \leq 16$, which can be used to prove the Hoare triple.
 
+\begin{figure}[t]
+      \centering
+      \includegraphics[scale=0.42]{figures/running-sampling.pdf}
+      \caption{Distribution of samples}
+      \label{fig:running:example:sampling}
+\end{figure}
