@@ -1,438 +1,291 @@
-%\section{Location-based Disjunctive Invariant Learning}
-\section{Classifier Learning}
+\section{Our Approach: Classification and Active Learning}
 \label{sec:classifierlearning}
-% Real programs require invariants in various forms.
-% Some loops in real programs fundamentally require disjunctive invariants. 
-% We observe one reason for invariants to involve disjunction is due to program branches. 
-% To give an example, in the following, we show how our framework handle disjunctive invariant for loop body with 2 branches.
+In this section, we present details on how candidate loop invariants are generated. Algorithm~\ref{classification} shows how $actL(SP)$ is implemented in general, i.e., it iteratively generates a candidate through classification (at line 3) and improves it through active learning (at line 5) until a fixed point is reached. Note that any time a counterexample is identified (at line 2), our approach exits and reports that the Hoare triple is disproved.
 
-The machine learning community have proposed many classification algorithms, 
-such as perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, $\mathit{SVM}$~\cite{svm:original} and neutral network~\cite{nn}.
-%Among plenty of classification approaches, \textsc{Zilu} takes Supported Vector Machines as a primary approach.
-%Before demonstrating the specific technique applied in \textsc{Zilu},
-%it should be noted that there are at least two main differences between machine learning problems and the problem in our setting:
-In our framework, the classification algorithms must generate perfect classifiers. 
-Formally, a perfect classifier $\phi$ for two sets of samples $Positive$ and $Negative$ is a predicate 
-such that $s \models \phi$ for all $\mathit{s \in Positive}$ and $\mathit{s \not \models \phi}$ for all $\mathit{s \in Negative}$. 
-(We denote $P$ to be $\mathit{Positive}$ and $N$ to be $\mathit{Negative}$ for short.) 
-Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques. 
-
-In the following, we present several classification algorithms based on Support Vector Machine ($\mathit{SVM}$) to learn invariant in various forms. 
-We remark that our framework is not restricted to $\mathit{SVM}$-based classification algorithms.
-
-%But there are still differences between the classification problem in machine learning field and the one in our framework:
-%\begin{itemize}
-%\item Our framwork need to learn an classifier with explicit form which is readable by human and can be proceeded by off-the-shelf constraints solvers.
-%However, the current machine learning techniques always produce an implicit classifier that is used to do prediction.
-%So we need to convert the implicit classifier to an explicit one, which will be used in later stage.
-%%Most machine learning techniques values more on prediction correctness rather than understanding the underlying problem. \LL{What is the difference?}
-%%although there is a research trend in machine learning to understand ongoing during these years.
-%%However, in the software engineering area, program verification cares about formalization and reasoning.
-%%Therefore, a classification technique from machine learning area would be highly suggested as long as it can predict correctly on newly received data.
-%%But in our setting, we need an explicit classifier which is readable by human and can be proceeded by off-the-shelf constraints solvers.
-%\item
-%%Machine learning algorithms consider more of generalization ability than classification correctness on the training data.
-%%Thus they would \LL{sacrifice the prediction correctness on the training data} for exchanging the higher generalization ability.  \LL{I feel our method is incorrect after reading this. Be precise. }
-%In our context, the classification accuracy on the training data is of vital importance,
-%and even a slight classification error can not be tolerated.
-%But some machine learning algorithms would partially sacrifice the classification correctness on the training data
-%for exchanging a higher prediction accuracy on the unseen data,
-%as they values the generalization ability most.
-%%On this basis, we hope the learned classifier can reflect the underlying logic of the given program.
-%% classification algorithm can have better generalization ability.
-%%\end{itemize}
-%Considering these differences,
-%in the following text,
-%we show our classification approaches which extend the native SVM to learning the invariant candidate.
-%\LL{I understand your meaning, but maybe say, we thus extend svm to capture ...
-%Do not describe methods in a vague manner. }
-
-
-%\subsection{Support Vector Machines}
-%\label{subsec:svm}
-%, is one of the most powerful approaches.
-%SVM is a supervised learning model with associated learning algorithms that analyze data used for classification.
-%In most setting, given a set of training examples, each marked as belonging to one of two categories,
-%an SVM training algorithm builds a model, which is a representation of the examples as points in space,
-%that can assign new examples into one category or the other,
-%making it a non-probabilistic binary linear classifier.
-\subsection{Linear Classifiers}
-$\mathit{SVM}$ is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}. 
-In this work, we use its binary classification functionality.
-In general, the binary classification functionality of (linear) $\textsc{Svm}$ works as follows.
-Given two sets of samples $P$ and $N$, $\mathit{SVM}$ generates a perfect linear classifier to separate them if there is any.
-In the following, we write $\mathit{svm}(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; 
-or returns $\textsc{null}$ otherwise.
-We refer the readers to~\cite{svm:smo} for details on how the classifier is computed.
-In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{sharma2012interpolants}) if possible.
-Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
-$\mathit{SVM}$ by default learns only classifiers in the form of a linear inequality (a.k.a.~a half space),
-e.g., in the form of $\mathit{a x + b y \geq c}$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants.
-In practice, such classifiers may not be sufficient and thus, we develop algorithms to learn more expressive invariants.
-
-\subsection{Polynomial Classifiers} Algorithm~\ref{alg:polynomialSVM} shows our algorithm for learning classifiers in the form of polynomial inequalities.
-The inputs of the algorithm include the two sets of samples $P$ and $N$ as well as a threshold on the maximum degree of the polynomial classifier.
-During the loop from line 2 to 7, we first map all the samples in $P$ (similarly $N$) to a set of samples $P'$ (similarly $N'$) in a high dimensional space using function $\mathit{mapToDegree}$.
-Given a set of samples $X$ and a target degree, function $\mathit{mapToDegree}$ returns a set of new samples $X'$ such that each element in $X$ is mapped to an element in $X'$.
-For instance, let ${(x, y) =  (2, 1)}$ be an element in $X$ and the target $\mathit{degree}$ be 2, 
-% For instance, let $\{x \mapsto 2, y \mapsto 1\}$ be an element in $X$ and the target $\mathit{degree}$ be 2,
-the following element is added to $X'$: ${(x, y, x^2, xy, y^2) =  (2, 1, 4, 2, 1)}$.
-%the following element is added to $X'$: $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
-That is, given a valuation in $P$, we systematically add all terms constituted by the same variables with a degree no more than $\mathit{degree}$, 
-as if they are new variables.
-% \vspace{-0.2cm}
 \begin{algorithm}[t]
 \SetAlgoVlined
 \Indm
 \Indp
-    Initialize $degree$ as 1\;
-    \While {$degree \le \mathit{max\_degree}$} {
-        $P' := \mathit{mapToDegree}(P, \mathit{degree})$\;
-        $N' := \mathit{mapToDegree}(N, \mathit{degree})$\;
-        \If {$\mathit{svm}(P', N')$ is not $\textsc{null}$} {
-            \Return $\mathit{svm}(P', N')$\;
-        }
-        $\mathit{degree} := \mathit{degree} + 1$\;
-    }
-    \Return $\textsc{null}$;
-\caption{Algorithm $\mathit{polynomial}(P,N)$}
-\label{alg:polynomialSVM}
+\While{true} {
+    if ($CE(SP)$ is not empty) { exit and report ``disproved''; } \\
+    let $\phi$ be a set of candidates generated by $classify(SP)$\;
+%    let $c$ be $classify(Positive(SP), Negative(SP))$\;
+%    //alternatively: let $c$ be $classify(Positive(SP), Negative(SP) \cup NP(SP))$; \\
+%    //alternatively: let $c$ be $classify(Positive(SP) \cup NP(SP), Negative(SP))$; \\
+    if ($\phi$ is the same as last iteration){ return $\phi$; } \\
+    add $selectiveSampling(\phi)$ into $SP$\;
+    add all valuations $s'$ such that $s \Rightarrow s'$ for some $s \in SP$ into SP\;
+}
+\caption{Algorithm $actL(SP)$}
+\label{classification}
 \end{algorithm}
-% \vspace{-0.2cm}
-%The primary idea is simple, after mapping raw data (program states) from original space in $\mathcal{S}^+$, $\mathcal{S}^-$ and $\mathcal{S}^\rightarrow$ to a high dimensions,
-$\mathit{SVM}$ is then applied to learn a perfect linear classifier for $P'$ and $N'$. % as is shown in~\ref{subsec:svm}.
-Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}.
-In order to favor classifiers with lower degrees (which often are easier to understand and verify), 
-we start with looking for a polynomial classifier with degree 1 and only look for higher-degree polynomial classifiers if we find no lower-degree ones.
-The algorithm terminates when we reach the threshold on the maximum degree.
-We remark that the size of each sample in $P'$ or $N'$ grows rapidly with $\mathit{degree}$. 
-%The number of monomials of $\mathit{degree}$ in $\mathit{n}$ is $(^{n+degree-1}_{degree})$.
-However, in our experiments, we can often identify useful classifiers with a small $\mathit{degree}$ value.
-We remark that the polynomial classifiers learnt by Algorithm~\ref{alg:polynomialSVM} can represent classifiers in the form of disjunctive or conjunctive linear inequalities.
-%Because some invariants of conjunctive or disjunctive form can be expressed in polynomials equivalently,
-For instance, the classifier $\big((x \ge d_0) \wedge (x \le d_1)\big) \vee (x \ge d_2)$
-where $\mathit{d_0 < d_1 < d_2}$ are constants can be represented as: $\mathit{x^3 + (d_0d_1 + d_0d_2 + d_1d_2)x^2 - (d_0 + d_1 + d_2)x - d_0d_1d_2 \geq 0}$.
 
+The method call $classify(SP)$ at line 3 in Algorithm~\ref{classification} generates a candidate invariant based in classification. Intuitively, since we know that valuations in $Positive(SP)$ must satisfy $Inv$ and valuations in $Negative(SP)$ must not satisfy $Inv$, a predicate separating the two sets (a.k.a.~a classifier) may be a candidate invariant. In the following, we fix two disjoint sets of samples $P$ and $N$ and discuss how to automatically generate classifiers separating $P$ and $N$. For now, $P$ can be understood as $Positive(SP)$ and $N$ can be understood as $Negative(SP)$. We discuss alternatives in Section~\ref{alternative}.
 
-% \vspace{-2mm}
+\subsection{Linear and Polynomial Classifiers}
+To automatically generate classifiers separating $P$ and $N$, we apply existing classification techniques. There are many classification algorithms, e.g., perceptron~\cite{perceptron}, decision tree~\cite{quinlan1986induction}, Support Vector Machine (SVM)~\cite{svm:original} and neutral network~\cite{nn}.
+In our approach, the classification algorithms must generate perfect classifiers. Formally, a perfect classifier $\phi$ for $P$ and $N$ is a predicate such that $s \in \phi$ for all $s \in P$ and $s \not \in \phi$ for all $s \in Negative$. Furthermore, the classification algorithms must generate classifiers which are human-interpretable or can be handled by existing program verification techniques.
+In the following, we show how to adopt previously proposed algorithms~\cite{sharma2012interpolants} to generate classifiers based on SVM. Next, we extend the algorithms to generate disjunctive invariants. Lastly, we show how to improve all these candidates systematically through active learning.
 
+In~\cite{sharma2012interpolants}, the authors propose to use SVM to generate candidate invariants. SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}.
+In general, the binary classification functionality of linear SVM works as follows. Given two sets of samples $P$ and $N$, SVM generates a perfect classifier to separate them if there is any.
+In the following, we write $svm(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise. We refer the readers to~\cite{svm:smo} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} if possible. Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
+SVM by default learns classifiers in the form of a linear inequality (a.k.a.~a half space), e.g., in the form of $a x + b y \geq c$ where $x$ and $y$ are variables whereas $a$, $b$, and $c$ are constants.
 
-%The whole classification algorithm is described in Algorithm~\ref{alg:classify}.
-%Note that,
-%$\textsc{Svm}$ in this algorithm can be substitute with other classification techniques for different learning purposes.
-%We will take two classification algorithms as examples to demonstrate this promotion in \LL{?}~\ref{subsec:svm:derivatives}.
-%\begin{algorithm}[!h]
-%\SetAlgoVlined
-%\Indm
-%\KwIn{$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$}
-%\KwOut{$\textsc{Null}$ or a perfect classifier for $\mathcal{S}^+$ and $\mathcal{S}^-$ without violating $\mathcal{S}^\rightarrow$}
-%\Indp
-%    let $f$ = $\textsc{Svm}$($\mathcal{S}^+$, $\mathcal{S}^-)$\;
-%    \If {$f$ violates any data in $\mathcal{S}^+$ or $\mathcal{S}^-$} {
-%        \Return $\textsc{Null}$\;
-%    }
-%    \If {$f$ violates any inference rules in $\mathcal{S}^\rightarrow$} {
-%        \Return $\textsc{Null}$\;
-%    }
-%    \Return $f$;
-%\caption{Algorithm $classify$}
-%\label{alg:classify}
-%\end{algorithm}
+In practice, linear classifiers may not be sufficient and thus more expressive invariants are necessary. We can extend SVM to learn polynomial classifiers. Given two sets of samples $P$ and $N$ as well as a degree of the polynomial classifier, we can systematically map all the samples in $P$ (similarly $N$) to a set of samples $P'$ (similarly $N'$) in a high dimensional space. For instance, assume that the target degree be 2, the sample valuation $\{ x \mapsto 2, y \mapsto 1\}$ in $P$ is mapped to $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
+SVM is then applied to learn a perfect linear classifier for $P'$ and $N'$. Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}.
+We remark that the size of each sample in $P'$ or $N'$ grows rapidly with the increase of the degree and thus the above method is often limited to polynomial classifiers with relatively low degree.
 
+A polynomial classifier can represent classifiers in the form of disjunctive or conjunctive linear inequalities. For instance, the classifier $(x \ge d_0) \wedge (x \le d_1)\big) \vee (x \ge d_2)$
+where $d_0 < d_1 < d_2$ are constants can be represented as follows.
+\[
+x^3 + (d_0d_1 + d_0d_2 + d_1d_2)x^2 - (d_0 + d_1 + d_2)x - d_0d_1d_2 \geq 0
+\]
+However, it is not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. One such simple example is: $x \ge 0 \land y \ge 0$.
 
-
-%In the following, we present how we obtain a classifier automatically using $\textsc{Svm}$.
-%In this work, we always choose the \textit{optimal margin classifier} (see the definition in~\cite{Sharma2012}) if possible.
-%This half space could be seen as the strongest witness why the two data states are different.
-%In the following, we write $svm(S^+, S^-)$ to denote the function which returns a linear classifier
-
-%\subsection{Checking}
-%With the learned $\textsc{Svm}$ model,we check whether it can perfectly classify these states first.
-%If yes, then we can automatically turn it back to a hyperplane form, which is regarded as our invariant candidate.
-%Otherwise, we may apply other classification techniques for learning, which will be mentioned at ``$\textsc{Svm}$ derivatives'' part in the end of this section.
-
-
-%\subsection{SVM Derivatives}
-%\label{subsec:svm:derivatives}
-%%$\mathcal{S}^+$, $\mathcal{S}^-$, and $\mathcal{S}^\rightarrow$
-%If $\mathcal{S}^+$, $\mathcal{S}^-$ cannot be classified with 100\% accuary by one half-space only,
-%a more complicated function $f$ must be adopted.
-%For instance, there has been research on invariants in form of conjunctives~\cite{sharma2012interpolants},
-%octagonal~\cite{mine2006octagon}, tree form~\cite{krishna2015learning}\cite{garg2015learning} and so on.
-%
-%%For instance, if there is a classifier in the form of conjunctive of multiple half spaces,
-%%the algorithm presented in~\cite{sharma2012interpolants} can be used to identify such a classifier.
-%
-%Moreover, as is noted Algorithm~\ref{alg:classify} can be easily extended by substituting $\textsc{Svm}$ with other classification approaches,
-%\textsc{Zilu} has implemented two classification algorithms by extending the native $\textsc{Svm}$:
-%$Polynomial \textsc{Svm}$ for learning invariants in the form of polynomials or any equivalent expressions,
-%and $Conjunctive$\textsc{Svm} for learning invariants in the form of conjunctives.
-%
-%\medskip\noindent
-%\textbf{Polynomial SVM.}
-%In previous research, several papers ~\cite{**} have studied invariants with conjunctive form or disjunctive form.
-%However, there is still no efficient approach to learning these invariants.
-%In our research, we found sometimes convert the conjunctive or disjunctives to a polynomial expression might be a nice try to this problem.
-%In the real work, there are not only linear invariants but invariants of many other forms,
-%such as, conjunctives~\cite{sharma2012interpolants}, octagonal~\cite{mine2006octagon}, polynomial, and tree form~\cite{krishna2015learning}\cite{garg2015learning}.
-%In this part, we present our classification approach based on primitive \textsc{Svm} for learning polynomial invariants,
-%which have not been discussed by previous research.
-%In this part, we would like to learn this kind of invariants.
-%Apparently methods that use linear template or linear classification algorithm do not work.
-%Actually, polynomials are more powerful on this than they look at the first glance, especially univariate polynomials.
-%Some cubic univariate polynomials can represent disjunctive of a conjunctive expression and a linear expression.
-%For example, the following two expressions are equivalent:
-%$$\big(x \ge x_0 \bigwedge x \le x_1) \bigvee x \ge x_2\big) \ where\ x_0 < x_1 < x_2$$
-%$$x^3 + (x_0x_1 + x_0x_2 + x_1x_2)x^2 - (x_0 + x_1 + x_2)x - x_0x_1x_2 >= 0$$
-%This leads us to develop a classification algorithm for learning polynomial divider.
-%
-%The whole procedure is shown in algorithm~\ref{alg:polynomialSVM}.
-%In practice, \textsc{Zilu} provide polynomials up to degree 4 as we think degree 4 can cover most hackneyed invariants for now.
-
-
-%\begin{align}
-%    x^3 + a\dot x^2 - b\dot x - c &>= &0 \\
-%    where a &= & x_0 \dot x_1 + x_0 \dot x_2 + x_1 \dot x_2 \\
-%\end{align}
-%For instance, if the target invariant is
-%$$(x \ge x_0) \vee (x \le x_1) \ where\ x_0 < x_1$$
-%we can find an equivalent polynomial expression:
-%$$x^2 - (x_0 + x_1)x + x_0x_1 \ge 0$$
-%So $polynomialSVM$ can be used to learn a polynomial classifier or any complex expression as long as it can be expressed in form of polynomials.
-
-\subsection{Conjunctive Classifiers}
-As discussed above, polynomial classifiers can equivalently represent certain conjunction or disjunction of linear classifiers. 
-However, it is not always possible, i.e., some conjunctive or disjunctive linear inequalities cannot be expressed in the form of a polynomial classifier. 
-A simple example is $\mathit{x \ge 0 \land y \ge 0}$. 
-Thus, we develop an algorithm to learn conjunctive classifiers.
-
-Algorithm~\ref{alg:conjunctiveSVM} shows a classification algorithm which is designed to learn conjunctive polynomial classifiers.
-%So in this part, we introduce the algorithm to learn conjunctive invariants directly.
-%, avoiding the tries to convert them into a form of polynomials.
-It is inspired by the algorithm presented in~\cite{sharma2012interpolants}. 
-The difference is that~\cite{sharma2012interpolants} learns conjunctive linear classifiers, whereas we learn conjunctive polynomial classifiers. 
-The idea is to pick one sample $s$ from $N$ (at line 3) each time and identify a polynomial classifier based on Algorithm~\ref{alg:polynomialSVM},
- separating $P$ and $\{s\}$ (a.k.a.~a clause). 
-Next, we remove (at line 6 to 8) all samples from $N$ which can be correctly classified by the polynomial classifier found at line 4, 
-and then repeat the process until $N$ becomes empty.
-% \vspace{-0.2cm}
-\begin{algorithm}[t]
-\SetAlgoVlined
-\Indm
-\Indp
-    Initialize set $C$\ as an empty set $\{\}$, set $\mathit{Misclassified}$\ as\ $N$\;
-    \While {$\mathit{Misclassified}$ is not empty} {
-        Random choose $s$ from $\mathit{Misclassified}$\;
-        $f := \mathit{polynomial}(P, \{s\})$\;
-        Add $f$ into $C$\;
-        \For {$s' \in \mathit{Misclassified}$} {\
-            \If {$f(s') < 0$} {
-                remove $s'$ from $\mathit{Misclassified}$\;
-            }
-        }
-    }
-    Minimize $C$\;
-    \Return the conjunction of all predicates in $C$;
-\caption{Algorithm $\mathit{conjunctive}(P, N)$}
-\label{alg:conjunctiveSVM}
-\end{algorithm}
-% \vspace{-0.2cm}
-%Compared to the classification algorithm presented in~\cite{sharma2012interpolants}, 
-Algorithm~\ref{alg:conjunctiveSVM} learns conjunctive polynomial classifiers whereas the one in~\cite{sharma2012interpolants} is limited to conjunctive linear classifier. 
-The more important difference is however our classification algorithm is coupled with a selective sampling procedure.
-At line 10, we minimize $C$ by identifying and removing any $f$ in $C$ such that the conjunction of the remaining predicates in $C$ perfectly classifies $P$ and $N$ still. 
-We remark that Algorithm~\ref{alg:conjunctiveSVM}, like the one in~\cite{sharma2012interpolants}, 
-may learn a classifier with many clauses, as one clause is introduced each time line 5 is executed. 
-In the worse case, if each polynomial classifier found at line 4 only classifies the one sample $s$, the returned $C$ would conjunct as many clauses as the number of samples in $N$. 
-Selective sampling, as we discuss below, helps to tame this problem, if there exists a conjunctive polynomial classifier with fewer clauses.
-In addition, equation can also be handled by this algorithm, as one equation can be expressed in a conjunction of two inequations.
-\vspace{-0.2cm}
+In~\cite{sharma2012interpolants}, an algorithm for learning conjunctive classifiers is proposed. The idea is to pick one sample $s$ from $N$ each time and identify a classifier $\phi_i$ (i.e., a linear or polynomial one) to
+separate $P$ and $\{s\}$, remove all samples from $N$ which can be correctly classified by $\phi_i$, and then repeat the process until $N$ becomes empty. The conjunction of all the classifier is then a perfect classifier. We refer the readers to~\cite{sharma2012interpolants} for details of the algorithm. %This approach however may learn a classifier with many clauses. In the worse case, if each classifier $\phi_i$ only classifies the one sample $s$, the returned classifier would conjunct as many clauses as the number of samples in $N$.
 
 \subsection{Disjunctive Classifiers}
-Some loops in real programs fundamentally require disjunctive invariants.
-% Actually, there are many reasons to involve disjunction in invariants, one of which is due to program branches.
-We observe one reason for invariants to involve disjunction is program branches.
-% To give an simple example, 
-In the following, we demonstrate how disjunctive invariants are handled for loop body with 2 branches.
-% Actually, many different previous efforts have proposed techniques for inferring invariants with at least one disjunction,
-% including (i) template-based techniques, such as~\cite{beyer2007invariant, colon2003linear, ashutosh2009invgen},
-% (ii) predicate abstraction based techniques, such as~\cite{beyer2007path, gulavani2008automatically, jhala2006practical},
-% and (iii) probabilistic inference based techniques, such as~\cite{gulwani2007program}.
-% We remark that the technique `splitter predicates' for disjunctive invariant learning in ~\cite{sharma2011simplifying} inspired us on the idea in this chapter.
-% The basic idea of `splitter predicates' is to split a loop into several loops, and each of them only requires a conjunctive invariant.
+It is known~\cite{DBLP:conf/cav/SharmaDDA11,DBLP:conf/pldi/GulwaniSV08} that it is challenging to automatically generate disjunctive invariants, whereas certain loops can only be proved with disjunctive invariants. In the following, we show how to learn disjunctive invariants through classification. Our observation is that a disjunctive invariant is needed often when the loop contains multiple branches. For instance, proving the Hoare triple shown on the left of Figure~\ref{fig:disjunctive:example} requires the loop invariant $x > 0 \lor y > 0$, which is due to the conditional branch at line 3; and the Hoare triple shown on the right of Figure~\ref{fig:disjunctive:example} (adopted from~\cite{DBLP:conf/popl/HenzingerJMS02}) can be proved with the loop invariant: $lock = 0 \lor new = old$. The reason that such a loop invariant is required is due to the conditional branch at line 5. Based on this observation, we apply the following approach to learn conjunctive or disjunctive invariants.
 
-% In the last section, we learn branch invariant candidates according to new divisions on our dataset and
-% disjunct the branch invariant candidates together to get the loop invariant candidate.
-% In this section, we show you why we can learn branch invariant candidate and synthesize disjunctive invariant in that way. 
+Assume that the loop body $Body$ contains a finite set of control locations. For instance, the loop in the first program in Figure~\ref{fig:disjunctive:example} has two locations: line 3 and 4. Given a valuation of $V$, say $s$, we write $visit(s)$ to be the set of control location which is visited if we execute the program with initial variable valuation $s$ during the first iteration of the loop. For instance, given the second program in Figure~\ref{fig:disjunctive:example}, $visit(\{lock \mapsto 0, new \mapsto 0, old \mapsto 1\})$ returns $\{\}$. We first partition $P$ into a set of disjoint partitions such that all valuations in the same partition $P_i$ visits the same set of control locations. Next, we apply the above-mentioned classification algorithms to learn a classifier for each partition, i.e., we learn a classifier $\phi_i$ for partition $i$ separating $P_i$ from $N$.
+Since any sample in $P_i$ satisfies $\phi_i$ and any sample in $N$ does not satisfies, the disjunction $\bigwedge_i \phi_i$ is then a perfect classifier separating $P$ from $N$.
 
-% In the Chapter~\ref{chap:introduction}, we assume that we are given a loop program as the Hoare triple on the left side in the following form,
-% $\emph{Inv}$ representing the invariant for the given loop program.
+\begin{example}
+Given the program shown on the left of
+\end{example}
 
-% \begin{align}
-% &\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{Inv} \label{sl1:org:inv:pre}\\
-% &\mathit{while} (\mathit{Cond}) \{ \mathit{Body} \} && \{\emph{Inv} \wedge \emph{Cond}\} \emph{Body} \{\emph{Inv}\} \label{sl1:org:inv:loop}\\\
-% &\{\mathit{Post}\} && \emph{Inv} \wedge \neg \emph{Cond} \Rightarrow \emph{Post} \label{sl1:org:inv:post}
-% \end{align}
+%\begin{figure}[t]
+%   \begin{subfigure}{0.5\textwidth}
+%    \raggedright
+%    % \vspace{0.5cm}
+%    \[
+%      \begin{array}{ll}
+%      1 & \code{assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
+%      2 & \code{while(x~{+}~y~{\le}-2)\{}  \\
+%      3 & \code{\quad if~(x~{>}~0) ~~~x{++};}  \\
+%      4 & \code{\quad else~ ~~~y{++};}\\
+%      5 & \code{\}} \\
+%      6 & \code{assert(x~{>}~0~ {||} ~y~{>}~0);}\\
+%      \end{array}
+%    \]
+%%     \caption{A sample program}
+%%     \label{fig:sl1:example:program}
+%   \end{subfigure}%
+%   \begin{subfigure}{0.5\textwidth}
+%      \[
+%      \begin{array}{ll}
+%      1 & \code{assume(x < 0)} \\
+%      2 & \code{while(x < 0)\{}  \\
+%      3 & \code{~~~ \quad x = x + y;}  \\
+%      4 & \code{~~~ \quad y++; \}}  \\
+%      5 & \code{\}} \\
+%      6 & \code{assert(y>0);}
+%      \end{array}
+%    \]
+%   \end{subfigure}
+%\caption{Sample programs with disjunctive loop invariants}
+%\label{fig:disjunctive:example}
+%\end{figure}
 
-% In general, loop invariants are defined as the above form. 
-% An equivalent definition of loop invariants will be given in this chapter.
-% Based on the new form, we can extend our framework to support disjunctive loop invariants.
-
-% In fact, there might be complex control structure in the loop body, involving multiple branches and even inner loops. 
-% For simplicity, we start with a simple loop body in which there are just two branches and no inner loops.
-% Then we extend our approach to loops with more complicated inner structure.
-\vspace{-0.2cm}
-\subsubsection{Disjunctive Invariants for Loop Body with 2 Branches}
-Formally, the Hoare triple for any loop body with two branches can be expressed in the following form on the left side.
-% where $\mathit{Pre}$ is named the precondition while $\mathit{Post}$ is named the postcondition, and $\mathit{Cond}$ is named the loop condition.
-In the loop body, $\mathit{C_1}$ guards the first branch $\mathit{Body_1}$, while $\mathit{\neg C_1}$ guards the other branch $\mathit{Body_2}$.
-\begin{align}
-&\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{$Inv_1$} \vee \emph{$Inv_2$} \label{ext:inv:pre}\\
-&\mathit{while} (\mathit{Cond}) \{ && \\
-&~~~~~~~~\mathit{if} (\mathit{C_1}) ~~\{ \mathit{Body_1} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge C_1\} Body_1 \{\emph{$Inv_1$}\} \label{ext:inv:loop:b1}\\
-&~~~~~~~~\mathit{else} ~~\{ \mathit{Body_2} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge \neg C_1\} Body_2 \{\emph{$Inv_2$}\} \label{ext:inv:loop:b2}\\
-&\} && \\
-&\{\mathit{Post}\} && (\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge \neg Cond \Rightarrow \emph{Post} \label{ext:inv:post}
-\end{align}
-If the Hoare triple is valid, $Inv_1 \vee Inv_2$ that satisfies the conditions on the right side is defined as the loop invariant for the program, 
-in which $Inv_1$ and $Inv_2$ are invariants for corresponding branches.
-% For example, $Inv_1$ is the branch invariant for the first branch as it is evaluated true after execution of $Body_1$ as shown in~\ref{sl1:ext:inv:loop:b1}.
-In our context, branch invariant is a property that always holds for the given branches.
-
-% in which $Inv_1$ and $Inv_2$ are named as branch invariants for the two branches.
-%Assume the invariant for the loop is in the form of $Inv_1 \vee Inv_2$.
-%Note that, any invariant $i$ can be converted to this form by linking itself with disjunction operator, such as $i \vee i$.
-%If there are $Inv_1$ and $Inv_2$ satisfy the following conditions,
-%then $Inv_1 \vee Inv_2$ is a loop invariant for the original program.
-
-In the following, we prove that for loop programs with 2 branches, 
-the above definition of loop invariant is equivalent with the previous invariant definition.
-Therefore, we need to prove such $Inv_1 \vee Inv_2$ is a valid loop invariant for the loop program,
-and any loop invariant for the program can be written as $Inv_1 \vee Inv_2$, where $Inv_1$ and $Inv_2$ are branch invariants.
-
-% \begin{theorem}
-% Algorithm~\ref{ta_feasiblefuncwithsim} is sound and complete.
-% \vspace{-1mm}
-% \end{theorem}
-% \noindent \textbf{Proof:} As we discussed the difference between Algorithm~\ref{ta_feasiblefuncwithsim} and Algorithm~\ref{ta_feasiblefunc}, given a transition system $\mathcal{L}$ with a set of initial states $Init$, the transition relation $Tr$ and a set of \buchi conditions $J$, while $IsEmpty(Init, Tr, J)$ is checking the emptiness of $\mathcal{L}$, $IsEmpty_{sim}(Init, Tr, J)$ is actually checking the emptiness of the transition system $\mathcal{L'}$. Thus, the correctness of Algorithm~\ref{ta_feasiblefuncwithsim} is obtained based on Theorem~\ref{theoremofabstractedsystem}.\hfill \qed \\
-
-\begin{theorem}
-\label{thm:disjunctive:is:invariant}
-	$Inv_1 \vee Inv_2$ is a loop invariant for the given loop program.
-\end{theorem}
-
-\noindent \textbf{Proof:} In order to prove $Inv_1 \vee Inv_2$ is a loop invariant for the program,
-we need to show it satisfies all the three conditions~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
-
-By simply substituting $Inv$ with  $Inv_1 \vee Inv_2$,
-we can see $Inv_1 \vee Inv_2$ satisfies condition~\ref{org:inv:pre} and ~\ref{org:inv:post}.
-For condition~\ref{org:inv:loop},
-as the valuations obtained through the two branches satisfy $Inv_1$ and $Inv_2$ respectively, 
-the valuations for the loop body must satisfy $Inv_1 \vee Inv_2$ naturally.
-Thus, by combining the condition~\ref{ext:inv:loop:b1} and~\ref{ext:inv:loop:b2},
-\begin{align*}
-&\{(Inv_1 \vee Inv_2) \wedge Cond \wedge C_1\} Body_1 \{Inv_1\} \\
-&\{(Inv_1 \vee Inv_2) \wedge Cond \wedge \neg C_1\} Body_2 \{Inv_2\}
-\end{align*}
-we can get $\{(Inv_1 \vee Inv_2) \wedge Cond\}~if (C1)~{Body_1}~else~{Body_2}~\{Inv_1 \vee Inv_2\}$,
-which satisfies the second condition in loop invariant definition.
-
-Therefore, $Inv_1 \vee Inv_2$ is a loop invariant for the given loop program. %\hfill \qed \\
-
-\begin{theorem}
-\label{thm:invariant:is:disjunctive}
-	Any invariant $Inv$ for the given loop program with branches can be expressed in the form of $Inv_1 \vee Inv_2$.
-\end{theorem}
-
-\noindent \textbf{Proof:} If $Inv$ is a loop invariant for the given loop program,
-then $Inv$ satisfies the three conditions ~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
-As $Inv = Inv \vee Inv$ always holds, we assign $Inv_1 = Inv$ and $Inv_2 = Inv$.
-Then the three conditions can be easily verified. %\hfill \qed \\
-
-\subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
-For the loop body with $n$ branches and valuations for each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
-it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$ is equivalent to the invariant defined before,
-which means we can apply same technique to combine all the branch invariants together as the candidate loop invariant.
-
-\subsubsection{Disjunctive Invariant Learning Algorithm}
-Assume a Hoare triple that there are 2 branches in the loop body is given, 
-and thus our invariants can be written as $(Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n)$.
-Without loss of generality, we take branch $B_i~(1 \le i \le n)$ , whose branch invariant $Inv_i$ accordingly, as an example.
-We build a new set $\mathit{Positive\_B_i}$ by extracting the valuations in $\mathit{Positive}$ which are obtained after passing branch $B_i$.
-According to definition in~\ref{ext:inv:loop:b1} and \ref{ext:inv:loop:b2}, 
-valuations in $\mathit{Positive\_B_i}$ must satisfy $Inv_i$.
-For any valuation $s \in \mathit{Negative}$, 
-we can infer $s \not \models Inv_i$ since $s \not \models Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$.
-Therefore, all the valuation in $\mathit{Negative}$ fails any branch invariant $Inv_i $.
-
-As a result, we can apply Algorithm~\ref{alg:polynomialSVM} on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
-Similar procedures are adapted for other branches and the approach can generate an invariant candidate by combining all the classifiers.
-
-\paragraph{Example}
-In the following, we use an illustrative example to show how our framework works on disjunctive invariant learning. 
-
-% can apply the primary SVM 
-\begin{figure}%[h]
-  % \begin{subfigure}{0.5\textwidth}
-    \raggedright
-    % \vspace{0.5cm}
-     \vspace{-0.2cm} \[
-      \begin{array}{ll}
-      1 & \code{void~foo(int ~x{,} ~int~y)\{} \\
-      2 & \code{~~~ assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
-      3 & \code{~~~ while(x~{+}~y~{\le}-2)\{}  \\
-      4 & \code{~~~ \quad if~(x~{>}~0) ~~~x{++};}  \\
-      5 & \code{~~~ \quad else~ ~~~y{++};}\\
-      6 & \code{~~~\}} \\
-      7 & \code{~~~assert(x~{>}~0~ {||} ~y~{>}~0);}\\
-      8 & \}
-      \end{array}
-    \]
-  %   \vspace{-0.2cm}
-  %   \caption{A sample program}
-  %   \label{fig:sl1:example:program}
-  % \end{subfigure}%
-  % \begin{subfigure}{0.5\textwidth}
-  %   \centering
-  %   \includegraphics[scale=0.25]{figures/sl1_cfg.pdf}
-  %   \caption{The Control flow graph of the loop}
-  %   \label{fig:sl1:example:cfg}
-  % \end{subfigure}
-\caption{Disjunctive loop example}
-\label{fig:disjunctive:example}
-\end{figure}
+%\subsubsection{Disjunctive Invariants for Loop Body with 2 Branches}
+%Formally, the Hoare triple for any loop body with two branches can be expressed in the following form on the left side.
+%% where $\mathit{Pre}$ is named the precondition while $\mathit{Post}$ is named the postcondition, and $\mathit{Cond}$ is named the loop condition.
+%In the loop body, $\mathit{C_1}$ guards the first branch $\mathit{Body_1}$, while $\mathit{\neg C_1}$ guards the other branch $\mathit{Body_2}$.
+%\begin{align}
+%&\{\mathit{Pre}\} && \emph{Pre} \Rightarrow \emph{$Inv_1$} \vee \emph{$Inv_2$} \label{ext:inv:pre}\\
+%&\mathit{while} (\mathit{Cond}) \{ && \\
+%&~~~~~~~~\mathit{if} (\mathit{C_1}) ~~\{ \mathit{Body_1} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge C_1\} Body_1 \{\emph{$Inv_1$}\} \label{ext:inv:loop:b1}\\
+%&~~~~~~~~\mathit{else} ~~\{ \mathit{Body_2} \} && \{(\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge Cond \wedge \neg C_1\} Body_2 \{\emph{$Inv_2$}\} \label{ext:inv:loop:b2}\\
+%&\} && \\
+%&\{\mathit{Post}\} && (\emph{$Inv_1$} \vee \emph{$Inv_2$}) \wedge \neg Cond \Rightarrow \emph{Post} \label{ext:inv:post}
+%\end{align}
+%If the Hoare triple is valid, $Inv_1 \vee Inv_2$ that satisfies the conditions on the right side is defined as the loop invariant for the program,
+%in which $Inv_1$ and $Inv_2$ are invariants for corresponding branches.
+%% For example, $Inv_1$ is the branch invariant for the first branch as it is evaluated true after execution of $Body_1$ as shown in~\ref{sl1:ext:inv:loop:b1}.
+%In our context, branch invariant is a property that always holds for the given branches.
+%
+%% in which $Inv_1$ and $Inv_2$ are named as branch invariants for the two branches.
+%%Assume the invariant for the loop is in the form of $Inv_1 \vee Inv_2$.
+%%Note that, any invariant $i$ can be converted to this form by linking itself with disjunction operator, such as $i \vee i$.
+%%If there are $Inv_1$ and $Inv_2$ satisfy the following conditions,
+%%then $Inv_1 \vee Inv_2$ is a loop invariant for the original program.
+%
+%In the following, we prove that for loop programs with 2 branches,
+%the above definition of loop invariant is equivalent with the previous invariant definition.
+%Therefore, we need to prove such $Inv_1 \vee Inv_2$ is a valid loop invariant for the loop program,
+%and any loop invariant for the program can be written as $Inv_1 \vee Inv_2$, where $Inv_1$ and $Inv_2$ are branch invariants.
+%
+%% \begin{theorem}
+%% Algorithm~\ref{ta_feasiblefuncwithsim} is sound and complete.
+%% \vspace{-1mm}
+%% \end{theorem}
+%% \noindent \textbf{Proof:} As we discussed the difference between Algorithm~\ref{ta_feasiblefuncwithsim} and Algorithm~\ref{ta_feasiblefunc}, given a transition system $\mathcal{L}$ with a set of initial states $Init$, the transition relation $Tr$ and a set of \buchi conditions $J$, while $IsEmpty(Init, Tr, J)$ is checking the emptiness of $\mathcal{L}$, $IsEmpty_{sim}(Init, Tr, J)$ is actually checking the emptiness of the transition system $\mathcal{L'}$. Thus, the correctness of Algorithm~\ref{ta_feasiblefuncwithsim} is obtained based on Theorem~\ref{theoremofabstractedsystem}.\hfill \qed \\
+%
+%\begin{theorem}
+%\label{thm:disjunctive:is:invariant}
+%	$Inv_1 \vee Inv_2$ is a loop invariant for the given loop program.
+%\end{theorem}
+%
+%\noindent \textbf{Proof:} In order to prove $Inv_1 \vee Inv_2$ is a loop invariant for the program,
+%we need to show it satisfies all the three conditions~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
+%
+%By simply substituting $Inv$ with  $Inv_1 \vee Inv_2$,
+%we can see $Inv_1 \vee Inv_2$ satisfies condition~\ref{org:inv:pre} and ~\ref{org:inv:post}.
+%For condition~\ref{org:inv:loop},
+%as the valuations obtained through the two branches satisfy $Inv_1$ and $Inv_2$ respectively,
+%the valuations for the loop body must satisfy $Inv_1 \vee Inv_2$ naturally.
+%Thus, by combining the condition~\ref{ext:inv:loop:b1} and~\ref{ext:inv:loop:b2},
+%\begin{align*}
+%&\{(Inv_1 \vee Inv_2) \wedge Cond \wedge C_1\} Body_1 \{Inv_1\} \\
+%&\{(Inv_1 \vee Inv_2) \wedge Cond \wedge \neg C_1\} Body_2 \{Inv_2\}
+%\end{align*}
+%we can get $\{(Inv_1 \vee Inv_2) \wedge Cond\}~if (C1)~{Body_1}~else~{Body_2}~\{Inv_1 \vee Inv_2\}$,
+%which satisfies the second condition in loop invariant definition.
+%
+%Therefore, $Inv_1 \vee Inv_2$ is a loop invariant for the given loop program. %\hfill \qed \\
+%
+%\begin{theorem}
+%\label{thm:invariant:is:disjunctive}
+%	Any invariant $Inv$ for the given loop program with branches can be expressed in the form of $Inv_1 \vee Inv_2$.
+%\end{theorem}
+%
+%\noindent \textbf{Proof:} If $Inv$ is a loop invariant for the given loop program,
+%then $Inv$ satisfies the three conditions ~\ref{org:inv:pre}, ~\ref{org:inv:loop} and ~\ref{org:inv:post}.
+%As $Inv = Inv \vee Inv$ always holds, we assign $Inv_1 = Inv$ and $Inv_2 = Inv$.
+%Then the three conditions can be easily verified. %\hfill \qed \\
+%
+%\subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
+%For the loop body with $n$ branches and valuations for each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
+%it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$ is equivalent to the invariant defined before,
+%which means we can apply same technique to combine all the branch invariants together as the candidate loop invariant.
+%
+%\subsubsection{Disjunctive Invariant Learning Algorithm}
+%Assume a Hoare triple that there are 2 branches in the loop body is given,
+%and thus our invariants can be written as $(Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n)$.
+%Without loss of generality, we take branch $B_i~(1 \le i \le n)$ , whose branch invariant $Inv_i$ accordingly, as an example.
+%We build a new set $\mathit{Positive\_B_i}$ by extracting the valuations in $\mathit{Positive}$ which are obtained after passing branch $B_i$.
+%According to definition in~\ref{ext:inv:loop:b1} and \ref{ext:inv:loop:b2},
+%valuations in $\mathit{Positive\_B_i}$ must satisfy $Inv_i$.
+%For any valuation $s \in \mathit{Negative}$,
+%we can infer $s \not \models Inv_i$ since $s \not \models Inv_1 \vee Inv_2 \vee \cdots \vee Inv_n$.
+%Therefore, all the valuation in $\mathit{Negative}$ fails any branch invariant $Inv_i $.
+%
+%As a result, we can apply Algorithm~\ref{alg:polynomialSVM} on set $\mathit{Positive\_B_i}$ against set $\mathit{Negative}$ to learn a classifier as the candidate for $Inv_i$.
+%Similar procedures are adapted for other branches and the approach can generate an invariant candidate by combining all the classifiers.
+%
+%\paragraph{Example}
+%In the following, we use an illustrative example to show how our framework works on disjunctive invariant learning.
+%
+%% can apply the primary SVM
+%\begin{figure}[t]
+%  % \begin{subfigure}{0.5\textwidth}
+%    \raggedright
+%    % \vspace{0.5cm}
+%     \vspace{-0.2cm} \[
+%      \begin{array}{ll}
+%      1 & \code{void~foo(int ~x{,} ~int~y)\{} \\
+%      2 & \code{~~~ assume(x~{>}~0~ {||} ~y~{>}~0);}  \\
+%      3 & \code{~~~ while(x~{+}~y~{\le}-2)\{}  \\
+%      4 & \code{~~~ \quad if~(x~{>}~0) ~~~x{++};}  \\
+%      5 & \code{~~~ \quad else~ ~~~y{++};}\\
+%      6 & \code{~~~\}} \\
+%      7 & \code{~~~assert(x~{>}~0~ {||} ~y~{>}~0);}\\
+%      8 & \}
+%      \end{array}
+%    \]
+%  %   \vspace{-0.2cm}
+%  %   \caption{A sample program}
+%  %   \label{fig:sl1:example:program}
+%  % \end{subfigure}%
+%  % \begin{subfigure}{0.5\textwidth}
+%  %   \centering
+%  %   \includegraphics[scale=0.25]{figures/sl1_cfg.pdf}
+%  %   \caption{The Control flow graph of the loop}
+%  %   \label{fig:sl1:example:cfg}
+%  % \end{subfigure}
+%\caption{Disjunctive loop example}
+%\label{fig:disjunctive:example}
+%\end{figure}
 % \vspace{-0.2cm}
-We collect and label the variable valuations at line 4 and line 5.
-After classifier learning phase, a classifier $x>0$ can be learned at line 4 while $y>0$ can be obtained at line 5.
-Thus, we can get a candidate invariant $(x>0) \vee (y>0)$ by combining the classifiers together.
-Apparently, $(x>0) \vee (y>0)$ is the actual invariant for the given program.
+%We collect and label the variable valuations at line 4 and line 5.
+%After classifier learning phase, a classifier $x>0$ can be learned at line 4 while $y>0$ can be obtained at line 5.
+%Thus, we can get a candidate invariant $(x>0) \vee (y>0)$ by combining the classifiers together.
+%Apparently, $(x>0) \vee (y>0)$ is the actual invariant for the given program.
 
-% \subsection{Disjunctive Invariants for Loop Body with $\emph{n}$ Branches}
-% For the loop body with $n$ branches and the valuations after each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
-% it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots Inv_n$ is equivalent to the invariant defined before,
-% which means we can apply same technique to combine all the branch invariants together as the whole loop invariant.
+\subsection{Active Learning}
+One fundamental problem on applying machine learning techniques to learn loop invariants is the we often have only a limited set of samples, i.e., with the limited samples in $Positive(SP)$ and $Negative(SP)$,
+it is unlikely that we can obtain an ``accurate'' classifier. For instance, in Example~\ref{example2}, $Positive(SP)$ is $\{(1, 2),(11, 5)\}$ and $Negative(SP)$ is $\{(100, 0)\}$. A linear classifier identified using SVM is: $3x-10y \leq 152$. Although this classifier perfectly separates the two sets, it is not useful in proving the Hoare triple and is clearly the result of having limited samples.
+One obvious way to overcome this problem is to generate more samples. However, often a large number of samples are necessary in order to learn the correct classifier. One particular reason is that we often need the samples right on the classification boundary in order to learn the correct classifier, which are often difficult to obtain through random sampling. In existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, the problem is overcome by checking whether candidate invariants proves the Hoare triple through program verification. So that the invariant can be refined with new samples which are provided as counterexamples by the program verification engine. The issue is that often many iterations of guess-and-check are required so that the invariant would converge to the correct one.
 
-% \subsection{Disjunctive Invariants for Loop Body with Inner Loops}
-% For the loop body with inner loops, 
-% if the iterations in the inner loops are fixed,
-% we can unfold the inner loops into branches as presented before.
-% For the inner loop that has uncertain number of iterations, 
-% it is not practical to unfold the inner loop into branches according to the iteration number it runs,
-% especially the number of the iteration for inner loop varies in a large range.
-% For this condition, we treat the inner loop as a basic code block which can be expressed in one node in the control flow graph.
-% In other words, the structure of the inner loops are omitted in this case.
+Researchers in the machine learning community have studied extensively on how to overcome the problem of limited samples and one of the remedies is active learning~\cite{DBLP:series/synthesis/2012Settles}.
+Active learning is proposed in contrast to passive learning. A passive learner learns from a given set of samples which it has no control, whereas an active learner actively selects what samples to learn from. It has been shown that an active learner can sometimes achieve good performance using far less samples than would otherwise be required by a passive learner~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. Active learning can be applied for classification or regression. In this work, we apply it for improving the candidate assertions generated by the above-discussed classification algorithms.
 
-% As there is no restriction on the structure of $\mathit{Body_1}$ and $\mathit{Body_2}$ in Theorem~\ref{thm:disjunctive:is:invariant} and ~\ref{thm:invariant:is:disjunctive},
-% the disjunctive invariant for the loop body with inner loops can also be defined as before. 
-% In this view, we can convert control flow graph with loops into a tree-like control flow graph as well.
-% That's all basis needed for our branch-based disjunctive invariant learning approach to work.
+A number of different active learning strategies on how to select the samples to learn from have been proposed. For instance, version space partitioning~\cite{DBLP:conf/icml/RuffD89} tries to select feature vectors on which there is maximal disagreement between classifiers in the current version space (e.g., the space of all classifiers which are consistent with the given data); uncertainty sampling~\cite{DBLP:conf/sigir/LewisG94} maintains an explicit model of uncertainty and selects the vector that it is least confident about. The effectiveness of these strategies can be measured in terms of the labeling cost, i.e., the number of labeled samples needed in order to learn a classifier which has a classification error bounded by some threshold $\epsilon$. For some classification algorithms, it has been shown that active learning reduces the labeling cost from $\Omega(\frac{1}{\epsilon})$ to the optimal $O(d\lg\frac{1}{\epsilon})$ where $d$ is the dimension of feature vectors~\cite{DBLP:conf/nips/Gilad-BachrachNT05,DBLP:conf/nips/Dasgupta05}. That is, if passive learning requires a million samples, active learning may require just $\lg 1000000$ ($\approx 20$) to achieve the same accuracy.
 
-% We remark that there can be branches in $\mathit{Body_1}$ or $\mathit{Body_2}$ for the same reason. 
-% For example, we can learn invariant for the loop body contains three branches $B_1, B_2, B_3$ in at least two ways.
-% In one way, we can find branch invariants $\mathit{Inv_1}, \mathit{Inv_2}, \mathit{Inv_3}$ for each of them and disjunct them together as the loop invariant.
-% In the other way, we can treat $B_1, B_3$ (or any other two branches) as one branch $B_{1, 3}$ and learn invariant $\mathit{Inv_{1, 3}}$ for this new big branch 
-% and then disjunct it with the branch invariant $\mathit{Inv_2}$ together.
-% That's the foundation of our graph-based disjunctive invariant learning approach.
-% For the loop body with $n$ branches and the valuations after each branch satisfy $Inv_1$, $Inv_2$, $\cdots$, $Inv_n$ respectively,
-% it is similar to prove the loop invariant defined as $Inv_1 \vee Inv_2 \vee \cdots Inv_n$ is equivalent to the invariant defined before,
-% which means we can apply same technique to combine all the branch invariant together as the whole loop invariant.
+In this work, we adopt the active learning strategy for SVM proposed in~\cite{DBLP:conf/icml/SchohnC00}, called selective sampling, which has been shown to be effective in achieving a high accuracy with fewer examples in different applications~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. In particular,
+at line 5 of Algorithm~\ref{classification}, after obtaining a classifier $\phi$ based on existing samples in $SP$, we apply method $selectivesampling(\phi)$ to selectively generate new samples, which works by generating samples on (or nearby) the current classification boundary $\phi$. ,
+Afterwards, the samples are added into $SP$ at line 5 and 6 and we repeat from line 2  until the classifier converges.
+%For instance, Figure~\ref{fig:running:example:sampling} shows where the set of valuations
+%in $\mathit{Positive}$, $\mathit{Negative}$ and $\mathit{NP}$ locate geographically in a 2-D plane for our running example.
+%In particular, valuations in $\mathit{Positive}$ are labeled with $+$; % and color green;
+%valuations in $\mathit{Negative}$ are labeled with $-$; % and color red;
+%and valuations in $\mathit{NP}$ are labeled with ?. % and color yellow.
+%And there are three areas: a pure positive area with color green, a pure negative area with color red, and a mixed area with color yellow.
+%The mixed area exists because our labeling method depends much on the observed program valuation sequences.
+%
+
+For classifiers in the form of linear inequalities, identifying samples on or nearby the classification boundary is straightforward. In the above example, given the current classifier $3x-10y \leq 152$, we apply selective sampling and generate new valuations $\{x \mapsto 7, y \mapsto 13\}$ and $\{x \mapsto 14, y \mapsto -11\}$ by solving the equation $3x-10y = 152$. For classifiers in the form of polynomial inequalities, the problem is slightly more complicated since existing equation system solvers for multi-variable polynomial equations has limited scalability. We thus adopt a simple approach, which we illustrate through a simple example in the following. Assume that we learn a polynomial classifier: $-4x^2+2y \geq -11$. The following steps are applied to identify samples right on the classification boundary.
+\begin{enumerate}
+\item Choose a variable in the classifier, e.g., $x$.
+\item Generates random value for other variables. For example, we let $y$ be $12$.
+\item Solve the equation $-4x^2+2y = -11$ after substituting variables with their values. If there is no solution, go back to (1) and retry.
+In our example, $x \approx 2.9580$.
+%\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
+\item Roundoff the values of all the variables according to their types in the program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
+\end{enumerate}
+In the case that a conjunctive or disjunctive classifier (of linear or polynomial inequalities) is learned, we apply the above approach to each and every clause in the classifier to obtain new samples. With the help of active learning and selective sampling, we can often reduce the number of learn-and-check iterations. As we show in Section~\ref{sec:evaluations}, with active learning, often one iteration of learn-and-check is sufficient to prove the Hoare triple.
+
+\paragraph{Selective sampling vs. other sampling} In this work, we collect samples in three different ways: \emph{random sampling}, \emph{selective sampling} based on active learning and \emph{sampling through verification}.
+Random sampling provides us the initial set of samples. The cost of generating a random sample is often low. However we often need a huge number of random samples in order to learn accurately. Selective sampling bares a slightly higher cost since often it requires to solve some equation system. However, it has been shown that selective sampling is often beneficial compared to random sampling~\cite{DBLP:conf/mm/TongC01,DBLP:journals/jmlr/TongK01}. The last sampling is sampling through verification. When a candidate invariant fails any of the three conditions (1), (2) and (3) in the candidate verification stage, the verifier could provide counter-examples, which are added as new samples. Sampling through verification provides useful new samples by paying a high cost. Thus, in this work, our approach is to start with random sampling, use selective sampling to improve the classifier as much as possible and apply sampling through verification only as the last resort.
+
+Figure~\ref{fig:sampling} visualizes how different sampling methods are related to each other in a 2-D plane. We start with the figure in the top-left corner.
+The (green) area above the line represents the space covered by the actual invariant. The dots are the samples obtained through random sampling.
+Based on these samples, a classifier is learnt to separate the random samples, as shown in the top-right figure.
+With this learnt invariant, selective sampling would us to identify those samples on the classification boundary based on the learnt classifier, as shown in the bottom-left figure.
+In comparison, sampling through verification would provide us the sample between the two lines shown in the bottom-left figure.
+It is obvious that the classifier will be improved with either selective sampling or sampling through verification, as shown in the bottom-right figure.
+The benefit of always applying selective sampling before applying sampling through verification is that verification is often more costly and thus we would like to avoid it as much as possible. \\
+
+\begin{figure}[t]
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-0.pdf}
+%        \caption{Random Sampling}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-1.pdf} \\
+%        \caption{Learnt Invariant}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-2.pdf}
+%        \caption{Selective and Counter-Example Sampling}
+        \centering
+        \includegraphics[scale=0.3]{figures/general-sampling-3.pdf}
+%        \caption{Refined Invariant}
+    \caption{Sampling approaches}
+    \label{fig:sampling}
+\end{figure}
+
+
+\subsection{Making Use of Undetermined Samples} \label{alternative}
+So far we have focused on learning and refining classifiers between $Positive(SP)$ and $Negative(SP)$. The question is then: how do we handle those valuations in $NP(SP)$, which may or may not satisfy $Inv$? If we simply ignore them, there may be a gap between $Positive(SP)$ and $Negative(SP)$ and as a result, the learnt classifier may not converge to the invariant we want, even with the help of active learning.
+This is illustrated in Figure~\ref{fig:running:example:sampling}, where the set of valuations in $Positive(SP)$ (marked with $+$), $Negative(SP)$ (marked with $-$) and $NP(SP)$ (marked with $?$) for the example in Figure~\ref{fig:running:example:program} are plotted in a 2-D plane. Many samples between the line $x=y$ and $x-y=16$ may be contained in $NP(SP)$. As a result, without considering the samples in $NP(SP)$, classifiers located in the $NP(SP)$ region (e.g., $x - y \leq 10$, or $x - y \leq 13$) may be learned to perfectly classify $Positive(SP)$ and $Negative(SP)$. Worse, identifying more samples may not help to improve the classifier if the new samples are in $NP(SP)$ or are already classified by the existing classifier.
+
+To overcome the problem, in addition to learn a classifier separating $Positive(SP)$ and $Negative(SP)$, we learn candidate invariants making use of $NP(SP)$, i.e., classifiers separating $Positive(SP)$ from $Negative(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP(SP)$ fail the actual invariant), and classifiers separating $Negative(SP)$ from $Positive(SP) \cup NP(SP)$ (i.e., assuming valuations in $NP$ satisfy the actual invariant).
+We remark that active learning is applied to all these candidates until they converge. For the example in Figure~\ref{fig:running:example:program}, if we focus classifiers in the form of linear inequalities, the classifier separating $Positive(SP)$ from the rest converges to $\textsc{null}$ (no such classifier), whereas the classifier separating $Negative(SP)$ from the rest converges to $x - y \leq 16$, which can be used to prove the Hoare triple.
+
+\begin{figure}[t]
+      \centering
+      \includegraphics[scale=0.42]{figures/running-sampling.pdf}
+      \caption{Distribution of samples}
+      \label{fig:running:example:sampling}
+\end{figure}
