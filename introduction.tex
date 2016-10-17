@@ -48,13 +48,15 @@ In order to disprove it, we would like to find a valuation $s$ such that $s \mod
 for extensive research on proving loop termination.
 
 Many approaches have been proposed to solve this problem.
-For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,cousot1979systematic,karr1976affine,vincent2009subpolyhedra}, counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
+For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,karr1976affine,vincent2009subpolyhedra},
+%% cousot1979systematic,
+ counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{kenneth2010lazy,thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
 Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s \in (Pre \land \neg \phi)$ is generated, which proves that $\phi$ is not an invariant.
-With the new sample $s$, we can re-classify the samples to obtain a new candidate invariant. This learn-and-check process is repeated until either the Hoare triple is proved or disproved.
+With the new sample $s$, we can re-classify the samples to obtain a new candidate invariant. This guess-and-check process is repeated until either the Hoare triple is proved or disproved.
 
 One problem with the guess-and-check approach is that its effectiveness is often limited by the samples which are generated randomly.
 In order to learn the right invariant through classification, often a large number of samples are necessary.
@@ -67,8 +69,8 @@ In this work, we propose a technique to improve the existing guess-and-check app
 Compared to the existing approaches, we make the following contributions.
 Firstly, we propose an active learning technique to overcome the limitation of random sampling.
 That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants
-so that we can improve the candidates prior to verifying them during every learn-and-check iteration.
-As a result, we can reduce the number of learn-and-check iterations significantly, or even completely in many cases.
+so that we can improve the candidates prior to verifying them during every guess-and-check iteration.
+As a result, we can reduce the number of guess-and-check iterations significantly, or even completely in many cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,
@@ -79,7 +81,8 @@ As a result, we can reduce the number of learn-and-check iterations significantl
 %    and fine-tune the invariant candidate.
 Secondly, our approach is designed to be extensible so that we can learn different kinds of invariants.
 For instance, we show that we can learn candidate invariants in the form of polynomial inequalities or their conjunctions using a different classification algorithm.
-Furthermore, we show that by partitioning the samples according to the control locations they visit and classifying each partition separately, we are able to generate disjunctive invariants. Lastly, we implement our framework as a tool called \textsc{Zilu} (available at~\cite{zilu:repo}) and compare it with state-of-the-art tools like Interproc~\cite{jeannet2010interproc} as well as CPAChecker~\cite{DBLP:conf/cav/BeyerK11}.
+Furthermore, we show that by introducing a {\em path-sensitive} learning through two steps:
+ partitioning the samples according to the control locations they visit and classifying each partition separately, we are able to generate disjunctive invariants. Lastly, we implement our framework as a tool called \textsc{Zilu} (available at~\cite{zilu:repo}) and compare it with state-of-the-art tools like Interproc~\cite{jeannet2010interproc} as well as CPAChecker~\cite{DBLP:conf/cav/BeyerK11}.
 %%    i.e.,
     %CPAChecker~\cite{beyer2011cpachecker} and
  %%   Interproc~\cite{jeannet2010interproc}.
