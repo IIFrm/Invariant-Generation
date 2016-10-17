@@ -96,7 +96,8 @@ It implies that selective sampling converges reasonably fast.
 We observe that \textsc{Zilu} often takes more time to learn conjunctive invariants.
 This is because in such a case, SVM classification is invoked many times in one guess-and-check iteration. \textsc{Zilu} times out in three cases. 
 The other two are \emph{zilu\_poly4} and \emph{zilu\_poly5}, which require polynomial invariants which are within the capability of \textsc{Zilu}.
-Our investigation reveals that the reason is that after we match the program states to a higher dimension (using function $\mathit{mapToDegree}$),
+Our investigation reveals that the reason is that after we match the program states to a higher dimension (see Sec. \ref{existing})
+%%Loc: can not find this function in the presentation (using function $\mathit{mapToDegree}$),
 the values needed for selective sampling in the higher-dimension space may not be feasible in the original space.
 For example, assume a program with an integer variable $\mathit{x}$ which can be any value in set $\mathit{\{\cdots, -1, 0,  1, 2, 3, \cdots\}}$.
 However $\mathit{(x, x^2)}$ is defined only in $\mathit{\{\cdots, (-1,1), (0,0), (1,1), (2, 4), (3, 9) \cdots\}}$ after mapping.
