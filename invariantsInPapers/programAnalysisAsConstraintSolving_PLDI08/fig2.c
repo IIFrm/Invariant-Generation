@@ -11,4 +11,5 @@ PV2() {
 			break;
 		x++;
 	}
+	assert(x=102);
 }
