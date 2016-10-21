@@ -137,13 +137,13 @@ After obtaining the samples and labeling them as discussed above, method $actL(S
 \end{align}
 where $sp(\phi \land Cond,Body)$ is the strongest postcondition obtained by symbolically executing program $Body$ starting from precondition $\phi \land Cond$~\cite{DBLP:journals/cacm/Dijkstra75}. If all the three constraints are unsatisfiable, we successfully prove the Hoare triple with loop invariant $\phi$. If any of the constraints is satisfiable, a model in the form of a variable valuation is generated, which is then added to $SP$ as a new sample. Afterwards, we restart from line 1, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four categories accordingly, move on to active learning and so on.
 \begin{example}
-For the example shown in Figure~\ref{fig:running:example}(a), a candidate invariant which is automatically learned is $x - y \geq 16$. It is easy to check that this candidate satisfies all the three conditions and thus the Hoare triple shown in Figure~\ref{fig:running:example}(a) is proved. For the example shown in Figure~\ref{fig:running:example}(b), a candidate invariant returned by method $actL(SP)$ is as follows.
+For the example shown in Figure~\ref{fig:running:example}(a), a candidate invariant which is automatically learned is $x - y \geq 16$. It is easy to check that this candidate satisfies all the three conditions and thus the Hoare triple shown in Figure~\ref{fig:running:example}(a) is proved. For the example shown in Figure~\ref{fig:running:example}(c), a candidate invariant returned by method $actL(SP)$ is as follows.
 \[
-246 + 23x + 3y \geq 0 \lor -174 - 7x + 36y \geq 0
+490 + 16x - 9y \geq 0 \land  (510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0 
 \]
-A counterexample $(-11, 1)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After 3 iterations of guess-and-check, the following invariant is generated.
+A counterexample $(-28, -11)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After 26 iterations of guess-and-check, the following invariant is generated.
 \[
-33 - 2x + 2y \geq 0 \lor 5 - 2x + 2y \geq 0 \lor 23 - 2x + 2y \geq 0
+1 + 2y \geq 0 \land 1 + 2x - 2y \geq 0 \land -1 + 2x \geq 0
 \]
 This invariant turns out to be one which is strong enough to prove the Hoare triple.
 \end{example}
