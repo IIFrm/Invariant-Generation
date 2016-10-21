@@ -48,8 +48,8 @@ In order to disprove it, we would like to find a valuation $s$ such that $s \mod
 for extensive research on proving loop termination.
 
 Many approaches have been proposed to solve this problem.
-For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,karr1976affine,vincent2009subpolyhedra},
-%% cousot1979systematic,
+For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,vincent2009subpolyhedra},
+%% cousot1979systematic, karr1976affine,
  counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
 Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
