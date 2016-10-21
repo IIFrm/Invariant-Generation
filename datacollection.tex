@@ -46,10 +46,11 @@ On one hand, without using a solver, we may not be able to generate valuations w
       2 & \code{while(x~{+}~y~{\le}-2)\{}  \\
       3 & \code{\quad if~(x~{>}~0) \{}  \\
       4 & \code{\quad \quad ~~~x~{:=}~x+1;}  \\
-      5 & \code{\quad \}} \\
-      6 & \code{\quad else \{~y {:=} y + 1;~\}}\\
-      7 & \code{\}} \\
-      8 & \code{assert(x~{>}~0~ \lor ~y~{>}~0);}\\
+      5 & \code{\quad \}~else \{} \\
+      6 & \code{\quad \quad ~y {:=} y + 1;}\\
+      7 & \code{\quad \}} \\
+      8 & \code{\}} \\
+      9 & \code{assert(x~{>}~0~ \lor ~y~{>}~0);}\\
       \end{array}
     \]
     \caption{Invariant: $x > 0 \lor y > 0$}
@@ -59,7 +60,7 @@ On one hand, without using a solver, we may not be able to generate valuations w
      \vspace{0.3cm}
 \[
  \begin{array}{ll}
-1 & \code{~~~ assume(x=1 {\land} y=0);}  \\
+1 & \code{~~~ assume(x=0 {\land} y=1);}  \\
 2 & \code{~~~ while(*)\{}  \\
 3 & \code{~~~ \quad x {:=} x + y;}  \\
 4 & \code{~~~ \quad y {:=} y + 1;}\\
