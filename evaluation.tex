@@ -28,9 +28,9 @@ Our evaluation subjects include all C programs we can find from previous publica
 \multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& 440 & \textbf{1} &\textbf{27}	& \textbf{320} & 4   & 37 &\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}				&linear 			& 60 & \textbf{1} &\textbf{19}	& \textbf{33} & 2 & 22 &\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{dillig\_35~\cite{isil2013inductive}}		&linear 			& \textbf{153} & \textbf{2} &\textbf{20}	&193 &4  & 33 &\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{down~\cite{}}				&linear 			& 370 & \textbf{3} &\textbf{34}	& \textbf{320} & \textbf{5} & 40 &\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& 370 & \textbf{3} &\textbf{34}	& \textbf{320} & \textbf{5} & 40 &\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{f2~\cite{}}				&linear 			& 127 & \textbf{1} &\textbf{29}	& \textbf{120} & 2 & 39 &\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{fm11~\cite{}}				&conjunctive		& \textbf{166} & \textbf{2} &\textbf{12}	& to & to  & to	&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}	&conjunctive		& \textbf{166} & \textbf{2} &\textbf{12}	& to & to  & to	&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}		&linear 			& \textbf{30} & \textbf{1} &\textbf{18}	& 43 & 2  &\textbf{21}		&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}		&linear 			& \textbf{107} & \textbf{1} &\textbf{20}	& to & to & to	&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}		&linear 			& \textbf{190} & \textbf{1} & 48	& 260 & 3  & \textbf{42}	&\multicolumn{1}{|c|}{\cmark} \\
@@ -59,12 +59,12 @@ Our evaluation subjects include all C programs we can find from previous publica
 %\multicolumn{1}{|c|}{zilu\_poly5}		&polynomial			&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{zilu\_poly6}		&polynomial			& \textbf{220} & \textbf{3} &\textbf{78}	& to & to & to	&\multicolumn{1}{|c|}{\cmark} \\
 %
-\multicolumn{1}{|c|}{zilu\_disj1}		&disjunctive		&2700 5880 4200 &3 4 6&\textbf{83.89 55.95 77.55}	&8580 - - &5 - -  &\textbf{103.19 ? ?}				&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{zilu\_disj1}		&disjunctive		&2700 5880 4200 &3 4 6&\textbf{83.89 55.95 77.55}	&12380 5100 9020 &5 2 3  &\textbf{103.19 44.25 63.19}	&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{zilu\_disj2}		&disjunctive		&1580 2880 5120 &5 3 3&\textbf{32.45 24.06 25.13}	&9940 3560 4160 &4 3 3 &\textbf{41.76 20.39 26.34}		&\multicolumn{1}{|c|}{\cmark} \\
 \multicolumn{1}{|c|}{zilu\_disj3}		&disjunctive		&6320 13940 6885 &3 3 3 &\textbf{24.44 33.04 30.67}	&12390 8370 15390 &3 3 3  &\textbf{54.58 23.68 43.03}	&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}}&disjunctive		&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{popl~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{cav~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}}&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{popl~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{cav~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} \\
 
 
 
