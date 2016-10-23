@@ -20,95 +20,45 @@ Our evaluation subjects include all C programs we can find from previous publica
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) & Interproc & CPAChecker \\
 \hline
-\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 			& \textbf{113} & \textbf{1} &\textbf{21}	& 127 & 3  & 28	&\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear 			& \textbf{187} & \textbf{2} & \textbf{21}	& to & to & to & \multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive		& \textbf{210} & \textbf{3} & \textbf{54}	& 280 & 4 & 55 &\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive		& \textbf{293} & \textbf{4} &\textbf{43}	& 360 & 8 & 64 &\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive		& \textbf{1327} & \textbf{38} & \textbf{80} & to & to & to &\multicolumn{1}{|c|}{\cmark} & 4 \\
-\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear 			& \textbf{147} & \textbf{1} &\textbf{19}	& to & to & to &\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& 440 & \textbf{1} &\textbf{27}	& \textbf{320} & 4   & 37 &\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}				&linear 			& 60 & \textbf{1} &\textbf{19}	& \textbf{33} & 2 & 22 &\multicolumn{1}{|c|}{\cmark} & 3 \\
-\multicolumn{1}{|c|}{dillig\_35~\cite{isil2013inductive}}		&linear 			& \textbf{153} & \textbf{2} &\textbf{20}	&193 &4  & 33 &\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& 370 & \textbf{3} &\textbf{34}	& \textbf{320} & \textbf{5} & 40 &\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{f2~\cite{}}				&linear 			& 127 & \textbf{1} &\textbf{29}	& \textbf{120} & 2 & 39 &\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}	&conjunctive		& \textbf{166} & \textbf{2} &\textbf{12}	& to & to  & to	&\multicolumn{1}{|c|}{\cmark} & 1 \\
-\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}		&linear 			& \textbf{30} & \textbf{1} &\textbf{18}	& 43 & 2  &\textbf{21}		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}		&linear 			& \textbf{107} & \textbf{1} &\textbf{20}	& to & to & to	&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}		&linear 			& \textbf{190} & \textbf{1} & 48	& 260 & 3  & \textbf{42}	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}		&linear 			& \textbf{133} & \textbf{1} &\textbf{42}	& \textbf{133} & 3  & 65	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}		&conjunctive		& to & to & to & \textbf{280} & \textbf{5}  & \textbf{38}	&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}		&linear 			& \textbf{33} & \textbf{1} &\textbf{18}	& \textbf{33} & \textbf{1} & 22		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016} %%\cite{beyer:SVCOMP:2013}
-}
-	&linear 			&\textbf{37} & \textbf{1} &\textbf{19}	& 40 & 2  & 22		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive		& \textbf{487} & \textbf{5} & 91 & 530 & 7 & \textbf{80}	&\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{xle10~\cite{}}				&linear 			&66 & \textbf{2} &\textbf{22}	&43 &\textbf{3}  &25		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}			&conjunctive		&533 & \textbf{10} &\textbf{71}	& \textbf{527} & 12  & 73	&\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}			&conjunctive		& \textbf{187} & \textbf{3} &\textbf{32}	& \textbf{187} & 4  & 34 &\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}			&conjunctive		& \textbf{380} & \textbf{6} &\textbf{65}	& 507 & 11 & 87	&\multicolumn{1}{|c|}{\cmark} & to \\
-\multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}				&polynomial 		& \textbf{500} & \textbf{4} &\textbf{136} & to & to & to &\multicolumn{1}{|c|}{\cmark} & 2 \\
-\multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}			&conjunctive		& \textbf{1250} & \textbf{18} & \textbf{17}	& to & to & to &\multicolumn{1}{|c|}{\cmark} &  \ding{55}\\
-%	
-\multicolumn{1}{|c|}{zilu\_conj1}		&conjunctive		& \textbf{180} &\textbf{1}&\textbf{32}	& to & to &to		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-%\multicolumn{1}{|c|}{zilu\_conj2}		&conjunctive		&- - 160 &- - 3 &\textbf{? ? 74.77}				&- - 80 &- - 2  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
-%\multicolumn{1}{|c|}{zilu\_linear1}		&linear				&120 80 200 &2 1 3 &\textbf{24.98 19.77 31.74}	&180 220 140 &3 3 3  &\textbf{96.34 36.61 60.09}	&\multicolumn{1}{|c|}{\cmark} \\
-%\multicolumn{1}{|c|}{zilu\_linear2}		&linear				&390 150 300 &4 2 3 &\textbf{40.93 22.71 28.43}	&330 210 180 &4 3 3   &\textbf{31.57 25.47 30.38}	&\multicolumn{1}{|c|}{\cmark} \\
-%\multicolumn{1}{|c|}{zilu\_linear3}		&linear				&- 150 - &- 1 -&\textbf{? 65.17 ?}				&- - 210 &- - 3  &\textbf{? ? 29.05}				&\multicolumn{1}{|c|}{\cmark} \\
-%\multicolumn{1}{|c|}{zilu\_linear4}		&linear				&320 160 220 &1 1 1 &\textbf{18.13 19.42 20.26}	&80 300 300 &1 3 3  &\textbf{17.60 82.76 49.72}		&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{zilu\_poly1}		&polynomial			& \textbf{57} & \textbf{2} &\textbf{37}	& 117 & 5  & \textbf{93.37 65.88 ?}		&\multicolumn{1}{|c|}{\cmark} & 2 \\
-%\multicolumn{1}{|c|}{zilu\_poly2}		&polynomial			&110 - - &1 - -&\textbf{24.27 53.67 44.06}			&- - - &- - -  &\textbf{? 59.00 ?}				&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{zilu\_poly3}		&polynomial			& \textbf{50} & \textbf{1} &\textbf{7}		& 43 & 2  & 9			&\multicolumn{1}{|c|}{\cmark} & 2 \\
-%\multicolumn{1}{|c|}{zilu\_poly4}		&polynomial			&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
-%\multicolumn{1}{|c|}{zilu\_poly5}		&polynomial			&- - - &- - -&\textbf{? ? ?}					&- - - &- - -  &\textbf{? ? ?}						&\multicolumn{1}{|c|}{\cmark} \\
-\multicolumn{1}{|c|}{zilu\_poly6}		&polynomial			& \textbf{220} & \textbf{3} &\textbf{78}	& to & to & to	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-%
-\multicolumn{1}{|c|}{zilu\_disj1}		&disjunctive		&2700 5880 4200 &3 4 6&\textbf{83.89 55.95 77.55}	&12380 5100 9020 &5 2 3  &\textbf{103.19 44.25 63.19}	&\multicolumn{1}{|c|}{\cmark} &\ding{55} \\
-\multicolumn{1}{|c|}{zilu\_disj2}		&disjunctive		&1580 2880 5120 &5 3 3&\textbf{32.45 24.06 25.13}	&9940 3560 4160 &4 3 3 &\textbf{41.76 20.39 26.34}		&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{zilu\_disj3}		&disjunctive		&6320 13940 6885 &3 3 3 &\textbf{24.44 33.04 30.67}	&12390 8370 15390 &3 3 3  &\textbf{54.58 23.68 43.03}	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
-\multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}}&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} &  \ding{55}\\
-\multicolumn{1}{|c|}{popl~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} & 1 \\
-\multicolumn{1}{|c|}{cav~\cite{sharma2011simplifying}}		&disjunctive		&- - - &- - -&\textbf{? ? ?}			&- - - &- - -  &\textbf{? ? ?}					&\multicolumn{1}{|c|}{\cmark} & 1 \\
+\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 			& \textbf{140 100 80} & \textbf{1 1 1} &\textbf{2.73 6.30 4.00}	& 100 120 80 & 2 2 2  & 4.31 4.52 4.33	&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear 			& \textbf{120 120 160} & \textbf{1 1 1} & \textbf{1.95 4.61 4.25}	& - - 120& - - 1 & ? ? 4.06 & \multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive		& \textbf{210 - 300} & \textbf{3 - 3} & \textbf{5.05 ? 5.60}	& 270 300 270& 3 3 18& 5.16 5.31 16.46 &\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive		& \textbf{280 260 380} & \textbf{3 3 6} &\textbf{7.41 8.15 9.94}	& 300 140 260& 3 4 4& 6.09 15.96 6.39&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive		& \textbf{624 1750 2320} & \textbf{64 17 47} & \textbf{31.45 21.09 25.01} & --- & --- & ??? &\multicolumn{1}{|c|}{\cmark} & 4 \\
+\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear 			& \textbf{100 160 140} & \textbf{2 1 1} &\textbf{4.26 4.07 4.01}	& 100 160 100& 2 3 2& 4.30 4.51 4.33&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& 390 330 180& \textbf{2 1 1} &\textbf{6.25 6.41 4.60}	& \textbf{240 420 210} & 2 3 3 & 4.42 4.80 4.94&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}			&linear 			& 50 70 100& \textbf{1 1 1} &\textbf{3.97 3.98 4.02}	& \textbf{70 70 70} & 2 2 & 4.24 4.23 4.27&\multicolumn{1}{|c|}{\cmark} & 3 \\
+\multicolumn{1}{|c|}{dillig\_35~\cite{isil2013inductive}}		&linear 			& \textbf{120 80 180} & \textbf{1 1 1} &\textbf{4.29 3.99 4.30}	&100 820 440&2 12 6& 4.25 7.09 5.55&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& 270 330 270& \textbf{4 3 4} &\textbf{5.25 5.96 5.21}	& \textbf{300 300 450} & \textbf{4 4 4} & 5.25 4.98 5.83&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{f2~\cite{zilu:repo}}						&linear 			& 120 80 120& \textbf{2 1 1 } &\textbf{4.16 3.99 5.28}	& \textbf{140 180 100} & 2 3 2& 4.19 4.36 4.68&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive		&\textbf{166} & \textbf{2} &\textbf{12}	& to & to  & to	&\multicolumn{1}{|c|}{\cmark} & 1 \\
 
+\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear 			& \textbf{300 210 270} & \textbf{2 6 6} &\textbf{8.03 5.18 6.31}	& 430 - - & 3 - - &\textbf{7.60 ? ?}	&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 			& \textbf{140 120 140} & \textbf{1 1 1} &\textbf{4.27 5.90 9.34}	& 100 100 80 & 2 2 1 & 6.24 9.77 12.30	&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear 			& \textbf{180 210 150} & \textbf{1 2 1} & 6.00 11.65 8.04	& 150 330 210 & 2 3 3 & \textbf{5.09 5.51 7.55}	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 			& \textbf{60 80 100} & \textbf{1 1 1} &\textbf{5.51 5.45 5.70}	& \textbf{140 120 100} & 2 1 2& 6.58 5.70 6.55&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
 
+\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}		&conjunctive	& 240 260 200 & 3 3 1& 6.01 5.95 5.81& \textbf{140 260 200} & \textbf{2 3 3}  & \textbf{4.53 5.17 5.01}	&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear 		&\textbf{30 20 30} & \textbf{1 1 1} &\textbf{4.00 4.02 4.01}	& \textbf{40 40 50} & \textbf{2 2 2} & 4.35 4.31 4.35		&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 			&\textbf{40 70 60} & \textbf{1 2 1} &\textbf{3.93 3.94 3.95}	& 50 50 50& 2 2 2& 4.22 4.23 4.23	&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive		& \textbf{690 1500 570} & \textbf{9 22 7} & 18.13 61.11 13.29& 420 930 450& 6 11 6& \textbf{28.78 24.08 8.37} 	&\multicolumn{1}{|c|}{\cmark} & to \\
 
-% \multicolumn{1}{|c|}{f2~\cite{DBLP:conf/pldi/GulwaniSV08}}      	&linear 		&260 &1 &\textbf{10.15}  		&120 &1   &12.03  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{xy10~\cite{sharma2012interpolants}} 	    	&linear 		&810 &4 &\textbf{39.69} 		&840  &11  &40.51  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{xyz~\cite{sharma2012interpolants}}   	   		&linear 		&180 &1 &105.15  				&330  &5  &\textbf{93.04}  	&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}      	&conjunctive 	&1140 &20 &\textbf{51.07}		&1980 &48 &168.97  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}      	&conjunctive 	&180  &2 &16.09					&260 &6 &\textbf{15.98}  	&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}}		&disjunctive 	&- & - &timeout  				&-  &-  &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
-% %\hline
-% \multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}     	&linear 		&40 &1 &\textbf{9.21}  			&40 &2   &10.38  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}     	&linear 		&600 &1 &\textbf{11.66} 		&240  &1  &171.14  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}     	&linear 		&210 &1 &\textbf{30.32}  		&420 &5   &43.34  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}     	&linear 		&140 &4 &\textbf{4.8}  			&240 &5   &38.25  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}     	&linear 		&160 &1 &\textbf{9.18}  		&180 &3   &28.05  			&\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}	&linear 		&50 40 80& \textbf{1 1 1} &\textbf{3.96 3.95 3.94}	&70 60 50&\textbf{2 2 2}  &4.25 4.17 4.21		&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}	&conjunctive	&360 240 220& \textbf{6 3 3} &\textbf{8.23 6.24 5.91}	& \textbf{240 200 220} & 4 3 4& 7.01 5.49 6.39	&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}	&conjunctive	& \textbf{240 180 160} & \textbf{3 3 3} &\textbf{6.75 6.06 5.54}	& \textbf{140 240 180} & 3 4 4& 5.09 6.47 5.41&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}	&conjunctive	& \textbf{240 240 180} & \textbf{3 3 3} &\textbf{6.89 6.35 5.47}	& 300 220 420& 5 4 6& 7.27 6.38	9.65&\multicolumn{1}{|c|}{\cmark} & to \\
+\multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}	&polynomial 	& \textbf{740 300 260} & \textbf{5 4 4} &\textbf{130.67 71.15 69.96} & 240 260 300& 3 5 6& 32.23 90.25 114.92 &\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}	&conjunctive	& \textbf{390 360 660} & \textbf{4 4 7} & \textbf{5.80 5.10 6.93}	& - 1350 - & - 16 - & ? 10.97 ? &\multicolumn{1}{|c|}{\cmark} &  \ding{55}\\
 
-% %\hline
-% \multicolumn{1}{|c|}{zilu\_linear1}         			&linear 		&120 &2 &\textbf{24.79}  		&180 &2   &206.07  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_linear2}         			&linear 		&420 &4 &\textbf{21.28}  		&720  &9  &82.24  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{zilu\_linear3}         			&linear 		&90 &1 &\textbf{16.19}  		&270 &3  &179.39  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{zilu\_linear4}         			&linear 		&140 &1 &\textbf{10.19}  		&420 &2  &24.51  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{zilu\_linear5}         			&linear 		&30 &1 &\textbf{8.57}  			&60 &3   &12.58  			&\multicolumn{1}{|c|}{\cmark} \\
-
-% \multicolumn{1}{|c|}{zilu\_poly1}         				&polynomial 	&50 &2 &\textbf{20.48}			&70 &1 &28.48  				&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_poly2}         				&polynomial 	&110  &1 &\textbf{24.27}  		&70   &2 &41.62  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_poly3}         				&polynomial 	&30 &1 &\textbf{11.83}  		&70  &2  &18.27  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_poly4}         				&polynomial 	&- &-&timeout  					&-  &-  &timeout 			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_poly5}         				&polynomial 	&- &- &timeout  				&-  &-  &timeout  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_poly6}         				&polynomial 	&300 &4 &\textbf{85.61}  		&620   &12 &472.68  		&\multicolumn{1}{|c|}{\xmark} \\
-
-% \multicolumn{1}{|c|}{zilu\_conj1}         				&conjunctive 	&120 &6 &\textbf{22.13}  		&220  &2  &97.47  			&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{zilu\_conj2}         				&conjunctive 	&280 &3 &\textbf{173.09}  		&-  &-  &timeout  			&\multicolumn{1}{|c|}{\cmark} \\
-
-% \multicolumn{1}{|c|}{terminator\_01\_safe~\cite{beyer:SVCOMP:2013}}         	&linear 		&30 &1 &\textbf{9.2}  				&90  &4  &13.06  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{afnp2014\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunctive	&1240 &27 &\textbf{39.33}			&- &- &timeout  		&\multicolumn{1}{|c|}{\xmark} \\
-% \multicolumn{1}{|c|}{multivar\_true\_1~\cite{Dirk:SVCOMP:2016}}         		&conjunctive 	&340 &3 &16.84  					&220 &4   &\textbf{15.22}  	&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{cggmp2005\_variant~\cite{Dirk:SVCOMP:2016}}   				&conjunctive 	&1020 &13 &\textbf{108.57}			&- &- &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1420 &33 &\textbf{57.78}			&5080 &125 &258.65  		&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}         				&conjunctive 	&1200 &14 &\textbf{84.02}  			&540 &7   &89.77  			&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1320  &15 &\textbf{116.21}  		&-  &-  &timeout  		&\multicolumn{1}{|c|}{\cmark} \\
-% \multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}         			&conjunctive 	&1110 &14 &52.96  					&720 &10   &\textbf{44.99}  &\multicolumn{1}{|c|}{\cmark} \\
+\multicolumn{1}{|c|}{zilu\_conj1}	&conjunctive	&\textbf{180} &\textbf{1}&\textbf{32}	& to & to &to		&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{zilu\_poly1}	&polynomial		&\textbf{57} & \textbf{2} &\textbf{37}	& 117 & 5  & \textbf{93.37 65.88 ?}		&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{zilu\_poly3}	&polynomial		&\textbf{50} & \textbf{1} &\textbf{7}		& 43 & 2  & 9			&\multicolumn{1}{|c|}{\cmark} & 2 \\
+\multicolumn{1}{|c|}{zilu\_poly6}	&polynomial		&\textbf{280 180 260} & \textbf{5 3 5} &\textbf{90.05 47.15 86.58}	&- - - &- - - & ???	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{zilu\_disj1}	&disjunctive	&2700 2040 3480 &3 4 6&\textbf{43.91 35.95 57.55}	&4380 5100 3020 &5 3 3  &\textbf{63.19 84.25 46.19}	&\multicolumn{1}{|c|}{\cmark} &\ding{55} \\
+\multicolumn{1}{|c|}{zilu\_disj2}	&disjunctive	&1580 2880 5120 &5 3 3&\textbf{32.45 24.06 25.13}	&9940 3560 4160 &4 3 3 &\textbf{41.76 20.39 26.34}	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{zilu\_disj3}	&disjunctive	&6320 8940 6885 &3 3 3 &\textbf{24.44 33.04 30.67}	&12390 4370 7390 &3 3 3  &\textbf{54.58 23.68 43.03}	&\multicolumn{1}{|c|}{\cmark} & \ding{55} \\
+\multicolumn{1}{|c|}{fig1b}			&disjunctive	&4600 2700 3300 &9 3 8&\textbf{49.42 15.37 38.68}	&3900 11900 3400 &7 18 5  &\textbf{36.67 91.53 25.68}	&\multicolumn{1}{|c|}{\cmark} & 1 \\
+\multicolumn{1}{|c|}{pldi08~\cite{gulavani2008automatically}}&disjunctive		&608 540 600 &2 2 2 &\textbf{6.28 9.27 4.61}	&840 90 1400 &3 1 3  &\textbf{21.42 3.30 15.52}	&\multicolumn{1}{|c|}{\cmark} &  \ding{55}\\
 \hline
 \end{tabular}
 \label{tbl:stats}
