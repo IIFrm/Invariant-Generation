@@ -11,7 +11,7 @@ The set of variables $V$ for each program contains two integer-type ones: $x$ an
 %$y$ is decreased by $10$ if it is negative (line 6);
 %otherwise, it is increased by $3$ (line 7).
 %The postcondition $Post$ is $y \le x \le y + 16$.
-One example invariant which can be used to prove the Hoare triple is shown for each program. For instance, the Hoare triple shown in Figure~\ref{fig:running:example:programa} can be proven using a loop invariant: $x \le y + 16$, whereas conjunctive or disjunctive invariants are necessary to prove the other Hoare triples. In the following, we show how we generate loop invariants for proving these Hoare triples.
+One example invariant which can be used to prove the Hoare triple is shown for each program. For instance, the Hoare triple shown in Figure~\ref{fig:running:example}(a) can be proven using a loop invariant: $x \le y + 16$, whereas conjunctive or disjunctive invariants are necessary to prove the other Hoare triples. In the following, we show how we generate loop invariants for proving these Hoare triples.
 \end{example}
 \noindent The overall approach is shown as Algorithm~\ref{alg:active}. We start with randomly generating a set of valuations of $V$, denoted as $SP$, at line 1 (a.k.a.~random sampling). Random sampling provides us the initial set of samples to learn the very first candidate for the loop invariant.
 In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain,
@@ -37,7 +37,6 @@ On one hand, without using a solver, we may not be able to generate valuations w
 \end{array}
 \]
     \caption{Invariant: $x \le y + 16$}
-    \label{fig:running:example:programa}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
         \[
@@ -60,15 +59,15 @@ On one hand, without using a solver, we may not be able to generate valuations w
      \vspace{0.3cm}
 \[
  \begin{array}{ll}
-1 & \code{~~~ assume(x=0 {\land} y=1);}  \\
+1 & \code{~~~ assume(x=1 {\land} y=0);}  \\
 2 & \code{~~~ while(*)\{}  \\
 3 & \code{~~~ \quad x {:=} x + y;}  \\
 4 & \code{~~~ \quad y {:=} y + 1;}\\
 5 & \code{~~~\}} \\
-6 & \code{~~~assert(y~{\geq}~x);}
+6 & \code{~~~assert(x~{\geq}~y);}
 \end{array}
 \]
-    \caption{Invariant: $y \geq 0 \land y \geq x$}
+    \caption{Invariant: $y \geq 0 \land x \geq y$}
   \end{subfigure}%
    \begin{subfigure}{0.5\textwidth}
      \vspace{0.3cm}
@@ -126,8 +125,8 @@ let $SP$ be a set of randomly generated valuations of $V$\;
 \end{algorithm}
 
 \begin{example} \label{example2}
-Take the program shown in Figure~\ref{fig:running:example}(a). Assume that the following three valuations are randomly generated:
-$(1, 2)$, $(10, 1)$ and $(100, 0)$ at line 1. Three sequences of valuations are generated after executing the program with these three valuations: $\langle (1, 2), (11, 5) \rangle$, $\langle (10, 1) \rangle$ and $\langle (100, 0) \rangle$.
+Take the program shown in Figure~\ref{fig:running:example}(a) as an example. Assume that the following three valuations are randomly generated:
+$(1, 2)$, $(10, 1)$ and $(100, 0)$ at line 1. Three sequences of valuations are generated after executing the program with these three valuations: $\langle (1, 2), (11, 5) \rangle$, $\langle (10, 1) \rangle$ and $\langle (100, 0) \rangle$ respectively.
 Note that the loop is skipped entirely for the latter two cases. After categorization, set $CE(SP)$ is empty; $Positive(SP)$ is $\{(1, 2),(11, 5)\}$; $Negative(SP)$ is $\{(100, 0)\}$; and $NP(SP)$ is $\{(10, 1)\}$.
 \end{example}
 After obtaining the samples and labeling them as discussed above, method $actL(SP)$ at line 4 in Algorithm~\ref{alg:active} is invoked to generate a candidate invariant $\phi$. We leave the details on how candidate invariants are generated in Section~\ref{sec:classifierlearning}, which is our main contribution in this work. Once a candidate is identified, we move on to check whether $\phi$ satisfies condition (1), (2) and (3) at line 5. In particular, we check whether any of the following constraints is satisfiable or not using an $SMT$ solver~\cite{barrett2009satisfiability,de2008z3}.
@@ -136,17 +135,17 @@ After obtaining the samples and labeling them as discussed above, method $actL(S
      & sp(\phi \land Cond, Body) \land \neg \phi \label{check:inv:loop} \\
     & \phi \land \neg Cond \land \neg Post \label{check:inv:post}
 \end{align}
-where $sp(\phi \land Cond,Body)$ is the strongest postcondition obtained by symbolically executing program $Body$ starting from precondition $\phi \land Cond$~\cite{DBLP:journals/cacm/Dijkstra75}. If all the three constraints are unsatisfiable, we successfully prove the Hoare triple with loop invariant $\phi$. If any of the constraints is satisfiable, a model in the form of a variable valuation is generated, which is then added to $SP$ as a new sample. Afterwards, we restart from line 1, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four categories accordingly, move on to active learning and so on.
+where $sp(\phi \land Cond,Body)$ is the strongest postcondition obtained by symbolically executing program $Body$ starting from precondition $\phi \land Cond$~\cite{DBLP:journals/cacm/Dijkstra75}. If all the three constraints are unsatisfiable, we successfully prove the Hoare triple with the loop invariant $\phi$. If any of the constraints is satisfiable, a model in the form of a variable valuation is generated, which is then added to $SP$ as a new sample. Afterwards, we restart from line 2, i.e., we execute the program with the counterexample valuations, collect and add the variable valuations after each iteration of the loop to the four categories accordingly, move on to active learning and so on.
 \begin{example}
-For the example shown in Figure~\ref{fig:running:example}(a), a candidate invariant which is automatically learned is $x - y \geq 16$. It is easy to check that this candidate satisfies all the three conditions and thus the Hoare triple shown in Figure~\ref{fig:running:example}(a) is proved. For the example shown in Figure~\ref{fig:running:example}(c), a candidate invariant returned by method $actL(SP)$ is as follows.
+For the example shown in Figure~\ref{fig:running:example}(a), a candidate invariant which is automatically learned is $x - y \leq 16$. It is easy to check that this candidate satisfies all the three conditions and thus the Hoare triple shown in Figure~\ref{fig:running:example}(a) is proved. For Figure~\ref{fig:running:example}(c), a candidate invariant returned by method $actL(SP)$ is as follows.
 \[
-490 + 16x - 9y \geq 0 \land  (510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0 
+490 + 16x - 9y \geq 0 \land  (510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0
 \]
-A counterexample $(-28, -11)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After 26 iterations of guess-and-check, the following invariant is generated.
+A counterexample $(-28, -11)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
 \[
 1 + 2y \geq 0 \land 1 + 2x - 2y \geq 0 \land -1 + 2x \geq 0
 \]
-This invariant turns out to be one which is strong enough to prove the Hoare triple.
+Though different from the one we expect, this invariant turns out to be one which is strong enough to prove the Hoare triple.
 \end{example}
 
 

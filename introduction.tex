@@ -29,7 +29,7 @@ Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program var
 %and the post-condition $\mathit{Post}$ is usually specified
 %by assertions and exceptions leading to an error state in the program.
 Let $s = \{ x_1 \mapsto v_1, \cdots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. $\phi$ is viewed as the set of valuations of $V$ such that $\phi$ evaluates to true given the valuation. We thus write $s \in \phi$ to denote that $\phi$ is evaluated to $true$ given $s$. Otherwise, we write $s \not \in \phi$.
-$Body$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function\footnote{Our approach works as long as the non-determinism in $Body$ or $Cond$ is irrelevant to whether the postcondition is satisfied or not.} on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the initial variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
+$Body$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function\footnote{Our approach works as long as the non-determinism in $Body$ or $Cond$ is irrelevant to whether the postcondition is satisfied or not.} on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
 %the evaluation function of the program variables $x_1, \ldots, x_n$
 %and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$,
 %the above program means that (1) $\mathit{Pre}$ is the assumption to the initial value of $s$;
@@ -38,13 +38,13 @@ $Body$ is an imperative program which updates the valuation of $V$. For simplici
 %(3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration,
 %the while-loop ends and $s$ should satisfy $\mathit{Post}$.
 
-The problem is thus either to prove the Hoare triple or to disprove it. In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
+The problem is to either prove the Hoare triple or disprove it. In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
 \begin{align}
     & Pre \subseteq Inv && \label{inv:pre} \\
     &\forall s.~s \in Inv \land Cond \implies Body(s) \in Inv && \label{inv:loop} \\
     & Inv \land \neg Cond \subseteq Post && \label{inv:post}
 \end{align}
-In order to disprove it, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we further assume that the loop body always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
+In order to disprove it, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
 
 Many approaches have been proposed to solve this problem.
@@ -52,7 +52,7 @@ For example, there are proposals based on abstraction interpretation~\cite{couso
 %% cousot1979systematic, karr1976affine,
  counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
-Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant $\mathit{Inv}$ (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
+Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
 The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s \in (Pre \land \neg \phi)$ is generated, which proves that $\phi$ is not an invariant.
@@ -61,7 +61,7 @@ With the new sample $s$, we can re-classify the samples to obtain a new candidat
 One problem with the guess-and-check approach is that its effectiveness is often limited by the samples which are generated randomly.
 In order to learn the right invariant through classification, often a large number of samples are necessary.
 Furthermore, often those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not must be sampled so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard.
-As a result, many iterations of guess-and-check are required. Another problem is that the kinds of loop invariants obtained through existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are often limited, e.g., to conjunctive linear inequalities~\cite{sharma2012interpolants} or equalities~\cite{DBLP:conf/esop/0001GHALN13}. Despite the approach presented in~\cite{DBLP:conf/pldi/GulwaniSV08,DBLP:conf/cav/SharmaDDA11}, learning disjunctive loop invariants remains a challenge.
+As a result, many iterations of guess-and-check are required. Another problem is that the kinds of loop invariants obtained through existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are often limited, e.g., conjunctive linear inequalities~\cite{sharma2012interpolants} or equalities~\cite{DBLP:conf/esop/0001GHALN13}. Despite the approach presented in~\cite{DBLP:conf/pldi/GulwaniSV08,DBLP:conf/cav/SharmaDDA11}, learning disjunctive loop invariants remains a challenge.
 
 In this work, we propose a technique to improve the existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}.
  %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
@@ -69,8 +69,8 @@ In this work, we propose a technique to improve the existing guess-and-check app
 Compared to the existing approaches, we make the following contributions.
 Firstly, we propose an active learning technique to overcome the limitation of random sampling.
 That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants
-so that we can improve the candidates prior to verifying them during every guess-and-check iteration.
-As a result, we can reduce the number of guess-and-check iterations significantly, or even completely in many cases.
+so that we can improve the candidates prior to checking them during every guess-and-check iteration.
+As a result, we can reduce the number of guess-and-check iterations, or even completely in many cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,

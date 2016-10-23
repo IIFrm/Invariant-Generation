@@ -41,8 +41,11 @@
 % \email{\{jiaying\_li,li\_li,quangloc\_le,sunjun\}@sutd.edu.sg}}
 % }
 
-%\author{Jiaying Li, Jun Sun, Li Li and Quang Loc Le}
-%\institute{Singapore University of Technology and Design }
+\author{Jiaying Li\inst{1}, Jun Sun\inst{1}, Li Li\inst{1}, Quang Loc Le\inst{1} and Shang-Wei Lin\inst{2}}
+\institute{Singapore University of Technology and Design
+\and
+School of Computer Science and Engineering, Nanyang Technological University
+}
 
 %%\numberofauthors{4}
 %\author{
@@ -82,10 +85,10 @@
 \maketitle
 
 \begin{abstract}
-Loop invariant generation is important in program analysis and verification. In this work, we propose a technique for automatically loop invariant generation through a combination of active learning and verification. Given a Hoare triple of a program containing a loop, we start with randomly testing the program. We collect program states at run-time and categorize them based on whether they satisfy the invariant to be discovered. Next, classification techniques are employed to generate candidate loop invariants. More importantly, we refine the candidates through active learning so as to overcome the lack of sampled program states.
+Loop invariant generation is important in program analysis and verification. In this work, we propose a technique for automatically loop invariant generation through a combination of active learning and verification. Given a Hoare triple of a program containing a loop, we start with randomly testing the program. We collect program states at run-time and categorize them based on whether they satisfy the invariant to be discovered. Next, classification techniques are employed to generate candidate loop invariants. In particular, we refine the candidates through active learning so as to overcome the lack of sampled program states.
 Only after the candidate invariant cannot be improved further through active learning, we verify whether a candidate can be used to prove the Hoare triple.
 If it cannot, the generated counterexample is used for re-classification and we repeat the above process. Furthermore, we show that by introducing
-path-sensitive learning, i.e., partitioning the program states according to program locations they visit and classifying each partition separately, we are able to learn disjunctive loop invariants. We have developed a prototype tool and applied it to verify a set of benchmark programs. The evaluation shows that our approach complements existing approaches/tools in finding loop invariants in linear, polynomial, conjunctive or disjunctive forms.
+path-sensitive learning, i.e., partitioning the program states according to program locations they visit and classifying each partition separately, we are able to learn disjunctive loop invariants. We have developed a prototype tool and applied it to verify a set of benchmark programs. The evaluation shows that our approach complements existing approaches.
 
 %-------------------------------------------------------------------------
 %  \keywords Loop Invariant $\cdot$ Active Learning $\cdot$ Verification
