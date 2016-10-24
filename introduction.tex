@@ -44,7 +44,7 @@ The problem is to either prove the Hoare triple or disprove it. In order to prov
     &\forall s.~s \in Inv \land Cond \implies Body(s) \in Inv && \label{inv:loop} \\
     & Inv \land \neg Cond \subseteq Post && \label{inv:post}
 \end{align}
-In order to disprove it, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
+In order to disprove the Hoare triple, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
 
 Many approaches have been proposed to solve this problem.

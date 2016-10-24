@@ -1,6 +1,6 @@
 \section{The Overall Approach}
 \label{sec:overview}
-Loop invariant generation using a guess-and-check approach is an iterative process of \emph{data collection}, \emph{guessing} (i.e., classification in this work) and checking (i.e., verification of the invariant candidate).
+Loop invariant generation using a guess-and-check approach is an iterative process of \emph{data collection}, \emph{guessing} (i.e., classification in this work) and \emph{checking} (i.e., verification of the invariant candidate).
 %The overall workflow is shown in the Figure~\ref{fig:overview}.
 In the following, we present how our approach works step-by-step and illustrate each step with simple examples.
 
@@ -45,7 +45,7 @@ On one hand, without using a solver, we may not be able to generate valuations w
       2 & \code{while(x~{+}~y~{\le}-2)\{}  \\
       3 & \code{\quad if~(x~{>}~0) \{}  \\
       4 & \code{\quad \quad ~~~x~{:=}~x+1;}  \\
-      5 & \code{\quad \}~else \{} \\
+      5 & \code{\quad \}~else ~\{} \\
       6 & \code{\quad \quad ~y {:=} y + 1;}\\
       7 & \code{\quad \}} \\
       8 & \code{\}} \\
@@ -139,7 +139,7 @@ where $sp(\phi \land Cond,Body)$ is the strongest postcondition obtained by symb
 \begin{example}
 For the example shown in Figure~\ref{fig:running:example}(a), a candidate invariant which is automatically learned is $x - y \leq 16$. It is easy to check that this candidate satisfies all the three conditions and thus the Hoare triple shown in Figure~\ref{fig:running:example}(a) is proved. For Figure~\ref{fig:running:example}(c), a candidate invariant returned by method $actL(SP)$ is as follows.
 \[
-490 + 16x - 9y \geq 0 \land  (510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0
+490 + 16x - 9y \geq 0 \land  510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0
 \]
 A counterexample $(-28, -11)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
 \[

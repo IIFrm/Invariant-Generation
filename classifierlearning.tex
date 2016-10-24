@@ -248,7 +248,7 @@ at line 5 of Algorithm~\ref{classification}, after obtaining a classifier $\phi$
 %The mixed area exists because our labeling method depends much on the observed program valuation sequences.
 %
 
-For classifiers in the form of linear inequalities, identifying samples on the classification boundary is straightforward. In the above example, given the current classifier $3x-10y \leq 152$, we apply selective sampling and generate new valuations $\{x \mapsto 7, y \mapsto 13\}$ and $\{x \mapsto 14, y \mapsto -11\}$ by solving the equation $3x-10y = 152$. %For this example, after a few iterations of selective sampling, the invariant converges to $x-y \leq 16$. We remark that this is achieved without checking the candidate through program verification.
+For classifiers in the form of linear inequalities, identifying samples on the classification boundary is straightforward. In the above example, given the current classifier $3x-10y \leq 152$, we apply selective sampling and generate new valuations $(7, 13)$ and $(14, -11)$ by solving the equation $3x-10y = 152$. %For this example, after a few iterations of selective sampling, the invariant converges to $x-y \leq 16$. We remark that this is achieved without checking the candidate through program verification.
 For classifiers in the form of polynomial inequalities, the problem is more complicated since existing solvers for multi-variable polynomial equations have limited scalability. We thus use a simple approach to identify solutions of a polynomial equation, which we illustrate through an example in the following. Assume that we learn the classifier: $-4x^2+2y \geq -11$. The following steps are applied for selective sampling.
 \begin{enumerate}
 \item Choose a variable in the classifier, e.g., $x$.
@@ -256,7 +256,7 @@ For classifiers in the form of polynomial inequalities, the problem is more comp
 \item Substitute the variables in the classifiers with the generated values and solve the univariable equation, e.g., $-4x^2+24 = -11$ . If there is no solution, go back to (1) and retry.
 In our example, $x \approx 2.9580$.
 %\item Add a random variance $\epsilon \in [-1, 1]$ to the value of the picked variable. Here we add $\epsilon = 0.4$ to the value of $x$, and thus the new value of $x$ is $3.3580$.
-\item Roundoff the values of all the variables according to their types in the program. In our example, we obtain the valuation $\{x \mapsto 3, y \mapsto 12\}$.
+\item Roundoff the values of all the variables according to their types in the program. In our example, we obtain the valuation $(3, 12)$.
 \end{enumerate}
 In the case that a conjunctive or disjunctive classifier is learned, we apply the above selective sampling approach to each and every clause in the classifier to obtain new samples. With the help of active learning and selective sampling, we can often reduce the number of learn-and-check iterations. As we show in Section~\ref{sec:evaluations}, often one iteration of guess-and-check is sufficient to prove the Hoare triple.
 
