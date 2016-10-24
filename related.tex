@@ -58,7 +58,7 @@ often try to generate all possible invariants in certain domain~\cite{mine2006oc
 regardless of whether they are useful to prove the Hoare triple or not.
 As a result, the invariants inferred by them can be complex sometimes and yet fail to prove the program correctness.
 On the other hand, other methods based on $\mathit{CEGAR}$, interpolation and abduction only generate those related to the program verification~\cite{isil2013inductive}.
-Different from the above approaches, \textsc{Zilu} initially treats the given program as a black box and only collects relevant program states by executing the program.
+Different from the above approaches, \textsc{Zilu} initially treats the given program as a black box and only collects control flow information and relevant program states by executing the program.
 This step has no scalability issue.
 \textsc{Zilu} only opens up the black box after candidate invariants have converged.
 From this point of view, \textsc{Zilu} is lightweight compared to the above approaches.
