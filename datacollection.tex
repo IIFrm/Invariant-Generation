@@ -100,7 +100,7 @@ A valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s'$ which fails
 Positive(SP) = & \{s \in SP | \exists s_0,s_1: SP. \\
 & ~~~~~~ s_0 \in Pre \land s_0 \Rightarrow s \Rightarrow s_1 \land s_1 \not \in Cond \land s_1 \in Post\}
 \end{align*}
-$Positive(SP)$ contains a valuation $s$ if there exists a valuation $s_0$ in $SP$ which satisfies $Pre$ and becomes $s$ after zero or more iterations. Furthermore, $s$ subsequently becomes $s'$ which satisfies $Post$ when the loop terminates. Let $Inv$ be any loop invariant which proves the Hoare triple. Because $s_0 \in Pre$, $s_0 \in Inv$ since $Inv$ satisfies condition (1). Since $Inv$ satisfies condition (2) and $Body(s_0) \in Inv$ if $Body(s_0) \in Cond$. By a simple induction, we prove $s \in Inv$.
+$Positive(SP)$ contains a valuation $s$ if there exists a valuation $s_0$ in $SP$ which satisfies $Pre$ and becomes $s$ after zero or more iterations. Furthermore, $s$ subsequently becomes $s'$, which satisfies $Post$ when the loop terminates. Let $Inv$ be any loop invariant that proves the Hoare triple. Because $s_0 \in Pre$, $s_0 \in Inv$ since $Inv$ satisfies condition (1). Since $Inv$ satisfies condition (2) and $Body(s_0) \in Inv$ if $Body(s_0) \in Cond$. By a simple induction, we prove $s \in Inv$.
 \begin{align*}
     Negative(SP) = & \{s \in SP | s \not \in Pre \land \exists s'. \\
     & ~~~~~~s \Rightarrow s' \land s' \not \in Cond \land s' \not \in Post\}
@@ -141,7 +141,7 @@ For the example shown in Figure~\ref{fig:running:example}(a), a candidate invari
 \[
 490 + 16x - 9y \geq 0 \land  510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0
 \]
-A counterexample $(-28, -11)$ is generated when we check the satisfiability of (4), which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
+A counterexample $(-28, -11)$ is generated when we check the satisfiability of (45, which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
 \[
 1 + 2y \geq 0 \land 1 + 2x - 2y \geq 0 \land -1 + 2x \geq 0
 \]

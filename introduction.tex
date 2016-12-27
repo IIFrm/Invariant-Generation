@@ -29,7 +29,7 @@ Assume that $V = \{x_1{,} x_2{,} \cdots{,} x_n\}$ is a finite set of program var
 %and the post-condition $\mathit{Post}$ is usually specified
 %by assertions and exceptions leading to an error state in the program.
 Let $s = \{ x_1 \mapsto v_1, \cdots, x_n \mapsto v_n \}$ be a valuation of $V$. Let $\phi$ be a predicate constituted by variables in $V$. $\phi$ is viewed as the set of valuations of $V$ such that $\phi$ evaluates to true given the valuation. We thus write $s \in \phi$ to denote that $\phi$ is evaluated to $true$ given $s$. Otherwise, we write $s \not \in \phi$.
-$Body$ is an imperative program which updates the valuation of $V$. For simplicity, we assume that it is a deterministic function\footnote{Our approach works as long as the non-determinism in $Body$ or $Cond$ is irrelevant to whether the postcondition is satisfied or not.} on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
+$Body$ is an imperative program that updates the valuation of $V$. For simplicity, we assume that it is a deterministic function\footnote{Our approach works as long as the non-determinism in $Body$ or $Cond$ is irrelevant to whether the postcondition is satisfied or not.} on valuations of variables $V$, and write $Body(s)$ to denote the valuation of $V$ after executing $Body$ given the variable valuation $s$. For convenience, $Body^i(s)$ where $i \geq 0$ is defined as follows: $Body^0(s) = s$ and $Body^{i+1}(s) = Body(Body^i(s))$.
 %the evaluation function of the program variables $x_1, \ldots, x_n$
 %and $\mathit{Body}(s)$ stand for their new evaluation after the execution of $\mathit{Body}$,
 %the above program means that (1) $\mathit{Pre}$ is the assumption to the initial value of $s$;
@@ -44,13 +44,13 @@ The problem is to either prove the Hoare triple or disprove it. In order to prov
     &\forall s.~s \in Inv \land Cond \implies Body(s) \in Inv && \label{inv:loop} \\
     & Inv \land \neg Cond \subseteq Post && \label{inv:post}
 \end{align}
-In order to disprove the Hoare triple, we would like to find a valuation $s$ such that $s \models \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \models \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
+In order to disprove the Hoare triple, we would like to find a valuation $s$ such that $s \in \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \in \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
 for extensive research on proving loop termination.
 
 Many approaches have been proposed to solve this problem.
 For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,vincent2009subpolyhedra},
 %% cousot1979systematic, karr1976affine,
- counterexample guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
+ counterexample-guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
 Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
 Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
@@ -70,7 +70,7 @@ Compared to the existing approaches, we make the following contributions.
 Firstly, we propose an active learning technique to overcome the limitation of random sampling.
 That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants
 so that we can improve the candidates prior to checking them during every guess-and-check iteration.
-As a result, we can reduce the number of guess-and-check iterations, or even completely in many cases.
+As a result, we can reduce the number of guess-and-check iterations. %, or even completely in many cases.
 %    for automatic invariant inference based on machine learning.
 %    Since the samples are chosen for clear purpose
 %    to refine the invariant candidate in the \emph{data collection} stage,
