@@ -11,7 +11,7 @@ The set of variables $V$ for each program contains two integer-type ones: $x$ an
 %$y$ is decreased by $10$ if it is negative (line 6);
 %otherwise, it is increased by $3$ (line 7).
 %The postcondition $Post$ is $y \le x \le y + 16$.
-One example invariant which can be used to prove the Hoare triple is shown for each program. For instance, the Hoare triple shown in Figure~\ref{fig:running:example}(a) can be proven using a loop invariant: $x \le y + 16$, whereas conjunctive or disjunctive invariants are necessary to prove the other Hoare triples. In the following, we show how we generate loop invariants for proving these Hoare triples.
+One example invariant which can be used to prove the Hoare triple is shown for each program. For instance, the Hoare triple shown in Figure~\ref{fig:running:example}(a) can be proven using a loop invariant: $x \le y + 16$, whereas conjunctive or disjunctive invariants are necessary to prove the rest of the Hoare triples. In the following, we show how we generate loop invariants for proving these Hoare triples.
 \end{example}
 \noindent The overall approach is shown as Algorithm~\ref{alg:active}. We start with randomly generating a set of valuations of $V$, denoted as $SP$, at line 1 (a.k.a.~random sampling). Random sampling provides us the initial set of samples to learn the very first candidate for the loop invariant.
 In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain,
@@ -141,7 +141,7 @@ For the example shown in Figure~\ref{fig:running:example}(a), a candidate invari
 \[
 490 + 16x - 9y \geq 0 \land  510 + 6x + 29y \geq 0 \land 56 - y \geq 0 \land 166 - 2x + 5y \geq 0
 \]
-A counterexample $(-28, -11)$ is generated when we check the satisfiability of (45, which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
+A counterexample $(-28, -11)$ is generated when we check the satisfiability of (5), which is then used to generate a new candidate. After multiple iterations of guess-and-check, the following invariant is generated.
 \[
 1 + 2y \geq 0 \land 1 + 2x - 2y \geq 0 \land -1 + 2x \geq 0
 \]

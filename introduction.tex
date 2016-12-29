@@ -38,37 +38,41 @@ $Body$ is an imperative program that updates the valuation of $V$. For simplicit
 %(3) if the $\mathit{Cond}$ is unsatisfied by $s$ at an iteration,
 %the while-loop ends and $s$ should satisfy $\mathit{Post}$.
 
-The problem is to either prove the Hoare triple or disprove it. In order to prove the Hoare triple, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
+The problem is to either prove or disprove the Hoare triple. To prove it, we would like to find a loop invariant $\mathit{Inv}$ which satisfies the following three conditions.
 \begin{align}
     & Pre \subseteq Inv && \label{inv:pre} \\
     &\forall s.~s \in Inv \land Cond \implies Body(s) \in Inv && \label{inv:loop} \\
     & Inv \land \neg Cond \subseteq Post && \label{inv:post}
 \end{align}
-In order to disprove the Hoare triple, we would like to find a valuation $s$ such that $s \in \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \in \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
-for extensive research on proving loop termination.
+To disprove it, we would like to find a valuation $s$ such that $s \in \mathit{Pre}$ and executing the loop until it terminates results in a valuation $s'$ such that $s' \not \in \mathit{Post}$. For simplicity, we assume that the loop always terminates and refer the readers to~\cite{Domagoj:FAC:2013,Hong:ASE:2015} %%\cite{acmcomm}
+for research on proving loop termination.
 
-Many approaches have been proposed to solve this problem.
-For example, there are proposals based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,vincent2009subpolyhedra},
+\paragraph{Existing Work} Many approaches have been proposed to solve this problem, e.g., those based on abstraction interpretation~\cite{cousot1978automatic,mine2006octagon,vincent2009subpolyhedra},
 %% cousot1979systematic, karr1976affine,
- counterexample-guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy} and constraint solving and inference~\cite{ashutosh2009invgen,michael2003linear,sumit2009constraint}.
-Recently, the authors of~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} proposed to automatically generate loop invariants based on random searching~\cite{sharma2014invariant} as well as machine learning~\cite{sharma2012interpolants}.
-Their approaches start with randomly generating valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant (if there is any) and another containing those not. Machine learning techniques are then used to generalize them in a certain form to obtain candidate loop invariants.
+counterexample-guided abstraction refinement~\cite{henzinger2003software,thomas2001slam,edmund2003counterexample}, interpolation~\cite{thomas2004abstractions,kenneth2003interpolation,Kenneth2006lazy}, constraint solving and logical inference \cite{ashutosh2009invgen,michael2003linear,sumit2009constraint,isil2013inductive}. These approaches all rely on some form of constraint solving and often suffer from scalability issues. For instance, the work in~\cite{mine2006octagon,vincent2009subpolyhedra,ashutosh2009invgen} is restricted to generate invariant in a certain domain so that constraint solving is manageable.
+ 
+Recently, a number of guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} have been proposed. 
+In these approaches, we start with generating a set of valuations of $V$ (a.k.a.~the samples) and categorize them into different groups, e.g., one containing those satisfying the loop invariant (if there is any) and another containing those not. Learning techniques are then used to generalize them in a certain form to \emph{guess} candidate loop invariants.
 %For instance, classification algorithms like Support Vector Machines (SVM) ~\cite{sharma2012interpolants} can be used to generate classifiers as candidate invariants.
-The candidates are then checked using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
+The candidates are then \emph{check}ed using program verification techniques (like symbolic execution~\cite{symbolic}) to see whether they satisfy the three conditions. If any of the conditions is violated, we obtain counterexamples in the form of variable valuations.
 For instance, given a candidate $\phi$, if condition (1) is violated, a valuation $s \in (Pre \land \neg \phi)$ is generated, which proves that $\phi$ is not an invariant.
-With the new sample $s$, we can re-classify the samples to obtain a new candidate invariant. This guess-and-check process is repeated until either the Hoare triple is proved or disproved.
+With the new sample $s$, we can learn a new candidate invariant. This guess-and-check process is repeated until either the Hoare triple is proved or disproved.
 
-One problem with the guess-and-check approach is that its effectiveness is often limited by the samples which are generated randomly.
-In order to learn the right invariant through classification, often a large number of samples are necessary.
-Furthermore, often those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not must be sampled so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard.
-As a result, many iterations of guess-and-check are required. Another problem is that the kinds of loop invariants obtained through existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are often limited, e.g., conjunctive linear inequalities~\cite{sharma2012interpolants} or equalities~\cite{DBLP:conf/esop/0001GHALN13}. Despite the approach presented in~\cite{DBLP:conf/pldi/GulwaniSV08,DBLP:conf/cav/SharmaDDA11}, learning disjunctive loop invariants remains a challenge.
+Existing guess-and-check approaches vary in how samples are generated and how candidate invariants are guessed. In~\cite{sharma2012interpolants}, the authors proposed to generated samples through constraint solving and learn loop invariants based on SVM classification . In~\cite{sharma2013verification}, the authors proposed to apply PAC learning. It has been demonstrated that their approach may learn invariants in the form of arbitrary boolean
+combinations of polynomial inequalities under certain assumptions. In~\cite{DBLP:conf/esop/0001GHALN13},
+the authors developed a guess-and-check algorithm to generate invariants in the form of algebraic equation.
+In~\cite{sharma2014invariant}, the authors proposed a framework for generating invariants based on randomized search.
+In particular, their approach has two phases. The search phase uses randomized search to discover candidate invariants and the validate phase uses the checker to either prove or refute the candidate.
 
-In this work, we propose a technique to improve the existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}.
+One problem with the guess-and-check approaches is that its effectiveness is often limited by the samples generated in the first phase. In order to guess the right invariant, often a large number of samples are necessary.
+If classification techniques are employed, often those samples right by the boundary between variable valuations which satisfy the actual invariant and those which do not must be sampled so that classification techniques would identify the right invariant. Obtaining those samples through random sampling is often hard. As a result, many iterations of guess-and-check are required. Another problem is that the kinds of loop invariants obtained through existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant} are often limited, e.g., conjunctive linear inequalities~\cite{sharma2012interpolants} or equalities~\cite{DBLP:conf/esop/0001GHALN13}. Despite the approach presented in~\cite{DBLP:conf/pldi/GulwaniSV08,DBLP:conf/cav/SharmaDDA11}, learning disjunctive loop invariants remains a challenge.
+
+\paragraph{Our Contribution} In this work, we propose a technique to improve the existing guess-and-check approaches~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}
  %We improve existing approaches in two aspects. First, by adopting active learning techniques, we improve the quality of the candidate invariants prior to verifying them, in every iteration of learn-and-check. As a result, we can reduce the number of learn-and-check iterations significantly. Second, by supporting an extensible framework, we can easily integrate different classification techniques (e.g., SVM with kernel methods~\cite{}) as well as the corresponding active learning techniques so that we can learn a large class of invariants. %We have developed a prototype implementation of our method and applied to benchmark programs including those from the software verification competition. The results show that our method often reduces the number of guess-and-check iterations as well as is able to learning more loop invariants than existing approaches.
 %In the following, we define our problem and briefly illustrate how our approach works.
-Compared to the existing approaches, we make the following contributions.
+by making the following contributions.
 Firstly, we propose an active learning technique to overcome the limitation of random sampling.
-That is, the active learning technique allows us to automatically generate samples which are important in improving the quality of the candidate invariants
+That is, active learning allows us to automatically generate samples which are important in improving the quality of the candidate invariants
 so that we can improve the candidates prior to checking them during every guess-and-check iteration.
 As a result, we can reduce the number of guess-and-check iterations. %, or even completely in many cases.
 %    for automatic invariant inference based on machine learning.
@@ -80,9 +84,8 @@ As a result, we can reduce the number of guess-and-check iterations. %, or even 
 %    they become a useful supplementary to overcome the weakness of machine learning
 %    and fine-tune the invariant candidate.
 Secondly, our approach is designed to be extensible so that we can learn different kinds of invariants.
-For instance, we show that we can learn candidate invariants in the form of polynomial inequalities or their conjunctions using a different classification algorithm.
-Furthermore, we show that by introducing a {\em path-sensitive} learning through two steps:
- partitioning the samples according to the control locations they visit and classifying each partition separately, we are able to generate disjunctive invariants. Lastly, we implement our framework as a tool called \textsc{Zilu} (available at~\cite{zilu:repo}) and compare it with state-of-the-art tools like Interproc~\cite{jeannet2010interproc} as well as CPAChecker~\cite{DBLP:conf/cav/BeyerK11}.
+For instance, we can generate candidate invariants in the form of polynomial inequalities or their conjunctions using a different classification algorithm.
+Furthermore, we can generate disjunctive invariants through {\em path-sensitive} learning (i.e., we partition the samples according to the control locations they visit and classifying each partition separately). Lastly, we implement our framework as a tool called \textsc{Zilu} (available at~\cite{zilu:repo}) and compare it with state-of-the-art tools like Interproc~\cite{jeannet2010interproc}, CPAChecker~\cite{DBLP:conf/cav/BeyerK11}, HOLA~\cite{}, InvGen~\cite{} and BLAST~\cite{}.
 %%    i.e.,
     %CPAChecker~\cite{beyer2011cpachecker} and
  %%   Interproc~\cite{jeannet2010interproc}.
@@ -93,11 +96,27 @@ Furthermore, we show that by introducing a {\em path-sensitive} learning through
     % Based on the design of different approaches,
     % we also claim that our framework have better extensibility comparing with their method.
 %\textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library ($\mathit{GSL}$)~\cite{gough2009gnu} for active learning,   $\mathit{LibSVM}$~\cite{chang2011libsvm} for $\mathit{SVM}$ classification, revised $\mathit{KLEE}$~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for verification) and can be used as a language/platform independent tool to verify programs.
+\textsc{Zilu} complements the above-mentioned existing approaches with active learning so as to reduce the need of checking, sometimes completely. Furthermore, \textsc{Zilu} supports a new way of learning disjunctive invariants.
+
+
+
+%In addition, \textsc{Zilu} adopts an active learning approach in an iterative refinement scheme.
+%After generating the invariant, we check its correctness and refine it
+%based on various new information (e.g., counter-examples, new samples)
+%if it cannot prove the program correctness.
+%Different from most of the existing refinement approaches,
+%our method is driven by data samples
+%rather than syntactic~\cite{cormac2001houdini} or semantic~\cite{ashutosh2009invgen,isil2013inductive} clues.
+%Hence, it is more flexible and extensible to capture new types of invariants,
+%and it is platform- and language-independent.
+%Based on the needs in practice, under-approximation or over-approximation
+%can also be applied to the data samples with ease.
+
 
 The remainders of the paper are organized as follows.
 Section~\ref{sec:overview} presents an overview of our approach using an illustrative example.
 Section~\ref{sec:classifierlearning} shows how candidate loop invariants are generated and refined through active learning.
 %Section~\ref{sec:activelearning} then demonstrates the active learning technique which is applied to reduce the number of required samples.
-Section~\ref{sec:evaluations} discusses our implementation and evaluates its effectiveness using a set of benchmark programs.
-Section~\ref{sec:related} reviews related work and concludes.
+Section~\ref{sec:evaluations} evaluates our approach using a set of benchmark programs.
+Section~\ref{sec:related} concludes.
 

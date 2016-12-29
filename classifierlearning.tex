@@ -27,7 +27,7 @@ In our approach, the classification algorithms must generate perfect classifiers
 In the following, we show how to adopt existing algorithms to generate candidate invariants based on SVM in Section~\ref{existing}. Next, we present an approach to generate disjunctive invariants in Section~\ref{disjunctive}. We show how to improve all these candidates systematically through active learning in Section~\ref{active}.
 
 \subsection{Linear and Polynomial Classifiers} \label{existing}
-In~\cite{sharma2012interpolants}, the authors propose to use SVM to generate candidate invariants. SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}.
+In~\cite{sharma2012interpolants}, the authors proposed to use SVM to generate candidate invariants. SVM is a supervised machine learning algorithm for classification and regression analysis~\cite{svm:original}.
 In general, the binary classification functionality of SVM works as follows. Given $P$ and $N$, SVM generates a perfect classifier to separate them if there is any.
 %In the following, we write $svm(P, N)$ to denote the function which returns a perfect linear classifier for $P$ and $N$ if there is any; or returns $\textsc{null}$ otherwise.
 We refer the readers to~\cite{svm:smo} for details on how the classifier is computed. In this work, we always choose the \textit{optimal margin classifier} if possible. Intuitively, the optimal margin classifier could be seen as the strongest witness why $P$ and $N$ are different.
@@ -35,7 +35,7 @@ SVM by default learns classifiers in the form of a linear inequality, i.e., a ha
 
 In practice, linear classifiers may not be sufficient in proving certain Hoare triples and thus more expressive invariants are necessary. We can easily extend SVM to learn polynomial classifiers. Given $P$ and $N$ as well as a maximum degree $d$ of the polynomial classifier, we can systematically map all the samples in $P$ (similarly $N$) to a set of samples $P'$ (similarly $N'$) in a high dimensional space by expanding each sample with terms which have a degree up to $d$. For instance, assume that the maximum degree is 2, the sample valuation $\{ x \mapsto 2, y \mapsto 1\}$ in $P$ is mapped to $\{x \mapsto 2, y \mapsto 1, x^2 \mapsto 4, xy \mapsto 2, y^2 \mapsto 1\}$.
 SVM is then applied to learn a perfect linear classifier for $P'$ and $N'$. Mathematically, a linear classifier in the high dimensional space is the same as a polynomial classifier in the original space~\cite{svm:kernel}.
-We remark that the size of each sample in $P'$ or $N'$ grows rapidly with the increase of the degree and thus the above method is often limited to polynomial classifiers with relatively low degree.
+We remark that the size of each sample in $P'$ or $N'$ grows rapidly with the increase of the degree and thus the above method is limited to polynomial classifiers with relatively low degree.
 
 A polynomial classifier can represent some classifiers in the form of disjunctive or conjunctive linear inequalities. For instance, the classifier $(x \ge d_0 \wedge x \le d_1) \vee (x \ge d_2)$
 where $d_0 < d_1 < d_2$ are constants can be represented equivalently as the following polynomial inequality.
@@ -49,7 +49,10 @@ In~\cite{sharma2012interpolants}, an algorithm for learning conjunctive classifi
 
 \subsection{Disjunctive Classifiers} \label{disjunctive}
 It is often challenging to automatically generate disjunctive invariants~\cite{DBLP:conf/cav/SharmaDDA11,DBLP:conf/pldi/GulwaniSV08}, whereas certain Hoare triples can only be proved with disjunctive invariants. Two examples are shown in Figure~\ref{fig:running:example}(b) and Figure~\ref{fig:running:example}(d). In the following, we show how to learn disjunctive invariants through path-sensitive classification. Our observation is that disjunctive invariants are relevant often because the program contains branching commands (i.e., \code{if} and \code{while}). %% branches.
- For instance, proving the Hoare triple shown in Figure~\ref{fig:running:example}(b) requires a disjunctive loop invariant, which is largely due to the conditional branch at line 3. Based on this observation, we apply the following approach to learn disjunctive invariants.
+For instance, proving the Hoare triple shown in Figure~\ref{fig:running:example}(b) requires a disjunctive loop invariant, which is largely due to the conditional branch at line 3. Based on this observation, we apply the following approach to learn disjunctive invariants.
+
+In the following, we define the loop body $Body$ as a control flow 
+
 
 Assume that the loop body $Body$ contains a finite set of control locations. For instance, the loop in the first program in Figure~\ref{fig:running:example}(b) has four locations: line 3, 4, 5 and 6. Given a valuation of $V$, say $s$, we write $visit(s)$ to be the set of control locations which are visited if we execute the program with variable valuation $s$ during the first iteration of the loop. For instance, given the program in Figure~\ref{fig:running:example}(b), $visit(\{x \mapsto 0, y \mapsto -3\})$ returns $\{3,5,6\}$. If $s$ does not satisfy the loop condition $Cond$, $visit(s)$ returns an empty set. We first partition $P$ into a set of disjoint partitions such that all valuations in the same partition $P_i$ visits the same set of control locations. For each partition $P_i$, we can construct the corresponding path condition $pc_i$.
 \begin{example}
