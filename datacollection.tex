@@ -117,7 +117,7 @@ $NP(SP)$ contains the rest of the samples. We remark that a valuation $s$ in $NP
 let $SP$ be a set of randomly generated valuations of $V$\;
 \While{not time out} {
     add all valuations $s'$ such that $s \Rightarrow s'$ for some $s \in SP$ into $SP$\;
-    call $actL(SP)$ to generate a candidate invariant\;
+    call $actL(SP)$ to generate a candidate invariant $\phi$\;
     return ``proved'' if the program is verified with $\phi$ otherwise add the counterexample into $SP$\;
 }
 \caption{Algorithm $zilu()$}
