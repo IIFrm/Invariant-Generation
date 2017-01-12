@@ -1,0 +1,1320 @@
+
+-------------------------../../Invariant-Generation/testcases/cpa/01.cpp-------------------------------Wed Jan 11 00:15:46 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.19
+user 4.06
+sys 0.08
+
+-------------------------../../Invariant-Generation/testcases/cpa/03.cpp-------------------------------Wed Jan 11 00:15:49 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.73
+user 4.31
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/05.cpp-------------------------------Wed Jan 11 00:15:53 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 19: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.57
+user 4.78
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/11.cpp-------------------------------Wed Jan 11 00:15:57 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.96
+user 5.16
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/15.cpp-------------------------------Wed Jan 11 00:16:00 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.26
+user 4.14
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/19.cpp-------------------------------Wed Jan 11 00:16:04 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.51
+user 4.38
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/20.cpp-------------------------------Wed Jan 11 00:16:07 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 19: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.55
+user 4.16
+sys 0.15
+
+-------------------------../../Invariant-Generation/testcases/cpa/21.cpp-------------------------------Wed Jan 11 00:16:11 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Error path found, starting counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Using the following resource limits: CPU-time limit of 900s (CounterexampleCheck:ResourceLimitChecker.fromConfiguration, INFO)
+
+Error path found and confirmed by counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.99
+user 4.58
+sys 0.15
+
+-------------------------../../Invariant-Generation/testcases/cpa/23.cpp-------------------------------Wed Jan 11 00:17:12 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Shutdown requested (The JVM is shutting down, probably because Ctrl+C was pressed.), waiting for termination. (ForceTerminationOnShutdown$1.shutdownRequested, WARNING)
+
+Warning: Analysis interrupted (The JVM is shutting down, probably because Ctrl+C was pressed.) (ShutdownNotifier.shutdownIfNecessary, WARNING)
+
+Command exited with non-zero status 124
+real 60.51
+user 73.16
+sys 0.43
+
+-------------------------../../Invariant-Generation/testcases/cpa/28.cpp-------------------------------Wed Jan 11 00:17:15 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.20
+user 3.76
+sys 0.13
+
+-------------------------../../Invariant-Generation/testcases/cpa/30.cpp-------------------------------Wed Jan 11 00:17:18 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.26
+user 4.00
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/35.cpp-------------------------------Wed Jan 11 00:17:22 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.32
+user 3.86
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/41.cpp-------------------------------Wed Jan 11 00:17:26 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 4.28
+user 5.62
+sys 0.20
+
+-------------------------../../Invariant-Generation/testcases/cpa/43.cpp-------------------------------Wed Jan 11 00:17:29 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 17: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.16
+user 3.80
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/44.cpp-------------------------------Wed Jan 11 00:17:32 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.18
+user 3.85
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/afnp2014_true.cpp-------------------------------Wed Jan 11 00:17:36 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.27
+user 3.94
+sys 0.07
+
+-------------------------../../Invariant-Generation/testcases/cpa/bound.cpp-------------------------------Wed Jan 11 00:17:39 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.40
+user 3.95
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/cggmp2005_variant.cpp-------------------------------Wed Jan 11 00:17:43 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.76
+user 4.73
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/css2003_true.cpp-------------------------------Wed Jan 11 00:17:46 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.42
+user 4.00
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/down.cpp-------------------------------Wed Jan 11 00:17:50 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.63
+user 4.39
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/down_true_1.cpp-------------------------------Wed Jan 11 00:17:54 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.67
+user 4.60
+sys 0.09
+
+-------------------------../../Invariant-Generation/testcases/cpa/down_true_2.cpp-------------------------------Wed Jan 11 00:17:57 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.68
+user 4.59
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/ex49.cpp-------------------------------Wed Jan 11 00:18:58 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Shutdown requested (The JVM is shutting down, probably because Ctrl+C was pressed.), waiting for termination. (ForceTerminationOnShutdown$1.shutdownRequested, WARNING)
+
+Warning: Analysis interrupted (The JVM is shutting down, probably because Ctrl+C was pressed.) (ShutdownNotifier.shutdownIfNecessary, WARNING)
+
+Command exited with non-zero status 124
+real 60.55
+user 75.32
+sys 0.37
+
+-------------------------../../Invariant-Generation/testcases/cpa/f2.cpp-------------------------------Wed Jan 11 00:19:01 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.48
+user 4.26
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/fig1b.cpp-------------------------------Wed Jan 11 00:19:05 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.39
+user 4.08
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/fig1c.cpp-------------------------------Wed Jan 11 00:19:08 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.71
+user 4.46
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/fm11.cpp-------------------------------Wed Jan 11 00:19:56 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 47.82
+user 75.87
+sys 0.41
+
+-------------------------../../Invariant-Generation/testcases/cpa/half.cpp-------------------------------Wed Jan 11 00:20:00 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.64
+user 4.31
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/interproc1.cpp-------------------------------Wed Jan 11 00:20:03 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.05
+user 3.59
+sys 0.15
+
+-------------------------../../Invariant-Generation/testcases/cpa/interproc2.cpp-------------------------------Wed Jan 11 00:20:07 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.63
+user 4.42
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/interproc3.cpp-------------------------------Wed Jan 11 00:20:10 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.39
+user 4.22
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/interproc4.cpp-------------------------------Wed Jan 11 00:20:14 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Error path found, starting counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Using the following resource limits: CPU-time limit of 900s (CounterexampleCheck:ResourceLimitChecker.fromConfiguration, INFO)
+
+Error path found, but identified as infeasible by counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Infeasible counterexample found, but could not remove it from the ARG. Therefore, we cannot prove safety. (CounterexampleCheckAlgorithm.checkCounterexample, WARNING)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Analysis incomplete: no errors found, but not everything could be checked. (CPAchecker.analyzeResult, WARNING)
+
+real 3.88
+user 4.80
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/interproc5.cpp-------------------------------Wed Jan 11 00:20:17 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.09
+user 3.68
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/multivar_1.cpp-------------------------------Wed Jan 11 00:20:20 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.40
+user 4.24
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/pldi08_fig1.cpp-------------------------------Wed Jan 11 00:20:24 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.61
+user 4.21
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/pldi08_fig7.cpp-------------------------------Wed Jan 11 00:20:27 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 15: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.41
+user 3.96
+sys 0.10
+
+-------------------------../../Invariant-Generation/testcases/cpa/terminator_01.cpp-------------------------------Wed Jan 11 00:20:31 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.45
+user 4.07
+sys 0.13
+
+-------------------------../../Invariant-Generation/testcases/cpa/up_true_2.cpp-------------------------------Wed Jan 11 00:20:35 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 4.04
+user 5.20
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/xle10.cpp-------------------------------Wed Jan 11 00:20:39 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.61
+user 4.20
+sys 0.16
+
+-------------------------../../Invariant-Generation/testcases/cpa/xy0_1.cpp-------------------------------Wed Jan 11 00:20:42 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.28
+user 4.02
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/xy0_2.cpp-------------------------------Wed Jan 11 00:20:45 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.40
+user 4.36
+sys 0.16
+
+-------------------------../../Invariant-Generation/testcases/cpa/xy4_1.cpp-------------------------------Wed Jan 11 00:20:49 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.51
+user 4.01
+sys 0.19
+
+-------------------------../../Invariant-Generation/testcases/cpa/xy4_2.cpp-------------------------------Wed Jan 11 00:20:53 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.65
+user 4.31
+sys 0.16
+
+-------------------------../../Invariant-Generation/testcases/cpa/xyle0.cpp-------------------------------Wed Jan 11 00:20:56 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Error path found, starting counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Using the following resource limits: CPU-time limit of 900s (CounterexampleCheck:ResourceLimitChecker.fromConfiguration, INFO)
+
+Error path found, but identified as infeasible by counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Infeasible counterexample found, but could not remove it from the ARG. Therefore, we cannot prove safety. (CounterexampleCheckAlgorithm.checkCounterexample, WARNING)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Analysis incomplete: no errors found, but not everything could be checked. (CPAchecker.analyzeResult, WARNING)
+
+real 3.74
+user 4.50
+sys 0.16
+
+-------------------------../../Invariant-Generation/testcases/cpa/xyz2_1.cpp-------------------------------Wed Jan 11 00:21:00 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 17: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.70
+user 4.50
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/xyz2_2.cpp-------------------------------Wed Jan 11 00:21:03 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.33
+user 3.90
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/xyz_2.cpp-------------------------------Wed Jan 11 00:21:07 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.19
+user 3.95
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_conj1.cpp-------------------------------Wed Jan 11 00:21:10 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.42
+user 4.10
+sys 0.13
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_conj2.cpp-------------------------------Wed Jan 11 00:21:13 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.31
+user 3.62
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_disj1.cpp-------------------------------Wed Jan 11 00:21:15 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+cpp error output: ../../Invariant-Generation/testcases/cpa/zilu_disj1.cpp:14:2: error: invalid preprocessing directive #branchcondition (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:  #branchcondition=(x>=0 && y<0) (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:   ^ (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output: ../../Invariant-Generation/testcases/cpa/zilu_disj1.cpp:15:2: error: invalid preprocessing directive #branch (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:  #branch=x=x+10; y=y-10; (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:   ^ (ProcessExecutor.handleErrorOutput, WARNING)
+
+Error: Parsing failed (Preprocessor failed with exit code 1) (CPreprocessor.preprocess, SEVERE)
+
+Please make sure that the code can be compiled by a compiler.
+If the code was not preprocessed, please use a C preprocessor
+or specify the -preprocess command-line argument.
+If the error still occurs, please send this error message
+together with the input file to cpachecker-users@googlegroups.com.
+ (CPAchecker.run, INFO)
+
+real 1.40
+user 1.52
+sys 0.04
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_disj2.cpp-------------------------------Wed Jan 11 00:21:16 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Error: Parsing failed (lines 16-18: Syntax error: while(
+branchcondition=x>0
+branch=x++;) (EclipseCParser.buildCFA, SEVERE)
+
+Please make sure that the code can be compiled by a compiler.
+If the code was not preprocessed, please use a C preprocessor
+or specify the -preprocess command-line argument.
+If the error still occurs, please send this error message
+together with the input file to cpachecker-users@googlegroups.com.
+ (CPAchecker.run, INFO)
+
+real 1.74
+user 2.04
+sys 0.06
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_disj3.cpp-------------------------------Wed Jan 11 00:21:18 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+cpp error output: ../../Invariant-Generation/testcases/cpa/zilu_disj3.cpp:12:2: error: invalid preprocessing directive #loop (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:  #loop=if (x>0) x++; else x--; x=-1 * x; (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:   ^ (ProcessExecutor.handleErrorOutput, WARNING)
+
+Error: Parsing failed (Preprocessor failed with exit code 1) (CPreprocessor.preprocess, SEVERE)
+
+Please make sure that the code can be compiled by a compiler.
+If the code was not preprocessed, please use a C preprocessor
+or specify the -preprocess command-line argument.
+If the error still occurs, please send this error message
+together with the input file to cpachecker-users@googlegroups.com.
+ (CPAchecker.run, INFO)
+
+real 1.49
+user 1.58
+sys 0.07
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_linear1.cpp-------------------------------Wed Jan 11 00:21:22 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.61
+user 4.09
+sys 0.09
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_linear2.cpp-------------------------------Wed Jan 11 00:21:25 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.77
+user 4.50
+sys 0.13
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_linear3.cpp-------------------------------Wed Jan 11 00:21:29 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.36
+user 3.92
+sys 0.12
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_linear4.cpp-------------------------------Wed Jan 11 00:21:32 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.51
+user 4.04
+sys 0.11
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_poly1.cpp-------------------------------Wed Jan 11 00:21:36 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 18: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Invariant generation with abstract interpretation proved specification to hold. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.runInvariantGeneration, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+real 3.25
+user 3.72
+sys 0.14
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_poly3.cpp-------------------------------Wed Jan 11 00:21:39 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Error path found, starting counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Using the following resource limits: CPU-time limit of 900s (CounterexampleCheck:ResourceLimitChecker.fromConfiguration, INFO)
+
+Error path found, but identified as infeasible by counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Infeasible counterexample found, but could not remove it from the ARG. Therefore, we cannot prove safety. (CounterexampleCheckAlgorithm.checkCounterexample, WARNING)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Analysis incomplete: no errors found, but not everything could be checked. (CPAchecker.analyzeResult, WARNING)
+
+real 3.54
+user 4.00
+sys 0.17
+
+-------------------------../../Invariant-Generation/testcases/cpa/zilu_poly6.cpp-------------------------------Wed Jan 11 00:21:43 CST 2017
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+line 16: Dead code detected: return 0; (CFACreationUtils.addEdgeToCFA, INFO)
+
+Using predicate analysis with SMTInterpol 2.1-238-g1f06d6a-comp and JFactory 1.21. (PredicateCPA:PredicateCPA.<init>, INFO)
+
+Using refinement for predicate analysis with PredicateAbstractionRefinementStrategy strategy. (PredicateCPA:PredicateCPARefiner.<init>, INFO)
+
+Starting iteration 1 of invariant generation with abstract interpretation. (PredicateCPA:CPAInvariantGenerator:CPAInvariantGenerator$InvariantGenerationTask.call, INFO)
+
+Repeated loading of Eclipse source parser (PredicateCPA:CPAInvariantGenerator:InvariantsCPA:TargetLocationProvider:EclipseParsers.getClassLoader, INFO)
+
+Starting analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Error path found, starting counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Using the following resource limits: CPU-time limit of 900s (CounterexampleCheck:ResourceLimitChecker.fromConfiguration, INFO)
+
+Error path found, but identified as infeasible by counterexample check with CPACHECKER. (CounterexampleCheckAlgorithm.checkCounterexample, INFO)
+
+Infeasible counterexample found, but could not remove it from the ARG. Therefore, we cannot prove safety. (CounterexampleCheckAlgorithm.checkCounterexample, WARNING)
+
+Stopping analysis ... (CPAchecker.runAlgorithm, INFO)
+
+Analysis incomplete: no errors found, but not everything could be checked. (CPAchecker.analyzeResult, WARNING)
+
+real 3.84
+user 4.70
+sys 0.12

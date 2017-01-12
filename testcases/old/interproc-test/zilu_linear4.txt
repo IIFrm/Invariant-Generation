@@ -1,0 +1,12 @@
+var	xa:int, ya:int;
+
+begin
+	if (xa + ya > 0) then
+		while (xa > 0) do
+			xa=xa-1; 
+ya=ya+1;
+		done;
+	//ya >= 0
+
+	endif;
+end

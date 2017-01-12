@@ -1,0 +1,11 @@
+var	x:int, y:int, z:int;
+
+begin
+	if (x == y and x >= 0 and x+y+z==0) then
+		while (x > 0) do
+			x=x-1; y=y-1; z=z+1; z=z+1;
+		done;
+	//z<=0
+
+	endif;
+end

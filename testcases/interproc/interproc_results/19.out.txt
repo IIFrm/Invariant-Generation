@@ -1,0 +1,17 @@
+[32mAnnotated program after forward analysis[m
+var x : int, m : int, n : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if m >= 0 and m <= n - 1 and x == 0 then
+    /* [31m(L4 C35) [|-m+n+x-1>=0; x>=0; n-x>=0; m-x>=0|][m */
+    while x <= n - 1 do
+      /* [31m(L5 C19) [|-m+n+x-1>=0; x>=0; n-x-1>=0; m-x>=0|][m */
+      x = x + 1; /* [31m(L6 C9) [|-m+n+x-2>=0; x-1>=0; n-x>=0; m-x+1>=0|][m */
+      if x > m then
+        /* [31m(L7 C15) [|-m+x-1=0; -m+n-1>=0; m>=0|][m */
+        m = m + 1; /* [31m(L8 C9) [|-m+x=0; -m+n>=0; m-1>=0|][m */
+      endif; /* [31m(L9 C8) [|-m+n+x-1>=0; x-1>=0; n-x>=0; m-x>=0|][m */
+    done; /* [31m(L10 C7) [|-n+x=0; -m+2n-1>=0; m-n>=0|][m */
+  endif; /* [31m(L13 C7) top[m */
+end
+

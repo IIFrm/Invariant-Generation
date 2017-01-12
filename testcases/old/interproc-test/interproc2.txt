@@ -1,0 +1,11 @@
+var	x:int, y:int;
+
+begin
+	if (x<y) then
+		while (x<y) do
+			 x=x+1;
+		done;
+	//x==y
+
+	endif;
+end

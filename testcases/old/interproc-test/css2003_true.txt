@@ -1,0 +1,11 @@
+var	i:int, k:int;
+
+begin
+	if (0 <= k and k <= 1 and i == 1) then
+		while (brandom) do
+			i = i + 1; k = k - 1;
+		done;
+	//1 <= i + k and i + k <= 2 and i >= 1
+
+	endif;
+end

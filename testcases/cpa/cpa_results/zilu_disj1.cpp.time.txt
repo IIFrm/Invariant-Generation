@@ -1,0 +1,28 @@
+Using the following resource limits: CPU-time limit of 900s (ResourceLimitChecker.fromConfiguration, INFO)
+
+CPAchecker 1.5-svn (Java HotSpot(TM) 64-Bit Server VM 1.8.0_111) started (CPAchecker.run, INFO)
+
+cpp error output: ../../Invariant-Generation/testcases/cpa/zilu_disj1.cpp:14:2: error: invalid preprocessing directive #branchcondition (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:  #branchcondition=(x>=0 && y<0) (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:   ^ (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output: ../../Invariant-Generation/testcases/cpa/zilu_disj1.cpp:15:2: error: invalid preprocessing directive #branch (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:  #branch=x=x+10; y=y-10; (ProcessExecutor.handleErrorOutput, WARNING)
+
+cpp error output:   ^ (ProcessExecutor.handleErrorOutput, WARNING)
+
+Error: Parsing failed (Preprocessor failed with exit code 1) (CPreprocessor.preprocess, SEVERE)
+
+Please make sure that the code can be compiled by a compiler.
+If the code was not preprocessed, please use a C preprocessor
+or specify the -preprocess command-line argument.
+If the error still occurs, please send this error message
+together with the input file to cpachecker-users@googlegroups.com.
+ (CPAchecker.run, INFO)
+
+real 1.40
+user 1.52
+sys 0.04

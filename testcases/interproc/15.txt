@@ -1,0 +1,11 @@
+var	k:int, j:int, n:int;
+
+begin
+	if (n>=1 and k>=n and j==0) then
+		while (j<=n-1) do
+			j=j+1; k=k-1;
+		done;
+	//k>=0
+
+	endif;
+end

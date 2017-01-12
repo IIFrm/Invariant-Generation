@@ -1,0 +1,19 @@
+[32mAnnotated program after forward analysis[m
+var low : int, mid : int, high : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if low == 0 and mid >= 1 and high == 2 * mid then
+    /* [31m(L4 C50)
+       [|-high+low+2mid=0; low>=0; high-low>=0; high+low-2>=0|][m */
+    while mid > 0 do
+      /* [31m(L5 C20) [|-high+low+2mid=0; low>=0; high-low-2>=0|][m */
+      low = low + 1; /* [31m(L6 C17)
+                        [|-high+low+2mid-1=0; low-1>=0; high-low-1>=0|][m */
+      high = high - 1; /* [31m(L6 C34)
+                          [|-high+low+2mid-2=0; low-1>=0; high-low>=0|][m */
+      mid = mid - 1; /* [31m(L6 C49)
+                        [|-high+low+2mid=0; low-1>=0; high-low>=0|][m */
+    done; /* [31m(L7 C7) [|-high+low=0; mid=0; high-1>=0|][m */
+  endif; /* [31m(L10 C7) top[m */
+end
+

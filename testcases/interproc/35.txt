@@ -1,0 +1,11 @@
+var	x:int, n:int;
+
+begin
+	if (x==0 and n>0) then
+		while (x<n) do
+			x=x+1;
+		done;
+	//x==n
+
+	endif;
+end

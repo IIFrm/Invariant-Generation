@@ -1,0 +1,11 @@
+var	i:int;
+
+begin
+	if ( i < 10 and i > -10) then
+		while ( i * i < 100) do
+			 i = i + 1;
+		done;
+	// i == 10
+
+	endif;
+end

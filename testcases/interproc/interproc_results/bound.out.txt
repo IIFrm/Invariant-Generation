@@ -1,0 +1,13 @@
+[32mAnnotated program after forward analysis[m
+var i : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if i >= 0 and i <= 200 then
+    /* [31m(L4 C26) [|-i+200>=0; i>=0|][m */
+    while i > 0 do
+      /* [31m(L5 C16) [|-i+200>=0; i-1>=0|][m */
+      i = i - 1; /* [31m(L6 C9) [|-i+199>=0; i>=0|][m */
+    done; /* [31m(L7 C7) [|i=0|][m */
+  endif; /* [31m(L10 C7) top[m */
+end
+

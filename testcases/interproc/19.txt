@@ -1,0 +1,14 @@
+var	x:int, m:int, n:int;
+
+begin
+	if (m>=0 and m<=n-1 and x==0) then
+		while (x<=n-1) do
+			x=x+1; 
+		if (x>m) then
+			m=m+1;
+		endif;
+		done;
+	//m<=n
+
+	endif;
+end

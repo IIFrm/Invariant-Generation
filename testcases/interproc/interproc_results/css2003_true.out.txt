@@ -1,0 +1,14 @@
+[32mAnnotated program after forward analysis[m
+var i : int, k : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if 0 <= k and k <= 1 and i == 1 then
+    /* [31m(L4 C39) [|-i-k+2>=0; i-1>=0; i+k-1>=0|][m */
+    while brandom do
+      /* [31m(L5 C20) [|-i-k+2>=0; i-1>=0; i+k-1>=0|][m */
+      i = i + 1; /* [31m(L6 C13) [|-i-k+3>=0; i-2>=0; i+k-2>=0|][m */
+      k = k - 1; /* [31m(L6 C24) [|-i-k+2>=0; i-2>=0; i+k-1>=0|][m */
+    done; /* [31m(L7 C7) [|-i-k+2>=0; i-1>=0; i+k-1>=0|][m */
+  endif; /* [31m(L10 C7) top[m */
+end
+

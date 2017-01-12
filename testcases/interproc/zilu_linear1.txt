@@ -1,0 +1,12 @@
+var	x:int, y:int;
+
+begin
+	if ( x<y) then
+		while (true) do
+			 if (x < 0) then x = x + 7; else x = x + 10; endif;
+			 if (y < 0) then y = y - 10; else y = y + 3; endif;
+		done;
+	// x >= y and x <= y + 16
+
+	endif;
+end

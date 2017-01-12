@@ -1,0 +1,22 @@
+[32mAnnotated program after forward analysis[m
+var x : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if x == 1 or x == 2 then
+    /* [31m(L4 C23) [|-x+2>=0; x-1>=0|][m */
+    while brandom do
+      /* [31m(L5 C20) [|-x+2>=0; x-1>=0|][m */
+      if x == 1 then
+         /* [31m(L6 C16) [|x-1=0|][m */
+         x = 2; /* [31m(L7 C8) [|x-2=0|][m */
+      else
+        /* [31m(L8 C7) [|-x+2>=0; x-1>=0|][m */
+        if x == 2 then
+          /* [31m(L9 C18) [|x-2=0|][m */
+          x = 1; /* [31m(L10 C9) [|x-1=0|][m */
+        endif; /* [31m(L11 C10) [|-x+2>=0; x-1>=0|][m */
+      endif; /* [31m(L12 C9) [|-x+2>=0; x-1>=0|][m */
+    done; /* [31m(L13 C7) [|-x+2>=0; x-1>=0|][m */
+  endif; /* [31m(L16 C7) top[m */
+end
+

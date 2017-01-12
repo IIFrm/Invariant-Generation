@@ -1,0 +1,23 @@
+[32mAnnotated program after forward analysis[m
+var x : int, y : int, k : int, i : int, j : int;
+begin
+  /* [31m(L3 C5) top[m */
+  j = 0; /* [31m(L4 C5) [|j=0|][m */
+  if x + y == k then
+    /* [31m(L5 C17) [|-k+x+y=0; j>=0|][m */
+    while brandom do
+      /* [31m(L6 C20) [|-k+x+y=0; j>=0|][m */
+      if j == i then
+         /* [31m(L7 C16) [|-i+j=0; -k+x+y=0; i>=0|][m */
+         x = x + 1; /* [31m(L8 C10) [|-i+j=0; -k+x+y-1=0; i>=0|][m */
+         y = y - 1; /* [31m(L8 C16) [|-i+j=0; -k+x+y=0; i>=0|][m */
+      else
+        /* [31m(L9 C7) [|-k+x+y=0; j>=0|][m */
+        y = y + 1; /* [31m(L10 C10) [|-k+x+y-1=0; j>=0|][m */
+        x = x - 1; /* [31m(L10 C16) [|-k+x+y=0; j>=0|][m */
+      endif; /* [31m(L11 C9) [|-k+x+y=0; j>=0|][m */
+      j = j + 1; /* [31m(L12 C9) [|-k+x+y=0; j-1>=0|][m */
+    done; /* [31m(L13 C7) [|-k+x+y=0; j>=0|][m */
+  endif; /* [31m(L16 C7) [|j>=0|][m */
+end
+

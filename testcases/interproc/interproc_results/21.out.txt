@@ -1,0 +1,21 @@
+[32mAnnotated program after forward analysis[m
+var n : int, k : int, i : int;
+begin
+  /* [31m(L3 C5) top[m */
+  i = 0; /* [31m(L4 C5) [|i=0|][m */
+  if n > 0 and n < 10 then
+    /* [31m(L5 C23) [|-i+n>=0; -n+9>=0; n-1>=0; i>=0|][m */
+    while i < n do
+      /* [31m(L6 C16) [|-i+n-1>=0; -n+9>=0; i>=0|][m */
+      i = i + 1; /* [31m(L7 C9) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+      if brandom then
+         /* [31m(L8 C19) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+         k = k + 4000; /* [31m(L9 C13) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+      else
+        /* [31m(L10 C7) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+        k = k + 2000; /* [31m(L11 C13) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+      endif; /* [31m(L12 C9) [|-i+n>=0; -n+9>=0; i-1>=0|][m */
+    done; /* [31m(L13 C7) [|-i+n=0; -i+9>=0; i-1>=0|][m */
+  endif; /* [31m(L16 C7) [|-i+9>=0; i>=0|][m */
+end
+

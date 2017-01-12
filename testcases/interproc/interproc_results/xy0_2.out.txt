@@ -1,0 +1,14 @@
+[32mAnnotated program after forward analysis[m
+var x : int, y : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if x == y and x >= 0 then
+    /* [31m(L4 C28) [|-x+y=0; x>=0|][m */
+    while x > 0 do
+      /* [31m(L5 C18) [|-x+y=0; x-1>=0|][m */
+      x = x - 1; /* [31m(L6 C9) [|-x+y-1=0; x>=0|][m */
+      y = y - 1; /* [31m(L6 C16) [|-x+y=0; x>=0|][m */
+    done; /* [31m(L7 C7) [|y=0; x=0|][m */
+  endif; /* [31m(L10 C7) top[m */
+end
+

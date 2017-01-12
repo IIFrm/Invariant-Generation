@@ -1,0 +1,15 @@
+var	i:int, j:int, x:int, y:int;
+
+begin
+	x = 0; y = 0;
+	if (i==0 and j==0) then
+		while (brandom) do
+			x=x+1; y=y+1; i=i+x; j=j+y; 
+			if (brandom) then
+				j=j+1;
+			endif;
+		done;
+	//j>=i
+
+	endif;
+end

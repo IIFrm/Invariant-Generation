@@ -1,0 +1,11 @@
+var	i:int, c:int;
+
+begin
+	if (c==0 and i==0) then
+		while (i<100) do
+			c=c+i; i=i+1; 
+		done;
+	//c>=0
+
+	endif;
+end

@@ -1,0 +1,14 @@
+[32mAnnotated program after forward analysis[m
+var x : int, y : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if x < 100 and y < 100 then
+    /* [31m(L4 C31) [|-x+100>=0; -y+100>=0|][m */
+    while x < 100 and y < 100 do
+      /* [31m(L5 C34) [|-x+99>=0; -y+99>=0|][m */
+      x = x + 1; /* [31m(L6 C10) [|-x+100>=0; -y+99>=0|][m */
+      y = y + 1; /* [31m(L6 C17) [|-x+100>=0; -y+100>=0|][m */
+    done; /* [31m(L7 C7) [|-x+100>=0; -y+100>=0|][m */
+  endif; /* [31m(L10 C7) top[m */
+end
+

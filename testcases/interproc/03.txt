@@ -1,0 +1,12 @@
+var	l:int, i:int, n:int;
+
+begin
+	 i = l;
+	if ( l>0) then
+		while ( i < n) do
+			i=i+1;
+		done;
+	//l>=1
+
+	endif;
+end

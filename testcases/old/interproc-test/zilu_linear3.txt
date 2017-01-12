@@ -1,0 +1,11 @@
+var	i:int, j:int, r:int;
+
+begin
+	if (r > i + j) then
+		while (i > 0) do
+			 i = i - 1; j = j + 1;
+		done;
+	//r > i + j
+
+	endif;
+end

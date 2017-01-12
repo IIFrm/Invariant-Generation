@@ -1,0 +1,18 @@
+var	x:int;
+
+begin
+	if ((x>=0) and (x<=50)) then
+		while (brandom) do
+			if (x>50) then
+				x=x+1;
+			endif;
+			if (x == 0) then 
+				x=x+1;
+			else 
+				x=x-1;
+			endif;
+		done;
+	//(x>=0) and (x<=50)
+
+	endif;
+end

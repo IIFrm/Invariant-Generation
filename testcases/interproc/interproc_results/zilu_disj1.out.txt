@@ -1,0 +1,35 @@
+[32mAnnotated program after forward analysis[m
+var x : int, y : int;
+begin
+  /* [31m(L3 C5) top[m */
+  if x < y then
+    /* [31m(L4 C15) [|-x+y+16>=0|][m */
+    while x < y do
+      /* [31m(L5 C17) [|-x+y-1>=0|][m */
+      if x < 0 and y < 0 then
+         /* [31m(L6 C24) [|-x+y-1>=0; -y-1>=0|][m */
+         x = x + 7; /* [31m(L7 C10) [|-x+y+6>=0; -y-1>=0|][m */
+         y = y - 10; /* [31m(L7 C18) [|-x+y+16>=0; -y-11>=0|][m */
+      else
+        /* [31m(L8 C7) [|-x+y-1>=0; y>=0|][m */
+        if x >= 0 and y < 0 then
+           /* [31m(L9 C26) bottom[m */
+           x = x + 10; /* [31m(L10 C12) bottom[m */
+           y = y - 10; /* [31m(L10 C20) bottom[m */
+        else
+          /* [31m(L11 C8) [|-x+y-1>=0; y>=0|][m */
+          if x < 0 and y >= 0 then
+             /* [31m(L12 C27) [|-x-1>=0; y>=0|][m */
+             x = x + 7; /* [31m(L13 C12) [|-x+6>=0; y>=0|][m */
+             y = y + 3; /* [31m(L13 C19) [|-x+6>=0; y-3>=0|][m */
+          else
+            /* [31m(L14 C9) [|-x+y-1>=0; x>=0|][m */
+            x = x + 10; /* [31m(L15 C13) [|-x+y+9>=0; x-10>=0|][m */
+            y = y + 3; /* [31m(L15 C20) [|-x+y+6>=0; x-10>=0|][m */
+          endif; /* [31m(L16 C11) [|-x+y+6>=0; -x+4y-6>=0; y-3>=0|][m */
+        endif; /* [31m(L17 C10) [|-x+y+6>=0; -x+4y-6>=0; y-3>=0|][m */
+      endif; /* [31m(L18 C9) [|-x+y+16>=0|][m */
+    done; /* [31m(L19 C7) [|-x+y+16>=0; x-y>=0|][m */
+  endif; /* [31m(L22 C7) [|x-y>=0|][m */
+end
+

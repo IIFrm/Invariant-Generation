@@ -1,0 +1,2 @@
+Syntaxical error: file ../../Invariant-Generation/testcases/interproc/zilu_disj2.txt, line 10, characters 2-6: 'done'.
+Fatal error: exception Pervasives.Exit

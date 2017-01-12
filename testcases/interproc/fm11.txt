@@ -1,0 +1,11 @@
+var	i:int, j:int;
+
+begin
+	if (i==0 and j==0) then
+		while (i<100) do
+			j=j+2; i=i+1;
+		done;
+	//j==200
+
+	endif;
+end

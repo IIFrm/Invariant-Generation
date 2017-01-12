@@ -1,0 +1,11 @@
+var	n:int, sum:int, i:int;
+
+begin
+	if (n>=0 and sum==0 and i==0) then
+		while (i<n) do
+			sum=sum+i; i=i+1;
+		done;
+	//sum>=0
+
+	endif;
+end
