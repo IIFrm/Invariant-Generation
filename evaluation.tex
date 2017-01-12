@@ -13,21 +13,38 @@ Our evaluation subjects include a set of XXX C programs we find from previous pu
 \scriptsize
 \centering
 \caption{Summarized Comparison between ZILU with/without Selective Sampling}
-\begin{tabular}{ c | c | c }
- & \textsc{Zilu} & \textsc{Zilu} - Selective Sampling \\
+\begin{tabular}{ c | c| c | c }
+\multicolumn{2}{c|}{} & \textsc{Zilu} & \textsc{Zilu} - Selective Sampling \\
 \hline
-No. of programs proved 			& 35 & 31		\\
-Average time for proving a program & 27 & 31  			\\
-Average number of guess-and-check iterations & 2.9 & 3.3  			\\
-No. of programs proved with one guess-and-check iteration & 10 & 2		\\
-Average number of total samples & 784 & 872  			\\
+\multicolumn{2}{c|}{No. of programs proved} 			& 53 & 50		\\
+\hline
+\multicolumn{2}{c|}{No. of programs proved with one guess-and-check iteration} & 13 & 3		\\
+\hline
+\multirow{ 4}{*}{Average time for proving a program} 
+ & linear & 19.68 & 21.21  			\\
+ & polynomial & 26.96 & 33.17  			\\
+ & conjunctive & 27.09 & 27.23  			\\
+ & disjunctive & 31.70 & 35.96  			\\
+\hline
+\multirow{ 4}{*}{Average number of guess-and-check iterations}
+& linear & 2.15 & 2.84  			\\
+& polynomial & 2.53 & 3.36  			\\
+& conjunctive & 7.13 & 7.31  			\\
+& disjunctive & 7.71 & 8.12  			\\
+\hline
+\multirow{ 4}{*}{Average number of total samples}
+& linear & 157 & 167  			\\
+& polynomial & 170 & 176  			\\
+& conjunctive & 474 & 473  			\\
+& disjunctive & 1306 & 1703  			\\
 \hline
 \end{tabular}
 \label{summary}
 \end{table}
 
+
 \begin{table}[t]
-\scriptsize
+% \scriptsize
 \centering
 \caption{Comparison between ZILU with/without Selective Sampling}
 \begin{tabular}{l c | c c c | c c c |}
@@ -36,105 +53,67 @@ Average number of total samples & 784 & 872  			\\
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{invariant type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) \\
 \hline
-% \multicolumn{1}{|c|}{list the programs} & linear inequality 			& 107 & \textbf{1} &\textbf{4}	& \textbf{100} & 2 & \textbf{4} 	\\
-% \multicolumn{1}{|c|}{list the programs} & polynomial inequality			& 107 & \textbf{1} &\textbf{4}	& \textbf{100} & 2 & \textbf{4} 	\\
-% \multicolumn{1}{|c|}{list the programs} & conjunction of linear inequalities 			& 107 & \textbf{1} &\textbf{4}	& \textbf{100} & 2 & \textbf{4} 	\\
-% \multicolumn{1}{|c|}{list the programs} & disjunction of linear inequalities 			& 107 & \textbf{1} &\textbf{4}	& \textbf{100} & 2 & \textbf{4} 	\\
-
-
-\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}		&linear			&\textbf{111}	&\textbf{1}	&8			       &117	&2	&\textbf{6}						\\
-\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}		&linear			&\textbf{154}	&\textbf{1}	&\textbf{9}	       &to	&to	&to									\\
-\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}		&conjunctive	&\textbf{178}	&\textbf{3}	&\textbf{10}       &229	&\textbf{3}	&12						\\
-\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}		&conjunctive	&\textbf{211}	&\textbf{3}	&19			       &236	&4	&\textbf{9}						\\
-\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}		&conjunctive	&\textbf{1984}	&\textbf{47}	&\textbf{34}	&to	&to	&to									\\
-\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}		&linear			&\textbf{145}	&\textbf{2}	&\textbf{8}	       &153	&\textbf{2}	&11						\\
-\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}		&linear			&269	&\textbf{1}	&32					       &\textbf{245}	&2	&\textbf{16}			\\
-\multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}	&linear			&52	&\textbf{1}	&\textbf{6}				       &\textbf{49}	&2	&15						\\
-\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}		&linear			&\textbf{207}	&\textbf{3}	&\textbf{19}       &278	&4	&24								\\
-\multicolumn{1}{|c|}{f2~\cite{zilu:repo}}				&linear			&\textbf{84}	&\textbf{1}	&\textbf{15}       &115	&2	&18								\\
-% \multicolumn{1}{|c|}{fig1c}								&linear			&179	&4	&\textbf{12}				       &\textbf{112}	&\textbf{2}	&\textbf{12}	\\
-\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}			&conjunctive	&\textbf{171}	&\textbf{2}	&\textbf{32}       &313	&7	&70								\\
-\multicolumn{1}{|c|}{fig1b}								&disjunctive	&\textbf{3533} 	& \textbf{7} &\textbf{34} 	   & 6400 & 10 		& 51 					\\
-
-\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear			&\textbf{120}	&\textbf{5}	&\textbf{15}   &175	&8	&34								\\
-\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear			&\textbf{84}	&\textbf{1}	&\textbf{51}	&to	&to	&to									\\
-\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear			&\textbf{110}	&\textbf{1}	&\textbf{30}   &206	&2	&32								\\
-\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear			&\textbf{81}	&\textbf{1}	&47			   &100	&2	&\textbf{22}					\\
-\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive	&126	&\textbf{2}	&33					   &\textbf{124}	&\textbf{2}	&\textbf{16}	\\
-\multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive	& \textbf{583} & \textbf{2} & \textbf{7}   &798 & \textbf{2} & 13						\\
+\multicolumn{1}{|c|}{01~\cite{isil2013inductive}}				&conjunctive	&396	&8	&13	&\textbf{353}	&\textbf{7}	&\textbf{11}\\
+\multicolumn{1}{|c|}{03~\cite{isil2013inductive}}				&linear			&57	&\textbf{1}	&21	&\textbf{50}	&\textbf{1}	&\textbf{6}\\
+\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 		&\textbf{94}	&\textbf{1}	&\textbf{6}	&124	&2	&7\\
+% \multicolumn{1}{|c|}{11~\cite{isil2013inductive}}				&conjunctive	&to	&to	&to&to	&to	&to\\
+\multicolumn{1}{|c|}{15~\cite{isil2013inductive}}				&conjunctive	&492	&6	&20	&\textbf{380}	&\textbf{4}	&\textbf{16}\\
+\multicolumn{1}{|c|}{19~\cite{isil2013inductive}}				&conjunctive	&\textbf{457}	&\textbf{5}	&17	&459	&6	&\textbf{14}\\
+\multicolumn{1}{|c|}{20~\cite{isil2013inductive}}				&conjunctive	&399	&\textbf{3}	&28	&\textbf{378}	&4	&\textbf{16}\\
+\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear			&\textbf{154}	&\textbf{1}	&\textbf{9}	       &to	&to	&to								\\
+\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive	&\textbf{178}	&\textbf{3}	&\textbf{10}       &229	&\textbf{3}	&12						\\
+\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive	&\textbf{211}	&\textbf{3}	&19			       &236	&4	&\textbf{9}						\\
+\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive	&1302	&25	&27&to	&to	&to\\
+\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear			&\textbf{145}	&\textbf{2}	&\textbf{8}	       &153	&\textbf{2}	&11						\\
+% \multicolumn{1}{|c|}{41~\cite{isil2013inductive}}				&conjunctive	&to	&to	&to&to	&to	&to\\
+\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear			&269	&\textbf{1}	&32					       &\textbf{245}	&2	&\textbf{16}		\\
+\multicolumn{1}{|c|}{44~\cite{isil2013inductive}}				&linear 		&474	&\textbf{5}	&21	&\textbf{390}	&\textbf{5}	&\textbf{16}\\
+\multicolumn{1}{|c|}{bound~\cite{gupta2009invgen}}				&linear 		&\textbf{55}	&\textbf{1}	&\textbf{7}	&\textbf{55}	&2	&8\\
+\multicolumn{1}{|c|}{cggmp2005~\cite{Dirk:SVCOMP:2016}}			&conjunctive	&\textbf{810}	&\textbf{10}	&\textbf{67}	&825	&11	&88\\
+\multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}		&conjunctive		&454	&8	&18	&\textbf{222}	&\textbf{4}	&\textbf{11}\\
+\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear			&\textbf{207}	&\textbf{3}	&\textbf{19}       &278	&4	&24								\\
+\multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}		&conjunctive 	&828	&11	&47	&\textbf{500}	&\textbf{6}	&\textbf{36}\\
+\multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive 	&1204	&17	&41	&\textbf{873}	&\textbf{12}	&\textbf{26}\\
+\multicolumn{1}{|c|}{ex49~\cite{necla:benchmark}}				&conjunctive	&338	&\textbf{4}	&13	&\textbf{324}	&\textbf{4}	&\textbf{10}\\
+\multicolumn{1}{|c|}{fig1b~\cite{zilu:repo}}					&disjunctive	&\textbf{3533} 	& \textbf{7} &\textbf{34} 	   & 6400 & 10 		& 51 					\\
+\multicolumn{1}{|c|}{fig1c~\cite{zilu:repo}}					&conjunctive	&\textbf{1363}	&\textbf{29}	&36	&2140	&41	&\textbf{30}\\
+\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive	&\textbf{171}	&\textbf{2}	&\textbf{32}       &313	&7	&70								\\
+\multicolumn{1}{|c|}{half~\cite{gupta2009invgen}}				&conjunctive	&810	&12	&47 &\textbf{450}	&\textbf{6}	&\textbf{36}\\
+\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear			&\textbf{120}	&\textbf{5}	&\textbf{15}   &175	&8	&34									\\
+\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 		&\textbf{84}	&\textbf{1}	&\textbf{37}	&100	&\textbf{1}	&46\\
+\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear			&\textbf{110}	&\textbf{1}	&\textbf{30}   &206	&2	&32									\\
+\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 		&112	&\textbf{1}	&\textbf{11}	&\textbf{100}	&2	&13\\
+\multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}	&linear			&605	&11	&59 &\textbf{471}	&\textbf{9}	&\textbf{46}\\
+\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive	&170	&\textbf{2}	&10	&\textbf{136}	&\textbf{2}	&\textbf{8}\\
+\multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive	&\textbf{583} & \textbf{2} & \textbf{7}   &798 & \textbf{2} & 13						\\
 \multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear		&\textbf{40}	&\textbf{1}	&\textbf{7}	   &45	&\textbf{1}	&15							\\
-\multicolumn{1}{|c|}{terminator\_01~\cite{isil2013inductive}}	&linear			&52	&\textbf{1}	&\textbf{7}				   &\textbf{50}	&\textbf{1}	&15				\\
-\multicolumn{1}{|c|}{up\_true\_2~\cite{isil2013inductive}}		&conjunctive	&\textbf{328}	&6	&62					   &421	&\textbf{5}	&\textbf{60}			\\
-\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 		&52	&\textbf{1}	&\textbf{7}				   &\textbf{49}	&2	&15						\\
-\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{224}	&5	&\textbf{23}		   &230	&\textbf{4}	&25						\\
-\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{144}	&\textbf{3}	&29			   &194	&4	&\textbf{27}					\\
-\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{181}	&\textbf{4}	&\textbf{18}   &221	&\textbf{4}	&24						\\
+\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 			&\textbf{53}	&\textbf{1}	&\textbf{7}	&61	&2	&\textbf{7}\\
+\multicolumn{1}{|c|}{up\_true\_2~\cite{isil2013inductive}}		&conjunctive	&\textbf{328}	&6	&62					   &421	&\textbf{5}	&\textbf{60}				\\
+\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 		&52	&\textbf{1}	&\textbf{7}				   &\textbf{49}	&2	&15							\\
+\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{224}	&5	&\textbf{23}		   &230	&\textbf{4}	&25							\\
+\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{200}	&\textbf{3}	&\textbf{9}	&214	&4	&10\\
+\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{218}	&\textbf{2}	&\textbf{10}	&270	&5	&13\\
+\multicolumn{1}{|c|}{xy4\_2~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{220}	&\textbf{3}	&\textbf{12}	&407	&7	&\textbf{12}\\
 \multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}		&polynomial 	&251	&\textbf{2}	&\textbf{76}		   &\textbf{182}	&3	&81						\\
+\multicolumn{1}{|c|}{xyz2\_1~\cite{sharma2012interpolants}}		&conjunctive	&\textbf{540}	&\textbf{7}	&\textbf{24}	&660	&10	&58\\
 \multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}		&conjunctive	&422	&8	&38							   &\textbf{394}	&\textbf{5}	&\textbf{28}	\\
-
-\multicolumn{1}{|c|}{zilu\_conj1}	&conjunctive				&\textbf{214}	&\textbf{2}	&\textbf{45}	               &to	&to	&to								\\
-\multicolumn{1}{|c|}{zilu\_disj1}	&disjunctive				& \textbf{2740} & \textbf{4} &\textbf{46}                  &4160 	& \textbf{4} &{65} 				\\
-\multicolumn{1}{|c|}{zilu\_disj2}	&disjunctive				& \textbf{3193} & \textbf{3} & \textbf{27}	               &5887 & \textbf{3} & 30  				\\
-\multicolumn{1}{|c|}{zilu\_disj3}	&disjunctive				& \textbf{7382} & \textbf{3} &\textbf{29}	               &8050 & 4  & 40 		  				 \\
-\multicolumn{1}{|c|}{zilu\_poly1}	&polynomial					&\textbf{57}	&\textbf{3}	&\textbf{42}	               &136	&5	&115						\\
-\multicolumn{1}{|c|}{zilu\_poly3}	&polynomial					&49	&\textbf{2}	&\textbf{17}				               &\textbf{41} &\textbf{2}	&21			\\
-\multicolumn{1}{|c|}{zilu\_poly6}	&polynomial					&\textbf{163}	&\textbf{3}	&\textbf{74}	               &217	&\textbf{3}	&75					\\
-
+\multicolumn{1}{|c|}{zilu\_conj1~\cite{zilu:repo}}				&conjunctive				&\textbf{214}	&\textbf{2}	&\textbf{45}	               &to	&to	&to									\\
+% \multicolumn{1}{|c|}{zilu\_conj2~\cite{zilu:repo}}			&conjunctive	&to	&to	&to&to	&to	&to\\
+\multicolumn{1}{|c|}{zilu\_disj1~\cite{zilu:repo}}				&disjunctive	& \textbf{2740} & \textbf{4} &\textbf{46}        &4160 	& \textbf{4} &{65} 				\\
+\multicolumn{1}{|c|}{zilu\_disj2~\cite{zilu:repo}}				&disjunctive	& \textbf{3193} & \textbf{3} & \textbf{27}	     &5887 & \textbf{3} & 30  				\\
+\multicolumn{1}{|c|}{zilu\_disj3~\cite{zilu:repo}}				&disjunctive	& \textbf{7382} & \textbf{3} &\textbf{29}	     &8050 & 4  & 40 		  				\\
+\multicolumn{1}{|c|}{zilu\_linear1~\cite{zilu:repo}}			&linear			&\textbf{90}	&\textbf{1}	&\textbf{30}	&150	&3	&69\\
+\multicolumn{1}{|c|}{zilu\_linear2~\cite{zilu:repo}}			&linear			&\textbf{234}	&\textbf{2}	&11	&258	&\textbf{2}	&\textbf{10}\\
+\multicolumn{1}{|c|}{zilu\_linear3~\cite{zilu:repo}}			&linear			&\textbf{116}	&\textbf{1}	&31	&153	&2	&\textbf{10}\\
+\multicolumn{1}{|c|}{zilu\_linear4~\cite{zilu:repo}}			&linear 		&\textbf{84}	&\textbf{1}	&\textbf{15}       &115	&2	&18								\\
+\multicolumn{1}{|c|}{zilu\_poly1~\cite{zilu:repo}}				&polynomial		&\textbf{57}	&\textbf{3}	&\textbf{42}	               &136	&5	&115				\\
+\multicolumn{1}{|c|}{zilu\_poly3~\cite{zilu:repo}}				&polynomial		&49	&\textbf{2}	&\textbf{17}				               &\textbf{41} &\textbf{2}	&21	\\
+\multicolumn{1}{|c|}{zilu\_poly6~\cite{zilu:repo}}				&polynomial		&273	&\textbf{3}	&85	&\textbf{215}	&4	&\textbf{79}\\
 \hline
 \end{tabular}
 \label{tbl:stats}
 \end{table}
 
-%\begin{table}[t]
-%\scriptsize
-%\centering
-%\caption{Comparison between ZILU with/without Selective Sampling}
-%\begin{tabular}{l c | c c c | c c c |}
-%\cline{3-8}
-%& &\multicolumn{3}{|c|}{\textsc{Zilu} + Selective Sampling}&\multicolumn{3}{c|}{\textsc{Zilu} - Selective Sampling}\\
-%\hline
-%\multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type}& $\sharp$sample & $\sharp$iteration & time(s) & $\sharp$sample & $\sharp$iteration &time(s) \\
-%\hline
-%\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 			& 107 & \textbf{1} &\textbf{4}	& \textbf{100} & 2 & \textbf{4} 	\\
-%\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear 			& \textbf{133} & \textbf{1} & \textbf{4} & to & to & to 			\\
-%\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive		& \textbf{255} & \textbf{3} & \textbf{5}	&  283 & 8 & 9 			\\
-%\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive		& 307 & \textbf{4} & 8	& \textbf{233} & \textbf{4} & \textbf{7} 	\\
-%\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive		& \textbf{1565} & \textbf{43} & \textbf{26} & to & to & to 			\\
-%\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear 			& 133 & \textbf{1} &\textbf{4}	& \textbf{120} & 2 & \textbf{4} 	 \\
-%\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& \textbf{300} & \textbf{1} & 6	& 323 & 3 & \textbf{5} 				 \\
-%\multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}			&linear 			& 73 & \textbf{1} & \textbf{4} & \textbf{70} & 2 & \textbf{4} 		 \\
-%\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& \textbf{300} & \textbf{4} &\textbf{5}	& 350 & \textbf{4} & 6 		\\
-%\multicolumn{1}{|c|}{f2~\cite{zilu:repo}}						&linear 			& \textbf{100} & \textbf{1} &\textbf{4}	& 140 & 2 & 4 				\\
-%\multicolumn{1}{|c|}{fig1b}									&disjunctive		& \textbf{3533} & \textbf{7} & \textbf{34} & 6400 & 10 & 51 		\\
-%\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive		&\textbf{166} & \textbf{2} &\textbf{12}	& to & to  & to 			 \\
-%\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear 			& \textbf{293} & \textbf{5} & \textbf{6} & to & to & to 			 \\
-%\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 			& 133 & \textbf{1} &\textbf{7}	& \textbf{93} & 2 & 9 				 \\
-%\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear 			& \textbf{180} & \textbf{1} & 8 & 230 & 3 & \textbf{6} 				\\
-%\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 			& \textbf{80} & \textbf{1} &\textbf{6}	& 120 & 2 & \textbf{6} 		\\
-%\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive		& 233 & \textbf{2} & 6 & \textbf{200} & 3  & \textbf{5} 			 \\
-%
-%\multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive		& \textbf{583} & \textbf{2} & \textbf{7}	& 777 & \textbf{2} & 13 \\
-%\multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear 		&\textbf{27} & \textbf{1} &\textbf{4}	& 43 & 2 & \textbf{4} 		\\
-%\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 			& 53 & \textbf{1} &\textbf{4} & \textbf{50} & 2 & 4					\\
-%\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive		& 920 & 33 & 31 & \textbf{600} & \textbf{8} & \textbf{20} 			 \\
-%\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 			& \textbf{57} & \textbf{1} &\textbf{4}	& 60 & 2 & 4 				\\
-%\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive		& 273 & \textbf{4} & 7	& \textbf{220} & 4 & \textbf{6}				 \\
-%\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive		& \textbf{193} & \textbf{3} &\textbf{6}	& \textbf{187} & 4 & \textbf{6} \\
-%\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive		& \textbf{220} & \textbf{3} &\textbf{6}	& 313 & 5 & 8 				\\
-%\multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}		&polynomial 		& 433 & \textbf{4} & 91 & \textbf{267} & 5 & \textbf{79} 			\\
-%\multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}		&conjunctive		& \textbf{470} & \textbf{5} & \textbf{6} & to & to & to 			\\
-%
-%\multicolumn{1}{|c|}{zilu\_conj1}								&conjunctive		&\textbf{180} &\textbf{1}&\textbf{32}	& to & to &to				 \\
-%\multicolumn{1}{|c|}{zilu\_disj1}								&disjunctive		& \textbf{2740} & \textbf{4} &\textbf{46} & 4160 & \textbf{4} &{65}	\\
-%\multicolumn{1}{|c|}{zilu\_disj2}								&disjunctive		& \textbf{3193} & \textbf{3} & \textbf{27}	& 5887 & \textbf{3} & 30 \\
-%\multicolumn{1}{|c|}{zilu\_disj3}								&disjunctive		& \textbf{7382} & \textbf{3} &\textbf{29}	& 8050 & {4}  & 40 		\\
-%\multicolumn{1}{|c|}{zilu\_poly1}								&polynomial			&\textbf{57} & \textbf{2} &\textbf{37}	& 117 & 5  & 80 			 \\
-%\multicolumn{1}{|c|}{zilu\_poly3}								&polynomial			& 50 & \textbf{1} &\textbf{7}		& \textbf{43} & 2  & 9			 \\
-%\multicolumn{1}{|c|}{zilu\_poly6}								&polynomial			& \textbf{240} & \textbf{4} &\textbf{75} & to & to & to 			\\
-%\hline
-%\end{tabular}
-%\label{tbl:stats}
-%\end{table}
 
 The first research question which we would like to answer is whether active learning helps to reduce the number of guess-and-check iterations as we expected. Thus, we compare \textsc{Zilu} with and without selective sampling. The experiment results are summarized in Table~\ref{summary}. The first row shows the number of programs which we can prove with \textsc{Zilu} in these two different settings, with a time limit of 10 minutes. Each experiment is executed three times since there is randomness in our approach and we report the average as the result. We claim that a program can be verified only if it is verified all three times. The results show that with help of selective sampling, \textsc{Zilu} verifies significantly more programs. Furthermore, the average time for verifying a program, the average number of guess-and-check iterations and the total number of samples are all reduced with selective sampling. In all but one experiments, \textsc{Zilu} is able to generate the invariant with fewer or equal number of guess-and-check iterations if selective sampling is applied. Though it rarely happens, due to the randomness in our approach, it may happen that the right invariant is learned by luck with few samples. This happens in the one case where \textsc{Zilu} without selective sampling has fewer iterations. It should be noted that for 7 programs, \textsc{Zilu} is unable to learn the invariant without the help of selective sampling, i.e., it timeouts due to too many guess-and-check iterations. \emph{We would like to highlight that for 14 programs, \textsc{Zilu} is able to learn the correct invariant with one guess-and-check iteration with selective sampling}, whereas this is never the case without selective sampling. Furthermore, it happens more often when the invariant is a linear predicate. We remark that being able to learn the correct invariant without program verification is useful for handling complex programs. That is, even if we are unable to automatically verify the generated invariant due to the limitation of existing program verification techniques, \textsc{Zilu}'s result is still useful in these cases as the generated invariant can be used to manually verify the program.
 
@@ -143,52 +122,110 @@ We present the results according to the type of loop invariants required to prov
 %We remark that though many other approaches on loop invariant generation have been reported~\cite{sharma2012interpolants,sharma2013verification,DBLP:conf/esop/0001GHALN13,sharma2014invariant}, the tools are no longer maintained and updated.
 
 \begin{table}[t]
-\scriptsize
+% \scriptsize
 \centering
 \caption{Experiment results}
 \begin{tabular}{| c | c | c | c | c | c | c | c | }
 \hline
 \multicolumn{1}{|c|}{benchmark}&\multicolumn{1}{|c|}{inv type} & Interproc & CPAChecker &BLAST &InvGen & Hola & \textsc{Zilu}  \\
 \hline
-\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 			& \cmark & to 			& \xmark  & \xmark  & \xmark   & 6\\
-\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear 			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 9\\
-\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive		& \xmark & to 			& \xmark  & \xmark  & \xmark   & 10\\
-\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 9\\
-\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive		& \xmark & 4 			& \xmark  & \xmark  & \xmark   & 34\\
-\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 8\\
-\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 16\\
-\multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}			&linear 			& \cmark & 3 			& \xmark  & \xmark  & \xmark   & 6\\
-\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& \cmark & to 			& \xmark  & \xmark  & \xmark   & 19\\
-\multicolumn{1}{|c|}{f2~\cite{zilu:repo}}						&linear 			& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 15\\
-\multicolumn{1}{|c|}{fig1b}										&disjunctive		& \xmark & 1 			& \xmark  & \xmark  & \xmark   & 32\\
-\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive		& \cmark & 1 			& \xmark  & \xmark  & \xmark   & 34\\
-\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 15\\
-\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 51\\
-\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear 			& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 30\\
-\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 22\\
-\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive		& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 16\\
-\multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive		& \xmark &  \xmark		& \xmark  & \xmark  & \xmark   & 7\\
-\multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear 		& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
-\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
-\multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 60\\
-\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
-\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 23\\
-\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 27\\
-\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 18\\
-\multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}		&polynomial 		& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 76\\
-\multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & \xmark		& \xmark  & \xmark  & \xmark   & 28\\
-\multicolumn{1}{|c|}{zilu\_conj1}								&conjunctive		& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 45\\
-\multicolumn{1}{|c|}{zilu\_disj1}								&disjunctive		& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 46\\
-\multicolumn{1}{|c|}{zilu\_disj2}								&disjunctive		& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 27\\
-\multicolumn{1}{|c|}{zilu\_disj3}								&disjunctive		& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 29\\
-\multicolumn{1}{|c|}{zilu\_poly1}								&polynomial			& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 42\\
-\multicolumn{1}{|c|}{zilu\_poly3}								&polynomial			& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 17\\
-\multicolumn{1}{|c|}{zilu\_poly6}								&polynomial			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 74\\
-\hline  & 
+
+\multicolumn{1}{|c|}{01~\cite{isil2013inductive}}				&conjunctive	& \cmark    &3.19	  & \xmark  & \xmark  & \xmark   & 13\\
+\multicolumn{1}{|c|}{03~\cite{isil2013inductive}}				&linear			& \cmark    &3.73	  & \xmark  & \xmark  & \xmark   &21\\
+\multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 		& \cmark    &3.57	  & \xmark  & \xmark  & \xmark   & 6\\
+% \multicolumn{1}{|c|}{11~\cite{isil2013inductive}}				&conjunctive	& \cmark    &3.96	  & \xmark  & \xmark  & \xmark   & \\
+\multicolumn{1}{|c|}{15~\cite{isil2013inductive}}				&conjunctive	& \cmark    &3.26	  & \xmark  & \xmark  & \xmark   & 20\\
+\multicolumn{1}{|c|}{19~\cite{isil2013inductive}}				&conjunctive	& \xmark    &3.51	  & \xmark  & \xmark  & \xmark   & 17\\
+\multicolumn{1}{|c|}{20~\cite{isil2013inductive}}				&conjunctive	& \cmark    &3.55	  & \xmark  & \xmark  & \xmark   & 28\\
+\multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear			& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 9\\
+\multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive	& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 10\\
+\multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive	& \cmark    &3.20	  & \xmark  & \xmark  & \xmark   & 19\\
+\multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive	& \xmark    &3.26	  & \xmark  & \xmark  & \xmark   & 27\\
+\multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear			& \cmark    &3.32	  & \xmark  & \xmark  & \xmark   & 8\\
+% \multicolumn{1}{|c|}{41~\cite{isil2013inductive}}				&conjunctive	& \xmark    &4.28	  & \xmark  & \xmark  & \xmark   & 0\\
+\multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear			& \cmark    &3.16	  & \xmark  & \xmark  & \xmark   & 32\\
+\multicolumn{1}{|c|}{44~\cite{isil2013inductive}}				&linear 		& \cmark    &3.18	  & \xmark  & \xmark  & \xmark   & 21\\
+\multicolumn{1}{|c|}{bound~\cite{gupta2009invgen}}				&linear 		& \cmark    &3.40	  & \xmark  & \xmark  & \xmark   & 7\\
+\multicolumn{1}{|c|}{cggmp2005~\cite{Dirk:SVCOMP:2016}}			&conjunctive	& \cmark    &3.76	  & \xmark  & \xmark  & \xmark   & 67\\
+\multicolumn{1}{|c|}{css2003\_true~\cite{Dirk:SVCOMP:2016}}		&conjunctive	& \cmark    &3.42	  & \xmark  & \xmark  & \xmark   & 18\\
+\multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear			& \cmark    &3.63	  & \xmark  & \xmark  & \xmark   & 19\\
+\multicolumn{1}{|c|}{down\_true\_1~\cite{Dirk:SVCOMP:2016}}		&conjunctive 	& \cmark    &3.67	  & \xmark  & \xmark  & \xmark   & 47\\
+\multicolumn{1}{|c|}{down\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive 	& \cmark    &3.68	  & \xmark  & \xmark  & \xmark   & 41\\
+\multicolumn{1}{|c|}{ex49~\cite{necla:benchmark}}				&conjunctive	& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 13\\
+\multicolumn{1}{|c|}{fig1b~\cite{zilu:repo}}					&disjunctive	& \xmark    &3.39	  & \xmark  & \xmark  & \xmark   & 34\\
+\multicolumn{1}{|c|}{fig1c~\cite{zilu:repo}}					&conjunctive	& \xmark    &3.71	  & \xmark  & \xmark  & \xmark   & 36\\
+\multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive	& \cmark    &47.82	  & \xmark  & \xmark  & \xmark   & 32\\
+\multicolumn{1}{|c|}{half~\cite{gupta2009invgen}}				&conjunctive	& \xmark    &3.64	  & \xmark  & \xmark  & \xmark   & 47\\
+\multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear			& \cmark    &3.05	  & \xmark  & \xmark  & \xmark   & 15\\
+\multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 		& \cmark    &3.63	  & \xmark  & \xmark  & \xmark   & 37\\
+\multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear			& \cmark    &3.39	  & \xmark  & \xmark  & \xmark   & 30\\
+\multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 		& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 11\\
+\multicolumn{1}{|c|}{interproc5~\cite{jeannet2010interproc}}	&linear			& \cmark    &3.09	  & \xmark  & \xmark  & \xmark   & 59\\
+\multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive	& \cmark    &3.40	  & \xmark  & \xmark  & \xmark   & 10\\
+\multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive& \xmark    &3.61	  & \xmark  & \xmark  & \xmark   & 7\\
+\multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear		& \cmark    &3.41	  & \xmark  & \xmark  & \xmark   & 7\\
+\multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 		& \cmark    &3.45	  & \xmark  & \xmark  & \xmark   & 7\\
+\multicolumn{1}{|c|}{up\_true\_2~\cite{isil2013inductive}}		&conjunctive	& \cmark    &4.04	  & \xmark  & \xmark  & \xmark   & 62\\
+\multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 		& \cmark    &3.61	  & \xmark  & \xmark  & \xmark   & 7\\
+\multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive	& \cmark    &3.28	  & \xmark  & \xmark  & \xmark   & 23\\
+\multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive	& \cmark    &3.40	  & \xmark  & \xmark  & \xmark   & 9\\
+\multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive	& \cmark    &3.51	  & \xmark  & \xmark  & \xmark   & 10\\
+\multicolumn{1}{|c|}{xy4\_2~\cite{sharma2012interpolants}}		&conjunctive	& \xmark    &3.65	  & \xmark  & \xmark  & \xmark   & 12\\
+\multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}		&polynomial 	& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 76\\
+\multicolumn{1}{|c|}{xyz2\_1~\cite{sharma2012interpolants}}		&conjunctive	& \cmark    &3.70	  & \xmark  & \xmark  & \xmark   & 24\\
+\multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}		&conjunctive	& \cmark    &3.33	  & \xmark  & \xmark  & \xmark   & 38\\
+\multicolumn{1}{|c|}{zilu\_conj1~\cite{zilu:repo}}				&conjunctive	& \xmark    &3.42	  & \xmark  & \xmark  & \xmark   & 45\\
+% \multicolumn{1}{|c|}{zilu\_conj2~\cite{zilu:repo}}			&conjunctive		& \cmark    &3.31	  & \xmark  & \xmark  & \xmark   & 0\\
+\multicolumn{1}{|c|}{zilu\_disj1~\cite{zilu:repo}}				&disjunctive	& \cmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 46\\
+\multicolumn{1}{|c|}{zilu\_disj2~\cite{zilu:repo}}				&disjunctive	& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 27\\
+\multicolumn{1}{|c|}{zilu\_disj3~\cite{zilu:repo}}				&disjunctive	& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 29\\
+\multicolumn{1}{|c|}{zilu\_linear1~\cite{zilu:repo}}			&linear			& \cmark    &3.61	  & \xmark  & \xmark  & \xmark   & 30\\
+\multicolumn{1}{|c|}{zilu\_linear2~\cite{zilu:repo}}			&linear			& \cmark    &3.77	  & \xmark  & \xmark  & \xmark   & 11\\
+\multicolumn{1}{|c|}{zilu\_linear3~\cite{zilu:repo}}			&linear			& \cmark    &3.36	  & \xmark  & \xmark  & \xmark   & 31\\
+\multicolumn{1}{|c|}{zilu\_linear4~\cite{zilu:repo}}			&linear 		& \cmark    &3.51	  & \xmark  & \xmark  & \xmark   & 15\\
+\multicolumn{1}{|c|}{zilu\_poly1~\cite{zilu:repo}}				&polynomial		& \xmark    &3.25	  & \xmark  & \xmark  & \xmark   & 42\\
+\multicolumn{1}{|c|}{zilu\_poly3~\cite{zilu:repo}}				&polynomial		& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 17\\
+\multicolumn{1}{|c|}{zilu\_poly6~\cite{zilu:repo}}				&polynomial		& \xmark    &\xmark	  & \xmark  & \xmark  & \xmark   & 85\\
+\hline
 \end{tabular}
 \label{tbl:stats2}
 \end{table}
 
+% \multicolumn{1}{|c|}{NULL}										&NULL 				& \xmark & 1 			& \xmark  & \xmark  & \xmark   & 0\\
+% \multicolumn{1}{|c|}{05~\cite{isil2013inductive}}				&linear 			& \cmark & to 			& \xmark  & \xmark  & \xmark   & 6\\
+% \multicolumn{1}{|c|}{21~\cite{isil2013inductive}}				&linear 			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 9\\
+% \multicolumn{1}{|c|}{23~\cite{isil2013inductive}}				&conjunctive		& \xmark & to 			& \xmark  & \xmark  & \xmark   & 10\\
+% \multicolumn{1}{|c|}{28~\cite{isil2013inductive}}				&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 9\\
+% \multicolumn{1}{|c|}{30~\cite{isil2013inductive}}				&conjunctive		& \xmark & 4 			& \xmark  & \xmark  & \xmark   & 34\\
+% \multicolumn{1}{|c|}{35~\cite{isil2013inductive}}				&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 8\\
+% \multicolumn{1}{|c|}{43~\cite{isil2013inductive}}				&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 16\\
+% \multicolumn{1}{|c|}{bound~\cite{isil2013inductive}}			&linear 			& \cmark & 3 			& \xmark  & \xmark  & \xmark   & 6\\
+% \multicolumn{1}{|c|}{down~\cite{gupta2009invgen}}				&linear 			& \cmark & to 			& \xmark  & \xmark  & \xmark   & 19\\
+% \multicolumn{1}{|c|}{f2~\cite{zilu:repo}}						&linear 			& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 15\\
+% \multicolumn{1}{|c|}{fig1b}										&disjunctive		& \xmark & 1 			& \xmark  & \xmark  & \xmark   & 32\\
+% \multicolumn{1}{|c|}{fm11~\cite{schwartznon}}					&conjunctive		& \cmark & 1 			& \xmark  & \xmark  & \xmark   & 34\\
+% \multicolumn{1}{|c|}{interproc1~\cite{jeannet2010interproc}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 15\\
+% \multicolumn{1}{|c|}{interproc2~\cite{jeannet2010interproc}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 51\\
+% \multicolumn{1}{|c|}{interproc3~\cite{jeannet2010interproc}}	&linear 			& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 30\\
+% \multicolumn{1}{|c|}{interproc4~\cite{jeannet2010interproc}}	&linear 			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 22\\
+% \multicolumn{1}{|c|}{multivar\_1~\cite{jeannet2010interproc}}	&conjunctive		& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 16\\
+% \multicolumn{1}{|c|}{pldi08\_fig1~\cite{gulavani2008automatically}}&disjunctive		& \xmark &  \xmark		& \xmark  & \xmark  & \xmark   & 7\\
+% \multicolumn{1}{|c|}{pldi08\_fig7~\cite{gulavani2008automatically}}	&linear 		& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
+% \multicolumn{1}{|c|}{terminator\_01~\cite{Dirk:SVCOMP:2016}}	&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
+% \multicolumn{1}{|c|}{up\_true\_2~\cite{Dirk:SVCOMP:2016}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 60\\
+% \multicolumn{1}{|c|}{xle10~\cite{sharma2012interpolants}}		&linear 			& \cmark & 2 			& \xmark  & \xmark  & \xmark   & 7\\
+% \multicolumn{1}{|c|}{xy0\_1~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 23\\
+% \multicolumn{1}{|c|}{xy0\_2~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 27\\
+% \multicolumn{1}{|c|}{xy4\_1~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & to 			& \xmark  & \xmark  & \xmark   & 18\\
+% \multicolumn{1}{|c|}{xyle0~\cite{sharma2012interpolants}}		&polynomial 		& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 76\\
+% \multicolumn{1}{|c|}{xyz\_2~\cite{sharma2012interpolants}}		&conjunctive		& \cmark & \xmark		& \xmark  & \xmark  & \xmark   & 28\\
+% \multicolumn{1}{|c|}{zilu\_conj1}								&conjunctive		& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 45\\
+% \multicolumn{1}{|c|}{zilu\_disj1}								&disjunctive		& \cmark & \xmark 		& \xmark  & \xmark  & \xmark   & 46\\
+% \multicolumn{1}{|c|}{zilu\_disj2}								&disjunctive		& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 27\\
+% \multicolumn{1}{|c|}{zilu\_disj3}								&disjunctive		& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 29\\
+% \multicolumn{1}{|c|}{zilu\_poly1}								&polynomial			& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 42\\
+% \multicolumn{1}{|c|}{zilu\_poly3}								&polynomial			& \xmark & 2 			& \xmark  & \xmark  & \xmark   & 17\\
+% \multicolumn{1}{|c|}{zilu\_poly6}								&polynomial			& \xmark & \xmark 		& \xmark  & \xmark  & \xmark   & 74\\
 
 We have the following observations based on the experiment results. \textsc{Zilu} often takes more samples or guess-and-check iterations to learn conjunctive or disjunctive invariants. For conjunctive invariants, this is because the algorithm~\cite{sharma2012interpolants} for learning conjunctive classifiers often requires more samples before convergence. For disjunction invariants, this is because we need sufficient samples in each partition in order to learn the right invariant. In terms of time, \textsc{Zilu} often takes more time to learn conjunctive, polynomial or disjunctive invariants. This is because in such a case, SVM classification is invoked many times in one guess-and-check iteration. TODO: add more discussion when experiment results are updated. 
 
