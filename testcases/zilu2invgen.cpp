@@ -48,7 +48,7 @@ class Config {
 			} else if (key == "loop") { cppstatement = "\t\t" + value + "\n";
 			} else if (key == "postcondition") { 
 				if (nondet) 
-					cppstatement = "\t\tassert(" + value + ")\n\t}\n"; 
+					cppstatement = "\t\tassert(" + value + ");\n\t}\n"; 
 				else
 					cppstatement = "\t}\n\tassert(" + value + ");\n";
 				cppstatement += "\treturn 0;\n}";
