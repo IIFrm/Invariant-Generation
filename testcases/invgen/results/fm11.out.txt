@@ -1,0 +1,32 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/fm11.pl...done.
+creating straight line code between cutpoints...done.
+
+path([21,20,17,22,14,12]): pc(main-6-6) pc(main-ret-0) {i>=100,j=200,tmp'=tmp,j'=j,i'=i}
+[i>=100,j=200] [tmp'=tmp,j'=j,i'=i]
+path([19,17,22,14,12]): pc(main-6-6) pc(main-err-0) {i>=100,j>=1+200,tmp'=tmp,j'=j,i'=i}
+[i>=100,j>=1+200] [tmp'=tmp,j'=j,i'=i]
+path([18,17,22,14,12]): pc(main-6-6) pc(main-err-0) {i>=100,j+1=<200,tmp'=tmp,j'=j,i'=i}
+[i>=100,j+1=<200] [tmp'=tmp,j'=j,i'=i]
+path([16,15,13,12]): pc(main-6-6) pc(main-6-6) {i+1=<100,tmp'=tmp,j'=j+2,i'=i+1}
+[i+1=<100] [tmp'=tmp,j'=j+2,i'=i+1]
+path([11,3,2,1]): pc(main-0-5) pc(main-6-6) {i=0,j=0,1>=1+0,tmp'=1,j'=j,i'=i}
+[i=0,j=0,1>=1+0] [tmp'=1,j'=j,i'=i]
+
+#Printing Strengthening ==
+#pc(main-6-6): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([19,17,22,14,12])..# cleared. 
+#solving for path to error: path([18,17,22,14,12])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-6-6): [j=2*i,i=<100]
+#=========================
+#unproven: path([21,20,17,22,14,12])
+#=========================
+#Invariant:
+#pc(main-6-6): [j=2*i,i=<100]
+#Total Solving time: 40 ms

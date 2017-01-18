@@ -1,0 +1,26 @@
+digraph G {
+ rankdir=LR 
+ node [shape=box]
+N1 [label="pc(main-0-5)"];
+N3 [label="pc(main-6-6)"];
+N5 [label="pc(main-err-0)"];
+N7 [label="pc(main-ret-0)"];
+N3 -> A1A0 ;
+A1A0 -> N5 ;
+A1A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: c&#062;=0 </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: i+c&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i&#062;=100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: c+1=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i'=i </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: c'=c </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: 1=&#060;0 </FONT></TD></TR></TABLE>>];
+N3 -> A2A0 ;
+A2A0 -> N3 ;
+A2A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: c&#062;=0 </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: i+c&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i+1=&#060;100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i+1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i'=i+1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c'=c+i </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: c'&#062;=0 </FONT></TD></TR></TABLE>>];
+N3 -> A2A1 ;
+A2A1 -> N3 ;
+A2A1 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: c&#062;=0 </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: i+c&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i+1=&#060;100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: i+1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: i'=i+1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c'=c+i </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: i'+c'&#062;=0 </FONT></TD></TR></TABLE>>];
+N3 -> A3A0 ;
+A3A0 -> N5 ;
+A3A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: c&#062;=0 </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: i+c&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i+1=&#060;100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i+1=&#060;0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: c+i+1=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i'=i+1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: c'=c+i </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: 1=&#060;0 </FONT></TD></TR></TABLE>>];
+N1 -> A4A0 ;
+A4A0 -> N3 ;
+A4A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: 1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: i'=i </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c'=c </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: c'&#062;=0 </FONT></TD></TR></TABLE>>];
+N1 -> A4A1 ;
+A4A1 -> N3 ;
+A4A1 [ label=<<TABLE border="0"><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: i=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: 1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: i'=i </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: c'=c </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: i'+c'&#062;=0 </FONT></TD></TR></TABLE>>];
+}

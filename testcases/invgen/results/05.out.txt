@@ -1,0 +1,36 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/05.pl...done.
+creating straight line code between cutpoints...done.
+
+path([24,22,18,17,16,15,14]): pc(main-8-9) pc(main-8-9) {flag=0,j+(y+1)>=i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1),i'=i+(x+1),flag'=flag}
+[flag=0,j+(y+1)>=i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1),i'=i+(x+1),flag'=flag]
+path([23,22,18,17,16,15,14]): pc(main-8-9) pc(main-err-0) {flag=0,j+(y+1)+1=<i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1),i'=i+(x+1),flag'=flag}
+[flag=0,j+(y+1)+1=<i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1),i'=i+(x+1),flag'=flag]
+path([24,21,20,18,17,16,15,14]): pc(main-8-9) pc(main-8-9) {flag>=1+0,j+(y+1)+1>=i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag}
+[flag>=1+0,j+(y+1)+1>=i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag]
+path([23,21,20,18,17,16,15,14]): pc(main-8-9) pc(main-err-0) {flag>=1+0,j+(y+1)+1+1=<i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag}
+[flag>=1+0,j+(y+1)+1+1=<i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag]
+path([24,21,19,18,17,16,15,14]): pc(main-8-9) pc(main-8-9) {flag+1=<0,j+(y+1)+1>=i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag}
+[flag+1=<0,j+(y+1)+1>=i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag]
+path([23,21,19,18,17,16,15,14]): pc(main-8-9) pc(main-err-0) {flag+1=<0,j+(y+1)+1+1=<i+(x+1),y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag}
+[flag+1=<0,j+(y+1)+1+1=<i+(x+1)] [y'=y+1,x'=x+1,tmp'=tmp,j'=j+(y+1)+1,i'=i+(x+1),flag'=flag]
+path([13,5,4,3,2,1]): pc(main-0-6) pc(main-8-9) {i=0,j=0,1>=1+0,y'=0,x'=0,tmp'=1,j'=j,i'=i,flag'=flag}
+[i=0,j=0,1>=1+0] [y'=0,x'=0,tmp'=1,j'=j,i'=i,flag'=flag]
+
+#Printing Strengthening ==
+#pc(main-8-9): [tmp=1,y=x,x>=0]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([23,22,18,17,16,15,14])..# cleared. 
+#solving for path to error: path([23,21,20,18,17,16,15,14])..# cleared. 
+#solving for path to error: path([23,21,19,18,17,16,15,14])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-8-9): [j-i>=0]
+#=========================
+#=========================
+#Invariant:
+#pc(main-8-9): [j-i>=0,y=x]
+#Total Solving time: 40 ms

@@ -1,0 +1,29 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/zilu_linear4.pl...done.
+creating straight line code between cutpoints...done.
+
+path([10,9,7,11,4,2]): pc(main-1-6) pc(main-ret-0) {xa=<0,ya>=0,ya'=ya,xa'=xa}
+[xa=<0,ya>=0] [ya'=ya,xa'=xa]
+path([8,7,11,4,2]): pc(main-1-6) pc(main-err-0) {xa=<0,ya+1=<0,ya'=ya,xa'=xa}
+[xa=<0,ya+1=<0] [ya'=ya,xa'=xa]
+path([6,5,3,2]): pc(main-1-6) pc(main-1-6) {xa>=1+0,ya'=ya+1,xa'=xa-1}
+[xa>=1+0] [ya'=ya+1,xa'=xa-1]
+path([1]): pc(main-0-5) pc(main-1-6) {xa+ya>=1+0,ya'=ya,xa'=xa}
+[xa+ya>=1+0] [ya'=ya,xa'=xa]
+
+#Printing Strengthening ==
+#pc(main-1-6): [ya+xa>=0]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([8,7,11,4,2])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-1-6): []
+#=========================
+#unproven: path([10,9,7,11,4,2])
+#=========================
+#Invariant:
+#pc(main-1-6): [ya+xa>=0]
+#Total Solving time: 20 ms

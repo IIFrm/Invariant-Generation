@@ -1,0 +1,32 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/xy4_1.pl...done.
+creating straight line code between cutpoints...done.
+
+path([23,22,21,14,13,12]): pc(main-6-6) pc(main-err-0) {x+4>=1+4*(y+1),0=0,y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp}
+[x+4>=1+4*(y+1),0=0] [y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp]
+path([23,22,20,14,13,12]): pc(main-6-6) pc(main-err-0) {x+4+1=<4*(y+1),0=0,y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp}
+[x+4+1=<4*(y+1),0=0] [y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp]
+path([23,19,18,15,14,13,12]): pc(main-6-6) pc(main-err-0) {x+4=4*(y+1),x+4+1=<0,0=0,y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp}
+[x+4=4*(y+1),x+4+1=<0,0=0] [y'=y+1,x'=x+4,tmp___0'=0,tmp'=tmp]
+path([25,17,16,15,14,13,12]): pc(main-6-6) pc(main-6-6) {x+4=4*(y+1),x+4>=0,1>=1+0,y'=y+1,x'=x+4,tmp___0'=1,tmp'=tmp}
+[x+4=4*(y+1),x+4>=0,1>=1+0] [y'=y+1,x'=x+4,tmp___0'=1,tmp'=tmp]
+path([11,3,2,1]): pc(main-0-5) pc(main-6-6) {x=y,y=0,1>=1+0,y'=y,x'=x,tmp___0'=tmp___0,tmp'=1}
+[x=y,y=0,1>=1+0] [y'=y,x'=x,tmp___0'=tmp___0,tmp'=1]
+
+#Printing Strengthening ==
+#pc(main-6-6): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([23,22,21,14,13,12])..# cleared. 
+#solving for path to error: path([23,22,20,14,13,12])..# cleared. 
+#solving for path to error: path([23,19,18,15,14,13,12])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-6-6): [y=1/4*x,x>=0]
+#=========================
+#=========================
+#Invariant:
+#pc(main-6-6): [y=1/4*x,x>=0]
+#Total Solving time: 40 ms

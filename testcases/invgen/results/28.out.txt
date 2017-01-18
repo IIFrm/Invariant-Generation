@@ -1,0 +1,44 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/28.pl...done.
+creating straight line code between cutpoints...done.
+
+path([25,24,21,28,14,11]): pc(main-6-6) pc(main-ret-0) {x=0,y=0,y'=y,x'=x,tmp'=tmp}
+[x=0,y=0] [y'=y,x'=x,tmp'=tmp]
+path([23,21,28,14,11]): pc(main-6-6) pc(main-err-0) {x=0,y>=1+0,y'=y,x'=x,tmp'=tmp}
+[x=0,y>=1+0] [y'=y,x'=x,tmp'=tmp]
+path([22,21,28,14,11]): pc(main-6-6) pc(main-err-0) {x=0,y+1=<0,y'=y,x'=x,tmp'=tmp}
+[x=0,y+1=<0] [y'=y,x'=x,tmp'=tmp]
+path([20,18,16,15,13,11]): pc(main-6-6) pc(main-6-6) {x>=1+0,x-1>=0,y-1>=0,y'=y-1,x'=x-1,tmp'=tmp}
+[x>=1+0,x-1>=0,y-1>=0] [y'=y-1,x'=x-1,tmp'=tmp]
+path([22,21,26,19,18,16,15,13,11]): pc(main-6-6) pc(main-err-0) {x>=1+0,x-1>=0,y-1+1=<0,y-1+1=<0,y'=y-1,x'=x-1,tmp'=tmp}
+[x>=1+0,x-1>=0,y-1+1=<0,y-1+1=<0] [y'=y-1,x'=x-1,tmp'=tmp]
+path([25,24,21,27,17,16,15,12,11]): pc(main-6-6) pc(main-ret-0) {x+1=<0,x-1+1=<0,y-1=0,y'=y-1,x'=x-1,tmp'=tmp}
+[x+1=<0,x-1+1=<0,y-1=0] [y'=y-1,x'=x-1,tmp'=tmp]
+path([23,21,27,17,16,15,12,11]): pc(main-6-6) pc(main-err-0) {x+1=<0,x-1+1=<0,y-1>=1+0,y'=y-1,x'=x-1,tmp'=tmp}
+[x+1=<0,x-1+1=<0,y-1>=1+0] [y'=y-1,x'=x-1,tmp'=tmp]
+path([22,21,27,17,16,15,12,11]): pc(main-6-6) pc(main-err-0) {x+1=<0,x-1+1=<0,y-1+1=<0,y'=y-1,x'=x-1,tmp'=tmp}
+[x+1=<0,x-1+1=<0,y-1+1=<0] [y'=y-1,x'=x-1,tmp'=tmp]
+path([10,3,2,1]): pc(main-0-5) pc(main-6-6) {x=y,y>=0,1>=1+0,y'=y,x'=x,tmp'=1}
+[x=y,y>=0,1>=1+0] [y'=y,x'=x,tmp'=1]
+
+#Printing Strengthening ==
+#pc(main-6-6): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([23,21,28,14,11])..# cleared. 
+#solving for path to error: path([22,21,28,14,11])..# cleared. 
+#solving for path to error: path([22,21,26,19,18,16,15,13,11])..# cleared. 
+#solving for path to error: path([23,21,27,17,16,15,12,11])..# cleared. 
+#solving for path to error: path([22,21,27,17,16,15,12,11])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-6-6): [y=x,x>=0]
+#=========================
+#unproven: path([25,24,21,28,14,11])
+#unproven: path([25,24,21,27,17,16,15,12,11])
+#=========================
+#Invariant:
+#pc(main-6-6): [y=x,x>=0]
+#Total Solving time: 60 ms

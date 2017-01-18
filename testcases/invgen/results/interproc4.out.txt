@@ -1,0 +1,38 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/interproc4.pl...done.
+creating straight line code between cutpoints...done.
+
+path([29,28,25,30,18,16]): pc(main-9-7) pc(main-ret-0) {i>=j,j=i,j'=j,i'=i}
+[i>=j,j=i] [j'=j,i'=i]
+path([26,25,30,18,16]): pc(main-9-7) pc(main-err-0) {i>=j,j+1=<i,j'=j,i'=i}
+[i>=j,j+1=<i] [j'=j,i'=i]
+path([24,19,17,16]): pc(main-9-7) pc(main-9-7) {i+1=<j,j-i>=i,j'=j-i,i'=i}
+[i+1=<j,j-i>=i] [j'=j-i,i'=i]
+path([23,22,21,20,19,17,16]): pc(main-9-7) pc(main-9-7) {i+1=<j,j-i+1=<i,j'=j-i+i-(j-i+i-i),i'=j-i+i-i}
+[i+1=<j,j-i+1=<i] [j'=j-i+i-(j-i+i-i),i'=j-i+i-i]
+path([15,14,10,6,3]): pc(main-0-5) pc(main-9-7) {i>=0,j>=0,i>=1+0,j>=1+0,i*i+1=<j*j,j'=j,i'=i}
+[i>=0,j>=0,i>=1+0,j>=1+0,i*i+1=<j*j] [j'=j,i'=i]
+path([15,12,11,10,6,3]): pc(main-0-5) pc(main-9-7) {i>=0,j>=0,i>=1+0,j=0,i*i+1=<1*1,j'=1,i'=i}
+[i>=0,j>=0,i>=1+0,j=0,i*i+1=<1*1] [j'=1,i'=i]
+path([15,14,8,7,6,3]): pc(main-0-5) pc(main-9-7) {i>=0,j>=0,i=0,j>=1+0,1*1+1=<j*j,j'=j,i'=1}
+[i>=0,j>=0,i=0,j>=1+0,1*1+1=<j*j] [j'=j,i'=1]
+path([15,14,10,5,4,3]): pc(main-0-5) pc(main-9-7) {i>=0,j+1=<0,i>=1+0,-(j)>=1+0,i*i+1=< -(j)* -(j),j'= -(j),i'=i}
+[i>=0,j+1=<0,i>=1+0,-(j)>=1+0,i*i+1=< -(j)* -(j)] [j'= -(j),i'=i]
+path([15,14,8,7,5,4,3]): pc(main-0-5) pc(main-9-7) {i>=0,j+1=<0,i=0,-(j)>=1+0,1*1+1=< -(j)* -(j),j'= -(j),i'=1}
+[i>=0,j+1=<0,i=0,-(j)>=1+0,1*1+1=< -(j)* -(j)] [j'= -(j),i'=1]
+path([15,14,10,6,2,1]): pc(main-0-5) pc(main-9-7) {i+1=<0,j>=0,-(i)>=1+0,j>=1+0,-(i)* -(i)+1=<j*j,j'=j,i'= -(i)}
+[i+1=<0,j>=0,-(i)>=1+0,j>=1+0,-(i)* -(i)+1=<j*j] [j'=j,i'= -(i)]
+path([15,12,11,10,6,2,1]): pc(main-0-5) pc(main-9-7) {i+1=<0,j>=0,-(i)>=1+0,j=0,-(i)* -(i)+1=<1*1,j'=1,i'= -(i)}
+[i+1=<0,j>=0,-(i)>=1+0,j=0,-(i)* -(i)+1=<1*1] [j'=1,i'= -(i)]
+path([15,14,10,5,4,2,1]): pc(main-0-5) pc(main-9-7) {i+1=<0,j+1=<0,-(i)>=1+0,-(j)>=1+0,-(i)* -(i)+1=< -(j)* -(j),j'= -(j),i'= -(i)}
+[i+1=<0,j+1=<0,-(i)>=1+0,-(j)>=1+0,-(i)* -(i)+1=< -(j)* -(j)] [j'= -(j),i'= -(i)]
+
+#Printing Strengthening ==
+#pc(main-9-7): [j>=0,j+i>=0]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([26,25,30,18,16])..# failed. 
+#=======================================
+#Invariant computation failed.

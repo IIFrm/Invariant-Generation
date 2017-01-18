@@ -1,0 +1,32 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/cggmp2005_variant.pl...done.
+creating straight line code between cutpoints...done.
+
+path([25,24,21,26,17,15]): pc(main-8-7) pc(main-ret-0) {mid=<0,low=high,tmp'=tmp,mid'=mid,low'=low,high'=high}
+[mid=<0,low=high] [tmp'=tmp,mid'=mid,low'=low,high'=high]
+path([23,21,26,17,15]): pc(main-8-7) pc(main-err-0) {mid=<0,low>=1+high,tmp'=tmp,mid'=mid,low'=low,high'=high}
+[mid=<0,low>=1+high] [tmp'=tmp,mid'=mid,low'=low,high'=high]
+path([22,21,26,17,15]): pc(main-8-7) pc(main-err-0) {mid=<0,low+1=<high,tmp'=tmp,mid'=mid,low'=low,high'=high}
+[mid=<0,low+1=<high] [tmp'=tmp,mid'=mid,low'=low,high'=high]
+path([20,19,18,16,15]): pc(main-8-7) pc(main-8-7) {mid>=1+0,tmp'=tmp,mid'=mid-1,low'=low+1,high'=high-1}
+[mid>=1+0] [tmp'=tmp,mid'=mid-1,low'=low+1,high'=high-1]
+path([14,4,3,2,1]): pc(main-0-6) pc(main-8-7) {low=0,mid>=1,high=2*mid,1>=1+0,tmp'=1,mid'=mid,low'=low,high'=high}
+[low=0,mid>=1,high=2*mid,1>=1+0] [tmp'=1,mid'=mid,low'=low,high'=high]
+
+#Printing Strengthening ==
+#pc(main-8-7): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([23,21,26,17,15])..# cleared. 
+#solving for path to error: path([22,21,26,17,15])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-8-7): [mid= -1/2*low+1/2*high,low-high=<0]
+#=========================
+#unproven: path([25,24,21,26,17,15])
+#=========================
+#Invariant:
+#pc(main-8-7): [mid= -1/2*low+1/2*high,low-high=<0]
+#Total Solving time: 40 ms

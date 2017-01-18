@@ -1,0 +1,26 @@
+digraph G {
+ rankdir=LR 
+ node [shape=box]
+N1 [label="pc(main-0-6)"];
+N3 [label="pc(main-8-7)"];
+N5 [label="pc(main-err-0)"];
+N7 [label="pc(main-ret-0)"];
+N3 -> A1A0 ;
+A1A0 -> N5 ;
+A1A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: mid= -1/2*low+1/2*high </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: low-high=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: mid=&#060;0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: low&#062;=1+high </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: mid'=mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: low'=low </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: high'=high </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: 1=&#060;0 </FONT></TD></TR></TABLE>>];
+N3 -> A2A0 ;
+A2A0 -> N5 ;
+A2A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="red"> -2: mid= -1/2*low+1/2*high </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: low-high=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">2: mid=&#060;0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: low+1=&#060;high </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: mid'=mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: low'=low </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: high'=high </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: 1=&#060;0 </FONT></TD></TR></TABLE>>];
+N3 -> A3A0 ;
+A3A0 -> N3 ;
+A3A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="red">[ -1,1]: mid= -1/2*low+1/2*high </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="red">[0,0]: low-high=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[0,0]: mid&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[0,0]: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[ -1,1]: mid'=mid-1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[ -1/2,1/2]: low'=low+1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[1/2, -1/2]: high'=high-1 </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: mid'= -1/2*low'+1/2*high' </FONT></TD></TR></TABLE>>];
+N3 -> A3A1 ;
+A3A1 -> N3 ;
+A3A1 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="red">2: mid= -1/2*low+1/2*high </FONT></TD><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: low-high=&#060;0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">2: mid&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=tmp </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: mid'=mid-1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: low'=low+1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: high'=high-1 </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: low'-high'=&#060;0 </FONT></TD></TR></TABLE>>];
+N1 -> A4A0 ;
+A4A0 -> N3 ;
+A4A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[ -1/2,1/2]: low=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[0,0]: mid&#062;=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[1/2, -1/2]: high=2*mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[0,0]: 1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[0,0]: tmp'=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[ -1,1]: mid'=mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[ -1/2,1/2]: low'=low </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">[1/2, -1/2]: high'=high </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: mid'= -1/2*low'+1/2*high' </FONT></TD></TR></TABLE>>];
+N1 -> A4A1 ;
+A4A1 -> N3 ;
+A4A1 [ label=<<TABLE border="0"><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: low=0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">2: mid&#062;=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: high=2*mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: 1&#062;=1+0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: tmp'=1 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: mid'=mid </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: low'=low </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: high'=high </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: low'-high'=&#060;0 </FONT></TD></TR></TABLE>>];
+}

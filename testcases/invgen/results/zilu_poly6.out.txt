@@ -1,0 +1,25 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/zilu_poly6.pl...done.
+creating straight line code between cutpoints...done.
+
+path([15,11,10,9,2]): pc(main-1-6) pc(main-1-6) {x>=1+0,x>=1+0,x*(y+1)>=0,y'=y+1,x'=x}
+[x>=1+0,x>=1+0,x*(y+1)>=0] [y'=y+1,x'=x]
+path([14,11,10,9,2]): pc(main-1-6) pc(main-err-0) {x>=1+0,x>=1+0,x*(y+1)+1=<0,y'=y+1,x'=x}
+[x>=1+0,x>=1+0,x*(y+1)+1=<0] [y'=y+1,x'=x]
+path([15,13,12,8,2]): pc(main-1-6) pc(main-1-6) {x+1=<0,x=<0,(x-1)*y>=0,y'=y,x'=x-1}
+[x+1=<0,x=<0,(x-1)*y>=0] [y'=y,x'=x-1]
+path([14,13,12,8,2]): pc(main-1-6) pc(main-err-0) {x+1=<0,x=<0,(x-1)*y+1=<0,y'=y,x'=x-1}
+[x+1=<0,x=<0,(x-1)*y+1=<0] [y'=y,x'=x-1]
+path([15,13,12,7,6,3,2]): pc(main-1-6) pc(main-1-6) {x=0,y=<0,x-1=<0,(x-1-1)*y>=0,y'=y,x'=x-1-1}
+[x=0,y=<0,x-1=<0,(x-1-1)*y>=0] [y'=y,x'=x-1-1]
+path([15,11,10,5,4,3,2]): pc(main-1-6) pc(main-1-6) {x=0,y>=1+0,x+1>=1+0,(x+1)*(y+1)>=0,y'=y+1,x'=x+1}
+[x=0,y>=1+0,x+1>=1+0,(x+1)*(y+1)>=0] [y'=y+1,x'=x+1]
+path([1]): pc(main-0-5) pc(main-1-6) {x*y>=0,y'=y,x'=x}
+[x*y>=0] [y'=y,x'=x]
+
+#Printing Strengthening ==
+#pc(main-1-6): []
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================

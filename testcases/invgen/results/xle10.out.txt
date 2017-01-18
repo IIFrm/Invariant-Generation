@@ -1,0 +1,29 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/xle10.pl...done.
+creating straight line code between cutpoints...done.
+
+path([9,8,12,6,2]): pc(main-1-5) pc(main-err-0) {x+1=<0,x+1=<10,x'=x}
+[x+1=<0,x+1=<10] [x'=x]
+path([11,10,8,13,5,3,2]): pc(main-1-5) pc(main-ret-0) {x>=0,x>=10,x>=10,x'=x}
+[x>=0,x>=10,x>=10] [x'=x]
+path([7,4,3,2]): pc(main-1-5) pc(main-1-5) {x>=0,x+1=<10,x'=x+1}
+[x>=0,x+1=<10] [x'=x+1]
+path([1]): pc(main-0-4) pc(main-1-5) {x>=0,x'=x}
+[x>=0] [x'=x]
+
+#Printing Strengthening ==
+#pc(main-1-5): [x>=0]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([9,8,12,6,2])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-1-5): []
+#=========================
+#unproven: path([11,10,8,13,5,3,2])
+#=========================
+#Invariant:
+#pc(main-1-5): [x>=0]
+#Total Solving time: 20 ms

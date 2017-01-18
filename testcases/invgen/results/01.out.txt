@@ -1,0 +1,26 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/01.pl...done.
+creating straight line code between cutpoints...done.
+
+path([16,14,13,12]): pc(main-6-6) pc(main-6-6) {x+y>=1,y'=x+y,x'=x+y,tmp'=tmp}
+[x+y>=1] [y'=x+y,x'=x+y,tmp'=tmp]
+path([15,14,13,12]): pc(main-6-6) pc(main-err-0) {x+y+1=<1,y'=x+y,x'=x+y,tmp'=tmp}
+[x+y+1=<1] [y'=x+y,x'=x+y,tmp'=tmp]
+path([11,3,2,1]): pc(main-0-5) pc(main-6-6) {x=1,y=1,1>=1+0,y'=y,x'=x,tmp'=1}
+[x=1,y=1,1>=1+0] [y'=y,x'=x,tmp'=1]
+
+#Printing Strengthening ==
+#pc(main-6-6): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([15,14,13,12])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-6-6): [y+x>=2]
+#=========================
+#=========================
+#Invariant:
+#pc(main-6-6): [y+x>=2]
+#Total Solving time: 20 ms

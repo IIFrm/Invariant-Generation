@@ -1,0 +1,41 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/zilu_conj1.pl...done.
+creating straight line code between cutpoints...done.
+
+path([27,26,25,21,17,31,14,10]): pc(main-6-6) pc(main-err-0) {x>=100,x>=1+100,y>=1+100,0=0,y'=y,x'=x,tmp___0'=0,tmp'=tmp}
+[x>=100,x>=1+100,y>=1+100,0=0] [y'=y,x'=x,tmp___0'=0,tmp'=tmp]
+path([27,26,24,21,17,31,14,10]): pc(main-6-6) pc(main-err-0) {x>=100,x>=1+100,y+1=<100,0=0,y'=y,x'=x,tmp___0'=0,tmp'=tmp}
+[x>=100,x>=1+100,y+1=<100,0=0] [y'=y,x'=x,tmp___0'=0,tmp'=tmp]
+path([30,29,23,22,21,17,31,14,10]): pc(main-6-6) pc(main-ret-0) {x>=100,x>=1+100,y=100,1>=1+0,y'=y,x'=x,tmp___0'=1,tmp'=tmp}
+[x>=100,x>=1+100,y=100,1>=1+0] [y'=y,x'=x,tmp___0'=1,tmp'=tmp]
+path([30,29,19,18,17,31,14,10]): pc(main-6-6) pc(main-ret-0) {x>=100,x=100,1>=1+0,y'=y,x'=x,tmp___0'=1,tmp'=tmp}
+[x>=100,x=100,1>=1+0] [y'=y,x'=x,tmp___0'=1,tmp'=tmp]
+path([27,26,25,20,17,32,13,11,10]): pc(main-6-6) pc(main-err-0) {x+1=<100,y>=100,x+1=<100,y>=1+100,0=0,y'=y,x'=x,tmp___0'=0,tmp'=tmp}
+[x+1=<100,y>=100,x+1=<100,y>=1+100,0=0] [y'=y,x'=x,tmp___0'=0,tmp'=tmp]
+path([30,29,23,22,20,17,32,13,11,10]): pc(main-6-6) pc(main-ret-0) {x+1=<100,y>=100,x+1=<100,y=100,1>=1+0,y'=y,x'=x,tmp___0'=1,tmp'=tmp}
+[x+1=<100,y>=100,x+1=<100,y=100,1>=1+0] [y'=y,x'=x,tmp___0'=1,tmp'=tmp]
+path([16,15,12,11,10]): pc(main-6-6) pc(main-6-6) {x+1=<100,y+1=<100,y'=y+1,x'=x+1,tmp___0'=tmp___0,tmp'=tmp}
+[x+1=<100,y+1=<100] [y'=y+1,x'=x+1,tmp___0'=tmp___0,tmp'=tmp]
+path([9,3,2,1]): pc(main-0-5) pc(main-6-6) {x+1=<100,y+1=<100,1>=1+0,y'=y,x'=x,tmp___0'=tmp___0,tmp'=1}
+[x+1=<100,y+1=<100,1>=1+0] [y'=y,x'=x,tmp___0'=tmp___0,tmp'=1]
+
+#Printing Strengthening ==
+#pc(main-6-6): [tmp=1]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([27,26,25,21,17,31,14,10])..# cleared. 
+#solving for path to error: path([27,26,24,21,17,31,14,10])..# cleared. 
+#solving for path to error: path([27,26,25,20,17,32,13,11,10])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-6-6): [y=<100,x=<100]
+#=========================
+#unproven: path([30,29,23,22,21,17,31,14,10])
+#unproven: path([30,29,19,18,17,31,14,10])
+#unproven: path([30,29,23,22,20,17,32,13,11,10])
+#=========================
+#Invariant:
+#pc(main-6-6): [y=<100,x=<100]
+#Total Solving time: 40 ms

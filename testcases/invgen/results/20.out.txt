@@ -1,0 +1,45 @@
+INVGEN 0.1
+{agupta,rybal}@mpi-sws.mpg.de
+reading input from ../../Invariant-Generation/testcases/invgen/20.pl...done.
+creating straight line code between cutpoints...done.
+
+path([14,11,10,9,8,3]): pc(main-1-9) pc(main-1-9) {j>=1+i,x-1+(y+1)=k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j>=1+i,x-1+(y+1)=k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([13,11,10,9,8,3]): pc(main-1-9) pc(main-err-0) {j>=1+i,x-1+(y+1)>=1+k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j>=1+i,x-1+(y+1)>=1+k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([12,11,10,9,8,3]): pc(main-1-9) pc(main-err-0) {j>=1+i,x-1+(y+1)+1=<k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j>=1+i,x-1+(y+1)+1=<k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([14,11,10,9,7,3]): pc(main-1-9) pc(main-1-9) {j+1=<i,x-1+(y+1)=k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j+1=<i,x-1+(y+1)=k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([13,11,10,9,7,3]): pc(main-1-9) pc(main-err-0) {j+1=<i,x-1+(y+1)>=1+k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j+1=<i,x-1+(y+1)>=1+k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([12,11,10,9,7,3]): pc(main-1-9) pc(main-err-0) {j+1=<i,x-1+(y+1)+1=<k,y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i}
+[j+1=<i,x-1+(y+1)+1=<k] [y'=y+1,x'=x-1,k'=k,j'=j+1,i'=i]
+path([14,11,6,5,4,3]): pc(main-1-9) pc(main-1-9) {j=i,x+1+(y-1)=k,y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i}
+[j=i,x+1+(y-1)=k] [y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i]
+path([13,11,6,5,4,3]): pc(main-1-9) pc(main-err-0) {j=i,x+1+(y-1)>=1+k,y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i}
+[j=i,x+1+(y-1)>=1+k] [y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i]
+path([12,11,6,5,4,3]): pc(main-1-9) pc(main-err-0) {j=i,x+1+(y-1)+1=<k,y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i}
+[j=i,x+1+(y-1)+1=<k] [y'=y-1,x'=x+1,k'=k,j'=j+1,i'=i]
+path([2,1]): pc(main-0-8) pc(main-1-9) {x+y=k,y'=y,x'=x,k'=k,j'=0,i'=i}
+[x+y=k] [y'=y,x'=x,k'=k,j'=0,i'=i]
+
+#Printing Strengthening ==
+#pc(main-1-9): [y= -(x)+k,j>=0]
+#=========================
+#Start Tracing for depth 0...#.. done in 0 ms
+#=========================
+#solving for path to error: path([13,11,10,9,8,3])..# cleared. 
+#solving for path to error: path([12,11,10,9,8,3])..# cleared. 
+#solving for path to error: path([13,11,10,9,7,3])..# cleared. 
+#solving for path to error: path([12,11,10,9,7,3])..# cleared. 
+#solving for path to error: path([13,11,6,5,4,3])..# cleared. 
+#solving for path to error: path([12,11,6,5,4,3])..# cleared. 
+#=========================
+#contributed facts:
+#pc(main-1-9): []
+#=========================
+#=========================
+#Invariant:
+#pc(main-1-9): [y= -(x)+k]
+#Total Solving time: 40 ms

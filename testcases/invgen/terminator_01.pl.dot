@@ -1,0 +1,17 @@
+digraph G {
+ rankdir=LR 
+ node [shape=box]
+N1 [label="pc(main-0-4)"];
+N3 [label="pc(main-1-5)"];
+N5 [label="pc(main-err-0)"];
+N7 [label="pc(main-ret-0)"];
+N3 -> A1A0 ;
+A1A0 -> N5 ;
+A1A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="red">1: x&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: x+1=&#060;100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: x+1=&#060;0 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: x+1=&#060;100 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: x'=x </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: 1=&#060;0 </FONT></TD></TR></TABLE>>];
+N3 -> A2A0 ;
+A2A0 -> N3 ;
+A2A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#00FFFF"><FONT COLOR="black">0: x&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="black">0: x+1=&#060;100 </FONT></TD><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: x&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: x'=x+1 </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: x'&#062;=0 </FONT></TD></TR></TABLE>>];
+N1 -> A3A0 ;
+A3A0 -> N3 ;
+A3A0 [ label=<<TABLE border="0"><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red">1: x&#062;=0 </FONT></TD></TR><TR><TD bgcolor = "#D0D0D0"><FONT COLOR="red"> -1: x'=x </FONT></TD></TR><TR><TD bgcolor = "white"><FONT COLOR="blue">result: x'&#062;=0 </FONT></TD></TR></TABLE>>];
+}
