@@ -13,7 +13,7 @@ The set of variables $V$ for each program contains two integer-type ones: $x$ an
 %The postcondition $Post$ is $y \le x \le y + 16$.
 One example invariant which can be used to prove the Hoare triple is shown for each program. For instance, the Hoare triple shown in Figure~\ref{fig:running:example}(a) can be proven using a loop invariant: $x \le y + 16$, whereas conjunctive or disjunctive invariants are necessary to prove the rest of the Hoare triples. We remark that there might be different loop invariants which could be used to prove the Hoare triples. In the following, we show how we generate loop invariants for proving these Hoare triples.
 \end{example}
-\noindent The overall approach is shown as Algorithm~\ref{alg:active}. We start with randomly generating a set of valuations of $V$, denoted as $SP$, at line 1 (a.k.a.~random sampling). Random sampling provides us an initial set of samples to learn the very first candidate for the loop invariant.
+\noindent The overall approach is shown in Algorithm~\ref{alg:active}. We start with randomly generating a set of valuations of $V$, denoted as $SP$, at line 1 (a.k.a.~random sampling). Random sampling provides us an initial set of samples to learn the very first candidate for the loop invariant.
 In this work, we have two ways to generate random samples. One is that we generate random values for each variable in $V$ based on its domain,
 assuming a uniform probabilistic distribution over all values in its domain.
 The other is that we apply an SMT solver~\cite{barrett2009satisfiability,de2008z3} to generate valuations that satisfy $Pre$
@@ -98,7 +98,7 @@ A valuation in $CE(SP)$ satisfies $Pre$ and becomes a valuation $s'$ which fails
 %\begin{align*}
 \begin{align*}
 Positive(SP) = & \{s \in SP | \exists s_0,s_1: SP. \\
-& ~~~~~~ s_0 \in Pre \land s_0 \Rightarrow s \Rightarrow s_1 \land s_1 \not \in Cond \land s_1 \in Post\}
+& ~~~~~~ s_0 \in Pre \land s_0 \Rightarrow s \Rightarrow s' \land s_1 \not \in Cond \land s' \in Post\}
 \end{align*}
 $Positive(SP)$ contains a valuation $s$ if there exists a valuation $s_0$ in $SP$ which satisfies $Pre$ and becomes $s$ after zero or more iterations. Furthermore, $s$ subsequently becomes $s'$, which satisfies $Post$ when the loop terminates. Let $Inv$ be any loop invariant that proves the Hoare triple. Because $s_0 \in Pre$, $s_0 \in Inv$ since $Inv$ satisfies condition (1). Since $Inv$ satisfies condition (2) and $Body(s_0) \in Inv$ if $Body(s_0) \in Cond$. By a simple induction, we prove $s \in Inv$.
 \begin{align*}

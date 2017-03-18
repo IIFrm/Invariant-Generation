@@ -59,9 +59,9 @@ The candidates are then \emph{check}ed using program verification techniques (li
 For instance, given a candidate loop invariant $\phi$, if condition (1) is violated, a valuation $s \in (Pre \land \neg \phi)$ is generated, which proves that $\phi$ is not an invariant.
 With the new sample $s$, we can learn a new candidate invariant. This guess-and-check process is repeated until the Hoare triple is either proved or disproved.
 
-Existing guess-and-check approaches vary in how samples are generated and how candidate invariants are guessed. In~\cite{sharma2012interpolants}, the authors proposed to generated samples through constraint solving and learn loop invariants based on SVM classification . In~\cite{sharma2013verification}, the authors proposed to apply PAC learning. It has been demonstrated that their approach may learn invariants in the form of arbitrary boolean
+Existing guess-and-check approaches vary in how samples are generated and how candidate invariants are guessed. In~\cite{sharma2012interpolants}, the authors proposed to generated samples through constraint solving and learn loop invariants based on SVM classification. In~\cite{sharma2013verification}, the authors proposed to apply PAC learning. It has been demonstrated that their approach may learn invariants in the form of arbitrary boolean
 combinations of polynomial inequalities under certain assumptions. In~\cite{DBLP:conf/esop/0001GHALN13},
-the authors developed a guess-and-check algorithm to generate invariants in the form of algebraic equation.
+the authors developed a guess-and-check algorithm to generate invariants in the form of the algebraic equation.
 In~\cite{sharma2014invariant}, the authors proposed a framework for generating invariants based on randomized search.
 In particular, their approach has two phases. The search phase uses randomized search to discover candidate invariants and the validate phase uses the checker to either prove or refute the candidate.
 
@@ -97,7 +97,7 @@ Furthermore, we generate disjunctive invariants through {\em path-sensitive} lea
     % Based on the design of different approaches,
     % we also claim that our framework have better extensibility comparing with their method.
 %\textsc{Zilu} is built upon existing tools (e.g., GNU Scientific Library ($\mathit{GSL}$)~\cite{gough2009gnu} for active learning,   $\mathit{LibSVM}$~\cite{chang2011libsvm} for $\mathit{SVM}$ classification, revised $\mathit{KLEE}$~\cite{cadar2008klee} for symbolic execution~\cite{king1976symbolic,symbolic}, and Z3~\cite{de2008z3} for verification) and can be used as a language/platform independent tool to verify programs.
-\textsc{Zilu} complements the above-mentioned existing approaches with active learning so as to reduce the need of checking, sometimes completely. Furthermore, \textsc{Zilu} supports a new way of learning disjunctive invariants.
+\textsc{Zilu} complements the above-mentioned existing approaches with active learning so as to reduce the need for checking, sometimes completely. Furthermore, \textsc{Zilu} supports a new way of learning disjunctive invariants.
 
 
 
